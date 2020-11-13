@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="rootPaneWelcome" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.WelcomeView">
+   <children>
+      <Label layoutX="240.0" layoutY="181.0" prefWidth="220.0" text="Please enter your preferred User Name" />
+      <TextField fx:id="userNameField" layoutX="242.0" layoutY="223.0" text="Enter User Name here" />
+      <Button fx:id="submitButton" layoutX="403.0" layoutY="223.0" mnemonicParsing="false" onAction="#submitUserName" text="Submit" />
+   </children>
+</AnchorPane>
