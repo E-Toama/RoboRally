@@ -2,15 +2,14 @@ package views;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.Client;
-import viewModel.ChatViewViewModel;
-import viewModel.Launcher;
+import viewModel.ChatApp;
 import viewModel.WelcomeViewViewModel;
 
 import java.io.IOException;
@@ -27,7 +26,7 @@ public class WelcomeView {
 
     private final WelcomeViewViewModel viewModel = new WelcomeViewViewModel();
 
-    private final Launcher launcher = new Launcher();
+    private final ChatApp chatApp = new ChatApp();
 
     @FXML
     void initialize() {
@@ -37,23 +36,31 @@ public class WelcomeView {
 
     }
 
-    public void submitUserName() throws IOException {
+    public void submitUserName() {
 
         //hier einfügen überprüfen ob nutzername vergeben (mit if else ?)
 
-        Client client = new Client(viewModel.getUserName());
+        try {
 
-        Stage stage = (Stage) submitButton.getScene().getWindow();
-        stage.setTitle(viewModel.getUserName());
+            Client client = new Client(viewModel.getUserName());
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/ChatView.fxml"));
+            Stage stage = (Stage) submitButton.getScene().getWindow();
+            stage.setTitle(viewModel.getUserName());
 
-        stage.setScene(new Scene(loader.load()));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/ChatView.fxml"));
 
-        ChatView chatView = loader.getController();
-        chatView.setClient(client);
+            stage.setScene(new Scene(loader.load()));
 
-        stage.show();
+            ChatView chatView = loader.getController();
+            chatView.setClient(client);
+
+            stage.show();
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
 
     }
 

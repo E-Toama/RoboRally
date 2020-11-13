@@ -12,11 +12,14 @@ public class ChatViewViewModel {
 
     private StringProperty message = new SimpleStringProperty();
     private BooleanProperty sendButton = new SimpleBooleanProperty();
+    private Thread clientThread;
     private Client client;
 
     public void setClient(Client client) {
 
         this.client = client;
+        this.clientThread = new Thread(client);
+        clientThread.start();
 
     }
 
@@ -52,9 +55,9 @@ public class ChatViewViewModel {
 
     public final void sendMessage() {
 
-        System.out.println(getMessage());
-        client.writeToServer(getMessage());
-        this.setMessage("");
+         client.writeToServer(getMessage());
+         this.setMessage("");
+
 
     }
 

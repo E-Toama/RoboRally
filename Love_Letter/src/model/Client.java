@@ -53,12 +53,14 @@ public class Client implements Runnable {
             try {
 
                 String inputFromServer = serverToClient.readLine();
-                System.out.println(inputFromServer);
+
+                if (inputFromServer == null) {
+                    break;
+                }
 
                 Platform.runLater(() -> {
 
                     chatMessages.add(inputFromServer);
-                    System.out.println(inputFromServer);
 
                 });
 

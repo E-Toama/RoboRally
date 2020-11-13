@@ -39,7 +39,6 @@ public class UserThread implements Runnable {
             for (PrintWriter writer : ChatServer.getWriters()) {
 
                 writer.println(userName + " has joined");
-                System.out.println(userName + "has joined");
 
             }
 
@@ -58,7 +57,6 @@ public class UserThread implements Runnable {
                 for (PrintWriter writer : ChatServer.getWriters()) {
 
                     writer.println("[" + userName + "] " + input);
-                    System.out.println(input);
 
                 }
             }
@@ -81,7 +79,6 @@ public class UserThread implements Runnable {
                 for (PrintWriter writer : ChatServer.getWriters()) {
 
                     writer.println(userName + " has left.");
-                    System.out.println(userName + "has left.");
 
                 }
 
