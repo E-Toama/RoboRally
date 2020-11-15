@@ -10,10 +10,12 @@ import model.Client;
 
 public class ChatViewViewModel {
 
+    //Properties
     private StringProperty message = new SimpleStringProperty();
     private BooleanProperty sendButton = new SimpleBooleanProperty();
     private Thread clientThread;
     private Client client;
+
 
     public void setClient(Client client) {
 
@@ -29,6 +31,7 @@ public class ChatViewViewModel {
 
     }
 
+    //Property Instanzen mit getter und setter
     public StringProperty messageProperty() {
         return  message;
     }
@@ -53,6 +56,7 @@ public class ChatViewViewModel {
         sendButton.set(value);
     }
 
+    //Message wird an den Server weitergeleitet, Textfeld (writeField) wird geleert
     public final void sendMessage() {
 
          client.writeToServer(getMessage());
