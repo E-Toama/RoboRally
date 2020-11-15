@@ -1,6 +1,5 @@
 package views;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
@@ -35,23 +34,19 @@ public class ChatView {
 
   }
 
-  // FÃ¼hrt sendMessage() in ChatViewViewModel aus
+  // Führt sendMessage() in ChatViewViewModel aus
   public void sendMessage() {
 
     viewModel.sendMessage();
 
   }
 
-  // chatMessages werden in die ListView chatBox Ã¼bertragen
+  // chatMessages werden in die ListView chatBox übertragen
   public void setClient(Client client) {
 
     viewModel.setClient(client);
     chatBox.setItems(viewModel.getClient().chatMessages);
 
-  }
-
-  public void closeApplication() {
-    Platform.exit();
   }
 
 }
