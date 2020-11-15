@@ -8,100 +8,102 @@ import java.net.Socket;
 
 public class UserThread implements Runnable {
 
-    private Socket socket;
-    private String userName;
-    private BufferedReader incoming;
-    private PrintWriter outgoing;
+  private Socket socket;
+  private String userName;
+  private BufferedReader incoming;
+  private PrintWriter outgoing;
 
-    public UserThread(Socket socket) {
+  public UserThread(Socket socket) {
 
-        this.socket = socket;
+    this.socket = socket;
 
-        try {
+    try {
 
-            //BufferedReader und PrintWriter zum Datenaustausch zwsichen Server und Client
-            incoming = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            outgoing = new PrintWriter(socket.getOutputStream(), true);
+      // BufferedReader und PrintWriter zum Datenaustausch zwsichen Server und
+      // Client
+      incoming = new BufferedReader(
+          new InputStreamReader(socket.getInputStream()));
+      outgoing = new PrintWriter(socket.getOutputStream(), true);
 
-        } catch (IOException e) {
+    } catch (IOException e) {
 
-            e.printStackTrace();
+      e.printStackTrace();
+
+    }
+
+  }
+
+  public void run() {
+
+    try {
+
+      // Hinzukommender User wird angezeigt
+      userName = incoming.readLine();
+
+      for (PrintWriter writer : ChatServer.getWriters()) {
+
+        writer.println(userName + " has joined the room.");
+
+      }
+
+      ChatServer.addWriter(outgoing);
+
+      // Input wird gelesen, While-Schleife wird mit Eingabe "bye" verlassen
+      while (true) {
+
+        String input = incoming.readLine();
+
+        if (input.toLowerCase().startsWith("bye")) {
+
+          break;
 
         }
+
+        for (PrintWriter writer : ChatServer.getWriters()) {
+
+          writer.println("[" + userName + "] " + input);
+
+        }
+      }
+
+    } catch (IOException e) {
+
+      e.printStackTrace();
 
     }
 
-    public void run() {
+    // userName und writer werden aus dem Server entfernt
+    finally {
 
-        try {
+      if (outgoing != null) {
 
-            //Hinzukommender User wird angezeigt
-            userName = incoming.readLine();
+        ChatServer.getWriters().remove(outgoing);
 
-            for (PrintWriter writer : ChatServer.getWriters()) {
+      }
+      if (userName != null) {
 
-                writer.println(userName + " has joined the room.");
+        ChatServer.getUserNames().remove(userName);
 
-            }
+        for (PrintWriter writer : ChatServer.getWriters()) {
 
-            ChatServer.addWriter(outgoing);
-
-            //Input wird gelesen, While-Schleife wird mit Eingabe "bye" verlassen
-            while (true) {
-
-                String input = incoming.readLine();
-
-                if (input.toLowerCase().startsWith("bye")) {
-
-                    break;
-
-                }
-
-                for (PrintWriter writer : ChatServer.getWriters()) {
-
-                    writer.println("[" + userName + "] " + input);
-
-                }
-            }
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
+          writer.println(userName + " has left.");
 
         }
 
-        //userName und writer werden aus dem Server entfernt
-         finally {
+      }
 
-            if (outgoing != null) {
+      try {
 
-                ChatServer.getWriters().remove(outgoing);
+        socket.close(); // Keine Verbindung mehr zum Server
 
-            }
-            if (userName != null) {
+      } catch (IOException e) {
 
-                ChatServer.getUserNames().remove(userName);
+        e.printStackTrace();
 
-                for (PrintWriter writer : ChatServer.getWriters()) {
-
-                    writer.println(userName + " has left.");
-
-                }
-
-            }
-
-            try {
-
-                socket.close(); //Keine Verbindung mehr zum Server
-
-            } catch (IOException e) {
-
-                e.printStackTrace();
-
-            }
-
-        }
+      }
 
     }
+
+  }
 
 }

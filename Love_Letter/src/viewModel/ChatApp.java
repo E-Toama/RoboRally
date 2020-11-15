@@ -10,32 +10,32 @@ import java.io.IOException;
 
 public class ChatApp extends Application {
 
-    public static void main(String[] args) {
-        Application.launch(args);
+  public static void main(String[] args) {
+    Application.launch(args);
+  }
+
+  @Override
+
+  // Welcome Fenster wird geöffnet
+  public void start(Stage stage) {
+
+    try {
+
+      stage.setTitle("Welcome");
+
+      Parent welcome = FXMLLoader
+          .load(getClass().getResource("../views/WelcomeView.fxml"));
+
+      Scene welcomeScene = new Scene(welcome);
+
+      stage.setScene(welcomeScene);
+      stage.show();
+      stage.setOnCloseRequest(e -> Platform.exit());
+
+    } catch (IOException e) {
+
+      e.printStackTrace();
+
     }
-
-    @Override
-
-    //Welcome Fenster wird geöffnet
-    public void start(Stage stage) {
-
-        try {
-
-            stage.setTitle("Welcome");
-
-            Parent welcome = FXMLLoader.load(getClass().getResource("../views/WelcomeView.fxml"));
-
-            Scene welcomeScene = new Scene(welcome);
-
-            stage.setScene(welcomeScene);
-            stage.show();
-            stage.setOnCloseRequest(e -> Platform.exit());
-
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
-
-        }
-    }
+  }
 }
