@@ -1,5 +1,6 @@
 package views;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
@@ -47,6 +48,10 @@ public class ChatView {
         viewModel.setClient(client);
         chatBox.setItems(viewModel.getClient().chatMessages);
 
+    }
+
+    public void closeApplication() {
+        Platform.exit();
     }
 
 }

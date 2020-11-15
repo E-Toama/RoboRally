@@ -1,6 +1,7 @@
 package viewModel;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -28,6 +29,7 @@ public class ChatApp extends Application {
 
             stage.setScene(welcomeScene);
             stage.show();
+            stage.setOnCloseRequest(e -> Platform.exit());
 
 
         } catch (IOException e) {

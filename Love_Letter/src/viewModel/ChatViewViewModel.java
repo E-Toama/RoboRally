@@ -1,5 +1,6 @@
 package viewModel;
 
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -58,10 +59,14 @@ public class ChatViewViewModel {
 
     //Message wird an den Server weitergeleitet, Textfeld (writeField) wird geleert
     public final void sendMessage() {
+        String currentMessage = getMessage();
+        client.writeToServer(currentMessage);
+        if (currentMessage.startsWith("bye")) {
+            Platform.exit();
+        } else {
 
-         client.writeToServer(getMessage());
-         this.setMessage("");
-
+            this.setMessage("");
+        }
 
     }
 
