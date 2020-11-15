@@ -1,6 +1,7 @@
 package views;
 
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -9,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import model.Client;
 import viewModel.ChatApp;
 import viewModel.WelcomeViewViewModel;
@@ -56,7 +58,12 @@ public class WelcomeView {
             ChatView chatView = loader.getController();
             chatView.setClient(client);
             stage.show();
-            stage.setOnCloseRequest(e -> System.exit(0));
+            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                public void handle(WindowEvent we) {
+                    client.writeToServer("bye");
+                    stage.close();
+                }
+            });
 
         } catch (Exception e) {
 
