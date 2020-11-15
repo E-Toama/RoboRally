@@ -40,7 +40,7 @@ public class UserThread implements Runnable {
 
             for (PrintWriter writer : ChatServer.getWriters()) {
 
-                writer.println(userName + " has joined");
+                writer.println(userName + " has joined the room.");
 
             }
 
