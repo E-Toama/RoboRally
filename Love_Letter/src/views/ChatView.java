@@ -28,17 +28,20 @@ public class ChatView {
     @FXML
     void initialize() {
 
+        //Wechselseitige Bindung von writeField,sendButton und ChatViewViewModel
         writeField.textProperty().bindBidirectional(viewModel.messageProperty());
         sendButton.defaultButtonProperty().bindBidirectional(viewModel.sendButtonProperty());
 
     }
 
+    //Führt sendMessage() in ChatViewViewModel aus
     public void sendMessage() {
 
         viewModel.sendMessage();
 
     }
 
+    //chatMessages werden in die ListView chatBox übertragen
     public void setClient(Client client) {
 
         viewModel.setClient(client);

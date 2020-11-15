@@ -31,11 +31,12 @@ public class WelcomeView {
     @FXML
     void initialize() {
 
+        //Wechselseitige Bindung von userNameField, submitButton und WelcomeViewModel
         userNameField.textProperty().bindBidirectional(viewModel.userNameProperty());
         submitButton.defaultButtonProperty().bindBidirectional(viewModel.submitButtonProperty());
 
     }
-
+    //Client mit übergebenen Usernamen wird erstellt, Chatfenster wird geöffnet
     public void submitUserName() {
 
         //hier einfügen überprüfen ob nutzername vergeben (mit if else ?)

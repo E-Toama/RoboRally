@@ -22,12 +22,17 @@ public class Client implements Runnable {
 
         socket = new Socket("localhost", 9090);
         this.userName = userName;
+
+        //BufferedReader zum Lesen der Daten vom Server
         serverToClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+        //PrintWriter zum Schreiben von Daten an den Server
         clientToServer = new PrintWriter(socket.getOutputStream(), true);
         clientToServer.println(userName);
         chatMessages = FXCollections.observableArrayList();
 
     }
+
 
     public String getUserName() {
         return userName;
@@ -37,6 +42,7 @@ public class Client implements Runnable {
         this.userName = name;
     }
 
+    //Übermittelt Input an den Server
     public void writeToServer(String input) {
         clientToServer.println(input);
     }
@@ -46,13 +52,14 @@ public class Client implements Runnable {
     }
 
     @Override
+
     public void run() {
 
         while (true) {
 
             try {
 
-                String inputFromServer = serverToClient.readLine();
+                String inputFromServer = serverToClient.readLine(); //Gelesene Daten vom Server
 
                 if (inputFromServer == null) {
                     break;
@@ -60,7 +67,7 @@ public class Client implements Runnable {
 
                 Platform.runLater(() -> {
 
-                    chatMessages.add(inputFromServer);
+                    chatMessages.add(inputFromServer); //Input wird zu chatMessages hinzugefügt
 
                 });
 

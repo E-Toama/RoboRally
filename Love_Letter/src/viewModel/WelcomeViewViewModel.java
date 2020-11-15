@@ -10,6 +10,7 @@ import java.util.Set;
 
 public class WelcomeViewViewModel {
 
+    //Property Instanzen mit getter und setter
     private StringProperty userName = new SimpleStringProperty();
 
     private BooleanProperty submitButton = new SimpleBooleanProperty();

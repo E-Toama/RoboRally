@@ -14,6 +14,8 @@ public class ChatApp extends Application {
     }
 
     @Override
+
+    //Welcome Fenster wird geöffnet
     public void start(Stage stage) {
 
         try {
