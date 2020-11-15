@@ -19,6 +19,7 @@ public class UserThread implements Runnable {
 
         try {
 
+            //BufferedReader und PrintWriter zum Datenaustausch zwsichen Server und Client
             incoming = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             outgoing = new PrintWriter(socket.getOutputStream(), true);
 
@@ -34,6 +35,7 @@ public class UserThread implements Runnable {
 
         try {
 
+            //Hinzukommender User wird angezeigt
             userName = incoming.readLine();
 
             for (PrintWriter writer : ChatServer.getWriters()) {
@@ -44,6 +46,7 @@ public class UserThread implements Runnable {
 
             ChatServer.addWriter(outgoing);
 
+            //Input wird gelesen, While-Schleife wird mit Eingabe "bye" verlassen
             while (true) {
 
                 String input = incoming.readLine();
@@ -65,7 +68,10 @@ public class UserThread implements Runnable {
 
             e.printStackTrace();
 
-        } finally {
+        }
+
+        //userName und writer werden aus dem Server entfernt
+         finally {
 
             if (outgoing != null) {
 
@@ -86,7 +92,7 @@ public class UserThread implements Runnable {
 
             try {
 
-                socket.close();
+                socket.close(); //Keine Verbindung mehr zum Server
 
             } catch (IOException e) {
 
