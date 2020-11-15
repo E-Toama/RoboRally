@@ -51,6 +51,11 @@ public class Client implements Runnable {
         return serverToClient.readLine();
     }
 
+    public void closeConnection() throws IOException {
+        socket.close();
+
+    }
+
     @Override
 
     public void run() {

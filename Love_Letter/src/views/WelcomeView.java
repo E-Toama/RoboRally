@@ -1,5 +1,6 @@
 package views;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -54,8 +55,8 @@ public class WelcomeView {
 
             ChatView chatView = loader.getController();
             chatView.setClient(client);
-
             stage.show();
+            stage.setOnCloseRequest(e -> System.exit(0));
 
         } catch (Exception e) {
 
