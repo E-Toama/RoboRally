@@ -1,4 +1,4 @@
-package model;
+package model.network;
 
 import exceptions.DuplicateNameException;
 import javafx.application.Platform;

@@ -1,10 +1,9 @@
-package model;
+package model.network;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.CacheRequest;
 import java.net.Socket;
 
 public class UserThread implements Runnable {
@@ -13,9 +12,11 @@ public class UserThread implements Runnable {
     private String userName;
     private BufferedReader incoming;
     private PrintWriter outgoing;
+    private ChatServer server;
 
-    public UserThread(Socket socket) throws IOException {
+    public UserThread(Socket socket, ChatServer server) throws IOException {
         this.socket = socket;
+        this.server = server;
         // BufferedReader und PrintWriter zum Datenaustausch zwsichen Server und
         // Client
         incoming = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -30,7 +31,7 @@ public class UserThread implements Runnable {
             //Namensduplikatabfrage (serverseitig)
             boolean isAccepted = false; // wird auf true gesetzt, wenn valider Input vom Client kommt
             String proposedName = incoming.readLine();
-            if (ChatServer.getUserNames().contains(proposedName)) {
+            if (server.getUserNames().contains(proposedName)) {
                 outgoing.println("taken");
                 return; //run-Methode wird beendet, Client wird nicht erstellt, alles von vorne!
             } else {
@@ -41,11 +42,11 @@ public class UserThread implements Runnable {
             if (proposedName != null) {
                 isAccepted = true;
                 userName = proposedName;
-                ChatServer.addUser(userName);
+                server.addUser(userName);
                 for (PrintWriter writer : ChatServer.getWriters()) {
                     writer.println(userName + " has joined the room.");
                 }
-                ChatServer.addWriter(outgoing);
+                server.addWriter(outgoing);
             }
 
             // Input wird gelesen, While-Schleife wird nur mit Eingabe von "bye" verlassen
@@ -53,17 +54,57 @@ public class UserThread implements Runnable {
 
                 String input = incoming.readLine();
 
-                if (input.toLowerCase().startsWith("bye")) {
+                int i = input.indexOf(' ');
+                String key = input.substring(0, i);
+                String message = input.substring(i);
 
-                    break;
+                switch (key) {
+
+                    case "@USERNAME":
+                        //write direct message to user
+
+                    case "@ALL":
+                        for (PrintWriter writer : server.getWriters()) {
+
+                            writer.println("[" + userName + "] " + message);
+
+                        }
+
+                    case "?HELP":
+                        //return game rules
+
+                    case "?INFO":
+                        //return information about your current card
+
+                    case "?STATS":
+                        //return current game state
+
+                    case "?DISCARDED":
+                        //return already played cards
+
+                    case "!PLAYCARD":
+                        //play card + handle second argument
+
+                    case "!BYE":
+                        break;
+
+                    default:
+                        System.out.println("false command");
 
                 }
 
-                for (PrintWriter writer : ChatServer.getWriters()) {
+//                if (input.toLowerCase().startsWith("bye")) {
+//
+//                    break;
+//
+//                }
+//
+//                for (PrintWriter writer : server.getWriters()) {
+//
+//                    writer.println("[" + userName + "] " + input);
+//
+//                }
 
-                    writer.println("[" + userName + "] " + input);
-
-                }
             }
 
         } catch (IOException e) {
@@ -77,14 +118,14 @@ public class UserThread implements Runnable {
 
             if (outgoing != null) {
 
-                ChatServer.getWriters().remove(outgoing);
+                server.getWriters().remove(outgoing);
 
             }
             if (userName != null) {
 
-                ChatServer.getUserNames().remove(userName);
+                server.getUserNames().remove(userName);
 
-                for (PrintWriter writer : ChatServer.getWriters()) {
+                for (PrintWriter writer : server.getWriters()) {
 
                     writer.println(userName + " has left.");
 

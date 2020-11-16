@@ -1,4 +1,4 @@
-package model;
+package model.network;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -55,7 +55,7 @@ public class ChatServer {
 
       while (true) {
 
-        pool.execute(new UserThread(listener.accept())); // UserThread wird
+        pool.execute(new UserThread(listener.accept(), this)); // UserThread wird
                                                          // gestartet wenn ein
                                                          // Cient sich verbindet
 

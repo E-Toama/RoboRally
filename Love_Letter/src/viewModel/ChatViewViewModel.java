@@ -5,7 +5,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import model.Client;
+import model.network.Client;
 
 public class ChatViewViewModel {
 
@@ -61,7 +61,7 @@ public class ChatViewViewModel {
         client.writeToServer(currentMessage);
 
         //Fenster schließen, falls "bye" eingegeben wird
-        if (currentMessage.startsWith("bye")) {
+        if (currentMessage.startsWith("!BYE")) {
 
             Platform.exit();
 
