@@ -43,45 +43,19 @@ public class WelcomeView {
 
     }
 
-    // Client mit übergebenen Usernamen wird erstellt, Chatfenster wird geöffnet
     public void submitUserName() {
 
         try {
-
-            Client client = new Client(viewModel.getUserName());
-
+            //Passing the current stage to the ViewModel
             Stage stage = (Stage) submitButton.getScene().getWindow();
-            stage.setTitle(viewModel.getUserName());
+            viewModel.submitUserName(stage);
 
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("../views/ChatView.fxml"));
-
-            stage.setScene(new Scene(loader.load()));
-
-            ChatView chatView = loader.getController();
-            chatView.setClient(client);
-            stage.show();
-
-            //Fenster schließen / bye
-            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-                public void handle(WindowEvent we) {
-                    client.writeToServer("bye");
-                    stage.close();
-                }
-            });
-
-        //Client-Konstruktor wirft DuplicateNameException, wenn Name bereits vergeben
+        //Client-Constructor throws DuplicateNameException if name already taken
         } catch (DuplicateNameException e) {
-
             nameTakenLabel.setVisible(true);  // Hinweis einblenden
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-
         }
-
     }
+
     @FXML
     public void hideNameTakenLabel() {
         nameTakenLabel.setVisible(false);
