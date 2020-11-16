@@ -1,5 +1,6 @@
-package model;
+package model.network;
 
+import exceptions.DuplicateNameException;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,20 +19,26 @@ public class Client implements Runnable {
   private PrintWriter clientToServer;
   public ObservableList<String> chatMessages;
 
-  public Client(String userName) throws IOException {
+  public Client(String userName) throws IOException, DuplicateNameException {
 
     socket = new Socket("localhost", 9090);
-    this.userName = userName;
 
     // BufferedReader zum Lesen der Daten vom Server
-    serverToClient = new BufferedReader(
-        new InputStreamReader(socket.getInputStream()));
+    serverToClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
     // PrintWriter zum Schreiben von Daten an den Server
     clientToServer = new PrintWriter(socket.getOutputStream(), true);
-    clientToServer.println(userName);
-    chatMessages = FXCollections.observableArrayList();
 
+    //Nutzernamensduplikate abfragen
+    clientToServer.println(userName);
+    String response = serverToClient.readLine(); //response ist entweder "taken" oder "OK"
+    if (response.equals("taken")) {
+      socket.close();
+      throw new DuplicateNameException(); //wird gefangen in WelcomeView: submitUserName()
+    } else {
+      this.userName = userName;
+      chatMessages = FXCollections.observableArrayList();
+    }
   }
 
   public String getUserName() {

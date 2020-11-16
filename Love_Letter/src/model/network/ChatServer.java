@@ -1,4 +1,4 @@
-package model;
+package model.network;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,7 +13,7 @@ public class ChatServer {
   private static Set<String> userNames = new HashSet<>();
   private static Set<PrintWriter> writers = new HashSet<>();
 
-  // ChatServer wird erstellt und ausgeführt
+  // ChatServer wird erstellt und ausgefÃ¼hrt
   public static void main(String[] args) {
 
     ChatServer server = new ChatServer();
@@ -22,13 +22,11 @@ public class ChatServer {
   }
 
   // Gibt userNames aus
-  public static Set<String> getUserNames() {
-
+  public synchronized static Set<String> getUserNames() {
     return userNames;
-
   }
 
-  // Fügt User zur HashSet userNames hinzu
+  // Fï¿½gt User zur HashSet userNames hinzu
   public static void addUser(String newUser) {
 
     userNames.add(newUser);
@@ -40,13 +38,13 @@ public class ChatServer {
     return writers;
 
   }
-  // Fügt Writer zum HashSet writer hinzu
+  // Fï¿½gt Writer zum HashSet writer hinzu
   public static void addWriter(PrintWriter newWriter) {
 
     writers.add(newWriter);
 
   }
-  // Server mit Portnummer 9090 wird ausgeführt
+  // Server mit Portnummer 9090 wird ausgefï¿½hrt
   public void execute() {
 
     System.out.println("Server is running on port: 9090");
@@ -57,7 +55,7 @@ public class ChatServer {
 
       while (true) {
 
-        pool.execute(new UserThread(listener.accept())); // UserThread wird
+        pool.execute(new UserThread(listener.accept(), this)); // UserThread wird
                                                          // gestartet wenn ein
                                                          // Cient sich verbindet
 

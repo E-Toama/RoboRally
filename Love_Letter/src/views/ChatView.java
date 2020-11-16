@@ -3,7 +3,7 @@ package views;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import model.Client;
+import model.network.Client;
 import viewModel.ChatViewViewModel;
 
 public class ChatView {
@@ -34,14 +34,14 @@ public class ChatView {
 
   }
 
-  // Führt sendMessage() in ChatViewViewModel aus
+  // Fï¿½hrt sendMessage() in ChatViewViewModel aus
   public void sendMessage() {
 
     viewModel.sendMessage();
 
   }
 
-  // chatMessages werden in die ListView chatBox übertragen
+  // chatMessages werden in die ListView chatBox ï¿½bertragen
   public void setClient(Client client) {
 
     viewModel.setClient(client);
