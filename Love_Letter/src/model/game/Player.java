@@ -1,8 +1,12 @@
 package model.game;
 
 import model.game.cards.Card;
+import model.game.cards.Countess;
+import model.game.cards.King;
+import model.game.cards.Prince;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Player {
     private boolean playing;
@@ -82,6 +86,29 @@ public class Player {
             result += c.getValue();
         }
         return result;
+    }
+
+    public boolean checkCountessPlusX() {
+        boolean countessPlusKingOrQueen = false;
+        for (Card c : currentCards) {
+            if (c instanceof Countess) {
+                for (Card otherCard : currentCards) {
+                    if (otherCard instanceof King || otherCard instanceof Prince) {
+                        countessPlusKingOrQueen = true;
+                    }
+                }
+            }
+        }
+        return countessPlusKingOrQueen;
+    }
+
+    public int getCountessIndex() {
+        return currentCards.get(0) instanceof Countess ? 0 : 1;
+    }
+
+    public boolean equals(Player p) {
+        if (this == p) return true;
+        return getName().equals(p.getName());
     }
 
 }

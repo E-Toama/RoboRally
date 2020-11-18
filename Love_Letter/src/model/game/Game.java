@@ -4,7 +4,6 @@ import model.game.cards.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -13,9 +12,7 @@ import java.util.Scanner;
  * is realized with number-input from the console (via Scanner).
  *
  * Only one round is played.
- * All the actions involving a second player (compare, swap, look at cards) can currently be performed with oneself, too.
  * No error-cases are caught! Especially IndexOutOfBounds for the ArrayLists.
- * The effect of having Countess + King/Prince is not implemented yet.
  * Bonus features: Bugs, Flaws, Unexpected Behaviour!
  */
 public class Game {
@@ -75,9 +72,7 @@ public class Game {
 
     private void initializeTwoPlayerGame() {
         tokensNeededToWin = 7;
-        for (Player p : players) {
-            activePlayers.add(p);
-        }
+        activePlayers.addAll(players);
         System.out.println("Game has started, shuffling deck...\n");
         Collections.shuffle(deck);
         //Remove first card of the deck entirely
@@ -122,9 +117,18 @@ public class Game {
                 currentPlayer.setImmune(false);
                 drawCard(currentPlayer);
                 System.out.println("Your current cards: " + currentPlayer.displayCurrentCards());
-                System.out.println("Which card do you want to play? Enter the number");
-                int cardPosition = Integer.parseInt(input.nextLine());
-                Card playedCard = currentPlayer.getCurrentCards().get(cardPosition-1);
+                //check if player has Countess + King/Prince
+                Card playedCard;
+                if (currentPlayer.checkCountessPlusX()) {
+                    System.out.println("You have to play the Countess!");
+                    int cardPosition = currentPlayer.getCurrentCards().get(0) instanceof Countess ? 0 : 1;
+                    playedCard = currentPlayer.getCurrentCards().get(cardPosition);
+                } else {
+                    System.out.println("Which card do you want to play? Enter the number");
+                    int cardPosition = Integer.parseInt(input.nextLine());
+                    playedCard = currentPlayer.getCurrentCards().get(cardPosition-1);
+                }
+
                 System.out.println("Played card: " + playedCard.toString());
                 handleCardAction(currentPlayer, playedCard);
                 discardedCards.add(playedCard);
@@ -213,6 +217,7 @@ public class Game {
             System.out.println("You discarded the princess, you lost!");
             discardCard(player, card);
             player.setPlaying(false);
+            activePlayers.remove(player);
 
         } else if (card instanceof Countess) {
             System.out.println("Countess was discarded without any effects.");
@@ -221,7 +226,7 @@ public class Game {
         } else if (card instanceof King) {
             System.out.println("Trade cards with another player.");
             discardCard(player, card);
-            Player chosenPlayer = choosePlayer();
+            Player chosenPlayer = choosePlayer(player);
             if (!chosenPlayer.isImmune()) {
                 //Swap cards
                 Card cardFromOpponent = chosenPlayer.getCurrentCards().remove(0);
@@ -235,13 +240,14 @@ public class Game {
         } else if (card instanceof Prince) {
             System.out.println("Force a player to discard her hand and draw a new one");
             discardCard(player, card);
-            Player chosenPlayer = choosePlayer();
+            Player chosenPlayer = choosePlayerIncludingSelf();
             if (!chosenPlayer.isImmune()) {
                 Card chosenPlayerCard = chosenPlayer.getCurrentCards().remove(0);
                 discardedCards.add(chosenPlayerCard);
                 //If Player forced to discard Princess, player lost!
                 if (chosenPlayerCard instanceof Princess) {
                     chosenPlayer.setPlaying(false);
+                    activePlayers.remove(chosenPlayer);
                 } else {
                     drawCard(chosenPlayer);
                     System.out.println(chosenPlayer.getName() + " drew a new Card");
@@ -258,7 +264,7 @@ public class Game {
         } else if (card instanceof Baron) {
             System.out.println("Compare your card with opponent...");
             discardCard(player, card);
-            Player chosenPlayer = choosePlayer();
+            Player chosenPlayer = choosePlayer(player);
             if (!chosenPlayer.isImmune()) {
                 //Compare Cards
                 int thisPlayersCardValue = player.getCurrentCards().get(0).getValue();
@@ -268,11 +274,13 @@ public class Game {
                     System.out.println("Opponent's card value: " + otherPlayersCardValue);
                     System.out.println("Your card was higher, other player is out.");
                     chosenPlayer.setPlaying(false);
+                    activePlayers.remove(chosenPlayer);
                 } else if (thisPlayersCardValue < otherPlayersCardValue) {
                     System.out.println("Your card value: " + thisPlayersCardValue);
                     System.out.println("Opponent's card value: " + otherPlayersCardValue);
                     System.out.println("Your card was lower, you are out.");
                     player.setPlaying(false);
+                    activePlayers.remove(player);
                 }
             } else {
                 System.out.println(chosenPlayer.getName() + " is protected by the Handmaid");
@@ -281,7 +289,7 @@ public class Game {
         } else if (card instanceof Priest) {
             System.out.println("Look at your opponent's card...");
             discardCard(player, card);
-            Player chosenPlayer = choosePlayer();
+            Player chosenPlayer = choosePlayer(player);
             if (!chosenPlayer.isImmune()) {
                 System.out.println("Your opponent has: " + chosenPlayer.displayCurrentCards());
             } else {
@@ -291,7 +299,7 @@ public class Game {
         } else if (card instanceof Guard) {
             System.out.println("Guess your opponent's card...");
             discardCard(player, card);
-            Player chosenPlayer = choosePlayer();
+            Player chosenPlayer = choosePlayer(player);
             if (!chosenPlayer.isImmune()) {
                 guessCard(chosenPlayer);
             } else {
@@ -300,7 +308,24 @@ public class Game {
         }
     }
     //Method for chosing the other player (for trading, looking, comparing cards).
-    private Player choosePlayer() {
+    private Player choosePlayer(Player currentPlayer) {
+        System.out.println("Choose player to perform card action on... Enter number!");
+        showPlayers();
+        Scanner input = new Scanner(System.in);
+        int chosenPlayerIndex = Integer.parseInt(input.nextLine());
+        Player chosenPlayer = activePlayers.get(chosenPlayerIndex-1);
+        while (chosenPlayer.equals(currentPlayer)) {
+            System.out.println("You cannot choose yourself for this effect.");
+            System.out.println("Choose another player to perform card action on... Enter number!");
+            showPlayers();
+            chosenPlayerIndex = Integer.parseInt(input.nextLine());
+            chosenPlayer = activePlayers.get(chosenPlayerIndex-1);
+        }
+        return  activePlayers.get(chosenPlayerIndex-1);
+    }
+
+    //Method for chosing the other player including self (for Prince card)
+    private Player choosePlayerIncludingSelf() {
         System.out.println("Choose player to perform card action on... Enter number!");
         showPlayers();
         Scanner input = new Scanner(System.in);
@@ -317,6 +342,7 @@ public class Game {
         if (chosenCardIndex == chosenPlayer.getCurrentCards().get(0).getValue()) {
             System.out.println("Correct! " + chosenPlayer.getName() + " is out!");
             chosenPlayer.setPlaying(false);
+            activePlayers.remove(chosenPlayer);
         } else {
             System.out.println("Incorrect");
         }
@@ -338,7 +364,10 @@ public class Game {
 
 
     private void drawCard(Player player) {
-        player.addCardToCurrent(deck.remove(0));
+        //Check if deck still has cards - otherwise error, if last card played is Prince
+        if (deck.size() > 0) {
+            player.addCardToCurrent(deck.remove(0));
+        }
     }
 
     private void discardCard(Player player, Card card) {
