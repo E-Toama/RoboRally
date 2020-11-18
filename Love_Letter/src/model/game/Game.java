@@ -11,7 +11,6 @@ import java.util.Scanner;
  * All is happening inside ONE console window, input of Cards to play and opponents to choose
  * is realized with number-input from the console (via Scanner).
  *
- * Only one round is played.
  * No error-cases are caught! Especially IndexOutOfBounds for the ArrayLists.
  * Bonus features: Bugs, Flaws, Unexpected Behaviour!
  */
@@ -26,14 +25,7 @@ public class Game {
     private int tokensNeededToWin;
 
     public Game() {
-        //Create Deck
-        deck = new ArrayList<>();
-        discardedCards = new ArrayList<>();
-        initializeDeck();
-
-        //Create PlayerLists
         players = new ArrayList<>();
-        activePlayers = new ArrayList<>();
     }
 
     public void addPlayer(Player player) {
@@ -46,170 +38,173 @@ public class Game {
 
 
     public static void main(String[] args) {
+        //On command "!NEWGAME"
         Game game = new Game();
+        //On command "!JOIN"
         game.addPlayer(new Player("Dr. Mabuse"));
         game.addPlayer(new Player("Schwarzer Peter"));
+        //On command "!START"
         game.start(game.getPlayerCount());
     }
 
+    // Set number of tokens needed to win according to player-count
     public void start(int playerCount) {
         switch (playerCount) {
-            case 2:
-                initializeTwoPlayerGame();
-                break;
-            case 3:
-                //initializeThreePlayerGame();
-                break;
-            case 4:
-                //initializeFourPlayerGame();
-                break;
-            default:
+            case 2 -> {
+                tokensNeededToWin = 7;
+                play();
+            }
+            case 3 -> {
+                tokensNeededToWin = 5;
+                play();
+            }
+            case 4 -> {
+                tokensNeededToWin = 4;
+                play();
+            }
+            default -> {
                 System.out.println("Wrong number of players, currently " + playerCount);
                 System.out.println("Please restart a new game if 2-4 players have joined");
+            }
         }
 
     }
-
-    private void initializeTwoPlayerGame() {
-        tokensNeededToWin = 7;
-        activePlayers.addAll(players);
-        System.out.println("Game has started, shuffling deck...\n");
-        Collections.shuffle(deck);
-        //Remove first card of the deck entirely
-        deck.remove(0);
-
-        //Put aside 3 cards from the deck (for 2-player-game)
-        discardedCards.add(deck.remove(0));
-        discardedCards.add(deck.remove(0));
-        discardedCards.add(deck.remove(0));
-
-        //Play game
-        play();
-
-    }
-
-/*    private void initializeMultiPlayerGame() {
-        System.out.println("Game has started, shuffling deck...\n");
-        //Remove first card of the deck entirely
-        deck.remove(0);
-
-        //Put aside 3 cards from the deck (for 2-player-game)
-        discardedCards.add(deck.remove(0));
-        discardedCards.add(deck.remove(0));
-        discardedCards.add(deck.remove(0));
-
-        //Play game
-        play();
-
-    }*/
 
     private void play() {
         Scanner input = new Scanner(System.in);
-        //Deal first card to all players
-        for (Player p : activePlayers) {
-            drawCard(p);
-        }
-        while (!roundOver()) {
-            for (Player currentPlayer : activePlayers) {
-                System.out.println("===========");
-                showDiscardedCards();
-                System.out.println(currentPlayer.getName() + "'s turn...");
-                currentPlayer.setImmune(false);
-                drawCard(currentPlayer);
-                System.out.println("Your current cards: " + currentPlayer.displayCurrentCards());
-                //check if player has Countess + King/Prince
-                Card playedCard;
-                if (currentPlayer.checkCountessPlusX()) {
-                    System.out.println("You have to play the Countess!");
-                    int cardPosition = currentPlayer.getCurrentCards().get(0) instanceof Countess ? 0 : 1;
-                    playedCard = currentPlayer.getCurrentCards().get(cardPosition);
-                } else {
-                    System.out.println("Which card do you want to play? Enter the number");
-                    int cardPosition = Integer.parseInt(input.nextLine());
-                    playedCard = currentPlayer.getCurrentCards().get(cardPosition-1);
-                }
 
-                System.out.println("Played card: " + playedCard.toString());
-                handleCardAction(currentPlayer, playedCard);
-                discardedCards.add(playedCard);
+        //Full game loop
+        while (!gameOver()) {
+            //Clear all Lists before the next round starts
+            activePlayers = new ArrayList<>();
+            discardedCards = new ArrayList<>();
 
-                //Check again if round is over between moves
-                if (roundOver()) {
-                    String winner = determineWinner();
-                    System.out.println("Game over! The winner is: " + winner);
-                    System.out.println("Current standings: ");
-                    displayScoreBoard();
-                    break;
+            activePlayers.addAll(players);
+
+            //Reset fields and status of all players (except score)
+            for (Player p : activePlayers) {
+                p.reset();
+            }
+
+            System.out.println("Game has started, shuffling deck...\n");
+            initializeDeck();
+            Collections.shuffle(deck);
+
+            //Remove first card of the deck entirely
+            deck.remove(0);
+
+            //Put aside 3 cards from the deck (for 2-player-game)
+            if (activePlayers.size() == 2) {
+                discardedCards.add(deck.remove(0));
+                discardedCards.add(deck.remove(0));
+                discardedCards.add(deck.remove(0));
+            }
+
+            //Deal first card to all players
+            for (Player p : activePlayers) {
+                drawCard(p);
+            }
+
+            while (!roundOver()) {
+                for (Player currentPlayer : activePlayers) {
+                    System.out.println("===========");
+                    showDiscardedCards();
+                    System.out.println(currentPlayer.getName() + "'s turn...");
+                    currentPlayer.setImmune(false);
+                    drawCard(currentPlayer);
+                    System.out.println("Your current cards: " + currentPlayer.displayCurrentCards());
+                    //check if player has Countess + King/Prince
+                    Card playedCard;
+                    if (currentPlayer.checkCountessPlusX()) {
+                        System.out.println("You have to play the Countess!");
+                        int cardPosition = currentPlayer.getCurrentCards().get(0) instanceof Countess ? 0 : 1;
+                        playedCard = currentPlayer.getCurrentCards().get(cardPosition);
+                    } else {
+                        System.out.println("Which card do you want to play? Enter the number");
+                        int cardPosition = Integer.parseInt(input.nextLine());
+                        playedCard = currentPlayer.getCurrentCards().get(cardPosition - 1);
+                    }
+
+                    System.out.println("Played card: " + playedCard.toString());
+                    handleCardAction(currentPlayer, playedCard);
+                    discardedCards.add(playedCard);
+
+                    //Check again if round is over between moves
+                    if (roundOver()) {
+                        String winner = determineWinner();
+                        System.out.println("Game over! The winner is: " + winner);
+                        System.out.println("Current standings: ");
+                        displayScoreBoard();
+                        break;
+                    }
                 }
             }
         }
     }
 
-    private String determineWinner() {
-        //check if only one Player left:
-        if (activePlayers.size() == 1) {
-            Player winner = activePlayers.remove(0);
-            winner.incrementScore();
-            return winner.getName();
-        }
-        //If more than one player left:
-        int valueOfHighestCard = 0;
-        for (Player p : activePlayers) {
-            int currentPlayerCardValue = p.getCurrentCards().get(0).getValue();
-            if (currentPlayerCardValue > valueOfHighestCard) {
-                valueOfHighestCard = currentPlayerCardValue;
-            }
-        }
-        //Add all players with highestCard to potentialWinner
-        ArrayList<Player> potentialWinners = new ArrayList<>();
-        for (Player p : activePlayers) {
-            if (p.getCurrentCards().get(0).getValue() == valueOfHighestCard) {
-                potentialWinners.add(p);
-            }
-        }
-        //Check if there is only one potential winner:
-        if (potentialWinners.size() == 1) {
-            Player winner = potentialWinners.remove(0);
-            winner.incrementScore();
-            return winner.getName();
-        }
-        //If more than one player has highest card, compare their discardedCardValues
-        int highestValue = 0;
-        for (Player p : potentialWinners) {
-            int currentPlayerCardValue = p.countDiscardedScore();
-            if (currentPlayerCardValue > highestValue) {
-                highestValue = currentPlayerCardValue;
-            }
-        }
-
-        //Add all players with highestDiscardedCards to potentialWinner
-        ArrayList<Player> tiedPlayers = new ArrayList<>();
-        for (Player p : potentialWinners) {
-            if (p.countDiscardedScore() == highestValue) {
-                tiedPlayers.add(p);
-            }
-        }
-        //Check if there is only one potential winner:
-        if (tiedPlayers.size() == 1) {
-            Player winner = tiedPlayers.remove(0);
-            winner.incrementScore();
-            return winner.getName();
-        } else {
-            //Else, it's a tie. Get winner list:
-            StringBuilder sb = new StringBuilder();
-            for (Player p : tiedPlayers) {
-                p.incrementScore();
-                sb.append(p.getName()).append("; ");
-            }
-            return sb.toString();
+    //Somebody got a better idea for adding the 16 cards to the empty deck?
+    private void initializeDeck() {
+        deck = new ArrayList<>();
+        deck.add(new Princess());
+        deck.add(new Countess());
+        deck.add(new King());
+        deck.add(new Prince());
+        deck.add(new Prince());
+        deck.add(new Handmaid());
+        deck.add(new Handmaid());
+        deck.add(new Baron());
+        deck.add(new Baron());
+        deck.add(new Priest());
+        deck.add(new Priest());
+        for (int i = 0; i < 5; i++) {
+            deck.add(new Guard());
         }
     }
 
-    public void displayScoreBoard() {
+
+    //Status methods
+
+    private boolean gameOver() {
         for (Player p : players) {
-            System.out.println(p.getName() + ": " +p.getScore() + " Points");
+            if (p.getScore() == tokensNeededToWin) {
+                System.out.println(p.getName() + " has won the game!");
+                displayScoreBoard();
+                System.out.println("To start a new game, enter !NEWGAME");
+                return true;
+            }
         }
+        return false;
     }
+
+
+    private boolean roundOver() {
+
+        //Check deck size
+        boolean noCardsLeft = deck.size() < 1;
+        if (noCardsLeft) {
+            System.out.println("No cards left in the deck, game over");
+        }
+
+        //Count active players
+        boolean allPlayersOut = false;
+        int active = 0;
+        for (Player p : activePlayers) {
+            if (p.isPlaying()) {
+                active++;
+            }
+        }
+        if (active < 2) {
+            allPlayersOut = true;
+        }
+
+        return noCardsLeft || allPlayersOut;
+    }
+
+
+
+
+    //Player action methods
+
 
     private void handleCardAction(Player player, Card card) {
 
@@ -307,21 +302,22 @@ public class Game {
             }
         }
     }
+
     //Method for chosing the other player (for trading, looking, comparing cards).
     private Player choosePlayer(Player currentPlayer) {
         System.out.println("Choose player to perform card action on... Enter number!");
         showPlayers();
         Scanner input = new Scanner(System.in);
         int chosenPlayerIndex = Integer.parseInt(input.nextLine());
-        Player chosenPlayer = activePlayers.get(chosenPlayerIndex-1);
+        Player chosenPlayer = activePlayers.get(chosenPlayerIndex - 1);
         while (chosenPlayer.equals(currentPlayer)) {
             System.out.println("You cannot choose yourself for this effect.");
             System.out.println("Choose another player to perform card action on... Enter number!");
             showPlayers();
             chosenPlayerIndex = Integer.parseInt(input.nextLine());
-            chosenPlayer = activePlayers.get(chosenPlayerIndex-1);
+            chosenPlayer = activePlayers.get(chosenPlayerIndex - 1);
         }
-        return  activePlayers.get(chosenPlayerIndex-1);
+        return activePlayers.get(chosenPlayerIndex - 1);
     }
 
     //Method for chosing the other player including self (for Prince card)
@@ -330,7 +326,7 @@ public class Game {
         showPlayers();
         Scanner input = new Scanner(System.in);
         int chosenPlayerIndex = Integer.parseInt(input.nextLine());
-        return  activePlayers.get(chosenPlayerIndex-1);
+        return activePlayers.get(chosenPlayerIndex - 1);
     }
 
     //Method for the Guard-action
@@ -349,19 +345,6 @@ public class Game {
 
     }
 
-    //Display the players for selection
-    private void showPlayers() {
-        int playerIndex = 1;
-        for (Player p : activePlayers) {
-            System.out.print(playerIndex + ": " + p.getName());
-            if (p.isImmune()) {
-                System.out.print(" (immune)");
-            }
-            System.out.println();
-            playerIndex++;
-        }
-    }
-
 
     private void drawCard(Player player) {
         //Check if deck still has cards - otherwise error, if last card played is Prince
@@ -375,7 +358,9 @@ public class Game {
         player.addDiscardedCard(card);
     }
 
-    //Used later for displaying all cards that have already been played
+
+    //Display game status
+
     public void showDiscardedCards() {
         System.out.print("DISCARDED CARDS: ");
         for (Card c : discardedCards) {
@@ -384,59 +369,85 @@ public class Game {
         System.out.println();
     }
 
-    /**
-     * Method checks two things:
-     * 1. Is at least one card left in the deck?
-     * 2. Is more than one player still in the game?
-     * @return No Cards left OR No players left --> roundOver = true
-     */
-    private boolean roundOver() {
-
-        //Check deck size
-        boolean noCardsLeft = deck.size() < 1;
-        if (noCardsLeft) {
-            System.out.println("No cards left in the deck, game over");
-        }
-
-        //Count active players
-        boolean allPlayersOut = false;
-        int active = 0;
+    //Display the players for selection
+    private void showPlayers() {
+        int playerIndex = 1;
         for (Player p : activePlayers) {
-            if (p.isPlaying()) {
-                active++;
+            System.out.print(playerIndex + ": " + p.getName());
+            if (p.isImmune()) {
+                System.out.print(" (immune)");
+            }
+            System.out.println();
+            playerIndex++;
+        }
+    }
+
+    public void displayScoreBoard() {
+        for (Player p : players) {
+            System.out.println(p.getName() + ": " + p.getScore() + " Points");
+        }
+    }
+
+
+    private String determineWinner() {
+        //check if only one Player left:
+        if (activePlayers.size() == 1) {
+            Player winner = activePlayers.get(0);
+            winner.incrementScore();
+            return winner.getName();
+        }
+        //If more than one player left:
+        int valueOfHighestCard = 0;
+        for (Player p : activePlayers) {
+            int currentPlayerCardValue = p.getCurrentCards().get(0).getValue();
+            if (currentPlayerCardValue > valueOfHighestCard) {
+                valueOfHighestCard = currentPlayerCardValue;
             }
         }
-        if (active < 2) {
-            allPlayersOut = true;
+        //Add all players with highestCard to potentialWinner
+        ArrayList<Player> potentialWinners = new ArrayList<>();
+        for (Player p : activePlayers) {
+            if (p.getCurrentCards().get(0).getValue() == valueOfHighestCard) {
+                potentialWinners.add(p);
+            }
+        }
+        //Check if there is only one potential winner:
+        if (potentialWinners.size() == 1) {
+            Player winner = potentialWinners.remove(0);
+            winner.incrementScore();
+            return winner.getName();
+        }
+        //If more than one player has highest card, compare their discardedCardValues
+        int highestValue = 0;
+        for (Player p : potentialWinners) {
+            int currentPlayerCardValue = p.countDiscardedScore();
+            if (currentPlayerCardValue > highestValue) {
+                highestValue = currentPlayerCardValue;
+            }
         }
 
-        return noCardsLeft || allPlayersOut;
+        //Add all players with highestDiscardedCards to potentialWinner
+        ArrayList<Player> tiedPlayers = new ArrayList<>();
+        for (Player p : potentialWinners) {
+            if (p.countDiscardedScore() == highestValue) {
+                tiedPlayers.add(p);
+            }
+        }
+        //Check if there is only one potential winner:
+        if (tiedPlayers.size() == 1) {
+            Player winner = tiedPlayers.remove(0);
+            winner.incrementScore();
+            return winner.getName();
+        } else {
+            //Else, it's a tie. Get winner list:
+            StringBuilder sb = new StringBuilder();
+            for (Player p : tiedPlayers) {
+                p.incrementScore();
+                sb.append(p.getName()).append("; ");
+            }
+            return sb.toString();
+        }
     }
 
-   /* private boolean gameOver() {
-        int highestScore = 0;
-        for (Player p : players) {
-            if (p.getScore() == )
-        }
-    }*/
 
-    //Somebody got a better idea for adding the 16 cards to the empty deck?
-    private void initializeDeck() {
-        deck = new ArrayList<>();
-        deck.add(new Princess());
-        deck.add(new Countess());
-        deck.add(new King());
-        deck.add(new Prince());
-        deck.add(new Prince());
-        deck.add(new Handmaid());
-        deck.add(new Handmaid());
-        deck.add(new Baron());
-        deck.add(new Baron());
-        deck.add(new Priest());
-        deck.add(new Priest());
-        for (int i = 0; i < 5; i++) {
-            deck.add(new Guard());
-        }
-    }
-    
 }

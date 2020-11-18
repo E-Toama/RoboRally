@@ -26,6 +26,13 @@ public class Player {
         this.name = name;
     }
 
+    public void reset() {
+        playing = true;
+        immune = false;
+        currentCards = new ArrayList<>();
+        discardedCards = new ArrayList<>();
+    }
+
 
     //Getters and Setters for Player Info
     public String getName() {
