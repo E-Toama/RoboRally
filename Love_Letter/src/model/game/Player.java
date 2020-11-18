@@ -8,12 +8,14 @@ public class Player {
     private boolean playing;
     private boolean immune;
     private ArrayList<Card> currentCards;
-    private int score; //not used yet
+    private ArrayList<Card> discardedCards;
+    private int score;
     private String name;
 
     //Constructor, takes only a player name
     public Player(String name) {
         currentCards = new ArrayList<>();
+        discardedCards = new ArrayList<>();
         score = 0;
         playing = true;
         immune = false;
@@ -42,6 +44,18 @@ public class Player {
         playing = b;
     }
 
+    public int getScore() {
+        return this.score;
+    }
+
+    public void incrementScore() {
+        this.score++;
+    }
+
+    public void addDiscardedCard(Card card) {
+        discardedCards.add(card);
+    }
+
 
     //Getters and Setters for Cards held by the player
     public ArrayList<Card> getCurrentCards() {
@@ -60,6 +74,14 @@ public class Player {
 
     public void addCardToCurrent(Card card) {
         currentCards.add(card);
+    }
+
+    public int countDiscardedScore() {
+        int result = 0;
+        for (Card c : discardedCards) {
+            result += c.getValue();
+        }
+        return result;
     }
 
 }
