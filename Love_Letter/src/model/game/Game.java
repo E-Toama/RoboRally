@@ -2,23 +2,24 @@ package model.game;
 
 import model.game.cards.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Scanner;
+import java.util.*;
 
 /**
- * Very basic implementation of the game logic for exactly two players.
- * All is happening inside ONE console window, input of Cards to play and opponents to choose
- * is realized with number-input from the console (via Scanner).
- *
- * No error-cases are caught! Especially IndexOutOfBounds for the ArrayLists.
- * Bonus features: Bugs, Flaws, Unexpected Behaviour!
+ * Basic implementation of the game logic. All is happening inside ONE console window,
+ * input of Cards to play and opponents to choose is realized with number-input from the console (via Scanner).
  */
+/*
+ * TODO:
+ *  Catch errors, especially IndexOutOfBounds for the ArrayLists
+ *  Create a legalMove()-method that checks which cards the player is allowed to play
+ *  Remove possibility to guess "Guard" as other player's card
+ * */
 public class Game {
     //List of players who joined the game at the start
     private ArrayList<Player> players;
     //List of currently active players in the round
     private ArrayList<Player> activePlayers;
+    private ArrayList<Player> selectablePlayers;
     private ArrayList<Card> deck;
     private ArrayList<Card> discardedCards;
 
@@ -43,6 +44,7 @@ public class Game {
         //On command "!JOIN"
         game.addPlayer(new Player("Dr. Mabuse"));
         game.addPlayer(new Player("Schwarzer Peter"));
+        game.addPlayer(new Player("Player 3"));
         //On command "!START"
         game.start(game.getPlayerCount());
     }
@@ -77,6 +79,7 @@ public class Game {
         while (!gameOver()) {
             //Clear all Lists before the next round starts
             activePlayers = new ArrayList<>();
+            selectablePlayers = new ArrayList<>();
             discardedCards = new ArrayList<>();
 
             activePlayers.addAll(players);
@@ -86,7 +89,7 @@ public class Game {
                 p.reset();
             }
 
-            System.out.println("Game has started, shuffling deck...\n");
+            System.out.println("\nGame has started, shuffling deck...\n");
             initializeDeck();
             Collections.shuffle(deck);
 
@@ -106,7 +109,13 @@ public class Game {
             }
 
             while (!roundOver()) {
-                for (Player currentPlayer : activePlayers) {
+                ListIterator<Player> turnIterator;
+                for (turnIterator = activePlayers.listIterator(); turnIterator.hasNext(); ) {
+                    Player currentPlayer = turnIterator.next();
+                    if (!currentPlayer.isPlaying()) {
+                        turnIterator.remove();
+                        continue;
+                    }
                     System.out.println("===========");
                     showDiscardedCards();
                     System.out.println(currentPlayer.getName() + "'s turn...");
@@ -129,8 +138,10 @@ public class Game {
                     handleCardAction(currentPlayer, playedCard);
                     discardedCards.add(playedCard);
 
+
                     //Check again if round is over between moves
                     if (roundOver()) {
+                        activePlayers.removeIf(p -> !p.isPlaying());
                         String winner = determineWinner();
                         System.out.println("Game over! The winner is: " + winner);
                         System.out.println("Current standings: ");
@@ -201,8 +212,6 @@ public class Game {
     }
 
 
-
-
     //Player action methods
 
 
@@ -212,7 +221,6 @@ public class Game {
             System.out.println("You discarded the princess, you lost!");
             discardCard(player, card);
             player.setPlaying(false);
-            activePlayers.remove(player);
 
         } else if (card instanceof Countess) {
             System.out.println("Countess was discarded without any effects.");
@@ -242,7 +250,7 @@ public class Game {
                 //If Player forced to discard Princess, player lost!
                 if (chosenPlayerCard instanceof Princess) {
                     chosenPlayer.setPlaying(false);
-                    activePlayers.remove(chosenPlayer);
+                    System.out.println(chosenPlayer.getName() + " was forced to discard the Princess and is out!");
                 } else {
                     drawCard(chosenPlayer);
                     System.out.println(chosenPlayer.getName() + " drew a new Card");
@@ -269,13 +277,11 @@ public class Game {
                     System.out.println("Opponent's card value: " + otherPlayersCardValue);
                     System.out.println("Your card was higher, other player is out.");
                     chosenPlayer.setPlaying(false);
-                    activePlayers.remove(chosenPlayer);
                 } else if (thisPlayersCardValue < otherPlayersCardValue) {
                     System.out.println("Your card value: " + thisPlayersCardValue);
                     System.out.println("Opponent's card value: " + otherPlayersCardValue);
                     System.out.println("Your card was lower, you are out.");
                     player.setPlaying(false);
-                    activePlayers.remove(player);
                 }
             } else {
                 System.out.println(chosenPlayer.getName() + " is protected by the Handmaid");
@@ -309,24 +315,24 @@ public class Game {
         showPlayers();
         Scanner input = new Scanner(System.in);
         int chosenPlayerIndex = Integer.parseInt(input.nextLine());
-        Player chosenPlayer = activePlayers.get(chosenPlayerIndex - 1);
+        Player chosenPlayer = findSelectablePlayers().get(chosenPlayerIndex - 1);
         while (chosenPlayer.equals(currentPlayer)) {
             System.out.println("You cannot choose yourself for this effect.");
             System.out.println("Choose another player to perform card action on... Enter number!");
             showPlayers();
             chosenPlayerIndex = Integer.parseInt(input.nextLine());
-            chosenPlayer = activePlayers.get(chosenPlayerIndex - 1);
+            chosenPlayer = findSelectablePlayers().get(chosenPlayerIndex - 1);
         }
-        return activePlayers.get(chosenPlayerIndex - 1);
+        return findSelectablePlayers().get(chosenPlayerIndex - 1);
     }
 
-    //Method for chosing the other player including self (for Prince card)
+    //Method for choosing the other player including self (for Prince card)
     private Player choosePlayerIncludingSelf() {
         System.out.println("Choose player to perform card action on... Enter number!");
         showPlayers();
         Scanner input = new Scanner(System.in);
         int chosenPlayerIndex = Integer.parseInt(input.nextLine());
-        return activePlayers.get(chosenPlayerIndex - 1);
+        return findSelectablePlayers().get(chosenPlayerIndex - 1);
     }
 
     //Method for the Guard-action
@@ -338,13 +344,11 @@ public class Game {
         if (chosenCardIndex == chosenPlayer.getCurrentCards().get(0).getValue()) {
             System.out.println("Correct! " + chosenPlayer.getName() + " is out!");
             chosenPlayer.setPlaying(false);
-            activePlayers.remove(chosenPlayer);
         } else {
             System.out.println("Incorrect");
         }
 
     }
-
 
     private void drawCard(Player player) {
         //Check if deck still has cards - otherwise error, if last card played is Prince
@@ -372,7 +376,7 @@ public class Game {
     //Display the players for selection
     private void showPlayers() {
         int playerIndex = 1;
-        for (Player p : activePlayers) {
+        for (Player p : findSelectablePlayers()) {
             System.out.print(playerIndex + ": " + p.getName());
             if (p.isImmune()) {
                 System.out.print(" (immune)");
@@ -388,6 +392,15 @@ public class Game {
         }
     }
 
+    public ArrayList<Player> findSelectablePlayers() {
+        ArrayList<Player> selectable = new ArrayList<>();
+        for (Player p : players) {
+            if (p.isPlaying()) {
+                selectable.add(p);
+            }
+        }
+        return selectable;
+    }
 
     private String determineWinner() {
         //check if only one Player left:

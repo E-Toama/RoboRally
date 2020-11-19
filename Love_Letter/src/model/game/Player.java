@@ -8,6 +8,10 @@ import model.game.cards.Prince;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * The Player class holds the status and progress of each player in the game.
+ * @author Josef
+ */
 public class Player {
     private boolean playing;
     private boolean immune;
@@ -25,6 +29,7 @@ public class Player {
         immune = false;
         this.name = name;
     }
+
 
     public void reset() {
         playing = true;
@@ -87,6 +92,10 @@ public class Player {
         currentCards.add(card);
     }
 
+    /**
+     * "In case of a tie, players add the numbers on the cards in their discard pile. The highest total wins."
+     * @return sum of values of the player's discarded cards
+     */
     public int countDiscardedScore() {
         int result = 0;
         for (Card c : discardedCards) {
@@ -95,6 +104,10 @@ public class Player {
         return result;
     }
 
+    /**
+     * Checks if player holds Countess AND King / Prince at the same time
+     * @return true if player holds both cards and is forced to play the Countess
+     */
     public boolean checkCountessPlusX() {
         boolean countessPlusKingOrQueen = false;
         for (Card c : currentCards) {
@@ -102,6 +115,7 @@ public class Player {
                 for (Card otherCard : currentCards) {
                     if (otherCard instanceof King || otherCard instanceof Prince) {
                         countessPlusKingOrQueen = true;
+                        break;
                     }
                 }
             }
@@ -109,13 +123,15 @@ public class Player {
         return countessPlusKingOrQueen;
     }
 
-    public int getCountessIndex() {
-        return currentCards.get(0) instanceof Countess ? 0 : 1;
-    }
-
-    public boolean equals(Player p) {
-        if (this == p) return true;
-        return getName().equals(p.getName());
+    /**
+     * Simple equality-check based on name-property (name is guaranteed to be unique)
+     * Needed to check if player tries to choose herself to apply a card effect
+     * @param player to compare to
+     * @return true if player is equal to himself
+     */
+    public boolean equals(Player player) {
+        if (this == player) return true;
+        return getName().equals(player.getName());
     }
 
 }
