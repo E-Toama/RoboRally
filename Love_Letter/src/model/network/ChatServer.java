@@ -1,19 +1,19 @@
 package model.network;
 
+import model.game.Game;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class ChatServer {
 
-  private static Set<String> userNames = new HashSet<>();
-  private static Set<PrintWriter> writers = new HashSet<>();
+  private final HashMap<String, PrintWriter> userMap = new HashMap<String, PrintWriter>();
+  private Game game;
 
-  // ChatServer wird erstellt und ausgeführt
   public static void main(String[] args) {
 
     ChatServer server = new ChatServer();
@@ -21,30 +21,76 @@ public class ChatServer {
 
   }
 
-  // Gibt userNames aus
-  public synchronized static Set<String> getUserNames() {
-    return userNames;
-  }
+  public synchronized HashMap<String, PrintWriter> getUserMap() {
 
-  // F�gt User zur HashSet userNames hinzu
-  public static void addUser(String newUser) {
-
-    userNames.add(newUser);
+    return this.userMap;
 
   }
-  // Gibt Writer aus
-  public static Set<PrintWriter> getWriters() {
 
-    return writers;
+  public synchronized void addUser(String newUserName, PrintWriter newWriter) {
 
-  }
-  // F�gt Writer zum HashSet writer hinzu
-  public static void addWriter(PrintWriter newWriter) {
-
-    writers.add(newWriter);
+    userMap.put(newUserName, newWriter);
 
   }
-  // Server mit Portnummer 9090 wird ausgef�hrt
+
+  public synchronized void sendMessageToAllUsers(String message) {
+
+    for (PrintWriter writer : userMap.values()) {
+
+      writer.println(message);
+
+
+    }
+
+  }
+
+  public synchronized void sendMessageToSingleUser(String userName, String message) {
+
+    PrintWriter writer = userMap.get(userName);
+
+    writer.println(message);
+
+  }
+
+  public synchronized void creatGame(String userName) {
+
+    if (this.game == null) {
+
+      this.game = new Game();
+
+      sendMessageToSingleUser(userName, "You have successfully created a game, wait for other players to join!");
+
+      sendMessageToAllUsers(userName + " created a game. Join him!");
+
+    } else {
+
+      sendMessageToSingleUser(userName, "There is already a game!");
+
+    }
+
+  }
+
+  public synchronized void joinGame(String userName) {
+
+    sendMessageToSingleUser(userName, "You have successfully joined the game. Wait until it start's!");
+
+  }
+
+  public synchronized void startGame(String userName) {
+
+    if(userMap.size() >= 2) {
+
+      sendMessageToAllUsers("The Game has started!");
+
+    } else {
+
+      sendMessageToSingleUser(userName, "Wait for other Players to join.");
+
+    }
+
+
+  }
+
   public void execute() {
 
     System.out.println("Server is running on port: 9090");
@@ -55,9 +101,7 @@ public class ChatServer {
 
       while (true) {
 
-        pool.execute(new UserThread(listener.accept(), this)); // UserThread wird
-                                                         // gestartet wenn ein
-                                                         // Cient sich verbindet
+        pool.execute(new UserThread(listener.accept(), this));
 
       }
 

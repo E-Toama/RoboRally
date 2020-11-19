@@ -8,19 +8,42 @@ import java.net.Socket;
 
 public class UserThread implements Runnable {
 
-    private Socket socket;
+    private final Socket socket;
     private String userName;
-    private BufferedReader incoming;
-    private PrintWriter outgoing;
-    private ChatServer server;
+    private final BufferedReader incoming;
+    private final PrintWriter outgoing;
+    private final ChatServer server;
 
     public UserThread(Socket socket, ChatServer server) throws IOException {
+
         this.socket = socket;
         this.server = server;
-        // BufferedReader und PrintWriter zum Datenaustausch zwsichen Server und
-        // Client
+
         incoming = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         outgoing = new PrintWriter(socket.getOutputStream(), true);
+
+        try {
+
+            String proposedName = incoming.readLine();
+            if (server.getUserMap().containsKey(proposedName) || proposedName == null) {
+
+                outgoing.println("taken");
+                throw new IOException();
+
+            } else {
+
+                outgoing.println("OK");
+                userName = proposedName;
+                server.sendMessageToAllUsers(userName + " has joined the room.");
+                server.addUser(userName, outgoing);
+
+            }
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+        }
 
     }
 
@@ -28,82 +51,100 @@ public class UserThread implements Runnable {
 
         try {
 
-            //Namensduplikatabfrage (serverseitig)
-            boolean isAccepted = false; // wird auf true gesetzt, wenn valider Input vom Client kommt
-            String proposedName = incoming.readLine();
-            if (server.getUserNames().contains(proposedName)) {
-                outgoing.println("taken");
-                return; //run-Methode wird beendet, Client wird nicht erstellt, alles von vorne!
-            } else {
-                outgoing.println("OK"); // wird nur zurückgegeben, weil Client einen Input vom Server erwartet
-            }
-
-            // Hinzukommender User wird angezeigt
-            if (proposedName != null) {
-                isAccepted = true;
-                userName = proposedName;
-                server.addUser(userName);
-                for (PrintWriter writer : ChatServer.getWriters()) {
-                    writer.println(userName + " has joined the room.");
-                }
-                server.addWriter(outgoing);
-            }
-
-            // Input wird gelesen, While-Schleife wird nur mit Eingabe von "bye" verlassen
-            while (isAccepted) {
+            while (true) {
 
                 String input = incoming.readLine();
 
                 int i = input.indexOf(' ');
-                String key = input.substring(0, i);
-                String message = input.substring(i);
+                String key = "";
+                String messageWithoutSecondAttribute = "";
+                if (i > -1) {
+
+                    key = input.substring(0, i);
+                    messageWithoutSecondAttribute = input.substring(i + 1);
+
+                } else if (input.length() > 0) {
+
+                    key = input;
+
+                }
 
                 switch (key) {
 
                     case "@USERNAME":
-                        //write direct message to user
 
-                    case "@ALL":
-                        for (PrintWriter writer : server.getWriters()) {
+                        int j = messageWithoutSecondAttribute.indexOf(' ');
+                        if (j > 0) {
 
-                            writer.println("[" + userName + "] " + message);
+                            String secondAttribute = messageWithoutSecondAttribute.substring(0, j);
+                            String messageWithSecondAttribute = messageWithoutSecondAttribute.substring(j + 1);
+
+                            if (server.getUserMap().containsKey(secondAttribute)) {
+
+                                server.sendMessageToSingleUser(secondAttribute,"[" + userName + "] private: " + messageWithSecondAttribute);
+                                server.sendMessageToSingleUser(userName,"[" + userName + "] private to " + secondAttribute + " : " + messageWithSecondAttribute );
+
+                            } else {
+
+                                server.sendMessageToSingleUser(userName, "There is no user named: " + secondAttribute + ".");
+
+                            }
+
+                        } else {
+
+                            server.sendMessageToSingleUser(userName, "You specified no User.");
 
                         }
+                        break;
 
-                    case "?HELP":
-                        //return game rules
+                    case "@ALL":
+
+                        if (!messageWithoutSecondAttribute.equals(" ")) {
+
+                            server.sendMessageToAllUsers("[" + userName + "] " + messageWithoutSecondAttribute);
+
+                        } else {
+
+                            server.sendMessageToSingleUser(userName, "Your Message was empty!");
+
+                        }
+                        break;
 
                     case "?INFO":
                         //return information about your current card
+                        break;
 
                     case "?STATS":
                         //return current game state
+                        break;
 
                     case "?DISCARDED":
                         //return already played cards
+                        break;
 
                     case "!PLAYCARD":
                         //play card + handle second argument
+                        break;
+
+                    case "!CREATEGAME":
+                        server.creatGame(userName);
+                        break;
+
+                    case "!JOINGAME":
+                        server.joinGame(userName);
+                        break;
+
+                    case "!STARTGAME":
+                        server.startGame(userName);
 
                     case "!BYE":
                         break;
 
                     default:
-                        System.out.println("false command");
+                        server.sendMessageToSingleUser(userName, "Please use a valid Command!");
+                        break;
 
                 }
-
-//                if (input.toLowerCase().startsWith("bye")) {
-//
-//                    break;
-//
-//                }
-//
-//                for (PrintWriter writer : server.getWriters()) {
-//
-//                    writer.println("[" + userName + "] " + input);
-//
-//                }
 
             }
 
@@ -116,22 +157,9 @@ public class UserThread implements Runnable {
         // userName und writer werden aus dem Server entfernt
         finally {
 
-            if (outgoing != null) {
+            server.getUserMap().remove(userName);
+            server.sendMessageToAllUsers(userName + " has left.");
 
-                server.getWriters().remove(outgoing);
-
-            }
-            if (userName != null) {
-
-                server.getUserNames().remove(userName);
-
-                for (PrintWriter writer : server.getWriters()) {
-
-                    writer.println(userName + " has left.");
-
-                }
-
-            }
 
             try {
 

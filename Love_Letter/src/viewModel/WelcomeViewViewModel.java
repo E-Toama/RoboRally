@@ -68,7 +68,7 @@ public class WelcomeViewViewModel {
 
             //Close Window on "bye"
             stage.setOnCloseRequest(e -> {
-                client.writeToServer("bye");
+                client.writeToServer("!BYE");
                 stage.close();
             });
         } catch (IOException e) {

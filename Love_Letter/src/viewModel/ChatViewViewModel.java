@@ -68,6 +68,7 @@ public class ChatViewViewModel {
         } else {
 
             this.setMessage("");
+
         }
 
     }
