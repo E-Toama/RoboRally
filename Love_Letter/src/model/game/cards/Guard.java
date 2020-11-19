@@ -1,11 +1,15 @@
 package model.game.cards;
 
-public class Guard extends Card {
-    int value = 1;
-    String description = "Guess card";
+public class Guard extends Card{
 
-    @Override
-    public int getValue() {
-        return value;
-    }
+  @Override
+  public int getValue() {
+    return 1;
+  }
+
+  @Override
+  public String getDescription() {
+    return "Guess a player's hand, if correct the player is out.";
+  }
+
 }

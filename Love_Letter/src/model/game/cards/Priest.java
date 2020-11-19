@@ -1,10 +1,15 @@
 package model.game.cards;
 
-public class Priest extends Card {
-    int value = 2;
-    String description = "Look at another player's card";
-    @Override
-    public int getValue() {
-        return value;
-    }
+public class Priest extends Card{
+
+  @Override
+  public int getValue() {
+    return 2;
+  }
+
+  @Override
+  public String getDescription() {
+    return "look at a player's hand.";
+  }
+
 }

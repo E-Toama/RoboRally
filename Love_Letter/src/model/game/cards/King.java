@@ -1,11 +1,15 @@
 package model.game.cards;
 
-public class King extends Card {
-    int value = 6;
-    String description = "Trade Cards";
+public class King extends Card{
 
-    @Override
-    public int getValue() {
-        return value;
-    }
+  @Override
+  public int getValue() {
+    return 6;
+  }
+
+  @Override
+  public String getDescription() {
+    return "Trade hands with another player.";
+  }
+
 }
