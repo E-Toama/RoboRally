@@ -22,8 +22,10 @@ public class Game {
     private ArrayList<Player> selectablePlayers;
     private ArrayList<Card> deck;
     private ArrayList<Card> discardedCards;
+    private ArrayList<Card> currentCards;
 
     private int tokensNeededToWin;
+    private boolean legalMove;
 
     public Game() {
         players = new ArrayList<>();
@@ -71,6 +73,8 @@ public class Game {
         }
 
     }
+
+
 
     private void play() {
         Scanner input = new Scanner(System.in);
@@ -212,6 +216,7 @@ public class Game {
     }
 
 
+
     //Player action methods
 
 
@@ -338,17 +343,29 @@ public class Game {
     //Method for the Guard-action
     private void guessCard(Player chosenPlayer) {
         System.out.println("Guess the card of your opponent");
-        System.out.println("Enter 1 for Guard, 2 for Priest, 3 for Baron, ...");
+        System.out.println("Enter 2 for Priest, 3 for Baron, 4 for Handmaid,...");
         Scanner input = new Scanner(System.in);
         int chosenCardIndex = Integer.parseInt(input.nextLine());
-        if (chosenCardIndex == chosenPlayer.getCurrentCards().get(0).getValue()) {
-            System.out.println("Correct! " + chosenPlayer.getName() + " is out!");
-            chosenPlayer.setPlaying(false);
-        } else {
-            System.out.println("Incorrect");
-        }
 
+            while (chosenCardIndex == 1) {
+                System.out.println("Guard cannot be named! Choose another Card.");
+                System.out.println("Enter 2 for Priest, 3 for Baron, 4 for Handmaid,...");
+                chosenCardIndex = Integer.parseInt(input.nextLine());
+                input = new Scanner(System.in);
+            }
+
+            if (chosenCardIndex == chosenPlayer.getCurrentCards().get(0).getValue()) {
+                System.out.println("Correct! " + chosenPlayer.getName() + " is out!");
+                chosenPlayer.setPlaying(false);
+            }
+            else {
+                System.out.println("Incorrect");
+
+            }
     }
+
+
+
 
     private void drawCard(Player player) {
         //Check if deck still has cards - otherwise error, if last card played is Prince
