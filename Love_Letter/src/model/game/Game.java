@@ -7,22 +7,24 @@ import java.util.*;
 /**
  * Basic implementation of the game logic. All is happening inside ONE console window,
  * input of Cards to play and opponents to choose is realized with number-input from the console (via Scanner).
+ * @author Josef, Ehbal
  */
 /*
  * TODO:
  *  Catch errors, especially IndexOutOfBounds for the ArrayLists
  *  Create a legalMove()-method that checks which cards the player is allowed to play
- *  Remove possibility to guess "Guard" as other player's card
+ *  Generally improve code quality by removing redundancies and transferring some of the methods to Card/Player-Class
  * */
 public class Game {
     //List of players who joined the game at the start
     private ArrayList<Player> players;
     //List of currently active players in the round
     private ArrayList<Player> activePlayers;
-    private ArrayList<Player> selectablePlayers;
     private ArrayList<Card> deck;
     private ArrayList<Card> discardedCards;
     private ArrayList<Card> currentCards;
+    private Card mysteryCard;
+    private Scanner input = new Scanner(System.in);
 
     private int tokensNeededToWin;
     private boolean legalMove;
@@ -46,7 +48,8 @@ public class Game {
         //On command "!JOIN"
         game.addPlayer(new Player("Dr. Mabuse"));
         game.addPlayer(new Player("Schwarzer Peter"));
-        game.addPlayer(new Player("Player 3"));
+        game.addPlayer(new Player("Schellnsau"));
+        game.addPlayer(new Player("Belle"));
         //On command "!START"
         game.start(game.getPlayerCount());
     }
@@ -74,16 +77,12 @@ public class Game {
 
     }
 
-
-
     private void play() {
-        Scanner input = new Scanner(System.in);
 
         //Full game loop
         while (!gameOver()) {
             //Clear all Lists before the next round starts
             activePlayers = new ArrayList<>();
-            selectablePlayers = new ArrayList<>();
             discardedCards = new ArrayList<>();
 
             activePlayers.addAll(players);
@@ -98,7 +97,7 @@ public class Game {
             Collections.shuffle(deck);
 
             //Remove first card of the deck entirely
-            deck.remove(0);
+            mysteryCard = deck.remove(0);
 
             //Put aside 3 cards from the deck (for 2-player-game)
             if (activePlayers.size() == 2) {
@@ -116,7 +115,12 @@ public class Game {
                 ListIterator<Player> turnIterator;
                 for (turnIterator = activePlayers.listIterator(); turnIterator.hasNext(); ) {
                     Player currentPlayer = turnIterator.next();
+                    //Remove the player from the list if she is already out
                     if (!currentPlayer.isPlaying()) {
+                        //If the kicked-out player still held a card, put it on the discarded pile
+                        if (!currentPlayer.getCurrentCards().isEmpty()) {
+                            discardCard(currentPlayer, currentPlayer.getCurrentCards().get(0));
+                        }
                         turnIterator.remove();
                         continue;
                     }
@@ -147,7 +151,7 @@ public class Game {
                     if (roundOver()) {
                         activePlayers.removeIf(p -> !p.isPlaying());
                         String winner = determineWinner();
-                        System.out.println("Game over! The winner is: " + winner);
+                        System.out.println("Round over! The winner is: " + winner);
                         System.out.println("Current standings: ");
                         displayScoreBoard();
                         break;
@@ -216,7 +220,6 @@ public class Game {
     }
 
 
-
     //Player action methods
 
 
@@ -257,8 +260,13 @@ public class Game {
                     chosenPlayer.setPlaying(false);
                     System.out.println(chosenPlayer.getName() + " was forced to discard the Princess and is out!");
                 } else {
-                    drawCard(chosenPlayer);
-                    System.out.println(chosenPlayer.getName() + " drew a new Card");
+                    if (deck.size() > 0) {
+                        drawCard(chosenPlayer);
+                        System.out.println(chosenPlayer.getName() + " drew a new Card");
+                    } else {
+                        //If Prince was played in the very last turn, the player draws the mysteryCard from the beginning
+                        chosenPlayer.addCardToCurrent(mysteryCard);
+                    }
                 }
             } else {
                 System.out.println(chosenPlayer.getName() + " is protected by the Handmaid");
@@ -287,6 +295,8 @@ public class Game {
                     System.out.println("Opponent's card value: " + otherPlayersCardValue);
                     System.out.println("Your card was lower, you are out.");
                     player.setPlaying(false);
+                } else  {
+                    System.out.println("It's a tie! You both have the same card, nothing happens");
                 }
             } else {
                 System.out.println(chosenPlayer.getName() + " is protected by the Handmaid");
@@ -318,7 +328,6 @@ public class Game {
     private Player choosePlayer(Player currentPlayer) {
         System.out.println("Choose player to perform card action on... Enter number!");
         showPlayers();
-        Scanner input = new Scanner(System.in);
         int chosenPlayerIndex = Integer.parseInt(input.nextLine());
         Player chosenPlayer = findSelectablePlayers().get(chosenPlayerIndex - 1);
         while (chosenPlayer.equals(currentPlayer)) {
@@ -335,7 +344,6 @@ public class Game {
     private Player choosePlayerIncludingSelf() {
         System.out.println("Choose player to perform card action on... Enter number!");
         showPlayers();
-        Scanner input = new Scanner(System.in);
         int chosenPlayerIndex = Integer.parseInt(input.nextLine());
         return findSelectablePlayers().get(chosenPlayerIndex - 1);
     }
@@ -344,28 +352,20 @@ public class Game {
     private void guessCard(Player chosenPlayer) {
         System.out.println("Guess the card of your opponent");
         System.out.println("Enter 2 for Priest, 3 for Baron, 4 for Handmaid,...");
-        Scanner input = new Scanner(System.in);
         int chosenCardIndex = Integer.parseInt(input.nextLine());
+        while (chosenCardIndex < 2 || chosenCardIndex > 8) {
+            System.out.println("Please enter a valid card value (2-8)");
+            System.out.println("Enter 2 for Priest, 3 for Baron, 4 for Handmaid,...");
+            chosenCardIndex = Integer.parseInt(input.nextLine());
+        }
+        if (chosenCardIndex == chosenPlayer.getCurrentCards().get(0).getValue()) {
+            System.out.println("Correct! " + chosenPlayer.getName() + " is out!");
+            chosenPlayer.setPlaying(false);
+        } else {
+            System.out.println("Incorrect");
+        }
 
-            while (chosenCardIndex == 1) {
-                System.out.println("Guard cannot be named! Choose another Card.");
-                System.out.println("Enter 2 for Priest, 3 for Baron, 4 for Handmaid,...");
-                chosenCardIndex = Integer.parseInt(input.nextLine());
-                input = new Scanner(System.in);
-            }
-
-            if (chosenCardIndex == chosenPlayer.getCurrentCards().get(0).getValue()) {
-                System.out.println("Correct! " + chosenPlayer.getName() + " is out!");
-                chosenPlayer.setPlaying(false);
-            }
-            else {
-                System.out.println("Incorrect");
-
-            }
     }
-
-
-
 
     private void drawCard(Player player) {
         //Check if deck still has cards - otherwise error, if last card played is Prince
