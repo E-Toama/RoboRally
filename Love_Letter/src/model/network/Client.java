@@ -34,7 +34,7 @@ public class Client implements Runnable {
         if (response.equals("taken")) {
 
             socket.close();
-            throw new DuplicateNameException();
+            throw new DuplicateNameException("Name already taken, choose another one.");
 
         } else {
 
