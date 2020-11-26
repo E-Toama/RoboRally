@@ -36,11 +36,15 @@ public class Baron extends Card {
 
             game.server.sendMessageToSingleUser(activePlayer.userName, "The chosen player is protected, your card has no Effekt!");
 
+            game.getActivePlayerList().remove(activePlayer);
+            game.getActivePlayerList().add(activePlayer);
+            game.gameMove(game.getActivePlayerList().get(0));
+
         } else {
 
             if (activePlayer.getCards().get(0).getValue() > chosenPlayer.getCards().get(0).getValue()) {
 
-                game.server.sendMessageToAllUsers(chosenPlayer.userName + "has played the " + chosenPlayer.getCards().get(0).getDescription() + " without Effekt!");
+                game.server.sendMessageToAllUsers(chosenPlayer.userName + " has played the " + chosenPlayer.getCards().get(0).getDescription() + " without Effekt!");
                 game.discardCard(chosenPlayer.getCards().remove(0));
                 game.getActivePlayerList().remove(chosenPlayer);
                 game.getNextRoundActivePlayerList().add(0, chosenPlayer);
@@ -51,7 +55,7 @@ public class Baron extends Card {
 
             } else if (activePlayer.getCards().get(0).getValue() < chosenPlayer.getCards().get(0).getValue()) {
 
-                game.server.sendMessageToAllUsers(activePlayer.userName + "has played the " + activePlayer.getCards().get(0).getDescription() + " without Effekt!");
+                game.server.sendMessageToAllUsers(activePlayer.userName + " has played the " + activePlayer.getCards().get(0).getDescription() + " without Effekt!");
                 game.discardCard(activePlayer.getCards().remove(0));
 
                 game.getActivePlayerList().remove(activePlayer);

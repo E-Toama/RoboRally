@@ -6,6 +6,9 @@ import model.network.ChatServer;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * @author Dennis, Josef
+ */
 public class Game {
 
     private List<Player> activePlayerList = new LinkedList<Player>();
@@ -254,7 +257,7 @@ public class Game {
 
     public void playCard(Card playedCard, Player player) {
 
-        server.sendMessageToAllUsers(player.userName + "has played the " + playedCard.getName() + "!");
+        server.sendMessageToAllUsers(player.userName + " has played the " + playedCard.getName() + "!");
         discardCard(playedCard);
         playedCard.play(this, player);
 
