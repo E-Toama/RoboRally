@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 /**
+ * Handles the Client-Threads from the server-side
  * @author Josef, Dennis
  */
 public class UserThread implements Runnable {
@@ -17,6 +18,13 @@ public class UserThread implements Runnable {
     private final PrintWriter outgoing;
     private final ChatServer server;
 
+    /**
+     * Constructs a UserThread only if Client successfully connects to server
+     * and provides unique username
+     * @param socket the server socket (port 9090)
+     * @param server reference to the main ChatServer
+     * @throws IOException if client could not connect to server
+     */
     public UserThread(Socket socket, ChatServer server) throws IOException {
 
         this.socket = socket;
@@ -26,7 +34,7 @@ public class UserThread implements Runnable {
         outgoing = new PrintWriter(socket.getOutputStream(), true);
 
         try {
-
+            //Look up proposed username in list
             String proposedName = incoming.readLine();
             if (server.getUserMap().containsKey(proposedName) || proposedName == null) {
 
@@ -50,14 +58,20 @@ public class UserThread implements Runnable {
 
     }
 
+    /**
+     * Receives and processes user input in endless while-loop
+     * Uses switch-cases to handle user commands and distribute them to the respecting server methods.
+     * Catches IOExceptions and finally cleans up after user has left/disconnected
+     */
     public void run() {
 
         try {
 
             while (true) {
-
+                //Unfiltered input from user
                 String input = incoming.readLine();
 
+                //Split user input into command (key) and arguments
                 int i = input.indexOf(' ');
                 String key = "";
                 String messageWithoutSecondAttribute = "";
@@ -111,10 +125,6 @@ public class UserThread implements Runnable {
                             server.sendMessageToSingleUser(userName, "Your Message was empty!");
 
                         }
-                        break;
-
-                    case "?INFO":
-                        //return information about your current card
                         break;
 
                     case "?STATS":
@@ -203,9 +213,9 @@ public class UserThread implements Runnable {
                         break;
 
                     default:
-                        server.sendMessageToSingleUser(userName, "Please use a valid Command!");
+                        //Return game command suggestion
+                        server.sendMessageToSingleUser(userName, EditDistance.getClosestString(input));
                         break;
-
                 }
 
             }
@@ -216,7 +226,7 @@ public class UserThread implements Runnable {
 
         }
 
-        // userName und writer werden aus dem Server entfernt
+        // userName and writer are removed from the server
         finally {
 
             server.getUserMap().remove(userName);
@@ -225,7 +235,7 @@ public class UserThread implements Runnable {
 
             try {
 
-                socket.close(); // Keine Verbindung mehr zum Server
+                socket.close(); // disconnect from server
 
             } catch (IOException e) {
 
