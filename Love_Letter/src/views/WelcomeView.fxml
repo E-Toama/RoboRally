@@ -3,17 +3,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="rootPaneWelcome" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.WelcomeView">
+<AnchorPane fx:id="rootPaneWelcome" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.WelcomeView">
     <children>
-        <Label alignment="CENTER" layoutX="185.0" layoutY="181.0" prefWidth="330.0"
-               text="Please enter your preferred User Name" textAlignment="CENTER"/>
-        <TextField fx:id="userNameField" layoutX="219.0" layoutY="223.0" onMouseEntered="#hideNameTakenLabel"
-                   text="Enter User Name here"/>
-        <Button fx:id="submitButton" layoutX="415.0" layoutY="223.0" mnemonicParsing="false" onAction="#submitUserName"
-                text="Submit"/>
-        <Label fx:id="nameTakenLabel" alignment="CENTER" layoutX="213.0" layoutY="263.0" prefHeight="35.0"
-               text="Name already taken, choose another one." textAlignment="CENTER" textFill="#0e24cd"
-               visible="false"/>
+        <Label alignment="CENTER" layoutX="185.0" layoutY="181.0" prefWidth="330.0" text="Please enter your preferred User Name" textAlignment="CENTER" />
+        <TextField fx:id="userNameField" layoutX="219.0" layoutY="223.0" onMouseEntered="#hideNameTakenLabel" text="Enter User Name here" />
+        <Button fx:id="submitButton" layoutX="415.0" layoutY="223.0" mnemonicParsing="false" onAction="#submitUserName" text="Submit" />
+        <Label fx:id="nameTakenLabel" alignment="CENTER" layoutX="213.0" layoutY="263.0" prefHeight="35.0" textAlignment="CENTER" textFill="#0e24cd" visible="false" />
     </children>
 </AnchorPane>
