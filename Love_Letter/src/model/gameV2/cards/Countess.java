@@ -3,6 +3,9 @@ package model.gameV2.cards;
 import model.gameV2.Game;
 import model.gameV2.Player;
 
+/**
+ * @author Elias
+ */
 public class Countess extends Card {
 
     public Countess() {

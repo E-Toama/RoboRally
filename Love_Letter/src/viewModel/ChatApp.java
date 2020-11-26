@@ -9,6 +9,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * @author Dennis
+ */
 public class ChatApp extends Application {
 
     public static void main(String[] args) {

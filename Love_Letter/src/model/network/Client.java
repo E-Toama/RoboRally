@@ -11,6 +11,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+/**
+ * @author Elias, Dennis, Josef
+ */
 public class Client implements Runnable {
 
     private Socket socket;

@@ -10,6 +10,9 @@ import java.util.HashMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+/**
+ * @author Josef, Dennis, Yashar
+ */
 public class ChatServer {
 
     private final HashMap<String, PrintWriter> userMap = new HashMap<String, PrintWriter>();

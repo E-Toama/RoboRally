@@ -15,6 +15,9 @@ import views.ChatView;
 
 import java.io.IOException;
 
+/**
+ * @author Josef, Elias
+ */
 public class WelcomeViewViewModel {
 
     // Property Instanzen mit getter und setter

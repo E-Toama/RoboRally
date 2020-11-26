@@ -5,6 +5,9 @@ import model.gameV2.cards.Card;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * @author Dennis, Josef, Ehbal
+ */
 public class Player {
 
     public final String userName;

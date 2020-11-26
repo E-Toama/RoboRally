@@ -6,6 +6,9 @@ import javafx.scene.layout.AnchorPane;
 import model.network.Client;
 import viewModel.ChatViewViewModel;
 
+/**
+ * @author Elias, Ehbal
+ */
 public class ChatView {
 
     // Chat

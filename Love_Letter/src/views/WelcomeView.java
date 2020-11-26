@@ -15,6 +15,9 @@ import model.network.Client;
 import viewModel.ChatApp;
 import viewModel.WelcomeViewViewModel;
 
+/**
+ * @author Ehbal, Elias
+ */
 public class WelcomeView {
 
     // Welcome - User registration

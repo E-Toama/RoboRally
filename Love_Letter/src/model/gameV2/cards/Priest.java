@@ -3,6 +3,9 @@ package model.gameV2.cards;
 import model.gameV2.Game;
 import model.gameV2.Player;
 
+/**
+ * @author Yashar
+ */
 public class Priest extends Card {
 
     public Priest() {
