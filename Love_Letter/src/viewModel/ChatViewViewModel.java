@@ -7,6 +7,9 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import model.network.Client;
 
+/**
+ * @author Josef, Dennis
+ */
 public class ChatViewViewModel {
 
     // Properties

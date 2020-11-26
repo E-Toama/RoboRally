@@ -6,6 +6,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+/**
+ * @author Josef, Dennis
+ */
 public class UserThread implements Runnable {
 
     private final Socket socket;
@@ -81,8 +84,8 @@ public class UserThread implements Runnable {
 
                             if (server.getUserMap().containsKey(secondAttribute)) {
 
-                                server.sendMessageToSingleUser(secondAttribute,"[" + userName + "] private: " + messageWithSecondAttribute);
-                                server.sendMessageToSingleUser(userName,"[" + userName + "] private to " + secondAttribute + " : " + messageWithSecondAttribute );
+                                server.sendMessageToSingleUser(secondAttribute, "[" + userName + "] private: " + messageWithSecondAttribute);
+                                server.sendMessageToSingleUser(userName, "[" + userName + "] private to " + secondAttribute + " : " + messageWithSecondAttribute);
 
                             } else {
 
@@ -115,15 +118,74 @@ public class UserThread implements Runnable {
                         break;
 
                     case "?STATS":
-                        //return current game state
+                        server.getStatus(userName);
                         break;
 
                     case "?DISCARDED":
-                        //return already played cards
+                        server.getDiscardedCards(userName);
                         break;
 
-                    case "!PLAYCARD":
-                        //play card + handle second argument
+                    case "!PLAYLEFTCARD":
+                        server.userPLaysLeftCard(userName);
+                        break;
+
+                    case "!PLAYRIGHTCARD":
+                        server.userPLaysRightCard(userName);
+                        break;
+
+                    case "!CHOOSEANYPLAYER":
+
+                        if (true) {
+
+                            if (server.getUserMap().containsKey(messageWithoutSecondAttribute)) {
+
+                                server.chooseAnyPlayer(userName, messageWithoutSecondAttribute);
+
+                            } else {
+
+                                server.sendMessageToSingleUser(userName, "There is no user named: " + messageWithoutSecondAttribute + ".");
+
+                            }
+
+                        } else {
+
+                            server.sendMessageToSingleUser(userName, "You specified no User.");
+
+                        }
+                        break;
+
+                    case "!CHOOSEANOTHERPLAYER":
+
+                        if (true) {
+
+                            if (server.getUserMap().containsKey(messageWithoutSecondAttribute)) {
+
+                                server.chooseAnotherPlayer(userName, messageWithoutSecondAttribute);
+
+                            } else {
+
+                                server.sendMessageToSingleUser(userName, "There is no user named: " + messageWithoutSecondAttribute + ".");
+
+                            }
+
+                        } else {
+
+                            server.sendMessageToSingleUser(userName, "You specified no User.");
+
+                        }
+                        break;
+
+                    case "!GUESSCARD":
+
+                        if (true) {
+
+                            server.guessCard(userName, messageWithoutSecondAttribute);
+
+                        } else {
+
+                            server.sendMessageToSingleUser(userName, "You specified no Value.");
+
+                        }
                         break;
 
                     case "!CREATEGAME":

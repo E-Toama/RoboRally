@@ -1,6 +1,7 @@
 package model.network;
 
-import model.game.Game;
+import model.gameV2.Game;
+import model.gameV2.Player;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -9,108 +10,174 @@ import java.util.HashMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+/**
+ * @author Josef, Dennis, Yashar
+ */
 public class ChatServer {
 
-  private final HashMap<String, PrintWriter> userMap = new HashMap<String, PrintWriter>();
-  private Game game;
+    private final HashMap<String, PrintWriter> userMap = new HashMap<String, PrintWriter>();
+    private Game game;
 
-  public static void main(String[] args) {
+    public static void main(String[] args) {
 
-    ChatServer server = new ChatServer();
-    server.execute();
+        ChatServer server = new ChatServer();
+        server.execute();
 
-  }
+    }
 
-  public synchronized HashMap<String, PrintWriter> getUserMap() {
+    public synchronized HashMap<String, PrintWriter> getUserMap() {
 
-    return this.userMap;
+        return this.userMap;
 
-  }
+    }
 
-  public synchronized void addUser(String newUserName, PrintWriter newWriter) {
+    public synchronized void addUser(String newUserName, PrintWriter newWriter) {
 
-    userMap.put(newUserName, newWriter);
+        userMap.put(newUserName, newWriter);
 
-  }
+    }
 
-  public synchronized void sendMessageToAllUsers(String message) {
+    public synchronized void sendMessageToAllUsers(String message) {
 
-    for (PrintWriter writer : userMap.values()) {
+        for (PrintWriter writer : userMap.values()) {
 
-      writer.println(message);
+            writer.println(message);
+
+        }
+
+    }
+
+    public synchronized void sendMessageToSingleUser(String userName, String message) {
+
+        PrintWriter writer = userMap.get(userName);
+
+        writer.println(message);
+
+    }
+
+    public synchronized void creatGame(String userName) {
+
+        if (game == null) {
+
+            game = new Game(this, new Player(userName));
+
+            sendMessageToSingleUser(userName, "You have successfully created a game, wait for other players to join!");
+
+            sendMessageToAllUsers(userName + " created a game. Join him!");
+
+        } else {
+
+            sendMessageToSingleUser(userName, "There is already a game!");
+
+        }
+
+    }
+
+    public synchronized void joinGame(String userName) {
+
+        game.addPlayer(new Player(userName));
+
+    }
+
+    public synchronized void startGame(String userName) {
+
+        if (game != null) {
+
+            game.startGame(userName);
+
+        } else {
+
+            sendMessageToSingleUser(userName, "There is no Game, create one first!");
+
+        }
 
 
     }
 
-  }
+    public synchronized void userPLaysLeftCard(String username) {
 
-  public synchronized void sendMessageToSingleUser(String userName, String message) {
-
-    PrintWriter writer = userMap.get(userName);
-
-    writer.println(message);
-
-  }
-
-  public synchronized void creatGame(String userName) {
-
-    if (this.game == null) {
-
-      this.game = new Game();
-
-      sendMessageToSingleUser(userName, "You have successfully created a game, wait for other players to join!");
-
-      sendMessageToAllUsers(userName + " created a game. Join him!");
-
-    } else {
-
-      sendMessageToSingleUser(userName, "There is already a game!");
+        game.playLeftCard(username);
 
     }
 
-  }
+    public synchronized void userPLaysRightCard(String username) {
 
-  public synchronized void joinGame(String userName) {
-
-    sendMessageToSingleUser(userName, "You have successfully joined the game. Wait until it start's!");
-
-  }
-
-  public synchronized void startGame(String userName) {
-
-    if(userMap.size() >= 2) {
-
-      sendMessageToAllUsers("The Game has started!");
-
-    } else {
-
-      sendMessageToSingleUser(userName, "Wait for other Players to join.");
+        game.playRightCard(username);
 
     }
 
+    public synchronized void chooseAnyPlayer(String username, String chosenName) {
 
-  }
-
-  public void execute() {
-
-    System.out.println("Server is running on port: 9090");
-
-    Executor pool = Executors.newFixedThreadPool(50);
-
-    try (ServerSocket listener = new ServerSocket(9090)) {
-
-      while (true) {
-
-        pool.execute(new UserThread(listener.accept(), this));
-
-      }
-
-    } catch (IOException e) {
-
-      System.out.println("Error in the server " + e.getMessage());
+        game.chooseAnyPlayer(username, chosenName);
 
     }
 
-  }
+    public synchronized void chooseAnotherPlayer(String username, String chosenName) {
+
+        game.chooseAnotherPlayer(username, chosenName);
+
+    }
+
+    public synchronized void guessCard(String username, String value) {
+
+        game.guessCard(username, value);
+
+    }
+
+    public synchronized void getDiscardedCards(String username) {
+
+        if (game != null) {
+
+            sendMessageToSingleUser(username, game.getDiscardedCards());
+
+        } else {
+
+            sendMessageToSingleUser(username, "There is no game!");
+
+        }
+
+    }
+
+    public synchronized void getStatus(String username) {
+
+        if (game != null) {
+
+            game.getStatus(username);
+
+        } else {
+
+            sendMessageToSingleUser(username, "There is no game!");
+
+        }
+
+    }
+
+    public void endGame() {
+
+        game = null;
+
+    }
+
+    public void execute() {
+
+        System.out.println("Server is running on port: 9090");
+
+        Executor pool = Executors.newFixedThreadPool(50);
+
+        try (ServerSocket listener = new ServerSocket(9090)) {
+
+            while (true) {
+
+                pool.execute(new UserThread(listener.accept(), this));
+
+            }
+
+        } catch (IOException e) {
+
+            System.out.println("Error in the server " + e.getMessage());
+
+        }
+
+    }
 
 }
