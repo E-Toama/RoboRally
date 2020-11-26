@@ -92,8 +92,8 @@ public class Player {
     private void playCountess(Game game, int index) {
 
         game.server.sendMessageToSingleUser(userName, "Your Cards are: ");
-        game.server.sendMessageToSingleUser(userName, "Left Card: " + cards.get(0));
-        game.server.sendMessageToSingleUser(userName, "Right Card: " + cards.get(1));
+        game.server.sendMessageToSingleUser(userName, "Left Card: " + cards.get(0).getName());
+        game.server.sendMessageToSingleUser(userName, "Right Card: " + cards.get(1).getName());
         game.server.sendMessageToSingleUser(userName, "You are forced to play the Countess!");
         game.playCard(cards.remove(index), this);
 

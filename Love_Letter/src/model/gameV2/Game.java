@@ -15,6 +15,7 @@ public class Game {
     private List<Card> discardedCards = new LinkedList<Card>();
     public final ChatServer server;
     private Boolean gameIsRunning = false;
+    private Card hiddenCard = null;
 
     public Game(ChatServer server, Player firstPlayer) {
 
@@ -33,7 +34,7 @@ public class Game {
 
             for (Card discardedCard : discardedCards) {
 
-                stringBuilder.append(discardedCard.getDescription()).append(", ");
+                stringBuilder.append(discardedCard.getName()).append(", ");
 
             }
 
@@ -166,9 +167,21 @@ public class Game {
 
             fillDeck();
 
+            hiddenCard = drawCardFromDeck();
+
             for (Player player : activePlayerList) {
                 player.addCard(drawCardFromDeck());
                 player.setProtected(false);
+            }
+
+            if (playerList.size() == 2) {
+
+                for(int i = 0; i < 3; i++) {
+
+                    discardCard(drawCardFromDeck());
+
+                }
+
             }
 
             gameMove(activePlayerList.get(0));
@@ -186,6 +199,15 @@ public class Game {
 
         if (activePlayerList.size() > 1) {
 
+            for (Player player1 : activePlayerList) {
+
+                if(player != player1) {
+
+                    server.sendMessageToSingleUser(player1.userName, "It's " + player.userName + " turn!");
+
+                }
+
+            }
             player.requestAction(this, drawCardFromDeck());
 
         } else {

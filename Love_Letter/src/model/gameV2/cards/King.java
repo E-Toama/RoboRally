@@ -44,8 +44,8 @@ public class King extends Card{
             activePlayer.addCard(chosenPlayerCard);
             chosenPlayer.addCard(activePlayerCard);
 
-            game.server.sendMessageToSingleUser(activePlayer.userName, "Your new Card is a " + chosenPlayerCard.getDescription() + "!");
-            game.server.sendMessageToSingleUser(chosenPlayer.userName, "Your new Card is a " + activePlayerCard.getDescription() + "!");
+            game.server.sendMessageToSingleUser(activePlayer.userName, "Your new Card is a " + chosenPlayerCard.getName() + "!");
+            game.server.sendMessageToSingleUser(chosenPlayer.userName, "Your new Card is a " + activePlayerCard.getName() + "!");
 
         }
 

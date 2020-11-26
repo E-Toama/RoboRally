@@ -69,7 +69,7 @@ public class Guard extends Card {
 
             game.server.sendMessageToSingleUser(activePlayer.userName, "You guessed right!");
             game.server.sendMessageToSingleUser(chosenPlayer.userName, "You're out!");
-            game.server.sendMessageToAllUsers(chosenPlayer.userName + "has played the " + chosenPlayer.getCards().get(0).getDescription() + " without Effekt!");
+            game.server.sendMessageToAllUsers(chosenPlayer.userName + "has played the " + chosenPlayer.getCards().get(0).getName() + " without Effekt!");
             game.discardCard(chosenPlayer.getCards().remove(0));
             game.getActivePlayerList().remove(chosenPlayer);
             game.getNextRoundActivePlayerList().add(0, chosenPlayer);
