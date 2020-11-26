@@ -11,6 +11,8 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 /**
+ * Holds a pool of UserThreads, provides methods for broadcasting to single user or all users
+ * Holds the game-object, provides methods for interacting with the game. (Start, Join, etc.)
  * @author Josef, Dennis, Yashar
  */
 public class ChatServer {
@@ -55,6 +57,11 @@ public class ChatServer {
 
     }
 
+    /**
+     * creates a new game-object if it has not been created yet;
+     * auto-joins the first user and
+     * @param userName the creator of the game
+     */
     public synchronized void creatGame(String userName) {
 
         if (game == null) {
@@ -73,16 +80,26 @@ public class ChatServer {
 
     }
 
+    /**
+     * Tries to add the user to the game if she has not joined yet and the game is not running.
+     * @param userName to check if already joined. Passed to the game as displayed playername.
+     */
     public synchronized void joinGame(String userName) {
-
-        game.addPlayer(new Player(userName));
-
+        if (game.getActivePlayerByUsername(userName) == null && !game.isRunning()) {
+            game.addPlayer(new Player(userName));
+        } else {
+            sendMessageToSingleUser(userName, "You have already joined the game, just wait and relax.");
+        }
     }
 
+    /**
+     * Starts a new game.
+     * @param userName checked against creator of the game (i.e. the only one allowed to start it)
+     */
     public synchronized void startGame(String userName) {
 
         if (game != null) {
-
+            //Allows only the user who created the game to start it
             game.startGame(userName);
 
         } else {
@@ -106,12 +123,24 @@ public class ChatServer {
 
     }
 
+    /**
+     * Method passes user-choice of target player to game.
+     * Choose any player for card effect (including self, e.g. for Prince)
+     * @param username the player currently active
+     * @param chosenName the chosen opponent
+     */
     public synchronized void chooseAnyPlayer(String username, String chosenName) {
 
         game.chooseAnyPlayer(username, chosenName);
 
     }
 
+    /**
+     * Method passes user-choice of target player to the game.
+     * Choose any player excluding self (e.g. for King, Priest, ...)
+     * @param username the player currently active
+     * @param chosenName the chosen opponent
+     */
     public synchronized void chooseAnotherPlayer(String username, String chosenName) {
 
         game.chooseAnotherPlayer(username, chosenName);
@@ -124,6 +153,10 @@ public class ChatServer {
 
     }
 
+    /**
+     * Displays the already discarded cards to the user on command "?DISCARDED"
+     * @param username who requested to see the discarded cards.
+     */
     public synchronized void getDiscardedCards(String username) {
 
         if (game != null) {
@@ -138,6 +171,10 @@ public class ChatServer {
 
     }
 
+    /**
+     * Displays the current score to the player who requested "?STATS"
+     * @param username user to send the current score to.
+     */
     public synchronized void getStatus(String username) {
 
         if (game != null) {
@@ -158,6 +195,10 @@ public class ChatServer {
 
     }
 
+    /**
+     * Basic server loop; hard-coded port for convenience;
+     * Uses Threadpool to handle UserThreads, currently limited to 50
+     */
     public void execute() {
 
         System.out.println("Server is running on port: 9090");

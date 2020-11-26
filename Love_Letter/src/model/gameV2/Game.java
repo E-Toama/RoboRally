@@ -54,6 +54,10 @@ public class Game {
 
     }
 
+    public boolean isRunning() {
+        return gameIsRunning;
+    }
+
     public void getStatus(String username) {
 
         for (Player player : playerList) {
