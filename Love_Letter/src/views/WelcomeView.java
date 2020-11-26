@@ -50,7 +50,7 @@ public class WelcomeView {
             Stage stage = (Stage) submitButton.getScene().getWindow();
             viewModel.submitUserName(stage);
 
-        //Client-Constructor throws DuplicateNameException if name already taken
+            //Client-Constructor throws DuplicateNameException if name already taken
         } catch (DuplicateNameException e) {
             nameTakenLabel.setVisible(true);  // Hinweis einblenden
         }

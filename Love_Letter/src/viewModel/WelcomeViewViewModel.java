@@ -48,6 +48,7 @@ public class WelcomeViewViewModel {
 
     /**
      * Construct Client and initialize ChatView
+     *
      * @param stage passed from WelcomeView
      * @throws DuplicateNameException if name already taken (caught in WelcomeView)
      */

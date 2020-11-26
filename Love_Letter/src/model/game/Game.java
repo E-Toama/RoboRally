@@ -15,6 +15,7 @@ import java.util.*;
 /**
  * Basic implementation of the game logic. All is happening inside ONE console window,
  * input of Cards to play and opponents to choose is realized with number-input from the console (via Scanner).
+ *
  * @author Josef, Ehbal
  */
 public class Game {
@@ -63,6 +64,7 @@ public class Game {
     /**
      * Sets the tokens needed to win according to player count,
      * invokes the play-method if exactly 2-4 players are present
+     *
      * @param playerCount determines the tokens needed to win
      */
     public void start(int playerCount) {
@@ -207,6 +209,7 @@ public class Game {
 
     /**
      * Compare current standings with tokensNeededToWin
+     *
      * @return true if one of the players reached the tokens needed to win
      */
     private boolean gameOver() {
@@ -224,6 +227,7 @@ public class Game {
 
     /**
      * Checking two things: 1. Is the deck empty? 2. Is only one player left?
+     *
      * @return true if one of the conditions is satisfied
      */
     private boolean roundOver() {
@@ -326,7 +330,7 @@ public class Game {
                     System.out.println("Opponent's card value: " + otherPlayersCardValue);
                     System.out.println("Your card was lower, you are out.");
                     player.setPlaying(false);
-                } else  {
+                } else {
                     System.out.println("It's a tie! You both have the same card, nothing happens");
                 }
             } else {
@@ -357,6 +361,7 @@ public class Game {
 
     /**
      * Choose a player to apply card effect (for trading, looking, comparing cards).
+     *
      * @param currentPlayer needed to check if player tries to choose herself (not allowed)
      * @return the chosen player
      */
@@ -385,6 +390,7 @@ public class Game {
 
     /**
      * Helper-method to correctly parse a valid player index
+     *
      * @return valid player index of chosen player
      */
     private int parseUserChoiceofPlayer() {
@@ -399,6 +405,7 @@ public class Game {
 
     /**
      * Helper-method to return correct card index
+     *
      * @return valid card index (1 or 2)
      */
     private int parseUserChoiceofCard() {
@@ -412,6 +419,7 @@ public class Game {
 
     /**
      * Helper-method for the GUARD-card-action
+     *
      * @param chosenPlayer the target player for guessing
      */
     private void guessCard(Player chosenPlayer) {
@@ -480,6 +488,7 @@ public class Game {
 
     /**
      * Find players that can be chosen for card effect
+     *
      * @return list of all players who are still in the round
      */
     public ArrayList<Player> findSelectablePlayers() {
@@ -498,6 +507,7 @@ public class Game {
      * 2. Else: Compare the card values, highest wins
      * 3. Else: Compare total sum of discarded cards of each player
      * 4. Else: Multiple winners, both/all get score-points
+     *
      * @return winner(s) name(s) as String
      */
     private String determineWinner() {

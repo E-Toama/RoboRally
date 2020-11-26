@@ -10,6 +10,7 @@ import java.util.Objects;
 
 /**
  * The Player class holds the status and progress of each player in the game.
+ *
  * @author Josef
  */
 public class Player {
@@ -94,6 +95,7 @@ public class Player {
 
     /**
      * "In case of a tie, players add the numbers on the cards in their discard pile. The highest total wins."
+     *
      * @return sum of values of the player's discarded cards
      */
     public int countDiscardedScore() {
@@ -106,6 +108,7 @@ public class Player {
 
     /**
      * Checks if player holds Countess AND King / Prince at the same time
+     *
      * @return true if player holds both cards and is forced to play the Countess
      */
     public boolean checkCountessPlusX() {
@@ -126,6 +129,7 @@ public class Player {
     /**
      * Simple equality-check based on name-property (name is guaranteed to be unique)
      * Needed to check if player tries to choose herself to apply a card effect
+     *
      * @param player to compare to
      * @return true if player is equal to himself
      */
