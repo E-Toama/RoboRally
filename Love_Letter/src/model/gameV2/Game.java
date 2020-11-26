@@ -19,6 +19,7 @@ public class Game {
     public final ChatServer server;
     private Boolean gameIsRunning = false;
     private Card hiddenCard = null;
+    private int roundWinsNeeded;
 
     public Game(ChatServer server, Player firstPlayer) {
 
@@ -137,6 +138,23 @@ public class Game {
         return nextRoundActivePlayerList;
     }
 
+    public int setRoundWinsNeeded() {
+
+        if(playerList.size() == 2) {
+
+            return 7;
+
+        } else if (playerList.size() == 3) {
+
+            return 5;
+
+        } else {
+
+            return 4;
+
+        }
+    }
+
     public void startGame(String userName) {
 
         if (userName.equals(playerList.get(0).userName)) {
@@ -145,6 +163,7 @@ public class Game {
 
                 gameIsRunning = true;
                 server.sendMessageToAllUsers("Starting first Round!");
+                roundWinsNeeded = setRoundWinsNeeded();
                 startNewRound();
 
             } else {
@@ -163,7 +182,7 @@ public class Game {
 
     private void startNewRound() {
 
-        if (nextRoundActivePlayerList.get(0).getWins() != 7) {
+        if (nextRoundActivePlayerList.get(0).getWins() != roundWinsNeeded) {
 
             activePlayerList = nextRoundActivePlayerList;
             nextRoundActivePlayerList = new LinkedList<Player>();
