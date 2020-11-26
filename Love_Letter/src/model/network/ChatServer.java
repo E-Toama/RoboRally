@@ -52,7 +52,7 @@ public class ChatServer {
 
   }
 
-  public synchronized void creatGame(String userName) {
+  public synchronized void createGame(String userName) {
 
     if (this.game == null) {
 
@@ -72,7 +72,7 @@ public class ChatServer {
 
   public synchronized void joinGame(String userName) {
 
-    sendMessageToSingleUser(userName, "You have successfully joined the game. Wait until it start's!");
+    sendMessageToSingleUser(userName, "You have successfully joined the game. Wait until it starts!");
 
   }
 
