@@ -54,6 +54,10 @@ public class Game {
 
     }
 
+    public boolean isRunning() {
+        return gameIsRunning;
+    }
+
     public void getStatus(String username) {
 
         for (Player player : playerList) {
@@ -278,6 +282,8 @@ public class Game {
 
         server.sendMessageToAllUsers(player.userName + " has played the " + playedCard.getName() + "!");
         discardCard(playedCard);
+        //needed for counting all the individual player's discarded cards in case of a tie
+        player.addDiscardedCard(playedCard);
         playedCard.play(this, player);
 
     }
@@ -285,6 +291,8 @@ public class Game {
     public void playCardWithoutEffect(Card playedCard, Player player) {
 
         discardCard(playedCard);
+        //needed for counting all the individual player's discarded cards in case of a tie
+        player.addDiscardedCard(playedCard);
         if (playedCard.getValue() == 8) {
 
             server.sendMessageToAllUsers(player.userName + "has played the " + playedCard.getName() + "!");

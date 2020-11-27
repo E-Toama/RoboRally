@@ -55,7 +55,8 @@ public class WelcomeView {
 
             //Client-Constructor throws DuplicateNameException if name already taken
         } catch (DuplicateNameException e) {
-            nameTakenLabel.setVisible(true);  // Hinweis einblenden
+            nameTakenLabel.setText(e.getMessage());
+            nameTakenLabel.setVisible(true);  // Display notification
         }
     }
 
