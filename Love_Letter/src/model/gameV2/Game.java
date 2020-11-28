@@ -3,6 +3,8 @@ package model.gameV2;
 import model.gameV2.cards.*;
 import model.network.ChatServer;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -184,9 +186,21 @@ public class Game {
 
     }
 
+    private Player getCurrentLeader() {
+        Player leader = null;
+        int score = -1;
+        for (Player p : nextRoundActivePlayerList) {
+            if (p.getWins() > score) {
+                score = p.getWins();
+                leader = p;
+            }
+        }
+        return leader;
+    }
+
     private void startNewRound() {
 
-        if (nextRoundActivePlayerList.get(0).getWins() != roundWinsNeeded) {
+        if (getCurrentLeader().getWins() != roundWinsNeeded) {
 
             activePlayerList = nextRoundActivePlayerList;
             nextRoundActivePlayerList = new LinkedList<Player>();
@@ -214,7 +228,7 @@ public class Game {
 
         } else {
 
-            server.sendMessageToAllUsers(nextRoundActivePlayerList.get(0).userName + " has won the game!");
+            server.sendMessageToAllUsers(getCurrentLeader().userName + " has won the game!");
             server.endGame();
 
         }
@@ -223,7 +237,7 @@ public class Game {
 
     public void gameMove(Player player) {
 
-        if (activePlayerList.size() > 1) {
+        if (activePlayerList.size() > 1 && cards.size() > 0) {
 
             for (Player player1 : activePlayerList) {
 
@@ -237,16 +251,41 @@ public class Game {
             player.requestAction(this, drawCardFromDeck());
 
         } else {
-
-            server.sendMessageToAllUsers(player.userName + " has won the Round!");
+            //If deck is empty or only one player left, get the list of round winners
+            List<Player> winners = determineWinners();
+            for (Player p : winners) {
+                server.sendMessageToAllUsers(p.userName + " has won the Round!");
+                p.setWins();
+                nextRoundActivePlayerList.add(0, p);
+            }
             server.sendMessageToAllUsers("Starting new Round!");
-
-            player.setWins();
-            nextRoundActivePlayerList.add(0, player);
-
             startNewRound();
-
         }
+
+    }
+
+    private ArrayList<Player> determineWinners() {
+        ArrayList<Player> winners = new ArrayList<>();
+        Player first = activePlayerList.get(0);
+        //check if only one Player left:
+        if (activePlayerList.size() == 1) {
+            winners.add(first);
+            return winners;
+        }
+
+        //If more than one player is left
+
+        //Sort list according to game rules
+        activePlayerList.sort(Comparator.reverseOrder());
+        first = activePlayerList.get(0);
+        winners.add(first);
+        for (int i = 1; i < activePlayerList.size() ; i++) {
+            Player second = activePlayerList.get(i);
+            if (first.compareTo(second) == 0) {
+                winners.add(second);
+            }
+        }
+        return winners;
 
     }
 

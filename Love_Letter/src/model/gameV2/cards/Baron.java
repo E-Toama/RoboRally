@@ -47,7 +47,7 @@ public class Baron extends Card {
 
             if (activePlayer.getCards().get(0).getValue() > chosenPlayer.getCards().get(0).getValue()) {
 
-                game.server.sendMessageToAllUsers(chosenPlayer.userName + " has played the " + chosenPlayer.getCards().get(0).getDescription() + " without Effekt!");
+                game.server.sendMessageToAllUsers(chosenPlayer.userName + " has played the " + chosenPlayer.getCards().get(0).getName() + " without Effekt!");
                 game.discardCard(chosenPlayer.getCards().remove(0));
                 game.getActivePlayerList().remove(chosenPlayer);
                 game.getNextRoundActivePlayerList().add(0, chosenPlayer);
