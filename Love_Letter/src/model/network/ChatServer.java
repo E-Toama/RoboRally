@@ -65,11 +65,8 @@ public class ChatServer {
     public synchronized void creatGame(String userName) {
 
         if (game == null) {
-
-            game = new Game(this, new Player(userName));
-
             sendMessageToSingleUser(userName, "You have successfully created a game, wait for other players to join!");
-
+            game = new Game(this, new Player(userName));
             sendMessageToAllUsers(userName + " created a game. Join him!");
 
         } else {
