@@ -258,12 +258,17 @@ public class Game {
             }
             player.requestAction(this, drawCardFromDeck());
 
+        //If deck is empty or only one player left, get the list of round winners
         } else {
-            //If deck is empty or only one player left, get the list of round winners
+            //Add all remaining players to next round
+            nextRoundActivePlayerList.addAll(activePlayerList);
+
             List<Player> winners = determineWinners();
             for (Player p : winners) {
                 server.sendMessageToAllUsers(p.userName + " has won the Round!");
                 p.setWins();
+                //adjust starting order according to game rules
+                nextRoundActivePlayerList.remove(p);
                 nextRoundActivePlayerList.add(0, p);
             }
             server.sendMessageToAllUsers("Starting new Round!");
