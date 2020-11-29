@@ -114,8 +114,16 @@ public class Game {
 
     }
 
+    /**
+     * Returns a random card from the deck. If the deck is empty AND
+     * the last card actively played was a Prince (= discardedCards.get(1!)),
+     * the chosenPlayer draws the hidden card from the beginning.
+     * @return A random card from the deck (in case of last move Prince: hiddenCard)
+     */
     private Card drawCardFromDeck() {
-
+        if (isDeckEmpty() && discardedCards.get(1).getValue() == 5) {
+            return hiddenCard;
+        }
         return cards.remove( (int) (Math.random() * (cards.size() - 1)) );
 
     }
@@ -236,8 +244,8 @@ public class Game {
     }
 
     public void gameMove(Player player) {
-
-        if (activePlayerList.size() > 1 && cards.size() > 0) {
+        //Check conditions for ending the round: 1. Only one player left. 2. No cards left in the deck.
+        if (activePlayerList.size() > 1 && !isDeckEmpty()) {
 
             for (Player player1 : activePlayerList) {
 
@@ -334,17 +342,23 @@ public class Game {
         player.addDiscardedCard(playedCard);
         if (playedCard.getValue() == 8) {
 
-            server.sendMessageToAllUsers(player.userName + "has played the " + playedCard.getName() + "!");
+            server.sendMessageToAllUsers(player.userName + " has played the " + playedCard.getName() + "!");
             playedCard.play(this, player);
 
         } else {
 
-            server.sendMessageToAllUsers(player.userName + "has played the " + playedCard.getName() + "without Effect!");
+            server.sendMessageToAllUsers(player.userName + " has played the " + playedCard.getName() + " without effect!");
             player.addCard(drawCardFromDeck());
 
         }
 
     }
+
+    //
+    public boolean isDeckEmpty() {
+        return cards.size() == 0;
+    }
+
 
     public void chooseAnotherPlayer(String username, String chosenName) {
 
