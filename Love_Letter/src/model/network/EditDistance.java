@@ -9,6 +9,7 @@ public class EditDistance {
 
     //List of all game commands
     private static final String[] gameCommands = {
+            "@ALL ",
             "!CREATEGAME",
             "!JOINGAME",
             "!STARTGAME",
@@ -17,13 +18,16 @@ public class EditDistance {
             "!CHOOSEANYPLAYER",
             "!CHOOSEANOTHERPLAYER",
             "!GUESSCARD",
-            "@ALL ",
             "@USERNAME ",
             "!BYE",
             "!PLAYLEFTCARD",
             "!PLAYRIGHTCARD"
     };
 
+    private static final String defaultMessage = String.format(
+            "Please use valid game commands, for example:%n" +
+            "%s<yourmessage> (sends message to all users)%n" +
+            "%s (creates a new game)", gameCommands[0], gameCommands[1]);
 
     /**
      * Returns a suggested game command in case the user misspelled or mistyped a command
@@ -32,10 +36,10 @@ public class EditDistance {
      */
     public synchronized static String getClosestString(String s) {
         if (s.isEmpty()) {
-            return "Could not detect your command, please try again";
+            return defaultMessage;
         }
-        // Set minimum to worst case edit distance:
-        int min = s.length();
+        // Set minimum to worst case edit distance (i.e. longest word in commands-list)
+        int min = 21;
         String result = "";
         for (String str : gameCommands) {
             //Changing user String to Uppercase increases matching chance (since all commands are uppercase)
@@ -80,6 +84,13 @@ public class EditDistance {
         return matrix[s.length()][t.length()];
     }
 
+    /**
+     * Helper method to get the minimum of three Integer
+     * @param a The first int to compare
+     * @param b The second int to compare
+     * @param c The third int to compare
+     * @return The minimum of parameters a, b, c
+     */
     private static int minimumOfThree(int a, int b, int c) {
         return Math.min(a, Math.min(b, c));
     }
