@@ -231,13 +231,13 @@ public class ChatServer {
 
     /**
      * Basic server loop; hard-coded port for convenience;
-     * Uses Threadpool to handle UserThreads, currently limited to 50
+     * Uses cached ThreadPool to handle UserThreads
      */
     public void execute() {
 
         System.out.println("Server is running on port: 9090");
 
-        Executor pool = Executors.newFixedThreadPool(50);
+        Executor pool = Executors.newCachedThreadPool();
 
         try (ServerSocket listener = new ServerSocket(9090)) {
 
