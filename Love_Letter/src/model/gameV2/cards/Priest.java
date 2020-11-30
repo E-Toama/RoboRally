@@ -4,10 +4,15 @@ import model.gameV2.Game;
 import model.gameV2.Player;
 
 /**
+ * This class is responsible to represent, define, and implement the
+ * logic of the Priest card in the game.
+ *
  * @author Yashar
  */
 public class Priest extends Card {
-
+    /**
+     * A Constructor to initialize the Priest's value, name and description.
+     */
     public Priest() {
 
         value = 2;
@@ -15,7 +20,12 @@ public class Priest extends Card {
         description = "Look at a player's hand.";
 
     }
-
+    /**
+     * This method is responsible for playing the Priest Card.
+     * @param game   The current game.
+     * @param player The player who played the Princess card.
+     * @author Yashar
+     */
     public void play(Game game, Player player) {
 
         game.server.sendMessageToSingleUser(player.userName, "Choose a player whose hand you want to see!");
@@ -32,7 +42,14 @@ public class Priest extends Card {
         game.server.sendMessageToSingleUser(player.userName, "Use the command !CHOOSEANOTHERPLAYER <choosenplayer> !");
 
     }
+    /**
+     * This method is responsible for applying the effects of the Priest card.
+     * @param game         The current game state.
+     * @param activePlayer The current player.
+     * @param chosenPlayer The player chosen by the current player.
 
+
+     */
     public void completePlay(Game game, Player activePlayer, Player chosenPlayer) {
 
         if (chosenPlayer.isProtected()) {
