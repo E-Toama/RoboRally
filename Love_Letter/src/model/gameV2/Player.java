@@ -21,26 +21,47 @@ public class Player implements Comparable<Player> {
     private int winCounter = 0;
     private boolean isProtected = false;
 
+    /**
+     * Creates a new Player.
+     *
+     * @param userName The players name
+     */
     public Player(String userName) {
 
         this.userName = userName;
 
     }
 
+    /**
+     * @return  Returns the number of rounds that the player has won
+     */
     public int getWinCounter() {
         return winCounter;
     }
 
+    /**
+     * Increases the number of wins by one
+     */
     public void setWinCounter() {
         this.winCounter = winCounter + 1;
     }
 
+    /**
+     * Adds a new card to the players hand.
+     *
+     * @param card  a new card
+     */
     public void addCard(Card card) {
 
         cards.add(card);
 
     }
 
+    /**
+     * "Resets" the player for the next round.
+     *
+     * @param card  a new card
+     */
     public void resetPlayer(Card card) {
 
         cards = new LinkedList<Card>();
@@ -50,6 +71,11 @@ public class Player implements Comparable<Player> {
 
     }
 
+    /**
+     * Returns the players hand.
+     *
+     * @return a LinkedList<Card> representing the players hand
+     */
     public List<Card> getCards() {
         return cards;
     }
@@ -79,7 +105,8 @@ public class Player implements Comparable<Player> {
     }
 
     /**
-     * Checks if player holds Countess AND King / Prince at the same time
+     * Checks if player holds Countess AND King / Prince at the same time.
+     *
      * @return false if player holds both cards and is forced to play the Countess
      */
     private boolean checkCountessCondition(Game game) {
@@ -119,7 +146,7 @@ public class Player implements Comparable<Player> {
     }
 
     /**
-     * Is called when the player holds the countess and King / Prince
+     * Is called when the player holds the countess and King / Prince.
      * Informs the Player what his Cards are, and that he is forced to play the Countess.
      *
      * @param game      Current Game State
@@ -135,10 +162,20 @@ public class Player implements Comparable<Player> {
 
     }
 
+    /**
+     * Sets the players protected property.
+     *
+     * @param aProtected    new value
+     */
     public void setProtected(boolean aProtected) {
         isProtected = aProtected;
     }
 
+    /**
+     * Returns if the player is protected.
+     *
+     * @return  "true" if the player is protected, "false" if not
+     */
     public boolean isProtected() {
         return isProtected;
     }
@@ -149,6 +186,7 @@ public class Player implements Comparable<Player> {
 
     /**
      * "In case of a tie, players add the numbers on the cards in their discard pile. The highest total wins."
+     *
      * @return sum of values of the player's discarded cards
      */
     public int countDiscardedScore() {
@@ -163,6 +201,7 @@ public class Player implements Comparable<Player> {
      * Comparing players according to the game rules:
      * 1. Compare last card on hand. If tied:
      * 2. Compare sum total of discarded cards by the player
+     *
      * @param o other Player to compare to
      * @return negative int for smaller, zero for equal, positive int for bigger
      */

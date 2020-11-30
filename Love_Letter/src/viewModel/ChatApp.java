@@ -10,17 +10,27 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 /**
+ * Launches the JavaFX Application
+ *
  * @author Dennis
  */
 public class ChatApp extends Application {
 
+    /**
+     * Launches the Application
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         Application.launch(args);
     }
 
+    /**
+     * Loads the "WelcomeView" and set's the Scene
+     *
+     * @param stage
+     */
     @Override
-
-    // Welcome Fenster wird geöffnet
     public void start(Stage stage) {
 
         try {
