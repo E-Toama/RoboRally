@@ -10,6 +10,9 @@ import model.gameV2.Player;
  */
 public class King extends Card {
 
+    /**
+     * A Constructor to initialize the King's value, name and description.
+     */
     public King() {
 
         value = 6;
