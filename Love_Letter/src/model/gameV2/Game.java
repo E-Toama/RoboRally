@@ -27,6 +27,12 @@ public class Game {
     private Card hiddenCard = null;
     private int roundWinsNeeded;
 
+    /**
+     * Creates a new Game
+     *
+     * @param server        The server on which the game is played
+     * @param firstPlayer   The player who created the game (first player)
+     */
     public Game(ChatServer server, Player firstPlayer) {
 
         this.server = server;
@@ -34,6 +40,12 @@ public class Game {
 
     }
 
+    /**
+     * Returns the discarded cards of this round.
+     *
+     * @return If there are discarded cards, a string which contains all discarded Cards of the round,
+     * otherwise a error message
+     */
     public String getDiscardedCards() {
 
         String returnValue;
@@ -60,10 +72,20 @@ public class Game {
 
     }
 
+    /**
+     * Returns if the game is running.
+     *
+     * @return "true" when the game is running, otherwise "false"
+     */
     public boolean isRunning() {
         return gameIsRunning;
     }
 
+    /**
+     * Displays the requesting player how many wins each player has.
+     *
+     * @param username  The requesting player's username
+     */
     public void getStatus(String username) {
 
         for (Player player : playerList) {
@@ -74,6 +96,11 @@ public class Game {
 
     }
 
+    /**
+     * Adds a new Player to the Game.
+     *
+     * @param newPlayer The new player
+     */
     public void addPlayer(Player newPlayer) {
 
         if (playerList.size() < 4) {
@@ -91,6 +118,10 @@ public class Game {
 
     }
 
+    /**
+     * Restes "cards" and "discardedCards".
+     * Fills "cards".
+     */
     private void fillDeck() {
 
         cards = new LinkedList<Card>();
@@ -112,6 +143,11 @@ public class Game {
 
     }
 
+    /**
+     * Adds a card to "discardedCards".
+     *
+     * @param card  The discarded Card
+     */
     public void discardCard(Card card) {
 
         discardedCards.add(0, card);
@@ -132,10 +168,23 @@ public class Game {
 
     }
 
+    /**
+     * Returns the active player list.
+     *
+     * @return The "activePlayerList".
+     */
     public List<Player> getActivePlayerList() {
         return activePlayerList;
     }
 
+    /**
+     * Checks whether there is a player with the given username,
+     * if so it returns the player object,
+     * otherwise returns null.
+     *
+     * @param playerName    The specified username.
+     * @return              The player object if it exists, otherwise null.
+     */
     public Player getActivePlayerByUsername(String playerName) {
 
         for (Player player : activePlayerList) {
@@ -152,10 +201,20 @@ public class Game {
 
     }
 
+    /**
+     * Returns the next round active player list.
+     *
+     * @return The "getNextRoundActivePlayerList".
+     */
     public List<Player> getNextRoundActivePlayerList() {
         return nextRoundActivePlayerList;
     }
 
+    /**
+     * Determines the number of rounds that must be won to win the game depending on the number of players.
+     *
+     * @return The number of rounds that muse be won.
+     */
     public int setRoundWinsNeeded() {
 
         if(playerList.size() == 2) {
@@ -173,6 +232,12 @@ public class Game {
         }
     }
 
+    /**
+     * Starts the Game.
+     * Checks if the player who requested to start the game is the same one, who created the game.
+     *
+     * @param userName  The requesting player.
+     */
     public void startGame(String userName) {
 
         if (userName.equals(playerList.get(0).userName)) {
@@ -198,6 +263,11 @@ public class Game {
 
     }
 
+    /**
+     * Returns the Player with the most round wins.
+     *
+     * @return The player with the most round wins.
+     */
     private Player getCurrentLeader() {
         Player leader = null;
         int score = -1;
@@ -210,6 +280,10 @@ public class Game {
         return leader;
     }
 
+    /**
+     * Starts a new round.
+     * Checks beforehand whether a player has won the game.
+     */
     private void startNewRound() {
 
         if (getCurrentLeader().getWinCounter() != roundWinsNeeded) {
@@ -246,6 +320,13 @@ public class Game {
 
     }
 
+    /**
+     * Starts a players game move.
+     * Checks if the deck is empty and whether it is the requesting player's turn.
+     * If the deck is empty it determines the round winner, and starts a new round.
+     *
+     * @param player    The requesting Player.
+     */
     public void gameMove(Player player) {
         //Check conditions for ending the round: 1. Only one player left. 2. No cards left in the deck.
         if (activePlayerList.size() > 1 && !isDeckEmpty()) {
@@ -306,6 +387,13 @@ public class Game {
 
     }
 
+    /**
+     * Checks whether it's the requesting player's turn.
+     * If so calls / plays the left card on the players hand (cards(0)).
+     * Removes the discarded Card from the players hand.
+     *
+     * @param username The requesting Player.
+     */
     public void playLeftCard(String username) {
 
         if (username.equals(activePlayerList.get(0).userName)) {
@@ -320,6 +408,13 @@ public class Game {
 
     }
 
+    /**
+     * Checks whether it's the requesting player's turn.
+     * If so calls / plays the right card on the players hand (cards(1)).
+     * Removes the discarded Card from the players hand.
+     *
+     * @param username The requesting Player.
+     */
     public void playRightCard(String username) {
 
         if (username.equals(activePlayerList.get(0).userName)) {
@@ -334,6 +429,14 @@ public class Game {
 
     }
 
+    /**
+     * Notifies all players that the active player has played the playedCard.
+     * Ads the playedCard to the discardedCards List.
+     * Calls the play method of the playedCard.
+     *
+     * @param playedCard    The played card.
+     * @param player        The active player.
+     */
     public void playCard(Card playedCard, Player player) {
 
         server.sendMessageToAllUsers(player.userName + " has played the " + playedCard.getName() + "!");
@@ -344,6 +447,13 @@ public class Game {
 
     }
 
+    /**
+     * Notifies all players that the player has discarded a Card without an Effect.
+     * Ads the playedCard to the discardedCards List.
+     *
+     * @param playedCard The played / discarded card.
+     * @param player     The active player.
+     */
     public void playCardWithoutEffect(Card playedCard, Player player) {
 
         discardCard(playedCard);
@@ -363,12 +473,24 @@ public class Game {
 
     }
 
-    //
+    /**
+     * Returns if the deck is empty.
+     *
+     * @return "true" if the deck is empty, "false" if the deck isn't.
+     */
     public boolean isDeckEmpty() {
         return cards.size() == 0;
     }
 
 
+    /**
+     * Checks whether it's the requesting player's turn.
+     * Checks if the chosen player is not the requesting player.
+     * If both are correct, it calls the correct completePlay function.
+     *
+     * @param username      The requesting player.
+     * @param chosenName    The chosen player.
+     */
     public void chooseAnotherPlayer(String username, String chosenName) {
 
         if (username.equals(activePlayerList.get(0).userName)) {
@@ -407,6 +529,13 @@ public class Game {
 
     }
 
+    /**
+     * Checks whether it's the requesting player's turn.
+     * If so, it calls the Princes completePlay method.
+     *
+     * @param username      The requesting player.
+     * @param chosenName    The chosen player.
+     */
     public void chooseAnyPlayer(String username, String chosenName) {
 
         if (username.equals(activePlayerList.get(0).userName) && discardedCards.get(0).getValue() == 5) {
@@ -431,6 +560,14 @@ public class Game {
 
     }
 
+    /**
+     * Checks whether it's the requesting player's turn.
+     * Checks if the Guess is valid.
+     * If both are correct, it calls the Guards guessCard method.
+     *
+     * @param username  The requesting player.
+     * @param value     The guessed value.
+     */
     public void guessCard(String username, String value) {
 
         if (username.equals(activePlayerList.get(0).userName)) {
@@ -455,6 +592,12 @@ public class Game {
 
     }
 
+    /**
+     * Is used to get the guessed Value from String to int.
+     *
+     * @param value The Value as String.
+     * @return      The Value as Int.
+     */
     public int stringToValidNumber(String value) {
 
         return switch (value) {
