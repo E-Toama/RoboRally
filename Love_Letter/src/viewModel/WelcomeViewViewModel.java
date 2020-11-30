@@ -73,7 +73,8 @@ public class WelcomeViewViewModel {
 
             stage.setTitle(getUserName());
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("../views/ChatView.fxml"));
+                    getClass().getResource("/views/ChatView.fxml"));
+
             stage.setScene(new Scene(loader.load()));
 
             ChatView chatView = loader.getController();

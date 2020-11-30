@@ -4,6 +4,9 @@ import model.gameV2.Game;
 import model.gameV2.Player;
 
 /**
+ * Represents the the Handmaid Card and implements the action when it's played.
+ * Extends Card.
+ *
  * @author Dennis
  */
 public class Handmaid extends Card {
@@ -16,6 +19,13 @@ public class Handmaid extends Card {
 
     }
 
+    /**
+     * Set's the Protected Property of the Player to "true", when played (called).
+     * Calls the next player to make his move.
+     *
+     * @param game      Current Game State
+     * @param player    Active Player, who played the Card
+     */
     public void play(Game game, Player player) {
 
         player.setProtected(true);
