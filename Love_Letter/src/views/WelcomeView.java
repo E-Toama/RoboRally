@@ -36,10 +36,13 @@ public class WelcomeView {
     private final ChatApp chatApp = new ChatApp();
 
     @FXML
+
+    /**
+     * Binding userNameFiled, submitButton to the WelcomeViewModel
+     */
     void initialize() {
 
-        // Wechselseitige Bindung von userNameField, submitButton und
-        // WelcomeViewModel
+
         userNameField.textProperty()
                 .bindBidirectional(viewModel.userNameProperty());
         submitButton.defaultButtonProperty()
@@ -68,6 +71,10 @@ public class WelcomeView {
     }
 
     @FXML
+
+    /**
+     * Hint label / notification can only be seen if userName is already taken
+     */
     public void hideNameTakenLabel() {
         nameTakenLabel.setVisible(false);
     }

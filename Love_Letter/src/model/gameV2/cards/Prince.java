@@ -18,6 +18,12 @@ public class Prince extends Card {
 
     }
 
+    /**
+     * This method is responsible for playing the Prince card
+     *
+     * @param game   The current game state
+     * @param player The player who played the card
+     */
     public void play(Game game, Player player) {
 
         if (checkIfAllOtherPlayersAreProtected(game, player)) {
@@ -40,6 +46,14 @@ public class Prince extends Card {
 
     }
 
+    /**
+     * This method represents the logic behind playing the Prince card.
+     *
+     * @param game         the current game state
+     * @param activePlayer the player whp played the prince
+     * @param chosenPlayer the chosen player who has to discard a card
+     */
+
     public void completePlay(Game game, Player activePlayer, Player chosenPlayer) {
 
         if (chosenPlayer.isProtected()) {
@@ -57,6 +71,14 @@ public class Prince extends Card {
         game.gameMove(game.getActivePlayerList().get(0));
 
     }
+
+    /**
+     * Player has to choose himself if all other players are protected by the handmaid
+     *
+     * @param game   the current game state
+     * @param player the player who played the prince
+     * @return is false if not all other players are protected
+     */
 
     public boolean checkIfAllOtherPlayersAreProtected(Game game, Player player) {
 
