@@ -3,10 +3,16 @@ package model.gameV2;
 import model.gameV2.cards.*;
 import model.network.ChatServer;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * Represents the "Game".
+ * Holds all necessary properties / objects for a game.
+ * Provides methods for interacting with the server, and gameplay as necessary.
+ *
  * @author Dennis, Josef
  */
 public class Game {
@@ -62,7 +68,7 @@ public class Game {
 
         for (Player player : playerList) {
 
-            server.sendMessageToSingleUser(username, player.userName + ": " + player.getWins());
+            server.sendMessageToSingleUser(username, player.userName + ": " + player.getWinCounter());
 
         }
 
@@ -112,8 +118,16 @@ public class Game {
 
     }
 
+    /**
+     * Returns a random card from the deck. If the deck is empty AND
+     * the last card actively played was a Prince (= discardedCards.get(1!)),
+     * the chosenPlayer draws the hidden card from the beginning.
+     * @return A random card from the deck (in case of last move Prince: hiddenCard)
+     */
     private Card drawCardFromDeck() {
-
+        if (isDeckEmpty() && discardedCards.get(1).getValue() == 5) {
+            return hiddenCard;
+        }
         return cards.remove( (int) (Math.random() * (cards.size() - 1)) );
 
     }
@@ -184,9 +198,21 @@ public class Game {
 
     }
 
+    private Player getCurrentLeader() {
+        Player leader = null;
+        int score = -1;
+        for (Player p : nextRoundActivePlayerList) {
+            if (p.getWinCounter() > score) {
+                score = p.getWinCounter();
+                leader = p;
+            }
+        }
+        return leader;
+    }
+
     private void startNewRound() {
 
-        if (nextRoundActivePlayerList.get(0).getWins() != roundWinsNeeded) {
+        if (getCurrentLeader().getWinCounter() != roundWinsNeeded) {
 
             activePlayerList = nextRoundActivePlayerList;
             nextRoundActivePlayerList = new LinkedList<Player>();
@@ -196,8 +222,7 @@ public class Game {
             hiddenCard = drawCardFromDeck();
 
             for (Player player : activePlayerList) {
-                player.addCard(drawCardFromDeck());
-                player.setProtected(false);
+                player.resetPlayer(drawCardFromDeck());
             }
 
             if (playerList.size() == 2) {
@@ -214,7 +239,7 @@ public class Game {
 
         } else {
 
-            server.sendMessageToAllUsers(nextRoundActivePlayerList.get(0).userName + " has won the game!");
+            server.sendMessageToAllUsers(getCurrentLeader().userName + " has won the game!");
             server.endGame();
 
         }
@@ -222,8 +247,8 @@ public class Game {
     }
 
     public void gameMove(Player player) {
-
-        if (activePlayerList.size() > 1) {
+        //Check conditions for ending the round: 1. Only one player left. 2. No cards left in the deck.
+        if (activePlayerList.size() > 1 && !isDeckEmpty()) {
 
             for (Player player1 : activePlayerList) {
 
@@ -236,17 +261,48 @@ public class Game {
             }
             player.requestAction(this, drawCardFromDeck());
 
+        //If deck is empty or only one player left, get the list of round winners
         } else {
+            //Add all remaining players to next round
+            nextRoundActivePlayerList.addAll(activePlayerList);
 
-            server.sendMessageToAllUsers(player.userName + " has won the Round!");
+            List<Player> winners = determineWinners();
+            for (Player p : winners) {
+                server.sendMessageToAllUsers(p.userName + " has won the Round!");
+
+                p.setWinCounter();
+                //adjust starting order according to game rules
+                nextRoundActivePlayerList.remove(p);
+                nextRoundActivePlayerList.add(0, p);
+            }
             server.sendMessageToAllUsers("Starting new Round!");
-
-            player.setWins();
-            nextRoundActivePlayerList.add(0, player);
-
             startNewRound();
-
         }
+
+    }
+
+    private ArrayList<Player> determineWinners() {
+        ArrayList<Player> winners = new ArrayList<>();
+        Player first = activePlayerList.get(0);
+        //check if only one Player left:
+        if (activePlayerList.size() == 1) {
+            winners.add(first);
+            return winners;
+        }
+
+        //If more than one player is left
+
+        //Sort list according to game rules
+        activePlayerList.sort(Comparator.reverseOrder());
+        first = activePlayerList.get(0);
+        winners.add(first);
+        for (int i = 1; i < activePlayerList.size() ; i++) {
+            Player second = activePlayerList.get(i);
+            if (first.compareTo(second) == 0) {
+                winners.add(second);
+            }
+        }
+        return winners;
 
     }
 
@@ -295,17 +351,23 @@ public class Game {
         player.addDiscardedCard(playedCard);
         if (playedCard.getValue() == 8) {
 
-            server.sendMessageToAllUsers(player.userName + "has played the " + playedCard.getName() + "!");
+            server.sendMessageToAllUsers(player.userName + " has played the " + playedCard.getName() + "!");
             playedCard.play(this, player);
 
         } else {
 
-            server.sendMessageToAllUsers(player.userName + "has played the " + playedCard.getName() + "without Effect!");
+            server.sendMessageToAllUsers(player.userName + " has played the " + playedCard.getName() + " without effect!");
             player.addCard(drawCardFromDeck());
 
         }
 
     }
+
+    //
+    public boolean isDeckEmpty() {
+        return cards.size() == 0;
+    }
+
 
     public void chooseAnotherPlayer(String username, String chosenName) {
 

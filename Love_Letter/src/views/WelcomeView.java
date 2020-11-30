@@ -16,11 +16,12 @@ import viewModel.ChatApp;
 import viewModel.WelcomeViewViewModel;
 
 /**
+ * This class initializes the welcome window with user registration
+ *
  * @author Ehbal, Elias
  */
 public class WelcomeView {
 
-    // Welcome - User registration
     @FXML
     private AnchorPane rootPaneWelcome;
     @FXML
@@ -45,6 +46,12 @@ public class WelcomeView {
                 .bindBidirectional(viewModel.submitButtonProperty());
 
     }
+
+    /**
+     * passes the current stage to the viewModel and
+     * catches the DuplicateNameException if the username
+     * is already taken
+     */
 
     public void submitUserName() {
 

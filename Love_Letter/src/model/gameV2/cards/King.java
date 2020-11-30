@@ -4,15 +4,17 @@ import model.gameV2.Game;
 import model.gameV2.Player;
 
 /**
+ * Implementation of the card King
+ *
  * @author Ehbal
  */
-public class King extends Card{
+public class King extends Card {
 
     public King() {
 
         value = 6;
         name = "King";
-        description = "Trade hands with another player.";
+        description = "Player trades hands with any other player.";
 
     }
 
@@ -20,9 +22,10 @@ public class King extends Card{
 
         game.server.sendMessageToSingleUser(player.userName, "Choose a player with whom you want to change hands!");
         game.server.sendMessageToSingleUser(player.userName, "You can choose between :");
+
         for (Player player1 : game.getActivePlayerList()) {
 
-            if(player != player1) {
+            if (player != player1) {
 
                 game.server.sendMessageToSingleUser(player.userName, player1.userName);
 
@@ -37,10 +40,10 @@ public class King extends Card{
 
         if (chosenPlayer.isProtected()) {
 
-            game.server.sendMessageToSingleUser(activePlayer.userName, "The chosen player is protected, your card has no Effekt!");
+            game.server.sendMessageToSingleUser(activePlayer.userName, "The chosen player is protected, your card has no effect!");
 
         } else {
-
+            //Card trade
             Card activePlayerCard = activePlayer.getCards().remove(0);
             Card chosenPlayerCard = chosenPlayer.getCards().remove(0);
 

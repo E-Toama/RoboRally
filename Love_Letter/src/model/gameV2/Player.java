@@ -7,6 +7,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * Represents a Player.
+ * A Object of this Class stores the Player's username, his actual Hand, his discarded Cards, the number of his Wins an if he's protected.
+ * Provides functionality for gameplay and access.
+ *
  * @author Dennis, Josef, Ehbal
  */
 public class Player implements Comparable<Player> {
@@ -14,7 +18,7 @@ public class Player implements Comparable<Player> {
     public final String userName;
     private List<Card> cards = new LinkedList<Card>();
     private List<Card> discardedCards = new LinkedList<Card>();
-    private int wins = 0;
+    private int winCounter = 0;
     private boolean isProtected = false;
 
     public Player(String userName) {
@@ -23,12 +27,12 @@ public class Player implements Comparable<Player> {
 
     }
 
-    public int getWins() {
-        return wins;
+    public int getWinCounter() {
+        return winCounter;
     }
 
-    public void setWins() {
-        this.wins = wins + 1;
+    public void setWinCounter() {
+        this.winCounter = winCounter + 1;
     }
 
     public void addCard(Card card) {
@@ -37,10 +41,26 @@ public class Player implements Comparable<Player> {
 
     }
 
+    public void resetPlayer(Card card) {
+
+        cards = new LinkedList<Card>();
+        discardedCards = new LinkedList<Card>();
+        cards.add(card);
+        setProtected(false);
+
+    }
+
     public List<Card> getCards() {
         return cards;
     }
 
+    /**
+     * Asks the Player what Card he want's to play.
+     * Is always called when a new move starts.
+     *
+     * @param game  Current Game State
+     * @param card  New Card that is drawn from the Deck
+     */
     public void requestAction(Game game, Card card) {
 
         setProtected(false);
@@ -98,6 +118,13 @@ public class Player implements Comparable<Player> {
 
     }
 
+    /**
+     * Is called when the player holds the countess and King / Prince
+     * Informs the Player what his Cards are, and that he is forced to play the Countess.
+     *
+     * @param game      Current Game State
+     * @param index     Index of the Countess in the "cards" list
+     */
     private void playCountess(Game game, int index) {
 
         game.server.sendMessageToSingleUser(userName, "Your Cards are: ");
@@ -106,10 +133,6 @@ public class Player implements Comparable<Player> {
         game.server.sendMessageToSingleUser(userName, "You are forced to play the Countess!");
         game.playCard(cards.remove(index), this);
 
-    }
-
-    public boolean getIsProtected() {
-        return isProtected;
     }
 
     public void setProtected(boolean aProtected) {

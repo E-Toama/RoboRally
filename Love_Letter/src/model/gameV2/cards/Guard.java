@@ -4,6 +4,9 @@ import model.gameV2.Game;
 import model.gameV2.Player;
 
 /**
+ * Represents the Guard Card and implements the action when it's played.
+ * Extends Card.
+ *
  * @author Dennis
  */
 public class Guard extends Card {
@@ -18,6 +21,12 @@ public class Guard extends Card {
 
     }
 
+    /**
+     * Asks the active Player, whose card he wants to guess.
+     *
+     * @param game      Current Game State
+     * @param player     Active Player, who played the Card
+     */
     public void play(Game game, Player player) {
 
         game.server.sendMessageToSingleUser(player.userName, "Choose a player whose card you want to guess!");
@@ -35,6 +44,14 @@ public class Guard extends Card {
 
     }
 
+    /**
+     * Checks if the chosen player is protected, has a Guard on his Hand (because then you can't guess right).
+     * If both conditions are wrong, the player is asked to guess a card.
+     *
+     * @param game              Current Game State
+     * @param activePlayer      Active Player
+     * @param chosenPlayer      Chosen Player
+     */
     public void completePlay(Game game, Player activePlayer, Player chosenPlayer) {
 
         if (chosenPlayer.isProtected()) {
@@ -47,7 +64,7 @@ public class Guard extends Card {
 
         } else if (chosenPlayer.getCards().get(0).getValue() == 1) {
 
-            game.server.sendMessageToSingleUser(activePlayer.userName, "The chosen player also has a Guard! Your card has mo Effekt");
+            game.server.sendMessageToSingleUser(activePlayer.userName, "The chosen player also has a Guard! Your card has no Effekt");
 
             game.getActivePlayerList().remove(activePlayer);
             game.getActivePlayerList().add(activePlayer);
@@ -63,6 +80,14 @@ public class Guard extends Card {
 
     }
 
+    /**
+     * Checks if the guess was right, if so it removes the chosen Player from the active Round.
+     * Calls the next Player to make his move.
+     *
+     * @param game              Current Game State
+     * @param activePlayer      Active Player
+     * @param cardValue         Guessed Card Value
+     */
     public void guessCard(Game game, Player activePlayer, int cardValue) {
 
         Player chosenPlayer = tmpChosenPlayer;
