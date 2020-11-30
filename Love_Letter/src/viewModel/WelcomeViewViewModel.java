@@ -16,64 +16,57 @@ import views.ChatView;
 import java.io.IOException;
 
 /**
+ * View Model for the initial Welcome Screen. The class receives the username from WelcomeView
+ * and passes it on to the Client Constructor. If the name is available, a new Client is created
+ * and the ChatView is initialized.
  * @author Josef, Elias
  */
 public class WelcomeViewViewModel {
 
-    // Property Instanzen mit getter und setter
+    // Properties
     private StringProperty userName = new SimpleStringProperty();
-
     private BooleanProperty submitButton = new SimpleBooleanProperty();
 
     public StringProperty userNameProperty() {
         return userName;
     }
-
-    public final String getUserName() {
-        return userName.get();
-    }
-
-    public final void setUserName(String newUserName) {
-        userName.set(newUserName);
-    }
-
     public BooleanProperty submitButtonProperty() {
         return submitButton;
     }
 
-    public final Boolean getSubmitButton() {
-        return submitButton.get();
+    public final String getUserName() {
+        return userName.get();
+    }
+    public final void setUserName(String newUserName) {
+        userName.set(newUserName);
     }
 
-    public final void setSubmitButton(Boolean value) {
-        submitButton.set(value);
-    }
 
     /**
      * Construct Client and initialize ChatView
      *
-     * @param stage passed from WelcomeView
+     * @param stage passed from WelcomeView to set up ChatView
      * @throws DuplicateNameException if name already taken (caught in WelcomeView)
      */
     public void submitUserName(Stage stage) throws DuplicateNameException {
 
         try {
-            Client client = new Client(getUserName());
-            stage.setTitle(getUserName());
+            Client client = new Client(getUserName());  //throws Exception
 
+            stage.setTitle(getUserName());
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("../views/ChatView.fxml"));
-
             stage.setScene(new Scene(loader.load()));
 
             ChatView chatView = loader.getController();
             chatView.setClient(client);
             stage.show();
 
-            //Close Window on "bye"
+            //Close Window on "!BYE"
             stage.setOnCloseRequest(e -> {
                 client.writeToServer("!BYE");
                 stage.close();
+                System.exit(0);
             });
         } catch (IOException e) {
             e.printStackTrace();

@@ -65,8 +65,8 @@ public class ChatViewViewModel {
 
         //Fenster schließen, falls "bye" eingegeben wird
         if (currentMessage.startsWith("!BYE")) {
-
             Platform.exit();
+            System.exit(0);
 
         } else {
 
