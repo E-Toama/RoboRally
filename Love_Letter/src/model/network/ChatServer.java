@@ -20,6 +20,10 @@ public class ChatServer {
     private final HashMap<String, PrintWriter> userMap = new HashMap<String, PrintWriter>();
     private Game game;
 
+    /**
+     * Creates and runs the Server
+     * @param args Command-line-args (not in use)
+     */
     public static void main(String[] args) {
 
         ChatServer server = new ChatServer();
@@ -27,18 +31,31 @@ public class ChatServer {
 
     }
 
+    /**
+     * Access the HashMap that stores pairs of usernames and their corresponding PrintWriters
+     * @return The map of username/Printwriter-pairs
+     */
     public synchronized HashMap<String, PrintWriter> getUserMap() {
 
         return this.userMap;
 
     }
 
+    /**
+     * Add a new user to the userMap.
+     * @param newUserName The name of the new user to add.
+     * @param newWriter The PrintWriter of the user for broadcasting messages.
+     */
     public synchronized void addUser(String newUserName, PrintWriter newWriter) {
 
         userMap.put(newUserName, newWriter);
 
     }
 
+    /**
+     * Sends a message (passed as String) to all connected Clients
+     * @param message String to send to all connected Clients.
+     */
     public synchronized void sendMessageToAllUsers(String message) {
 
         for (PrintWriter writer : userMap.values()) {
@@ -49,6 +66,11 @@ public class ChatServer {
 
     }
 
+    /**
+     * Sends a private message to a single user with specified username
+     * @param userName The addressee of the message
+     * @param message The content of the message
+     */
     public synchronized void sendMessageToSingleUser(String userName, String message) {
 
         PrintWriter writer = userMap.get(userName);
@@ -58,8 +80,7 @@ public class ChatServer {
     }
 
     /**
-     * creates a new game-object if it has not been created yet;
-     * auto-joins the first user and
+     * creates a new game-object if it has not been created yet and auto-joins the first user
      * @param userName the creator of the game
      */
     public synchronized void creatGame(String userName) {
@@ -78,7 +99,7 @@ public class ChatServer {
     }
 
     /**
-     * Tries to add the user to the game if she has not joined yet and the game is not running.
+     * Tries to add the user to the game, if she has not joined yet and the game is not running.
      * @param userName to check if already joined. Passed to the game as displayed playername.
      */
     public synchronized void joinGame(String userName) {
@@ -108,12 +129,20 @@ public class ChatServer {
 
     }
 
+    /**
+     * Passes the chosen game command of the user to the game
+     * @param username The user who is currently playing
+     */
     public synchronized void userPLaysLeftCard(String username) {
 
         game.playLeftCard(username);
 
     }
 
+    /**
+     * Passes the chosen game command of the user to the game
+     * @param username The user who is currently playing
+     */
     public synchronized void userPLaysRightCard(String username) {
 
         game.playRightCard(username);
@@ -144,6 +173,11 @@ public class ChatServer {
 
     }
 
+    /**
+     * Passes the user's guess to the game (in case of Guard-Card-Action)
+     * @param username The user who guessed a card value
+     * @param value The Card value (2-8)
+     */
     public synchronized void guessCard(String username, String value) {
 
         game.guessCard(username, value);
@@ -186,6 +220,9 @@ public class ChatServer {
 
     }
 
+    /**
+     * Ends the game by setting the game object to null
+     */
     public void endGame() {
 
         game = null;
