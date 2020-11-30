@@ -217,6 +217,7 @@ public class UserThread implements Runnable {
 
                     case "!STARTGAME":
                         server.startGame(userName);
+                        break;
 
                     case "!BYE":
                         return;
