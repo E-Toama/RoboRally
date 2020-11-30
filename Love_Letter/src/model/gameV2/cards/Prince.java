@@ -10,6 +10,9 @@ import model.gameV2.Player;
  */
 public class Prince extends Card {
 
+    /**
+     * A Constructor to initialize the Prince's value, name and description.
+     */
     public Prince() {
 
         value = 5;

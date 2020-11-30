@@ -12,7 +12,7 @@ import model.gameV2.Player;
 
 public class Princess extends Card {
     /**
-     * A Constructor to initialize the Priness value, name and description.
+     * A Constructor to initialize the Princess' value, name and description.
      */
     public Princess() {
 

@@ -13,6 +13,9 @@ public class Guard extends Card {
 
     private static Player tmpChosenPlayer = null;
 
+    /**
+     * A Constructor to initialize the Guard's value, name and description.
+     */
     public Guard() {
 
         value = 1;

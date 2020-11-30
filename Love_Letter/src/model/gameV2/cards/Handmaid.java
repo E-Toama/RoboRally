@@ -11,6 +11,9 @@ import model.gameV2.Player;
  */
 public class Handmaid extends Card {
 
+    /**
+     * A Constructor to initialize the Handmaid's value, name and description.
+     */
     public Handmaid() {
 
         value = 4;
