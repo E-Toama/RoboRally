@@ -28,7 +28,7 @@ public class ChatApp extends Application {
             stage.setTitle("Welcome");
 
             Parent welcome = FXMLLoader
-                    .load(getClass().getResource("../views/WelcomeView.fxml"));
+                    .load(getClass().getResource("/views/WelcomeView.fxml"));
 
             Scene welcomeScene = new Scene(welcome);
 

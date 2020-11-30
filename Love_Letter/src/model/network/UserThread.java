@@ -36,7 +36,7 @@ public class UserThread implements Runnable {
         try {
             //Look up proposed username in list
             String proposedName = incoming.readLine();
-            if (server.getUserMap().containsKey(proposedName) || proposedName == null) {
+            if (server.getUserMap().containsKey(proposedName) || proposedName == null || proposedName.isBlank() || proposedName.isEmpty() || proposedName.equals("null")) {
 
                 outgoing.println("taken");
                 throw new IOException();
@@ -66,6 +66,14 @@ public class UserThread implements Runnable {
     public void run() {
 
         try {
+
+            server.sendMessageToSingleUser(userName, "You can use the following commands:");
+            server.sendMessageToSingleUser(userName, "@ALL : Send a message to all users");
+            server.sendMessageToSingleUser(userName, "@Username : Send message to single user");
+            server.sendMessageToSingleUser(userName, "!CREATEGAME : To create a game");
+            server.sendMessageToSingleUser(userName, "!JOINGAME : To join a game");
+            server.sendMessageToSingleUser(userName, "!STARTGAME : To start the game");
+            server.sendMessageToSingleUser(userName, "!BYE : Exit the chat / game");
 
             while (true) {
                 //Unfiltered input from user
@@ -145,7 +153,7 @@ public class UserThread implements Runnable {
 
                     case "!CHOOSEANYPLAYER":
 
-                        if (true) {
+                        if (!messageWithoutSecondAttribute.equals("null")) {
 
                             if (server.getUserMap().containsKey(messageWithoutSecondAttribute)) {
 
@@ -166,7 +174,7 @@ public class UserThread implements Runnable {
 
                     case "!CHOOSEANOTHERPLAYER":
 
-                        if (true) {
+                        if (!messageWithoutSecondAttribute.equals("null")) {
 
                             if (server.getUserMap().containsKey(messageWithoutSecondAttribute)) {
 
@@ -187,7 +195,7 @@ public class UserThread implements Runnable {
 
                     case "!GUESSCARD":
 
-                        if (true) {
+                        if (!messageWithoutSecondAttribute.equals("null")) {
 
                             server.guessCard(userName, messageWithoutSecondAttribute);
 
@@ -210,7 +218,7 @@ public class UserThread implements Runnable {
                         server.startGame(userName);
 
                     case "!BYE":
-                        break;
+                        return;
 
                     default:
                         //Return game command suggestion

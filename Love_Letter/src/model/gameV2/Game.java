@@ -9,6 +9,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * Represents the "Game".
+ * Holds all necessary properties / objects for a game.
+ * Provides methods for interacting with the server, and gameplay as necessary.
+ *
  * @author Dennis, Josef
  */
 public class Game {
@@ -64,7 +68,7 @@ public class Game {
 
         for (Player player : playerList) {
 
-            server.sendMessageToSingleUser(username, player.userName + ": " + player.getWins());
+            server.sendMessageToSingleUser(username, player.userName + ": " + player.getWinCounter());
 
         }
 
@@ -190,8 +194,8 @@ public class Game {
         Player leader = null;
         int score = -1;
         for (Player p : nextRoundActivePlayerList) {
-            if (p.getWins() > score) {
-                score = p.getWins();
+            if (p.getWinCounter() > score) {
+                score = p.getWinCounter();
                 leader = p;
             }
         }
@@ -200,7 +204,7 @@ public class Game {
 
     private void startNewRound() {
 
-        if (getCurrentLeader().getWins() != roundWinsNeeded) {
+        if (getCurrentLeader().getWinCounter() != roundWinsNeeded) {
 
             activePlayerList = nextRoundActivePlayerList;
             nextRoundActivePlayerList = new LinkedList<Player>();
@@ -210,8 +214,7 @@ public class Game {
             hiddenCard = drawCardFromDeck();
 
             for (Player player : activePlayerList) {
-                player.addCard(drawCardFromDeck());
-                player.setProtected(false);
+                player.resetPlayer(drawCardFromDeck());
             }
 
             if (playerList.size() == 2) {
@@ -255,7 +258,7 @@ public class Game {
             List<Player> winners = determineWinners();
             for (Player p : winners) {
                 server.sendMessageToAllUsers(p.userName + " has won the Round!");
-                p.setWins();
+                p.setWinCounter();
                 nextRoundActivePlayerList.add(0, p);
             }
             server.sendMessageToAllUsers("Starting new Round!");

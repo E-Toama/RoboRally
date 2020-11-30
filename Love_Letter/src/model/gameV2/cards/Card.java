@@ -4,6 +4,8 @@ import model.gameV2.Game;
 import model.gameV2.Player;
 
 /**
+ * Represents a general card, its functions and its properties.
+ *
  * author Dennis
  */
 public abstract class Card {
