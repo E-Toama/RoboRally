@@ -56,7 +56,7 @@ public class Baron extends Card {
    */
   public void completePlay(Game game, Player activePlayer, Player chosenPlayer) {
 
-    if (chosenPlayer.isProtected()) {
+            game.server.sendMessageToSingleUser(activePlayer.userName, "The chosen player is protected, your card has no effect!");
 
       game.server.sendMessageToSingleUser(activePlayer.userName,
           "The chosen player is protected, your card has no effect!");
@@ -67,7 +67,10 @@ public class Baron extends Card {
 
     } else {
 
-      if (activePlayer.getCards().get(0).getValue() > chosenPlayer.getCards().get(0).getValue()) {
+                game.server.sendMessageToAllUsers(chosenPlayer.userName + " has played the " + chosenPlayer.getCards().get(0).getName() + " without effect and is out of the game!");
+                game.discardCard(chosenPlayer.getCards().remove(0));
+                game.getActivePlayerList().remove(chosenPlayer);
+                game.getNextRoundActivePlayerList().add(0, chosenPlayer);
 
         game.server.sendMessageToAllUsers(chosenPlayer.userName + " has played the "
             + chosenPlayer.getCards().get(0).getDescription() + " without effect!");
@@ -79,8 +82,8 @@ public class Baron extends Card {
         game.getActivePlayerList().add(activePlayer);
         game.gameMove(game.getActivePlayerList().get(0));
 
-      } else if (activePlayer.getCards().get(0).getValue() < chosenPlayer.getCards().get(0)
-          .getValue()) {
+                game.server.sendMessageToAllUsers(activePlayer.userName + " has played the " + activePlayer.getCards().get(0).getName() + " without effect and is out of the game!");
+                game.discardCard(activePlayer.getCards().remove(0));
 
         game.server.sendMessageToAllUsers(activePlayer.userName + " has played the "
             + activePlayer.getCards().get(0).getDescription() + " without effect!");

@@ -4,6 +4,8 @@ import model.gameV2.Game;
 import model.gameV2.Player;
 
 /**
+ * Implementation of the card Prince
+ *
  * @author Ehbal
  */
 public class Prince extends Card {
@@ -12,13 +14,13 @@ public class Prince extends Card {
 
         value = 5;
         name = "Prince";
-        description = "Choose a player. They discard their hand and draw a new card.";
+        description = "Player can choose any player to discard their hand and draw a new one.";
 
     }
 
     public void play(Game game, Player player) {
 
-        game.server.sendMessageToSingleUser(player.userName, "Choose a player who has to play his card and must draw a new one!");
+        game.server.sendMessageToSingleUser(player.userName, "Choose a player who has to play a card and must draw a new one!");
         game.server.sendMessageToSingleUser(player.userName, "You can choose between: ");
         for (Player player1 : game.getActivePlayerList()) {
 
@@ -33,7 +35,7 @@ public class Prince extends Card {
 
         if (chosenPlayer.isProtected()) {
 
-            game.server.sendMessageToSingleUser(activePlayer.userName, "The chosen player is protected, your card has no Effekt!");
+            game.server.sendMessageToSingleUser(activePlayer.userName, "The chosen player is protected, your card has no effect!");
 
         } else {
 
