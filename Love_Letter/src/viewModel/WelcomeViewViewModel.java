@@ -27,16 +27,34 @@ public class WelcomeViewViewModel {
     private StringProperty userName = new SimpleStringProperty();
     private BooleanProperty submitButton = new SimpleBooleanProperty();
 
+    /**
+     * Access the Property of the userName-field
+     * @return The userName-Property
+     */
     public StringProperty userNameProperty() {
         return userName;
     }
+
+    /**
+     * Access the Property of the submitButton
+     * @return the submitButton-Property
+     */
     public BooleanProperty submitButtonProperty() {
         return submitButton;
     }
 
+    /**
+     * Access the actual username
+     * @return the given username as String
+     */
     public final String getUserName() {
         return userName.get();
     }
+
+    /**
+     * Set a new username
+     * @param newUserName The new username.
+     */
     public final void setUserName(String newUserName) {
         userName.set(newUserName);
     }
