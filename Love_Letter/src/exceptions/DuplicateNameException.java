@@ -6,6 +6,10 @@ package exceptions;
  * @author Josef
  */
 public class DuplicateNameException extends Exception {
+    /**
+     * Exception constructor
+     * @param message informs the user that name is already taken
+     */
     public DuplicateNameException(String message) {
         super(message);
     }
