@@ -22,51 +22,70 @@ public class ChatViewViewModel {
   private Thread clientThread;
   private Client client;
 
+  /**
+   * Sets and runs the current client, called from the View-Class
+   * @param client The successfully constructed Client from Welcome-View
+   */
   public void setClient(Client client) {
     this.client = client;
     this.clientThread = new Thread(client);
     clientThread.start();
   }
 
+  /**
+   * Get the current client. Accessed by the ChatView-Class to append incoming messages
+   * @return The current client-object
+   */
   public Client getClient() {
     return client;
   }
 
   // Getters and Setters for Properties
+
+  /**
+   * Access the message property for bidirectional binding with the View-Class
+   * @return The message String Property bound to the Textfield
+   */
   public StringProperty messageProperty() {
     return message;
   }
 
+  /**
+   * Retrieves the actual String-message from the message property
+   * Performs a quick check if the message entered is null.
+   * @return the actual message submitted by the user
+   */
   public final String getMessage() {
-    return message.get();
+    return message.get() != null ? message.get() : "";
   }
 
+  /**
+   * Sets the content of the user's text field.
+   * Used in sendMessage()-method to set the text field back to empty after the user hits submit-button
+   * @param newMessage The new content of the message-text field
+   */
   public final void setMessage(String newMessage) {
     message.set(newMessage);
   }
 
+  /**
+   * Retrieves the current property of the sendButton
+   * @return Boolean Property of the sendButton
+   */
   public BooleanProperty sendButtonProperty() {
     return sendButton;
   }
 
-  public final Boolean getSendButton() {
-    return sendButton.get();
-  }
-
-  public final void setSendButton(Boolean value) {
-    sendButton.set(value);
-  }
-
   /**
-   * Fetch the current message from ChatView, pass it on to the server
-   * and empty the text field for the user.
+   * Fetch the current message from ChatView, pass it on to the server and
+   * empty the text field for the user.
    * Close the screen and shutdown client-side process if user enters "!BYE".
    */
   public final void sendMessage() {
     String currentMessage = getMessage();
     client.writeToServer(currentMessage);
 
-    // Fenster schließen, falls "bye" eingegeben wird
+    // Close window and stop process if user enters "!BYE"
     if (currentMessage.startsWith("!BYE")) {
       Platform.exit();
       System.exit(0);
