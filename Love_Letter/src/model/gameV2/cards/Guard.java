@@ -62,14 +62,6 @@ public class Guard extends Card {
             game.getActivePlayerList().add(activePlayer);
             game.gameMove(game.getActivePlayerList().get(0));
 
-        } else if (chosenPlayer.getCards().get(0).getValue() == 1) {
-
-            game.server.sendMessageToSingleUser(activePlayer.userName, "The chosen player also has a Guard! Your card has no Effekt");
-
-            game.getActivePlayerList().remove(activePlayer);
-            game.getActivePlayerList().add(activePlayer);
-            game.gameMove(game.getActivePlayerList().get(0));
-
         } else {
 
             game.server.sendMessageToSingleUser(activePlayer.userName, "Guess what card " + chosenPlayer.userName + " has on his Hand!");
