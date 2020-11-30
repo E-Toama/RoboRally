@@ -18,6 +18,12 @@ public class King extends Card {
 
     }
 
+    /**
+     * This method is responsible for playing the King card
+     *
+     * @param game   the current game state
+     * @param player the player who played the card
+     */
     public void play(Game game, Player player) {
 
         game.server.sendMessageToSingleUser(player.userName, "Choose a player with whom you want to change hands!");
@@ -35,6 +41,14 @@ public class King extends Card {
         game.server.sendMessageToSingleUser(player.userName, "Use the command !CHOOSEANOTHERPLAYER <choosenplayer> !");
 
     }
+
+    /**
+     * This method represents the logic behind playing the King card.
+     *
+     * @param game         the current game state
+     * @param activePlayer the player who played the king
+     * @param chosenPlayer the chosen player who has to change hands
+     */
 
     public void completePlay(Game game, Player activePlayer, Player chosenPlayer) {
 
