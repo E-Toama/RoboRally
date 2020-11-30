@@ -47,7 +47,7 @@ public class Baron extends Card {
 
             if (activePlayer.getCards().get(0).getValue() > chosenPlayer.getCards().get(0).getValue()) {
 
-                game.server.sendMessageToAllUsers(chosenPlayer.userName + " has played the " + chosenPlayer.getCards().get(0).getName() + " without effect!");
+                game.server.sendMessageToAllUsers(chosenPlayer.userName + " has played the " + chosenPlayer.getCards().get(0).getName() + " without effect and is out of the game!");
                 game.discardCard(chosenPlayer.getCards().remove(0));
                 game.getActivePlayerList().remove(chosenPlayer);
                 game.getNextRoundActivePlayerList().add(0, chosenPlayer);
@@ -58,7 +58,7 @@ public class Baron extends Card {
 
             } else if (activePlayer.getCards().get(0).getValue() < chosenPlayer.getCards().get(0).getValue()) {
 
-                game.server.sendMessageToAllUsers(activePlayer.userName + " has played the " + activePlayer.getCards().get(0).getName() + " without effect!");
+                game.server.sendMessageToAllUsers(activePlayer.userName + " has played the " + activePlayer.getCards().get(0).getName() + " without effect and is out of the game!");
                 game.discardCard(activePlayer.getCards().remove(0));
 
                 game.getActivePlayerList().remove(activePlayer);
