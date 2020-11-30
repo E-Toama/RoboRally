@@ -7,7 +7,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 /**
- * Handles the Client-Threads from the server-side
+ * Handles the Client-Threads from the Server-side. Processes the user's input and
+ * distributes the game commands to their respective ChatServer-methods.
  * @author Josef, Dennis
  */
 public class UserThread implements Runnable {
