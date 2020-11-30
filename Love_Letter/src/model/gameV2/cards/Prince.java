@@ -20,14 +20,23 @@ public class Prince extends Card {
 
     public void play(Game game, Player player) {
 
-        game.server.sendMessageToSingleUser(player.userName, "Choose a player who has to play a card and must draw a new one!");
-        game.server.sendMessageToSingleUser(player.userName, "You can choose between: ");
-        for (Player player1 : game.getActivePlayerList()) {
+        if (checkIfAllOtherPlayersAreProtected(game, player)) {
 
-            game.server.sendMessageToSingleUser(player.userName, player1.userName);
+            game.server.sendMessageToSingleUser(player.userName, "You are forced to choose yourself, because all other players are protected!");
+            completePlay(game, player, player);
+
+        } else {
+
+            game.server.sendMessageToSingleUser(player.userName, "Choose a player who has to play a card and must draw a new one!");
+            game.server.sendMessageToSingleUser(player.userName, "You can choose between: ");
+            for (Player player1 : game.getActivePlayerList()) {
+
+                game.server.sendMessageToSingleUser(player.userName, player1.userName);
+
+            }
+            game.server.sendMessageToSingleUser(player.userName, "Use the command !CHOOSEANYPLAYER <choosenplayer> !");
 
         }
-        game.server.sendMessageToSingleUser(player.userName, "Use the command !CHOOSEANYPLAYER <choosenplayer> !");
 
     }
 
@@ -46,6 +55,26 @@ public class Prince extends Card {
         game.getActivePlayerList().remove(activePlayer);
         game.getActivePlayerList().add(activePlayer);
         game.gameMove(game.getActivePlayerList().get(0));
+
+    }
+
+    public boolean checkIfAllOtherPlayersAreProtected(Game game, Player player) {
+
+        for (Player otherPlayer : game.getActivePlayerList()) {
+
+            if (!otherPlayer.userName.equals(player.userName)) {
+
+                if (!otherPlayer.isProtected()) {
+
+                    return false;
+
+                }
+
+            }
+
+        }
+
+        return true;
 
     }
 
