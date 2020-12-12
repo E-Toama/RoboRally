@@ -1,6 +1,6 @@
-package model.game.cards.programmingCards;
+package model.game.cards.programmingcards;
 
-public abstract class ProgrammingCard  {
+public abstract class ProgrammingCard extends model.game.cards.Card {
 
 
 }

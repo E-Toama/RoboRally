@@ -1,6 +1,6 @@
-package model.game.cards.programmingCards;
+package model.game.cards.programmingcards;
 
 
-public class UTurn extends ProgrammingCard {
+public class UTurn extends model.game.cards.programmingcards.ProgrammingCard {
 
 }

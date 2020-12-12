@@ -1,6 +1,6 @@
-package model.game.cards.programmingCards;
+package model.game.cards.programmingcards;
 
 
-public class MoveOne extends ProgrammingCard {
+public class MoveOne extends model.game.cards.programmingcards.ProgrammingCard {
 
 }

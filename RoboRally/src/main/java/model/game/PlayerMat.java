@@ -1,4 +1,4 @@
 package model.game;
 
-public class PlayerMat {
+public class PlayerMat{
 }
