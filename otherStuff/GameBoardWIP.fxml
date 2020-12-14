@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="848.0" prefWidth="1403.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane layoutX="411.0" layoutY="623.0" prefHeight="186.0" prefWidth="568.0" style="-fx-background-color: lightblue;">
+         <children>
+            <ImageView fx:id="pc_111" fitHeight="90.0" fitWidth="70.0" layoutX="377.0" layoutY="118.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Ace-of-Spades-icon.png" />
+               </image>
+            </ImageView>
+            <Rectangle fx:id="energyReserveScale" arcHeight="5.0" arcWidth="5.0" height="28.0" layoutX="99.0" layoutY="84.0" stroke="BLACK" strokeType="INSIDE" width="355.0">
+               <fill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop color="#8aff1f" />
+                        <Stop color="#f9ff3d" offset="0.4805414551607445" />
+                        <Stop color="#fc0000" offset="1.0" />
+                     </stops>
+                  </LinearGradient>
+               </fill>
+            </Rectangle>
+            <ImageView fx:id="pc_1111" fitHeight="90.0" fitWidth="70.0" layoutX="309.0" layoutY="118.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Ace-of-Spades-icon.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="pc_1112" fitHeight="90.0" fitWidth="70.0" layoutX="172.0" layoutY="119.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Ace-of-Spades-icon.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="pc_11111" fitHeight="90.0" fitWidth="70.0" layoutX="240.0" layoutY="119.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Ace-of-Spades-icon.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="pc_11112" fitHeight="90.0" fitWidth="70.0" layoutX="106.0" layoutY="119.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Ace-of-Spades-icon.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="pc_111121" fitHeight="100.0" fitWidth="80.0" layoutX="18.0" layoutY="63.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Ace-of-Spades-icon.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="pc_111122" fitHeight="100.0" fitWidth="80.0" layoutX="470.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Ace-of-Spades-icon.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="124.0" layoutY="60.0" text="5" />
+            <Circle layoutX="510.0" layoutY="36.0" radius="20.0" strokeType="INSIDE">
+               <stroke>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop color="BLACK" />
+                        <Stop color="WHITE" offset="1.0" />
+                     </stops>
+                  </LinearGradient>
+               </stroke>
+               <fill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop color="#768b9e" />
+                        <Stop color="WHITE" offset="1.0" />
+                     </stops>
+                  </LinearGradient>
+               </fill>
+            </Circle>
+            <Label fx:id="checkPointCounterView" alignment="CENTER" contentDisplay="CENTER" layoutX="496.0" layoutY="28.0" prefHeight="17.0" prefWidth="27.0" text="1" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="aPGameBoard" layoutX="414.0" layoutY="56.0" prefHeight="560.0" prefWidth="565.0" style="-fx-background-color: grey;">
+         <children>
+            <GridPane gridLinesVisible="true" layoutY="-1.0" prefHeight="560.0" prefWidth="560.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="NEVER" maxWidth="201.67730712890625" minWidth="10.0" prefWidth="191.03936767578125" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="201.67730712890625" minWidth="10.0" prefWidth="191.03936767578125" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="201.67730712890625" minWidth="10.0" prefWidth="191.03936767578125" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.30780029296875" minWidth="10.0" prefWidth="191.03936767578125" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.30780029296875" minWidth="10.0" prefWidth="191.03936767578125" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.30780029296875" minWidth="10.0" prefWidth="191.03936767578125" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.30780029296875" minWidth="10.0" prefWidth="191.03936767578125" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.30780029296875" minWidth="10.0" prefWidth="191.03936767578125" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.30780029296875" minWidth="10.0" prefWidth="191.03936767578125" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.30780029296875" minWidth="10.0" prefWidth="191.03936767578125" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.30780029296875" minWidth="10.0" prefWidth="191.03936767578125" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.30780029296875" minWidth="10.0" prefWidth="191.03936767578125" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.30780029296875" minWidth="10.0" prefWidth="191.03936767578125" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+         </children>
+      </AnchorPane>
+      <HBox accessibleRole="CONTEXT_MENU" alignment="TOP_CENTER" layoutX="296.0" layoutY="1.0" prefHeight="51.0" prefWidth="801.0">
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+         <children>
+            <MenuButton fx:id="playerInfo1" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="41.0" prefWidth="160.0" style="-fx-background-color: lightblue;" text="user1" textAlignment="CENTER">
+               <items>
+                  <MenuItem fx:id="playerInfoText1" mnemonicParsing="false" text="Player Info" />
+               </items>
+            </MenuButton>
+            <MenuButton fx:id="playerInfo2" alignment="CENTER" mnemonicParsing="false" prefHeight="41.0" prefWidth="160.0" text="user2" textAlignment="CENTER">
+              <items>
+                <MenuItem fx:id="playerInfoText2" mnemonicParsing="false" text="Player Info 2" />
+              </items>
+            </MenuButton>
+            <MenuButton fx:id="playerInfo3" alignment="CENTER" mnemonicParsing="false" prefHeight="41.0" prefWidth="160.0" style="-fx-background-color: lightblue;" text="user3" textAlignment="CENTER">
+              <items>
+                <MenuItem fx:id="playerInfoText3" mnemonicParsing="false" text="Player Info 3" />
+              </items>
+            </MenuButton>
+            <MenuButton fx:id="playerInfoText4" alignment="CENTER" mnemonicParsing="false" prefHeight="41.0" prefWidth="160.0" text="user4" textAlignment="CENTER">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Player Info 4" />
+              </items>
+            </MenuButton>
+            <MenuButton fx:id="playerInfo5" alignment="CENTER" mnemonicParsing="false" prefHeight="41.0" prefWidth="160.0" style="-fx-background-color: lightblue;" text="user5" textAlignment="CENTER">
+              <items>
+                <MenuItem fx:id="playerInfoText5" mnemonicParsing="false" text="player Info 5" />
+              </items>
+            </MenuButton>
+         </children>
+      </HBox>
+      <Button fx:id="giveTurnButton" layoutX="1135.0" layoutY="660.0" mnemonicParsing="false" prefHeight="128.0" prefWidth="130.0" text="Give Turn" />
+      <Label fx:id="timerLabel" alignment="CENTER" layoutX="1142.0" layoutY="592.0" prefHeight="63.0" prefWidth="116.0" text="Timer" textAlignment="CENTER" />
+      <AnchorPane layoutX="91.0" layoutY="92.0" prefHeight="348.0" prefWidth="247.0">
+         <children>
+            <GridPane alignment="CENTER" layoutX="20.0" layoutY="78.0" prefHeight="270.0" prefWidth="227.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button fx:id="trojanHorseCardButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="110.0" prefWidth="90.0" text="TrojanHorse" />
+                  <Button fx:id="wormCardButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="110.0" prefWidth="90.0" text="Worm" GridPane.columnIndex="1" />
+                  <Button fx:id="virusButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="110.0" prefWidth="90.0" text="Virus" textAlignment="CENTER" GridPane.rowIndex="1" />
+                  <Button fx:id="spamButton" alignment="CENTER" mnemonicParsing="false" prefHeight="110.0" prefWidth="90.0" text="Spam" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+               </children>
+            </GridPane>
+            <Text layoutX="60.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Demage Cards" wrappingWidth="133.0027781369816">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+         </children>
+      </AnchorPane>
+      <Label alignment="TOP_LEFT" layoutX="1011.0" layoutY="142.0" prefHeight="372.0" prefWidth="367.0" style="-fx-background-color: lightyellow;" text="Game Log" />
+      <AnchorPane layoutX="31.0" layoutY="487.0" prefHeight="324.0" prefWidth="363.0" style="-fx-background-color: lightpink;">
+         <children>
+            <Text layoutX="108.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Upgrade Shop" textAlignment="CENTER" wrappingWidth="135.15666928090036">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+            <GridPane alignment="CENTER" layoutX="55.0" layoutY="68.0" prefHeight="234.0" prefWidth="274.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="100.0" prefWidth="80.0">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="76.0" fitWidth="59.0">
+                           <image>
+                              <Image url="@Ace-of-Spades-icon.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="100.0" prefWidth="80.0" text="upgrade1" GridPane.columnIndex="1">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </Button>
+                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="100.0" prefWidth="80.0" text="upgrade3" textAlignment="CENTER" GridPane.rowIndex="1">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </Button>
+                  <Button alignment="CENTER" mnemonicParsing="false" prefHeight="100.0" prefWidth="80.0" text="upgrade4" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </Button>
+                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="100.0" prefWidth="80.0" text="upgrade2" GridPane.columnIndex="2">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </Button>
+                  <Button alignment="CENTER" mnemonicParsing="false" prefHeight="100.0" prefWidth="80.0" text="upgrade5" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </Button>
+               </children>
+            </GridPane>
+         </children>
+      </AnchorPane>
+   </children>
+   <padding>
+      <Insets right="100.0" />
+   </padding>
+</AnchorPane>
