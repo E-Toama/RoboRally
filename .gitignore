@@ -81,6 +81,8 @@ local.properties
 .idea/**/dictionaries
 .idea/**/shelf
 .idea/**
+
+
 # Generated files
 .idea/**/contentModel.xml
 
@@ -246,3 +248,5 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.gitignore.io/api/java,linux,macos,windows,eclipse,intellij
+/RoboRally/.idea/
+/RoboRally/RoboRally.iml
