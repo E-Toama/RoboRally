@@ -1,4 +1,4 @@
-package server.game;
+package game;
 
 public class Game {
 }
