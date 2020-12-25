@@ -55,7 +55,7 @@
                      <graphic>
                         <ImageView fx:id="smashBotImage" fitHeight="130.0" fitWidth="130.0">
                            <image>
-                              <Image url="@Yellow.png" />
+                              <Image url="@Images/Yellow.png" />
                            </image></ImageView>
                      </graphic>
                   </Button>
@@ -63,7 +63,7 @@
                      <graphic>
                         <ImageView fx:id="hulkImage" fitHeight="130.0" fitWidth="130.0">
                            <image>
-                              <Image url="@Red.png" />
+                              <Image url="@Images/Red.png" />
                            </image></ImageView>
                      </graphic>
                   </Button>
@@ -71,7 +71,7 @@
                      <graphic>
                         <ImageView fx:id="spinBotImage" fitHeight="130.0" fitWidth="130.0">
                            <image>
-                              <Image url="@Purple.png" />
+                              <Image url="@Images/Blue.png" />
                            </image>
                         </ImageView>
                      </graphic></Button>
@@ -79,7 +79,7 @@
                      <graphic>
                         <ImageView fx:id="hammerBotImage" fitHeight="130.0" fitWidth="130.0">
                            <image>
-                              <Image url="@Purple.png" />
+                              <Image url="@Images/Purple.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -88,7 +88,7 @@
                      <graphic>
                         <ImageView fx:id="twonkyImage" fitHeight="130.0" fitWidth="130.0">
                            <image>
-                              <Image url="@Orange.png" />
+                              <Image url="@Images/Orange.png" />
                            </image>
                         </ImageView>
                      </graphic></Button>
@@ -96,7 +96,7 @@
                      <graphic>
                         <ImageView fx:id="zoomBotImage" fitHeight="130.0" fitWidth="130.0">
                            <image>
-                              <Image url="@Green.png" />
+                              <Image url="@Images/Green.png" />
                            </image>
                         </ImageView>
                      </graphic></Button>
@@ -129,7 +129,7 @@
          <children>
             <ImageView fitHeight="36.0" fitWidth="131.0" layoutX="42.0" layoutY="14.0">
                <image>
-                  <Image url="@RoboRallyLogo.png" />
+                  <Image url="@Images/RoboRallyLogo.png" />
                </image>
             </ImageView>
          </children>
