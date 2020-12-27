@@ -173,8 +173,8 @@ public class ClientThread implements Runnable {
 
             PlayerStatus receivedMessage = (PlayerStatus) incomingMessage.getMessageBody();
 
-            playerList.get(receivedMessage.getId()).setStatus(receivedMessage.getReady());
-            observablePlayerMap.get(receivedMessage.getId()).setStatus(receivedMessage.getReady());
+            playerList.get(receivedMessage.getPlayerID()).setStatus(receivedMessage.getReady());
+            observablePlayerMap.get(receivedMessage.getPlayerID()).setStatus(receivedMessage.getReady());
 
         } else {
 

@@ -2,18 +2,18 @@ package server.messages;
 
 public class PlayerStatus extends MessageBody {
 
-    private final double id;
+    private final double playerID;
     private final Boolean ready;
 
-    public PlayerStatus(double id, Boolean ready) {
+    public PlayerStatus(double playerID, Boolean ready) {
 
-        this.id = id;
+        this.playerID = playerID;
         this.ready = ready;
 
     }
 
-    public double getId() {
-        return id;
+    public double getPlayerID() {
+        return playerID;
     }
 
     public Boolean getReady() {
