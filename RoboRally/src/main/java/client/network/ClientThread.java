@@ -1,5 +1,6 @@
 package client.network;
 
+import game.cards.Card;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
@@ -116,9 +117,53 @@ public class ClientThread implements Runnable {
                     /*
                     * Added cases for Protocol 1.0
                     */
-/*                    case "ConnectionUpdate":
+                    case "ConnectionUpdate":
                         handleConnectionUpdate(incomingMessage);
-                        break;*/
+                        break;
+
+                    case "CardPlayed":
+                        handleCardPlayed(incomingMessage);
+                        break;
+
+                    case "CurrentPlayer":
+                        handleCurrentPlayer(incomingMessage);
+                        break;
+
+                    case "ActivePhase":
+                        handleActivePhase(incomingMessage);
+                        break;
+
+                    case "StartingPointTaken":
+                        handleStartingPointTaken(incomingMessage);
+                        break;
+
+                    case "YourCards":
+                        handleYourCards(incomingMessage);
+                        break;
+
+                    case "NotYourCards":
+                        handleNotYourCards(incomingMessage);
+                        break;
+
+                    case "ShuffleCoding":
+                        //TODO: IS this case going to be handled by the client? If so, implement the handlerMethod here
+                        break;
+
+                    case "CardSelected":
+                        handleCardSelected(incomingMessage);
+                        break;
+
+                    case "SelectionFinished":
+                        handleSelectionFinished(incomingMessage);
+                        break;
+
+                    case "TimerStarted":
+                        handleTimerStarted(incomingMessage);
+                        break;
+
+                    case "TimerEnded":
+                        handleTimerEnded(incomingMessage);
+                        break;
 
                     default:
                         break;
@@ -233,17 +278,97 @@ public class ClientThread implements Runnable {
 
     }
 
+
+
+
     /*
     * Added methods for Protocol 1.0
     */
 
-/*
     private void handleConnectionUpdate(Message incomingMessage) {
         if (incomingMessage.getMessageBody() instanceof ConnectionUpdate) {
             ConnectionUpdate connectionUpdate = (ConnectionUpdate) incomingMessage.getMessageBody();
+            //ToDo: Implement "Remove player"-option
         }
     }
-*/
+
+    private void handleCardPlayed(Message incomingMessage) {
+        if (incomingMessage.getMessageBody() instanceof CardPlayed) {
+            CardPlayed cardPlayed = (CardPlayed) incomingMessage.getMessageBody();
+            //ToDo: Implement "Card Played" behaviour
+        }
+    }
+
+    private void handleCurrentPlayer(Message incomingMessage) {
+        if (incomingMessage.getMessageBody() instanceof  CurrentPlayer) {
+            CurrentPlayer currentPlayer = (CurrentPlayer) incomingMessage.getMessageBody();
+            //ToDo: Implement "CurrentPlayer" == Update GUI and turns
+        }
+    }
+
+    private void handleActivePhase(Message incomingMessage) {
+        if (incomingMessage.getMessageBody() instanceof  ActivePhase) {
+            ActivePhase activePhase = (ActivePhase) incomingMessage.getMessageBody();
+           /* TODO: Implement "ActivePhase"
+           * Protocol:
+           * 0 => Aufbauphase
+           * 1 => Upgradephase
+           * 2 => Programmierphase
+           * 3 => Aktivierungsphase
+           * */
+        }
+    }
+
+    private void handleStartingPointTaken(Message incomingMessage) {
+        if (incomingMessage.getMessageBody() instanceof  StartingPointTaken) {
+            StartingPointTaken startingPointTaken = (StartingPointTaken) incomingMessage.getMessageBody();
+            //ToDo: Implement "StartingPointTaken": "Wenn die gewünschte Position valide ist, werden alle Spieler darüber benachrichtigt."
+        }
+    }
+
+    private void handleYourCards(Message incomingMessage) {
+        if (incomingMessage.getMessageBody() instanceof  YourCards) {
+            YourCards yourCards = (YourCards) incomingMessage.getMessageBody();
+            Card[] cards = yourCards.getCards();
+            //ToDo: Implement "YourCards" (Client-Thread)
+        }
+    }
+
+    private void handleNotYourCards(Message incomingMessage) {
+        if (incomingMessage.getMessageBody() instanceof  NotYourCards) {
+            NotYourCards notYourCards = (NotYourCards) incomingMessage.getMessageBody();
+            //ToDo: Implement "NotYourCards" (Client-Thread)
+        }
+    }
+
+    private void handleCardSelected(Message incomingMessage) {
+        if (incomingMessage.getMessageBody() instanceof  CardSelected) {
+            CardSelected cardSelected = (CardSelected) incomingMessage.getMessageBody();
+            //ToDo: Update GUI: taken programming registers
+        }
+    }
+
+    private void handleSelectionFinished(Message incomingMessage) {
+        if (incomingMessage.getMessageBody() instanceof  SelectionFinished) {
+            SelectionFinished selectionFinished = (SelectionFinished) incomingMessage.getMessageBody();
+            //ToDo: "Sobald ein Spieler die fünfte Karte gelegt hat, sind keine Änderungen mehr möglich! Dies wird für alle sichtbar übertragen."
+        }
+    }
+
+    private void handleTimerStarted(Message incomingMessage) {
+        if (incomingMessage.getMessageBody() instanceof  TimerStarted) {
+            TimerStarted timerStarted = (TimerStarted) incomingMessage.getMessageBody();
+            //ToDo: "Als Folge des ersten fertigen Spielers startet der 30 Sekunden Timer."
+        }
+    }
+
+    private void handleTimerEnded(Message incomingMessage) {
+        if (incomingMessage.getMessageBody() instanceof  TimerEnded) {
+            TimerEnded timerEnded = (TimerEnded) incomingMessage.getMessageBody();
+            //ToDo: "Meldung [...] beinhaltet auch die Information über evtl. zu langsam reagierende Spieler."
+        }
+    }
+
 
     private void establishConnection() throws IOException {
 

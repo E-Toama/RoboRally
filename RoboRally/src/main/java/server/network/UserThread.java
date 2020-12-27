@@ -1,5 +1,6 @@
 package server.network;
 
+import game.cards.Card;
 import player.Player;
 import server.messages.*;
 import server.messages.Error;
@@ -99,6 +100,20 @@ public class UserThread implements Runnable {
                     case "Error":
                         handleError(incomingMessage);
                         break;
+
+                    /*
+                     * Added cases for Protocol 1.0
+                     */
+                    case "PlayCard":
+                        handlePlayCard(incomingMessage);
+                        break;
+
+                    case "SetStartingPoint":
+                        handleSetStartingPoint(incomingMessage);
+                        break;
+
+                    case "SelectCard":
+                        handleSelectCard(incomingMessage);
 
                     default:
                         break;
@@ -211,6 +226,44 @@ public class UserThread implements Runnable {
 
         //ToDo: handleError (UserThread)
 
+    }
+
+    /*
+     * Added methods for Protocol 1.0
+     */
+
+    private void handlePlayCard(Message incomingMessage) {
+        if (incomingMessage.getMessageBody() instanceof PlayCard) {
+            PlayCard playCard = (PlayCard) incomingMessage.getMessageBody();
+            String cardPlayed = playCard.getCard();
+            //ToDo: handle PlayCard (UserThread)
+        }
+    }
+
+    private void handleSetStartingPoint(Message incomingMessage) {
+        if (incomingMessage.getMessageBody() instanceof SetStartingPoint) {
+            SetStartingPoint setStartingPoint = (SetStartingPoint) incomingMessage.getMessageBody();
+            int chosenStartingPoint = setStartingPoint.getPosition();
+            if (true) { //ToDo: check if Position is valid (UserThread)
+                String outgoingMessage = messageHandler.buildMessage("StartingPointTaken", new StartingPointTaken(this.ID, chosenStartingPoint));
+                server.sendMessageToAllUsers(outgoingMessage);
+            } else {
+                String error = messageHandler.buildMessage("Error", new Error("StartingPoint is not valid"));
+                outgoing.println(error);
+            }
+        }
+    }
+
+    private void handleSelectCard(Message incomingMessage) {
+        if (incomingMessage.getMessageBody() instanceof SelectCard) {
+            SelectCard selectCard = (SelectCard) incomingMessage.getMessageBody();
+            String selectedCard = selectCard.getCards();
+            int register = selectCard.getRegister();
+            //ToDo: Game-Logic for selected cards
+
+            String outgoingMessage = messageHandler.buildMessage("CardSelected", new CardSelected(this.ID, register));
+            server.sendMessageToAllUsers(outgoingMessage);
+        }
     }
 
     private void establishConnection() throws IOException {
