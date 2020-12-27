@@ -113,6 +113,13 @@ public class ClientThread implements Runnable {
                         handleError(incomingMessage);
                         break;
 
+                    /*
+                    * Added cases for Protocol 1.0
+                    */
+/*                    case "ConnectionUpdate":
+                        handleConnectionUpdate(incomingMessage);
+                        break;*/
+
                     default:
                         break;
 
@@ -225,6 +232,18 @@ public class ClientThread implements Runnable {
         //ToDo: handleError (ClientThread)
 
     }
+
+    /*
+    * Added methods for Protocol 1.0
+    */
+
+/*
+    private void handleConnectionUpdate(Message incomingMessage) {
+        if (incomingMessage.getMessageBody() instanceof ConnectionUpdate) {
+            ConnectionUpdate connectionUpdate = (ConnectionUpdate) incomingMessage.getMessageBody();
+        }
+    }
+*/
 
     private void establishConnection() throws IOException {
 
