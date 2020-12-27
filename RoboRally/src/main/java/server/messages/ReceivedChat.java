@@ -1,9 +1,12 @@
 package server.messages;
 
+import com.google.gson.annotations.SerializedName;
+
 public class ReceivedChat extends MessageBody {
 
     private final String message;
     private final String from;
+    @SerializedName("private")
     private final Boolean isPrivate;
 
     public ReceivedChat(String message, String from, Boolean isPrivate) {
