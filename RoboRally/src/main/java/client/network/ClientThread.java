@@ -265,7 +265,7 @@ public class ClientThread implements Runnable {
 
                 Welcome receivedMessage = (Welcome) secondIncomingMessage.getMessageBody();
 
-                this.ID = receivedMessage.getPlayerId();
+                this.ID = receivedMessage.getPlayerID();
 
             } else if (secondIncomingMessage.getMessageType().equals("Error") && secondIncomingMessage.getMessageBody() instanceof Error) {
 
