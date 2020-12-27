@@ -2,15 +2,15 @@ package server.messages;
 
 public class Welcome extends MessageBody {
 
-    private final int id;
+    private final int playerId;
 
     public Welcome(int id) {
 
-        this.id = id;
+        this.playerId = id;
 
     }
 
-    public int getId() {
-        return id;
+    public int getPlayerId() {
+        return playerId;
     }
 }
