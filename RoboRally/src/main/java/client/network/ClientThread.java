@@ -1,5 +1,6 @@
 package client.network;
 
+import game.Game;
 import game.cards.Card;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -165,6 +166,50 @@ public class ClientThread implements Runnable {
                         handleTimerEnded(incomingMessage);
                         break;
 
+                    case "DiscardHand":
+                        handleDiscardHand(incomingMessage);
+                        break;
+
+                    case "CardsYouGotNow":
+                        handleCardsYouGotNow(incomingMessage);
+                        break;
+
+                    case "CurrentCards":
+                        handleCurrentCards(incomingMessage);
+                        break;
+
+                    case "Movement":
+                        handleMovement(incomingMessage);
+                        break;
+
+                    case "DrawDamage":
+                        handleDrawDamage(incomingMessage);
+                        break;
+
+                    case "PlayerShooting":
+                        handlePlayerShooting(incomingMessage);
+                        break;
+
+                    case "Reboot":
+                        handleReboot(incomingMessage);
+                        break;
+
+                    case "PlayerTurning":
+                        handlePlayerTurning(incomingMessage);
+                        break;
+
+                    case "Energy":
+                        handleEnergy(incomingMessage);
+                        break;
+
+                    case "CheckPointReached":
+                        handleCheckPointReached(incomingMessage);
+                        break;
+
+                    case "GameWon":
+                        handleGameWon(incomingMessage);
+                        break;
+
                     default:
                         break;
 
@@ -285,28 +330,34 @@ public class ClientThread implements Runnable {
     * Added methods for Protocol 1.0
     */
 
-    private void handleConnectionUpdate(Message incomingMessage) {
+    private void handleConnectionUpdate(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof ConnectionUpdate) {
             ConnectionUpdate connectionUpdate = (ConnectionUpdate) incomingMessage.getMessageBody();
             //ToDo: Implement "Remove player"-option
+        } else {
+            throw new IOException("Something went wrong! Invalid Message Body! (Not instance of ConnectionUpdate)");
         }
     }
 
-    private void handleCardPlayed(Message incomingMessage) {
+    private void handleCardPlayed(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof CardPlayed) {
             CardPlayed cardPlayed = (CardPlayed) incomingMessage.getMessageBody();
             //ToDo: Implement "Card Played" behaviour
+        } else {
+            throw new IOException("Something went wrong! Invalid Message Body! (Not instance of CardPlayed)");
         }
     }
 
-    private void handleCurrentPlayer(Message incomingMessage) {
+    private void handleCurrentPlayer(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof  CurrentPlayer) {
             CurrentPlayer currentPlayer = (CurrentPlayer) incomingMessage.getMessageBody();
             //ToDo: Implement "CurrentPlayer" == Update GUI and turns
+        } else {
+            throw new IOException("Something went wrong! Invalid Message Body! (Not instance of CurrentPlayer)");
         }
     }
 
-    private void handleActivePhase(Message incomingMessage) {
+    private void handleActivePhase(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof  ActivePhase) {
             ActivePhase activePhase = (ActivePhase) incomingMessage.getMessageBody();
            /* TODO: Implement "ActivePhase"
@@ -316,58 +367,175 @@ public class ClientThread implements Runnable {
            * 2 => Programmierphase
            * 3 => Aktivierungsphase
            * */
+        } else {
+            throw new IOException("Something went wrong! Invalid Message Body! (Not instance of ActivePhase)");
         }
     }
 
-    private void handleStartingPointTaken(Message incomingMessage) {
+    private void handleStartingPointTaken(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof  StartingPointTaken) {
             StartingPointTaken startingPointTaken = (StartingPointTaken) incomingMessage.getMessageBody();
             //ToDo: Implement "StartingPointTaken": "Wenn die gewünschte Position valide ist, werden alle Spieler darüber benachrichtigt."
+        } else {
+            throw new IOException("Something went wrong! Invalid Message Body! (Not instance of StartingPointTaken)");
         }
     }
 
-    private void handleYourCards(Message incomingMessage) {
+    private void handleYourCards(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof  YourCards) {
             YourCards yourCards = (YourCards) incomingMessage.getMessageBody();
             Card[] cards = yourCards.getCards();
             //ToDo: Implement "YourCards" (Client-Thread)
+        } else {
+            throw new IOException("Something went wrong! Invalid Message Body! (Not instance of YourCards)");
         }
     }
 
-    private void handleNotYourCards(Message incomingMessage) {
+    private void handleNotYourCards(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof  NotYourCards) {
             NotYourCards notYourCards = (NotYourCards) incomingMessage.getMessageBody();
             //ToDo: Implement "NotYourCards" (Client-Thread)
+        } else {
+            throw new IOException("Something went wrong! Invalid Message Body! (Not instance of NotYourCards)");
         }
     }
 
-    private void handleCardSelected(Message incomingMessage) {
+    private void handleCardSelected(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof  CardSelected) {
             CardSelected cardSelected = (CardSelected) incomingMessage.getMessageBody();
             //ToDo: Update GUI: taken programming registers
+        } else {
+            throw new IOException("Something went wrong! Invalid Message Body! (Not instance of CardSelected)");
         }
     }
 
-    private void handleSelectionFinished(Message incomingMessage) {
+    private void handleSelectionFinished(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof  SelectionFinished) {
             SelectionFinished selectionFinished = (SelectionFinished) incomingMessage.getMessageBody();
             //ToDo: "Sobald ein Spieler die fünfte Karte gelegt hat, sind keine Änderungen mehr möglich! Dies wird für alle sichtbar übertragen."
+        } else {
+            throw new IOException("Something went wrong! Invalid Message Body! (Not instance of SelectionFinished)");
         }
     }
 
-    private void handleTimerStarted(Message incomingMessage) {
+    private void handleTimerStarted(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof  TimerStarted) {
             TimerStarted timerStarted = (TimerStarted) incomingMessage.getMessageBody();
             //ToDo: "Als Folge des ersten fertigen Spielers startet der 30 Sekunden Timer."
+        } else {
+            throw new IOException("Something went wrong! Invalid Message Body! (Not instance of TimerStarted)");
         }
     }
 
-    private void handleTimerEnded(Message incomingMessage) {
+    private void handleTimerEnded(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof  TimerEnded) {
             TimerEnded timerEnded = (TimerEnded) incomingMessage.getMessageBody();
             //ToDo: "Meldung [...] beinhaltet auch die Information über evtl. zu langsam reagierende Spieler."
+        } else {
+            throw new IOException("Something went wrong! Invalid Message Body! (Not instance of TimerEnded)");
         }
     }
+
+    private void handleDiscardHand(Message incomingMessage) throws IOException {
+        if (incomingMessage.getMessageBody() instanceof DiscardHand) {
+            DiscardHand discardHand = (DiscardHand) incomingMessage.getMessageBody();
+            //ToDo: "Das Ergebnis wird dem Spieler dann mitgeteilt."
+        } else {
+            throw new IOException("Something went wrong! Invalid Message Body! (Not instance of DiscardHand)");
+        }
+    }
+
+    private void handleCardsYouGotNow(Message incomingMessage) throws IOException {
+        if (incomingMessage.getMessageBody() instanceof CardsYouGotNow) {
+            CardsYouGotNow cardsYouGotNow = (CardsYouGotNow) incomingMessage.getMessageBody();
+            Card[] yourCards = cardsYouGotNow.getCards();
+            //ToDo: Game-logic for CardsYouGotNow
+        } else {
+            throw new IOException("Something went wrong! Invalid Message Body! (Not instance of CardsYouGotNow)");
+        }
+    }
+
+    private void handleCurrentCards(Message incomingMessage) throws IOException {
+        if (incomingMessage.getMessageBody() instanceof CurrentCards) {
+            CurrentCards currentCards = (CurrentCards) incomingMessage.getMessageBody();
+            //ToDo: Update GUI CurrentCards
+        } else {
+            throw new IOException("Something went wrong! Invalid Message Body! (Not instance of CurrentCards)");
+        }
+    }
+
+    private void handleMovement(Message incomingMessage) throws IOException {
+        if (incomingMessage.getMessageBody() instanceof Movement) {
+            Movement movement = (Movement) incomingMessage.getMessageBody();
+            //ToDo: Update GUI Movement
+        } else {
+            throw new IOException("Something went wrong! Invalid Message Body! (Not instance of Movement)");
+        }
+    }
+
+    private void handleDrawDamage(Message incomingMessage) throws IOException {
+        if (incomingMessage.getMessageBody() instanceof DrawDamage) {
+            DrawDamage drawDamage = (DrawDamage) incomingMessage.getMessageBody();
+            //ToDo: Update GUI DrawDamage
+        } else {
+            throw new IOException("Something went wrong! Invalid Message Body! (Not instance of DrawDamage)");
+        }
+    }
+
+    private void handlePlayerShooting(Message incomingMessage) throws IOException {
+        if (incomingMessage.getMessageBody() instanceof PlayerShooting) {
+            PlayerShooting playerShooting = (PlayerShooting) incomingMessage.getMessageBody();
+            //ToDo: Update GUI PlayerShooting
+        } else {
+            throw new IOException("Something went wrong! Invalid Message Body! (Not instance of PlayerShooting)");
+        }
+    }
+
+    private void handleReboot(Message incomingMessage) throws IOException {
+        if (incomingMessage.getMessageBody() instanceof Reboot) {
+            Reboot reboot = (Reboot) incomingMessage.getMessageBody();
+            //ToDo: Update GUI Reboot
+        } else {
+            throw new IOException("Something went wrong! Invalid Message Body! (Not instance of Reboot)");
+        }
+    }
+
+    private void handlePlayerTurning(Message incomingMessage) throws IOException {
+        if (incomingMessage.getMessageBody() instanceof PlayerTurning) {
+            PlayerTurning playerTurning = (PlayerTurning) incomingMessage.getMessageBody();
+            //ToDo: Update GUI PlayerTurning
+        } else {
+            throw new IOException("Something went wrong! Invalid Message Body! (Not instance of PlayerTurning)");
+        }
+    }
+
+    private void handleEnergy(Message incomingMessage) throws IOException {
+        if (incomingMessage.getMessageBody() instanceof Energy) {
+            Energy energy = (Energy) incomingMessage.getMessageBody();
+            //ToDo: Update GUI Energy
+        } else {
+            throw new IOException("Something went wrong! Invalid Message Body! (Not instance of Energy)");
+        }
+    }
+    private void handleCheckPointReached(Message incomingMessage) throws IOException {
+        if (incomingMessage.getMessageBody() instanceof CheckpointReached) {
+            CheckpointReached checkpointReached = (CheckpointReached) incomingMessage.getMessageBody();
+            //ToDo: Update GUI CheckpointReached
+        } else {
+            throw new IOException("Something went wrong! Invalid Message Body! (Not instance of CheckpointReached)");
+        }
+    }
+
+    private void handleGameWon(Message incomingMessage) throws IOException {
+        if (incomingMessage.getMessageBody() instanceof GameWon) {
+            GameWon gameWon = (GameWon) incomingMessage.getMessageBody();
+            //ToDo: Update GUI CheckpointReached
+        } else {
+            throw new IOException("Something went wrong! Invalid Message Body! (Not instance of GameWon)");
+        }
+    }
+
+
 
 
     private void establishConnection() throws IOException {
