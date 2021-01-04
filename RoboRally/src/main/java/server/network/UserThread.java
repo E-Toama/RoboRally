@@ -29,11 +29,10 @@ public class UserThread implements Runnable {
         this.socket = socket;
         this.server = server;
         this.ID = ID;
+        this.player = new Player(this.ID, Integer.toString(this.ID), 0);
 
         incoming = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         outgoing = new PrintWriter(socket.getOutputStream(), true);
-
-        run();
 
     }
 
@@ -284,11 +283,6 @@ public class UserThread implements Runnable {
             throw new IOException("Something went wrong! Invalid Message Body! (not instance of PlayIt)");
         }
     }
-
-
-
-
-
 
     private void establishConnection() throws IOException {
 
