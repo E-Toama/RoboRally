@@ -48,7 +48,7 @@
                      <graphic>
                         <ImageView fx:id="smashBotImage" fitHeight="130.0" fitWidth="130.0">
                            <image>
-                              <Image url="@vp-neidische-narwale/otherStuff/Images/Yellow.png" />
+                              <Image url="@../../../../../otherStuff/Images/Yellow.png" />
                            </image></ImageView>
                      </graphic>
                   </Button>
@@ -56,7 +56,7 @@
                      <graphic>
                         <ImageView fx:id="hulkImage" fitHeight="130.0" fitWidth="130.0">
                            <image>
-                              <Image url="@vp-neidische-narwale/otherStuff/Images/Red.png" />
+                              <Image url="@../../../../../otherStuff/Images/Red.png" />
                            </image></ImageView>
                      </graphic>
                   </Button>
@@ -64,7 +64,7 @@
                      <graphic>
                         <ImageView fx:id="spinBotImage" fitHeight="130.0" fitWidth="130.0">
                            <image>
-                              <Image url="@vp-neidische-narwale/otherStuff/Images/Blue.png" />
+                              <Image url="@../../../../../otherStuff/Images/Blue.png" />
                            </image>
                         </ImageView>
                      </graphic></Button>
@@ -72,7 +72,7 @@
                      <graphic>
                         <ImageView fx:id="hammerBotImage" fitHeight="130.0" fitWidth="130.0">
                            <image>
-                              <Image url="@vp-neidische-narwale/otherStuff/Images/Purple.png" />
+                              <Image url="@../../../../../otherStuff/Images/Purple.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -81,7 +81,7 @@
                      <graphic>
                         <ImageView fx:id="twonkyImage" fitHeight="130.0" fitWidth="130.0">
                            <image>
-                              <Image url="@vp-neidische-narwale/otherStuff/Images/Orange.png" />
+                              <Image url="@../../../../../otherStuff/Images/Orange.png" />
                            </image>
                         </ImageView>
                      </graphic></Button>
@@ -89,7 +89,7 @@
                      <graphic>
                         <ImageView fx:id="zoomBotImage" fitHeight="130.0" fitWidth="130.0">
                            <image>
-                              <Image url="@vp-neidische-narwale/otherStuff/Images/Green.png" />
+                              <Image url="@../../../../../otherStuff/Images/Green.png" />
                            </image>
                         </ImageView>
                      </graphic></Button>
