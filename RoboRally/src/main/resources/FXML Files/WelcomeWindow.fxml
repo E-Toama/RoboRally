@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Text?>
+
+<GridPane fx:id="gridPane" hgap="7.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="873.0" prefWidth="546.0" style="-fx-background-color: #0B0B3B #0B0B3B #0B0B3B #0B0B3B;" vgap="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="667.1327514648438" minWidth="10.0" prefWidth="452.41088485717773" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints maxHeight="171.0" minHeight="0.0" prefHeight="62.606300354003906" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="769.1849136352539" minHeight="10.0" prefHeight="712.9602661132812" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="99.0" minHeight="2.87713623046875" prefHeight="87.53973388671875" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
+         <children>
+            <Button fx:id="readyButton" layoutX="182.0" layoutY="3.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="180.0" text="Submit" />
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="713.0" prefWidth="459.0" GridPane.rowIndex="1">
+         <children>
+            <TextField fx:id="userTextField" layoutX="108.0" layoutY="20.0" prefHeight="27.0" prefWidth="319.0" />
+            <Text fill="WHITE" layoutX="106.0" layoutY="12.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1. Choose Username" wrappingWidth="150.787109375" />
+            <GridPane layoutX="116.0" layoutY="108.0" prefHeight="582.0" prefWidth="351.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="171.9415283203125" minWidth="10.0" prefWidth="171.9415283203125" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="174.0584716796875" minWidth="10.0" prefWidth="174.0584716796875" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="184.71432495117188" minHeight="0.0" prefHeight="130.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="227.5" minHeight="0.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="315.0" minHeight="10.0" prefHeight="130.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="315.0" minHeight="0.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="375.09783935546875" minHeight="10.0" prefHeight="130.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="331.007568359375" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button fx:id="smashBotButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="120.0" prefWidth="120.0">
+                     <graphic>
+                        <ImageView fx:id="smashBotImage" fitHeight="130.0" fitWidth="130.0">
+                           <image>
+                              <Image url="@vp-neidische-narwale/otherStuff/Images/Yellow.png" />
+                           </image></ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="hulkButton" mnemonicParsing="false" prefHeight="130.0" prefWidth="130.0" GridPane.rowIndex="2">
+                     <graphic>
+                        <ImageView fx:id="hulkImage" fitHeight="130.0" fitWidth="130.0">
+                           <image>
+                              <Image url="@vp-neidische-narwale/otherStuff/Images/Red.png" />
+                           </image></ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="spinBotButton" mnemonicParsing="false" prefHeight="130.0" prefWidth="130.0" GridPane.rowIndex="4">
+                     <graphic>
+                        <ImageView fx:id="spinBotImage" fitHeight="130.0" fitWidth="130.0">
+                           <image>
+                              <Image url="@vp-neidische-narwale/otherStuff/Images/Blue.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></Button>
+                  <Button fx:id="hammerBotButton" mnemonicParsing="false" prefHeight="130.0" prefWidth="130.0" GridPane.columnIndex="1">
+                     <graphic>
+                        <ImageView fx:id="hammerBotImage" fitHeight="130.0" fitWidth="130.0">
+                           <image>
+                              <Image url="@vp-neidische-narwale/otherStuff/Images/Purple.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="townkyButton" mnemonicParsing="false" prefHeight="130.0" prefWidth="130.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <graphic>
+                        <ImageView fx:id="twonkyImage" fitHeight="130.0" fitWidth="130.0">
+                           <image>
+                              <Image url="@vp-neidische-narwale/otherStuff/Images/Orange.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></Button>
+                  <Button fx:id="zoomBotButton" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="130.0" prefWidth="130.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                     <graphic>
+                        <ImageView fx:id="zoomBotImage" fitHeight="130.0" fitWidth="130.0">
+                           <image>
+                              <Image url="@vp-neidische-narwale/otherStuff/Images/Green.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></Button>
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Smash Bot" textAlignment="CENTER" wrappingWidth="143.835693359375" GridPane.rowIndex="1" />
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Hammer Bot" textAlignment="CENTER" wrappingWidth="146.830322265625" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Hulk x90" textAlignment="CENTER" wrappingWidth="145.28167724609375" GridPane.rowIndex="3" />
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Twonky" textAlignment="CENTER" wrappingWidth="147.58746337890625" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Spin Bot" textAlignment="CENTER" wrappingWidth="146.43463134765625" GridPane.rowIndex="5" />
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Zoom Bot" textAlignment="CENTER" wrappingWidth="147.58740234375" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+               </children>
+            </GridPane>
+            <Text fill="WHITE" layoutX="113.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2. Choose Robot" wrappingWidth="116.52813720703125" />
+            <Label layoutX="88.0" layoutY="53.0" prefHeight="17.0" prefWidth="320.0" textFill="#a80000" />
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <ImageView fitHeight="36.0" fitWidth="152.0" layoutX="188.0" layoutY="13.0">
+               <image>
+                  <Image url="@vp-neidische-narwale/otherStuff/Images/RoboRallyLogo.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+   </children>
+</GridPane>
