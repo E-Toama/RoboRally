@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane fx:id="gridPane" hgap="7.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="876.0" prefWidth="636.0" style="-fx-background-color: #0B0B3B #0B0B3B #0B0B3B #0B0B3B;" vgap="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.3672790527344" minWidth="10.0" prefWidth="57.65184783935547" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="636.4116363525391" minWidth="10.0" prefWidth="511.84815216064453" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="517.2129516601562" minWidth="0.0" prefWidth="59.135589599609375" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints maxHeight="171.0" minHeight="0.0" prefHeight="39.88183879852295" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="769.1849136352539" minHeight="10.0" prefHeight="692.118161201477" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="149.6103515625" minHeight="2.87713623046875" prefHeight="149.6103515625" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <ListView fx:id="chatBox" prefHeight="708.0" prefWidth="510.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <AnchorPane prefHeight="150.0" prefWidth="546.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+         <children>
+            <TextField fx:id="chatTextField" layoutY="10.0" prefHeight="27.0" prefWidth="416.0" />
+            <Button fx:id="sendButton" layoutX="426.0" layoutY="9.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="85.0" text="Send" />
+            <Button fx:id="readyButton" layoutX="160.0" layoutY="63.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="187.0" text="I am Ready" />
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="52.0" prefWidth="480.0" GridPane.columnIndex="1">
+         <GridPane.margin>
+            <Insets left="30.0" />
+         </GridPane.margin>
+      </AnchorPane>
+   </children>
+</GridPane>
