@@ -1,19 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.text.Text?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<GridPane fx:id="gridPane" hgap="7.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="873.0" prefWidth="1237.0" style="-fx-background-color: #0B0B3B #0B0B3B #0B0B3B #0B0B3B;" vgap="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane fx:id="gridPane" hgap="7.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="873.0" prefWidth="1237.0" style="-fx-background-color: #0B0B3B #0B0B3B #0B0B3B #0B0B3B;" vgap="5.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.LobbyController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.3672790527344" minWidth="10.0" prefWidth="211.08836364746094" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="636.4116363525391" minWidth="10.0" prefWidth="469.78704833984375" />
@@ -29,13 +22,13 @@
       <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <children>
             <TextField fx:id="chatTextField" layoutY="10.0" prefHeight="27.0" prefWidth="366.0" />
-            <Button fx:id="sendButton" layoutX="371.0" layoutY="10.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="112.0" text="Send" />
+            <Button fx:id="sendButton" layoutX="371.0" layoutY="10.0" mnemonicParsing="false" onAction="#sendMessage" prefHeight="27.0" prefWidth="112.0" text="Send" />
          </children>
       </AnchorPane>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
          <children>
-            <Button fx:id="submitButton" layoutX="317.0" layoutY="18.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="63.0" text="Submit" />
-            <TextField fx:id="userTextField" layoutX="82.0" layoutY="18.0" prefHeight="27.0" prefWidth="225.0" />
+            <Button fx:id="submitButton" layoutX="317.0" layoutY="18.0" mnemonicParsing="false" onAction="#submitUserNameAndRobot" prefHeight="19.0" prefWidth="63.0" text="Submit" />
+            <TextField fx:id="userNameTextField" layoutX="82.0" layoutY="18.0" prefHeight="27.0" prefWidth="225.0" />
             <Text fill="WHITE" layoutX="83.0" layoutY="12.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1. Choose Username" wrappingWidth="150.787109375" />
             <GridPane layoutX="81.0" layoutY="108.0" prefHeight="582.0" prefWidth="351.0">
               <columnConstraints>
@@ -51,52 +44,52 @@
                   <RowConstraints maxHeight="331.007568359375" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button fx:id="smashBotButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="120.0" prefWidth="120.0">
+                  <Button fx:id="smashBotButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#setSmashBot" prefHeight="120.0" prefWidth="120.0">
                      <graphic>
                         <ImageView fx:id="smashBotImage" fitHeight="130.0" fitWidth="130.0">
                            <image>
-                              <Image url="@Images/Yellow.png" />
+                              <Image url="@/Images/Yellow.png" />
                            </image></ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="hulkButton" mnemonicParsing="false" prefHeight="130.0" prefWidth="130.0" GridPane.rowIndex="2">
+                  <Button fx:id="hulkButton" mnemonicParsing="false" onAction="#setHulk" prefHeight="130.0" prefWidth="130.0" GridPane.rowIndex="2">
                      <graphic>
                         <ImageView fx:id="hulkImage" fitHeight="130.0" fitWidth="130.0">
                            <image>
-                              <Image url="@Images/Red.png" />
+                              <Image url="@/Images/Red.png" />
                            </image></ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="spinBotButton" mnemonicParsing="false" prefHeight="130.0" prefWidth="130.0" GridPane.rowIndex="4">
+                  <Button fx:id="spinBotButton" mnemonicParsing="false" onAction="#setSpinBot" prefHeight="130.0" prefWidth="130.0" GridPane.rowIndex="4">
                      <graphic>
                         <ImageView fx:id="spinBotImage" fitHeight="130.0" fitWidth="130.0">
                            <image>
-                              <Image url="@Images/Blue.png" />
+                              <Image url="@/Images/Blue.png" />
                            </image>
                         </ImageView>
                      </graphic></Button>
-                  <Button fx:id="hammerBotButton" mnemonicParsing="false" prefHeight="130.0" prefWidth="130.0" GridPane.columnIndex="1">
+                  <Button fx:id="hammerBotButton" mnemonicParsing="false" onAction="#setHammerBot" prefHeight="130.0" prefWidth="130.0" GridPane.columnIndex="1">
                      <graphic>
                         <ImageView fx:id="hammerBotImage" fitHeight="130.0" fitWidth="130.0">
                            <image>
-                              <Image url="@Images/Purple.png" />
+                              <Image url="@/Images/Purple.png" />
                            </image>
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="townkyButton" mnemonicParsing="false" prefHeight="130.0" prefWidth="130.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <Button fx:id="townkyButton" mnemonicParsing="false" onAction="#setTwonky" prefHeight="130.0" prefWidth="130.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <graphic>
                         <ImageView fx:id="twonkyImage" fitHeight="130.0" fitWidth="130.0">
                            <image>
-                              <Image url="@Images/Orange.png" />
+                              <Image url="@/Images/Orange.png" />
                            </image>
                         </ImageView>
                      </graphic></Button>
-                  <Button fx:id="zoomBotButton" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="130.0" prefWidth="130.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                  <Button fx:id="zoomBotButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#setZoomBot" prefHeight="130.0" prefWidth="130.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                      <graphic>
                         <ImageView fx:id="zoomBotImage" fitHeight="130.0" fitWidth="130.0">
                            <image>
-                              <Image url="@Images/Green.png" />
+                              <Image url="@/Images/Green.png" />
                            </image>
                         </ImageView>
                      </graphic></Button>
@@ -114,7 +107,7 @@
       </AnchorPane>
       <AnchorPane GridPane.columnIndex="2" GridPane.rowIndex="2">
          <children>
-            <Button fx:id="readyButton" layoutX="148.0" layoutY="2.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="180.0" text="I am ready!" />
+            <Button fx:id="readyButton" layoutX="148.0" layoutY="2.0" mnemonicParsing="false" onAction="#setReady" prefHeight="37.0" prefWidth="180.0" text="I am ready!" />
          </children>
       </AnchorPane>
       <ListView prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: lightgrey;" GridPane.rowIndex="1">
@@ -129,7 +122,7 @@
          <children>
             <ImageView fitHeight="36.0" fitWidth="131.0" layoutX="42.0" layoutY="14.0">
                <image>
-                  <Image url="@Images/RoboRallyLogo.png" />
+                  <Image url="@/Images/RoboRallyLogo.png" />
                </image>
             </ImageView>
          </children>

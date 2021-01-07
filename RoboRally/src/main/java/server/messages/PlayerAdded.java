@@ -4,15 +4,15 @@ import player.Player;
 
 public class PlayerAdded extends MessageBody {
 
-    private final Player player;
+    private final Player playerID;
 
     public PlayerAdded(Player player) {
 
-        this.player = player;
+        this.playerID = player;
 
     }
 
-    public Player getPlayer() {
-        return player;
+    public Player getPlayerID() {
+        return playerID;
     }
 }

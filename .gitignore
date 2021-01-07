@@ -250,3 +250,5 @@ $RECYCLE.BIN/
 # End of https://www.gitignore.io/api/java,linux,macos,windows,eclipse,intellij
 /RoboRally/.idea/
 /RoboRally/RoboRally.iml
+/RoboRally/target/
+/RoboRally/target

@@ -1,6 +1,5 @@
 package client.network;
 
-import game.Game;
 import game.cards.Card;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -18,6 +17,24 @@ import java.util.HashMap;
 
 public class ClientThread implements Runnable {
 
+    private static ClientThread clientThread;
+    private static Thread client;
+
+    static {
+
+        try {
+
+            clientThread = new ClientThread();
+            client = new Thread(clientThread);
+            client.start();
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+        }
+    }
+
     private final Socket socket;
     private final BufferedReader incoming;
     private final PrintWriter outgoing;
@@ -28,21 +45,21 @@ public class ClientThread implements Runnable {
     private int ID;
     private final double protocolVersion = 0.1;
     private final String group = "NeidischeNarwale";
-    private final Boolean isAI;
+    private Boolean isAI;
 
     private HashMap<Integer, Player> playerList = new HashMap<>();
     private ObservableMap<Integer, Player> observablePlayerMap;
 
-    public ClientThread(Boolean isAI) throws IOException {
+    public ClientThread() throws IOException {
 
         this.socket = new Socket("localhost", 9090);
         this.incoming = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.outgoing = new PrintWriter(socket.getOutputStream(), true);
 
-        this.isAI = isAI;
+    }
 
-        run();
-
+    public static ClientThread getClientThread() {
+        return clientThread;
     }
 
 
@@ -231,9 +248,9 @@ public class ClientThread implements Runnable {
 
             PlayerAdded receivedMessage = (PlayerAdded) incomingMessage.getMessageBody();
 
-            if (receivedMessage.getPlayer().getId() == this.ID) {
+            if (receivedMessage.getPlayerID().getId() == this.ID) {
 
-                this.player = receivedMessage.getPlayer();
+                this.player = receivedMessage.getPlayerID();
                 playerList.put(this.ID, player);
                 observablePlayerMap.put(this.ID, player);
 
@@ -241,13 +258,13 @@ public class ClientThread implements Runnable {
 
             } else if (this.player != null) {
 
-                playerList.put(receivedMessage.getPlayer().getId() ,receivedMessage.getPlayer());
-                observablePlayerMap.put(receivedMessage.getPlayer().getId() ,receivedMessage.getPlayer());
+                playerList.put(receivedMessage.getPlayerID().getId() ,receivedMessage.getPlayerID());
+                observablePlayerMap.put(receivedMessage.getPlayerID().getId() ,receivedMessage.getPlayerID());
 
-                String notificationName = receivedMessage.getPlayer().getName() + " has joined!";
+                String notificationName = receivedMessage.getPlayerID().getName() + " has joined!";
                 chatMessages.add(notificationName);
 
-                String notificationRobot = "He has Robot No. " + receivedMessage.getPlayer().getFigure();
+                String notificationRobot = "He has Robot No. " + receivedMessage.getPlayerID().getFigure();
                 chatMessages.add(notificationRobot);
 
             } else {
@@ -322,9 +339,6 @@ public class ClientThread implements Runnable {
         //ToDo: handleError (ClientThread)
 
     }
-
-
-
 
     /*
     * Added methods for Protocol 1.0
@@ -517,6 +531,7 @@ public class ClientThread implements Runnable {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of Energy)");
         }
     }
+
     private void handleCheckPointReached(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof CheckpointReached) {
             CheckpointReached checkpointReached = (CheckpointReached) incomingMessage.getMessageBody();
@@ -534,9 +549,6 @@ public class ClientThread implements Runnable {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of GameWon)");
         }
     }
-
-
-
 
     private void establishConnection() throws IOException {
 

@@ -2,6 +2,10 @@ package client;
 
 import client.network.ClientThread;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -17,11 +21,12 @@ public class RoboRallyClient extends Application {
 
         try{
 
-            ClientThread clientThread = new ClientThread(false);
+            Parent lobby = FXMLLoader.load(getClass().getResource("/FXMLFiles/Lobby.fxml"));
 
-            //ToDo: how to handle the situation if handle connection fails
-
-
+            Scene lobbyScene = new Scene(lobby);
+            primaryStage.setScene(lobbyScene);
+            primaryStage.show();
+            primaryStage.setOnCloseRequest(e -> Platform.exit());
 
         } catch (IOException e) {
 
