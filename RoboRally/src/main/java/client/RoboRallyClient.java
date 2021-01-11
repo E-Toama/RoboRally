@@ -1,6 +1,6 @@
 package client;
 
-import client.network.ClientThread;
+import client.view.ViewController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -21,7 +21,9 @@ public class RoboRallyClient extends Application {
 
         try{
 
-            Parent lobby = FXMLLoader.load(getClass().getResource("/FXMLFiles/Lobby.fxml"));
+            ViewController.getViewController().setPrimaryStage(primaryStage);
+
+            Parent lobby = FXMLLoader.load(getClass().getResource("/FXMLFiles/WelcomeWindow.fxml"));
 
             Scene lobbyScene = new Scene(lobby);
             primaryStage.setScene(lobbyScene);
