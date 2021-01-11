@@ -6,7 +6,7 @@ import javax.swing.*;
 
 public class BoardParts {
 
-    private final MapElement[][] Start_A = {
+    public static final MapElement[][] Start_A = {
             {new MapElement(1, new Empty()),                new MapElement(2, new Empty()),             new MapElement(3,new Belt())},
             {new MapElement(4, new Empty()),                new MapElement(5, new StartingPosition()),  new MapElement(6, new Empty())},
             {new MapElement(7, new Empty()),                new MapElement(8, new Wall()),              new MapElement(9,new Empty())},
@@ -19,7 +19,7 @@ public class BoardParts {
             {new MapElement(28, new Empty()),               new MapElement(29, new Empty()),            new MapElement(30,new Belt())}
     };
 
-    private final MapElement[][] _5B = {
+    public static final MapElement[][] _5B = {
             {       new MapElement(1, new Empty()),
                     new MapElement(2, new Belt()),
                     new MapElement(3, new Belt()),

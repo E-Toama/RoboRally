@@ -6,6 +6,14 @@ import java.util.ArrayList;
 
 public class GameStarted extends MessageBody {
 
-    private ArrayList<MapElement> map;
+    private MapElement[][] map;
+
+    public GameStarted(MapElement[][] map) {
+        this.map = map;
+    }
+
+    public MapElement[][] getMap() {
+        return this.map;
+    }
 
 }
