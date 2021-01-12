@@ -1,4 +1,9 @@
 package game.gameboard.boardelements;
 
-public class ControlPoint extends BoardElement {
+import game.gameboard.FieldElement;
+
+public class ControlPoint extends BoardElement implements FieldElement {
+    public ControlPoint() {
+        super();
+    }
 }
