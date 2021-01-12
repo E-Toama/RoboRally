@@ -1,8 +1,10 @@
 package client.network;
 
-import game.Game;
+import client.viewmodel.ChatViewModel;
+import client.viewmodel.WelcomeViewModel;
 import game.cards.Card;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import player.Player;
@@ -18,33 +20,61 @@ import java.util.HashMap;
 
 public class ClientThread implements Runnable {
 
+    private static ClientThread clientThread;
+    private static Thread client;
+
+    static {
+
+        try {
+
+            clientThread = new ClientThread();
+            client = new Thread(clientThread);
+            client.start();
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+        }
+    }
+
     private final Socket socket;
     private final BufferedReader incoming;
     private final PrintWriter outgoing;
     private final MessageHandler messageHandler = new MessageHandler();
-    public ObservableList<String> chatMessages;
+    public ObservableList<String> chatMessages = FXCollections.observableArrayList();
 
     private Player player;
     private int ID;
     private final double protocolVersion = 0.1;
     private final String group = "NeidischeNarwale";
-    private final Boolean isAI;
+    private Boolean isAI;
 
-    private HashMap<Integer, Player> playerList = new HashMap<>();
+    private WelcomeViewModel welcomeViewModel;
+    private ChatViewModel chatViewModel;
+
+    private final HashMap<Integer, Player> playerList = new HashMap<>();
     private ObservableMap<Integer, Player> observablePlayerMap;
 
-    public ClientThread(Boolean isAI) throws IOException {
+    public ClientThread() throws IOException {
 
         this.socket = new Socket("localhost", 9090);
         this.incoming = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.outgoing = new PrintWriter(socket.getOutputStream(), true);
 
-        this.isAI = isAI;
-
-        run();
-
     }
 
+    public static ClientThread getClientThread() {
+        return clientThread;
+    }
+
+    public void setWelcomeViewModel(WelcomeViewModel welcomeViewModel) {
+        this.welcomeViewModel = welcomeViewModel;
+    }
+
+    public void setChatViewModel(ChatViewModel chatViewModel) {
+        this.chatViewModel = chatViewModel;
+    }
 
     @Override
     public void run() {
@@ -115,9 +145,6 @@ public class ClientThread implements Runnable {
                         handleError(incomingMessage);
                         break;
 
-                    /*
-                    * Added cases for Protocol 1.0
-                    */
                     case "ConnectionUpdate":
                         handleConnectionUpdate(incomingMessage);
                         break;
@@ -235,14 +262,14 @@ public class ClientThread implements Runnable {
 
                 this.player = receivedMessage.getPlayer();
                 playerList.put(this.ID, player);
-                observablePlayerMap.put(this.ID, player);
+                //observablePlayerMap.put(this.ID, player);
 
-                //ToDo: name und roboter waren noch frei => view kann geändert werden
+                welcomeViewModel.playerSuccesfullyAdded();
 
             } else if (this.player != null) {
 
                 playerList.put(receivedMessage.getPlayer().getId() ,receivedMessage.getPlayer());
-                observablePlayerMap.put(receivedMessage.getPlayer().getId() ,receivedMessage.getPlayer());
+                //observablePlayerMap.put(receivedMessage.getPlayer().getId() ,receivedMessage.getPlayer());
 
                 String notificationName = receivedMessage.getPlayer().getName() + " has joined!";
                 chatMessages.add(notificationName);
@@ -271,7 +298,7 @@ public class ClientThread implements Runnable {
             PlayerStatus receivedMessage = (PlayerStatus) incomingMessage.getMessageBody();
 
             playerList.get(receivedMessage.getPlayerID()).setStatus(receivedMessage.getReady());
-            observablePlayerMap.get(receivedMessage.getPlayerID()).setStatus(receivedMessage.getReady());
+            //observablePlayerMap.get(receivedMessage.getPlayerID()).setStatus(receivedMessage.getReady());
 
         } else {
 
@@ -330,13 +357,6 @@ public class ClientThread implements Runnable {
         //ToDo: handleError (ClientThread)
 
     }
-
-
-
-
-    /*
-    * Added methods for Protocol 1.0
-    */
 
     private void handleConnectionUpdate(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof ConnectionUpdate) {
@@ -525,6 +545,7 @@ public class ClientThread implements Runnable {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of Energy)");
         }
     }
+
     private void handleCheckPointReached(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof CheckpointReached) {
             CheckpointReached checkpointReached = (CheckpointReached) incomingMessage.getMessageBody();
@@ -542,9 +563,6 @@ public class ClientThread implements Runnable {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of GameWon)");
         }
     }
-
-
-
 
     private void establishConnection() throws IOException {
 
@@ -591,6 +609,13 @@ public class ClientThread implements Runnable {
     public void sendMessage(String message, int to) {
 
         String outgoingMessage = messageHandler.buildMessage("SendChat", new SendChat(message, to));
+        outgoing.println(outgoingMessage);
+
+    }
+
+    public void submitPlayer(String name, int figure) {
+
+        String outgoingMessage = messageHandler.buildMessage("PlayerValues", new PlayerValues(name, figure));
         outgoing.println(outgoingMessage);
 
     }

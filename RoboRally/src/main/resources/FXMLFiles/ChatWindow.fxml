@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane xmlns:fx="http://javafx.com/fxml/1" fx:id="gridPane" hgap="7.0" maxHeight="-Infinity" maxWidth="-Infinity"
+          minHeight="-Infinity" minWidth="-Infinity" prefHeight="871.0"
+          prefWidth="968.0" style="-fx-background-color: #0B0B3B #0B0B3B #0B0B3B #0B0B3B;"
+          vgap="5.0" xmlns="http://javafx.com/javafx/11.0.2"
+          fx:controller="client.view.ChatController">
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="378.0428466796875" minWidth="10.0"
+                           prefWidth="353.21868896484375"/>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="636.4116363525391" minWidth="10.0"
+                           prefWidth="525.7813110351562"/>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="517.2129516601562" minWidth="0.0" prefWidth="75.436279296875"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints maxHeight="171.0" minHeight="0.0" prefHeight="39.88183879852295" vgrow="SOMETIMES"/>
+        <RowConstraints maxHeight="769.1849136352539" minHeight="10.0" prefHeight="692.118161201477" vgrow="SOMETIMES"/>
+        <RowConstraints maxHeight="149.6103515625" minHeight="2.87713623046875" prefHeight="149.6103515625"
+                        vgrow="SOMETIMES"/>
+    </rowConstraints>
+    <children>
+        <ListView fx:id="chatBox" prefHeight="686.0" prefWidth="573.0" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <AnchorPane prefHeight="150.0" prefWidth="546.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <children>
+                <TextField fx:id="chatTextField" layoutY="10.0" prefHeight="27.0" prefWidth="437.0"/>
+                <Button fx:id="sendButton" layoutX="441.0" layoutY="10.0" mnemonicParsing="false" onAction="#sendChat"
+                        prefHeight="27.0" prefWidth="85.0" text="Send"/>
+                <Button fx:id="readyButton" layoutX="171.0" layoutY="63.0" mnemonicParsing="false" onAction="#setReady"
+                        prefHeight="40.0" prefWidth="187.0" text="I am Ready!"/>
+            </children>
+        </AnchorPane>
+        <AnchorPane prefHeight="52.0" prefWidth="480.0" GridPane.columnIndex="1">
+            <GridPane.margin>
+                <Insets left="30.0"/>
+            </GridPane.margin>
+        </AnchorPane>
+        <ListView fx:id="statusWindow" prefHeight="686.0" prefWidth="251.0"
+                  style="-fx-background-color: #CAE1FF#CAE1FF;" GridPane.rowIndex="1">
+            <GridPane.margin>
+                <Insets left="80.0" right="5.0"/>
+            </GridPane.margin>
+        </ListView>
+    </children>
+</GridPane>
