@@ -54,7 +54,7 @@ public class ClientThread implements Runnable {
     private ChatViewModel chatViewModel;
 
     private final HashMap<Integer, Player> playerList = new HashMap<>();
-    private ObservableMap<Integer, Player> observablePlayerMap;
+    public ObservableList<String> observablePlayerList = FXCollections.observableArrayList();
 
     public ClientThread() throws IOException {
 
@@ -74,6 +74,10 @@ public class ClientThread implements Runnable {
 
     public void setChatViewModel(ChatViewModel chatViewModel) {
         this.chatViewModel = chatViewModel;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     @Override
@@ -262,14 +266,14 @@ public class ClientThread implements Runnable {
 
                 this.player = receivedMessage.getPlayer();
                 playerList.put(this.ID, player);
-                //observablePlayerMap.put(this.ID, player);
+                observablePlayerList.add(player.getName() + ", " + player.getRobotName());
 
                 welcomeViewModel.playerSuccesfullyAdded();
 
             } else if (this.player != null) {
 
                 playerList.put(receivedMessage.getPlayer().getId() ,receivedMessage.getPlayer());
-                //observablePlayerMap.put(receivedMessage.getPlayer().getId() ,receivedMessage.getPlayer());
+                observablePlayerList.add(receivedMessage.getPlayer().getName() + ", " + receivedMessage.getPlayer().getRobotName());
 
                 String notificationName = receivedMessage.getPlayer().getName() + " has joined!";
                 chatMessages.add(notificationName);
@@ -298,7 +302,6 @@ public class ClientThread implements Runnable {
             PlayerStatus receivedMessage = (PlayerStatus) incomingMessage.getMessageBody();
 
             playerList.get(receivedMessage.getPlayerID()).setStatus(receivedMessage.getReady());
-            //observablePlayerMap.get(receivedMessage.getPlayerID()).setStatus(receivedMessage.getReady());
 
         } else {
 
@@ -599,18 +602,13 @@ public class ClientThread implements Runnable {
     }
 
     public void sendMessage(String message, int to) {
-
         String outgoingMessage = messageHandler.buildMessage("SendChat", new SendChat(message, to));
         outgoing.println(outgoingMessage);
-
     }
 
     public void submitPlayer(String name, int figure) {
-
         String outgoingMessage = messageHandler.buildMessage("PlayerValues", new PlayerValues(name, figure));
         outgoing.println(outgoingMessage);
-
     }
-
 
 }

@@ -16,9 +16,13 @@ public class ChatController {
     private ListView<String> chatBox;
 
     @FXML
+    private ListView<String> statusWindow;
+
+    @FXML
     void initialize() {
 
         chatTextField.textProperty().bindBidirectional(chatViewModel.chatTextProperty());
+        statusWindow.setItems(chatViewModel.getClientThread().observablePlayerList);
         chatBox.setItems(chatViewModel.getClientThread().chatMessages);
 
     }
