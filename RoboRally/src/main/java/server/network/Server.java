@@ -120,9 +120,13 @@ public class Server {
 
         for(Player player: playerList) {
 
-            String playerAdded = messageHandler.buildMessage("PlayerAdded", new PlayerAdded(player));
+            if (player.getId() != ID) {
 
-            outgoing.println(playerAdded);
+                String playerAdded = messageHandler.buildMessage("PlayerAdded", new PlayerAdded(player));
+
+                outgoing.println(playerAdded);
+
+            }
 
         }
 

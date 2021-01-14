@@ -143,9 +143,9 @@ public class UserThread implements Runnable {
 
                 this.player = player;
 
-                server.notifyPlayersAboutNewPlayer(this.player);
-
                 server.addPlayer(this.ID, outgoing, player);
+
+                server.notifyPlayersAboutNewPlayer(this.player);
 
                 server.sendStatusToNewPlayer(this.player.getId());
 
