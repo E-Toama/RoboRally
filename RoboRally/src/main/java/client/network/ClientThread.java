@@ -313,6 +313,14 @@ public class ClientThread implements Runnable {
     private void handleGameStarted(Message incomingMessage) throws IOException {
 
         //ToDo: handleGameStarted
+        if (incomingMessage.getMessageBody() instanceof GameStarted){
+            GameStarted receivedMessage = (GameStarted) incomingMessage.getMessageBody();
+
+        } else {
+
+            throw new IOException("Something went wrong! Invalid Message Body! (Not instance of GameStarted)");
+
+        }
 
     }
 

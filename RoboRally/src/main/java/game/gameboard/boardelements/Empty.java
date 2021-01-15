@@ -1,4 +1,9 @@
 package game.gameboard.boardelements;
 
-public class Empty extends BoardElement {
+import game.gameboard.FieldElement;
+
+public class Empty extends BoardElement implements FieldElement {
+    public Empty() {
+        super();
+    }
 }

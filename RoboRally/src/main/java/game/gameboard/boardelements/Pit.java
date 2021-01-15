@@ -1,4 +1,9 @@
 package game.gameboard.boardelements;
 
-public class Pit extends BoardElement {
+import game.gameboard.FieldElement;
+
+public class Pit extends BoardElement  implements FieldElement {
+    public Pit() {
+        super();
+    }
 }
