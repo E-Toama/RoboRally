@@ -26,4 +26,8 @@ public class ViewController {
         primaryStage.show();
     }
 
+    public void setTitle(String title) {
+        primaryStage.setTitle(title);
+    }
+
 }

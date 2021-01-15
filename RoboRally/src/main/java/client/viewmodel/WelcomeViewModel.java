@@ -75,6 +75,7 @@ public class WelcomeViewModel {
                     Parent lobby = FXMLLoader.load(getClass().getResource("/FXMLFiles/ChatWindow.fxml"));
 
                     Scene chatScene = new Scene(lobby);
+                    ViewController.getViewController().setTitle(clientThread.getPlayer().getName());
                     ViewController.getViewController().setScene(chatScene);
 
                 } catch (IOException e) {

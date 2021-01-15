@@ -1,6 +1,8 @@
 package server.network;
 
 import player.Player;
+import server.messages.MessageHandler;
+import server.messages.PlayerAdded;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,6 +19,7 @@ public class Server {
     private final List<Player> playerList = new LinkedList<Player>();
     private final double protocolVersion = 0.1;
     private int currentID = 972123;
+    private final MessageHandler messageHandler = new MessageHandler();
 
     public static void main(String[] args) {
 
@@ -65,23 +68,19 @@ public class Server {
         return currentID;
     }
 
-    public synchronized String checkIfNameAndRobotAreFree(String name, int figure) {
+    public synchronized Boolean checkIfRobotIsFree(int figure) {
 
         for (Player player : playerList) {
 
-            if (player.getName().equals(name)) {
+            if (player.getFigure() == figure) {
 
-                return "Name already taken!";
-
-            } else if (player.getFigure() == figure) {
-
-                return "Figure already taken!";
+                return false;
 
             }
 
         }
 
-        return "OK";
+        return true;
 
     }
 
@@ -100,6 +99,36 @@ public class Server {
         PrintWriter outgoing = playerMap.get(ID);
 
         outgoing.println(message);
+
+    }
+
+    public synchronized void notifyPlayersAboutNewPlayer(Player player) {
+
+        String playerAdded = messageHandler.buildMessage("PlayerAdded", new PlayerAdded(player));
+
+        for (PrintWriter outgoing : playerMap.values()) {
+
+            outgoing.println(playerAdded);
+
+        }
+
+    }
+
+    public synchronized void sendStatusToNewPlayer(int ID) {
+
+        PrintWriter outgoing = playerMap.get(ID);
+
+        for(Player player: playerList) {
+
+            if (player.getId() != ID) {
+
+                String playerAdded = messageHandler.buildMessage("PlayerAdded", new PlayerAdded(player));
+
+                outgoing.println(playerAdded);
+
+            }
+
+        }
 
     }
 

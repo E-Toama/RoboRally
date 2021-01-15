@@ -1,6 +1,7 @@
 package server.messages;
 
 import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 
@@ -19,7 +20,7 @@ public class MessageHandler {
     public Message handleMessage(String incomingMessage) {
 
         //Gson gson = new Gson();
-        Gson gson = new GsonBuilder().registerTypeAdapter(Message.class, new Deserializer()).create();
+        Gson gson = new GsonBuilder().registerTypeAdapter(Message.class, new MessageDeserializer()).create();
 
         Message returnValue = null;
 
@@ -37,7 +38,7 @@ public class MessageHandler {
 
     }
 
-    static class Deserializer implements JsonDeserializer<Message> {
+    static class MessageDeserializer implements JsonDeserializer<Message> {
 
         @Override
         public Message deserialize(JsonElement jsonElement, Type typeofT, JsonDeserializationContext jsonDeserializationContext) throws JsonSyntaxException {
@@ -49,7 +50,16 @@ public class MessageHandler {
 
             if(messageType != null) {
 
-                try {
+                if (messageType.equals("GameStarted")) {
+
+                    JsonArray mapArray = body.getAsJsonArray("map");
+                    //Type mapType = new TypeToken<>()
+
+                    GameStarted gameStarted = new GameStarted();
+
+                    return new Message("GameStarted", gameStarted);
+
+                } else try {
 
                     MessageBody messageBody = gson.fromJson(body, (Type) Class.forName("server.messages." + messageType));
 
@@ -67,7 +77,8 @@ public class MessageHandler {
 
         }
 
-
     }
+
+    //static class GameBoardDeserializer implements JsonDeserializer<> {}
 
 }

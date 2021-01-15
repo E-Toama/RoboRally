@@ -100,9 +100,6 @@ public class UserThread implements Runnable {
                         handleError(incomingMessage);
                         break;
 
-                    /*
-                     * Added cases for Protocol 1.0
-                     */
                     case "PlayCard":
                         handlePlayCard(incomingMessage);
                         break;
@@ -140,9 +137,7 @@ public class UserThread implements Runnable {
 
             PlayerValues receivedMessage = (PlayerValues) incomingMessage.getMessageBody();
 
-            String nameRobotCheck = server.checkIfNameAndRobotAreFree(receivedMessage.getName(), receivedMessage.getFigure());
-
-            if (nameRobotCheck.equals("OK")) {
+            if (server.checkIfRobotIsFree(receivedMessage.getFigure())) {
 
                 Player player = new Player(this.ID, receivedMessage.getName(), receivedMessage.getFigure());
 
@@ -150,24 +145,17 @@ public class UserThread implements Runnable {
 
                 server.addPlayer(this.ID, outgoing, player);
 
-                String playerAdded = messageHandler.buildMessage("PlayerAdded", new PlayerAdded(player));
+                server.notifyPlayersAboutNewPlayer(this.player);
 
-                outgoing.println(playerAdded);
+                server.sendStatusToNewPlayer(this.player.getId());
 
-            } else if (nameRobotCheck.equals("Name already taken!")) {
-
-                String error = messageHandler.buildMessage("Error", new Error("Name already taken!"));
-
-                outgoing.println(error);
-
-            } else if (nameRobotCheck.equals("Figure already taken!")) {
+            } else {
 
                 String error = messageHandler.buildMessage("Error", new Error("Figure already taken!"));
 
                 outgoing.println(error);
 
             }
-
 
         } else {
 
@@ -230,10 +218,6 @@ public class UserThread implements Runnable {
         //ToDo: handleError (UserThread)
 
     }
-
-    /*
-     * Added methods for Protocol 1.0
-     */
 
     private void handlePlayCard(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof PlayCard) {

@@ -34,4 +34,34 @@ public class Player {
     public void setStatus(Boolean status) {
         this.status = status;
     }
+
+    public String getRobotName() {
+
+        switch (figure) {
+
+            case 1:
+                return "Hammer Bot";
+
+            case 2:
+                return "Hulk x90";
+
+            case 3:
+                return "Smash Bot";
+
+            case 4:
+                return "Spin Bot";
+
+            case 5:
+                return "Twonky";
+
+            case 6:
+                return "Zoom Bot";
+
+            default:
+                return "";
+
+        }
+
+    }
+
 }
