@@ -4,11 +4,14 @@ import client.network.ClientThread;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+import java.awt.*;
+
 public class LobbyViewModel {
 
     private ClientThread clientThread;
     private StringProperty chatText = new SimpleStringProperty();
     private StringProperty userNameTextField = new SimpleStringProperty();
+
 
     public LobbyViewModel() {
 
@@ -40,6 +43,8 @@ public class LobbyViewModel {
 
         String currentMessage = getChatText();
         //ToDo: send message to single (chosen) player
+
+
         clientThread.sendMessage(currentMessage, -1);
 
         chatText.set("");

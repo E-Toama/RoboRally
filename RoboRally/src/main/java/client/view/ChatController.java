@@ -3,6 +3,7 @@ package client.view;
 import client.viewmodel.ChatViewModel;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextField;
 
 public class ChatController {
@@ -19,11 +20,15 @@ public class ChatController {
     private ListView<String> statusWindow;
 
     @FXML
+    private MenuButton dropDown;
+
+    @FXML
     void initialize() {
 
         chatTextField.textProperty().bindBidirectional(chatViewModel.chatTextProperty());
         statusWindow.setItems(chatViewModel.getClientThread().observablePlayerList);
         chatBox.setItems(chatViewModel.getClientThread().chatMessages);
+        dropDown.getItems().addAll(chatViewModel.addMenuItems(chatViewModel.getClientThread().observablePlayerList));
 
     }
 

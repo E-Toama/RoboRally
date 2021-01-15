@@ -7,7 +7,7 @@ public class ReceivedChat extends MessageBody {
     private final String message;
     private final String from;
     @SerializedName("private")
-    private final Boolean isPrivate;
+    private Boolean isPrivate;
 
     public ReceivedChat(String message, String from, Boolean isPrivate) {
 
@@ -23,6 +23,11 @@ public class ReceivedChat extends MessageBody {
 
     public String getFrom() {
         return from;
+    }
+
+    public void setPrivate(boolean isPrivate) {
+        this.isPrivate = isPrivate;
+
     }
 
     public Boolean getPrivate() {
