@@ -2,6 +2,7 @@ package client.view;
 
 import client.viewmodel.ChatViewModel;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextField;
@@ -21,6 +22,9 @@ public class ChatController {
 
     @FXML
     private MenuButton dropDown;
+
+    @FXML
+    private Button sendButton;
 
     @FXML
     void initialize() {

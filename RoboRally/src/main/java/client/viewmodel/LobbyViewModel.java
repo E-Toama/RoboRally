@@ -1,16 +1,20 @@
 package client.viewmodel;
 
 import client.network.ClientThread;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-
-import java.awt.*;
+import javafx.beans.property.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
+import javafx.scene.control.MenuItem;
 
 public class LobbyViewModel {
 
     private ClientThread clientThread;
     private StringProperty chatText = new SimpleStringProperty();
     private StringProperty userNameTextField = new SimpleStringProperty();
+    private Property dropDown= new SimpleObjectProperty<>();
+
+    public final ObservableList<MenuItem> dropDownItems = FXCollections.observableArrayList();
 
 
     public LobbyViewModel() {
@@ -39,11 +43,24 @@ public class LobbyViewModel {
         return userNameTextField;
     }
 
+    public Property<Node> dropDownProperty() {
+
+        return dropDown;
+    }
+
+    public ObservableList<MenuItem> addMenuItems(ObservableList<String> list) {
+        for (String temp : list) {
+            dropDownItems.add(new MenuItem(temp));
+        }
+        return dropDownItems;
+
+    }
+
     public void sendMessage() {
 
         String currentMessage = getChatText();
-        //ToDo: send message to single (chosen) player
 
+        //ToDo: send message to single (chosen) player
 
         clientThread.sendMessage(currentMessage, -1);
 
@@ -66,5 +83,6 @@ public class LobbyViewModel {
     public void submitUserNameAndRobot() {}
 
     public void setReady() {}
+
 
 }

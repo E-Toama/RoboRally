@@ -25,7 +25,7 @@ public class ReceivedChat extends MessageBody {
         return from;
     }
 
-    public void setPrivate(boolean isPrivate) {
+    public void setPrivate(Boolean isPrivate) {
         this.isPrivate = isPrivate;
 
     }

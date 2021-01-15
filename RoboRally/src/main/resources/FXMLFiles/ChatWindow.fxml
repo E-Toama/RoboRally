@@ -46,9 +46,9 @@
         </ListView>
         <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
             <children>
-                <MenuButton fx:id="dropDown" alignment="CENTER" layoutX="81.0" layoutY="9.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="266.0" text="To all" textAlignment="CENTER">
+                <MenuButton fx:id="dropDown" alignment="CENTER" layoutX="81.0" layoutY="9.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="266.0" text="Message To (Default:To All)" textAlignment="CENTER">
                     <items>
-                        <MenuItem fx:id="item1" mnemonicParsing="false" text="To All" />
+                        <MenuItem fx:id="itemToALl" mnemonicParsing="false" text="To All" />
                     </items>
                 </MenuButton>
             </children>

@@ -8,8 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.MenuItem;
 
-import java.util.Collection;
-import java.util.Iterator;
+
 
 public class ChatViewModel {
 
@@ -37,6 +36,7 @@ public class ChatViewModel {
     }
 
     public void sendChat() {
+
         clientThread.sendMessage(getChatText(), -1);
         chatText.set("");
     }
