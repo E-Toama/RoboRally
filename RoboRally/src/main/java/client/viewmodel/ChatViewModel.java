@@ -8,6 +8,7 @@ public class ChatViewModel {
 
     private final ClientThread clientThread;
     private final StringProperty chatText = new SimpleStringProperty();
+    private boolean ready = false;
 
     public ChatViewModel() {
 
@@ -33,6 +34,12 @@ public class ChatViewModel {
         chatText.set("");
     }
 
-    public void setReady() {}
+    public void setReady() {
+        if(clientThread.getPlayer().getStatus()) {
+            clientThread.sendPlayerStatus(false);
+        } else {
+            clientThread.sendPlayerStatus(true);
+        }
+    }
 
 }
