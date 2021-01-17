@@ -32,7 +32,8 @@ public class ChatController {
         chatTextField.textProperty().bindBidirectional(chatViewModel.chatTextProperty());
         statusWindow.setItems(chatViewModel.getClientThread().observablePlayerList);
         chatBox.setItems(chatViewModel.getClientThread().chatMessages);
-        dropDown.getItems().addAll(chatViewModel.addMenuItems(chatViewModel.getClientThread().observablePlayerList));
+        //dropDown.getItems().addAll(chatViewModel.getClientThread().addMenuItems(chatViewModel.getClientThread().observablePlayerList));
+        dropDown.getItems().addAll(chatViewModel.getClientThread().dropDownItems);
 
     }
 
@@ -47,5 +48,6 @@ public class ChatController {
         chatViewModel.setReady();
 
     }
+
 
 }

@@ -12,10 +12,6 @@ public class LobbyViewModel {
     private ClientThread clientThread;
     private StringProperty chatText = new SimpleStringProperty();
     private StringProperty userNameTextField = new SimpleStringProperty();
-    private Property dropDown= new SimpleObjectProperty<>();
-
-    public final ObservableList<MenuItem> dropDownItems = FXCollections.observableArrayList();
-
 
     public LobbyViewModel() {
 
@@ -41,19 +37,6 @@ public class LobbyViewModel {
 
     public StringProperty userNameTextFieldProperty() {
         return userNameTextField;
-    }
-
-    public Property<Node> dropDownProperty() {
-
-        return dropDown;
-    }
-
-    public ObservableList<MenuItem> addMenuItems(ObservableList<String> list) {
-        for (String temp : list) {
-            dropDownItems.add(new MenuItem(temp));
-        }
-        return dropDownItems;
-
     }
 
     public void sendMessage() {

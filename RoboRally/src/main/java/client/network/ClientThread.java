@@ -7,6 +7,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
+import javafx.scene.control.MenuItem;
 import player.Player;
 import server.messages.*;
 import server.messages.Error;
@@ -55,6 +56,7 @@ public class ClientThread implements Runnable {
 
     private final HashMap<Integer, Player> playerList = new HashMap<>();
     public ObservableList<String> observablePlayerList = FXCollections.observableArrayList();
+    public ObservableList<MenuItem> dropDownItems = FXCollections.observableArrayList();
 
     public ClientThread() throws IOException {
 
@@ -267,6 +269,7 @@ public class ClientThread implements Runnable {
                 this.player = receivedMessage.getPlayer();
                 playerList.put(this.ID, player);
                 observablePlayerList.add(player.getName() + ", " + player.getRobotName());
+                dropDownItems.add(new MenuItem(player.getName() + ", " + player.getRobotName()));
 
                 welcomeViewModel.playerSuccesfullyAdded();
 
@@ -274,6 +277,7 @@ public class ClientThread implements Runnable {
 
                 playerList.put(receivedMessage.getPlayer().getId() ,receivedMessage.getPlayer());
                 observablePlayerList.add(receivedMessage.getPlayer().getName() + ", " + receivedMessage.getPlayer().getRobotName());
+                dropDownItems.add(new MenuItem(receivedMessage.getPlayer().getName() + ", " + receivedMessage.getPlayer().getRobotName()));
 
                 String notificationName = receivedMessage.getPlayer().getName() + " has joined!";
                 chatMessages.add(notificationName);
@@ -610,5 +614,16 @@ public class ClientThread implements Runnable {
         String outgoingMessage = messageHandler.buildMessage("PlayerValues", new PlayerValues(name, figure));
         outgoing.println(outgoingMessage);
     }
+
+  /**public ObservableList<MenuItem> addMenuItems(ObservableList<String> list) {
+    for (String temp : list) {
+
+      dropDownItems.add(new MenuItem(temp));
+      }
+
+      return dropDownItems;
+    }
+   **/
+
 
 }
