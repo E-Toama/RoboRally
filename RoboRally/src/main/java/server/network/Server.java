@@ -1,8 +1,8 @@
 package server.network;
 
 import player.Player;
-import server.messages.MessageHandler;
-import server.messages.PlayerAdded;
+import utilities.MessageHandler;
+import utilities.messages.PlayerAdded;
 
 import java.io.IOException;
 import java.io.PrintWriter;

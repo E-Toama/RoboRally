@@ -7,8 +7,9 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import player.Player;
-import server.messages.*;
-import server.messages.Error;
+import utilities.MessageHandler;
+import utilities.messages.*;
+import utilities.messages.Error;
 
 import java.io.BufferedReader;
 import java.io.IOException;
