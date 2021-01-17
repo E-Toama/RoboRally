@@ -3,11 +3,18 @@ package utilities;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import game.gameboard.MapElement;
+import game.gameboard.boardelements.Antenna;
+import game.gameboardV2.GameBoardMapObject;
+import game.gameboardV2.gameboardfieldobjects.AntennaFieldObject;
+import game.gameboardV2.gameboardfieldobjects.BeltFieldObject;
+import game.gameboardV2.gameboardfieldobjects.GameBoardFieldObject;
 import utilities.messages.GameStarted;
 import utilities.messages.Message;
 import utilities.messages.MessageBody;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 public class MessageHandler {
 
@@ -52,14 +59,18 @@ public class MessageHandler {
             String messageType = jsonObject.get("messageType").getAsString();
             JsonObject body = jsonObject.get("messageBody").getAsJsonObject();
 
+            Gson gsonGameBoardBuilder = new GsonBuilder().registerTypeAdapter(GameBoardFieldObject.class, new GameBoardDeserializer()).create();
+
             if(messageType != null) {
 
                 if (messageType.equals("GameStarted")) {
 
                     JsonArray mapArray = body.getAsJsonArray("map");
-                    Type mapType = new TypeToken<MapElement>()
+                    Type mapType = new TypeToken<ArrayList<GameBoardMapObject>>() {}.getType();
 
-                    GameStarted gameStarted = new GameStarted();
+                    GameBoardMapObject[] map = gsonGameBoardBuilder.fromJson(mapArray, GameBoardMapObject[].class);
+
+                    GameStarted gameStarted = new GameStarted(map);
 
                     return new Message("GameStarted", gameStarted);
 
@@ -83,11 +94,66 @@ public class MessageHandler {
 
     }
 
-    static class GameBoardDeserializer implements JsonDeserializer<MapElement> {
+    static class GameBoardDeserializer implements JsonDeserializer<GameBoardFieldObject> {
 
         @Override
-        public MapElement deserialize(JsonElement jsonElement, Type typeofT, JsonDeserializationContext jsonDeserializationContext) throws JsonSyntaxException {
+        public GameBoardFieldObject deserialize(JsonElement jsonElement, Type typeofT, JsonDeserializationContext jsonDeserializationContext) throws JsonSyntaxException {
 
+            JsonObject gameBoardMapObject = jsonElement.getAsJsonObject();
+            String type = gameBoardMapObject.get("type").getAsString();
+
+            Gson gson = new GsonBuilder().create();
+
+            try {
+
+                switch (type) {
+
+                    case "Antenna":
+                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboardV2.gameboardfieldobjects.AntennaFieldObject"));
+
+                    case "Belt":
+                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboardV2.gameboardfieldobjects.BeltFieldObject"));
+
+                    case "ControlPoint":
+                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboardV2.gameboardfieldobjects.ControlPointObject"));
+
+                    case "Empty":
+                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboardV2.gameboardfieldobjects.EmptyFieldObject"));
+
+                    case "EnergySpace":
+                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboardV2.gameboardfieldobjects.EnergySpaceFieldObject"));
+
+                    case "Gear":
+                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboardV2.gameboardfieldobjects.GearFieldObject"));
+
+                    case "Laser":
+                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboardV2.gameboardfieldobjects.LaserFieldObject"));
+
+                    case "Pit":
+                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboardV2.gameboardfieldobjects.PitFieldObject"));
+
+                    case "PushPanel":
+                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboardV2.gameboardfieldobjects.PushPanelFieldObject"));
+
+                    case "RestartPoint":
+                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboardV2.gameboardfieldobjects.RestartPointFieldObject"));
+
+                    case "RotatingBelt":
+                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboardV2.gameboardfieldobjects.RotatingBeltFieldObject"));
+
+                    case "StartPoint":
+                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboardV2.gameboardfieldobjects.StartPointFieldObject"));
+
+                    case "Wall":
+                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboardV2.gameboardfieldobjects.WallFieldObject"));
+
+                }
+
+            } catch (ClassNotFoundException e) {
+
+                e.printStackTrace();
+
+            }
 
 
             return null;

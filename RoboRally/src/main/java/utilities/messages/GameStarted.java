@@ -1,17 +1,18 @@
 package utilities.messages;
 
-import game.gameboard.MapElement;
+import game.gameboardV2.GameBoardMapObject;
 
 public class GameStarted extends MessageBody {
 
-    private MapElement[] map;
+    private final GameBoardMapObject[] map;
 
-    public GameStarted(MapElement[] map) {
+    public GameStarted(GameBoardMapObject[] map) {
+
         this.map = map;
+
     }
 
-    public MapElement[] getMap() {
-        return this.map;
+    public GameBoardMapObject[] getMap() {
+        return map;
     }
-
 }

@@ -303,6 +303,10 @@ public class ClientThread implements Runnable {
 
             playerList.get(receivedMessage.getPlayerID()).setStatus(receivedMessage.getReady());
 
+            Platform.runLater(() -> {
+                chatMessages.add("[" + playerList.get(receivedMessage.getPlayerID()).getName() + "] changed status to: " + receivedMessage.getReady());
+            });
+
         } else {
 
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of PlayerStatus)");
@@ -316,6 +320,8 @@ public class ClientThread implements Runnable {
         //ToDo: handleGameStarted
         if (incomingMessage.getMessageBody() instanceof GameStarted){
             GameStarted receivedMessage = (GameStarted) incomingMessage.getMessageBody();
+
+            System.out.println(receivedMessage);
 
         } else {
 
@@ -616,6 +622,11 @@ public class ClientThread implements Runnable {
 
     public void submitPlayer(String name, int figure) {
         String outgoingMessage = messageHandler.buildMessage("PlayerValues", new PlayerValues(name, figure));
+        outgoing.println(outgoingMessage);
+    }
+
+    public void sendPlayerStatus(boolean ready) {
+        String outgoingMessage = messageHandler.buildMessage(("SetStatus"), new SetStatus(ready));
         outgoing.println(outgoingMessage);
     }
 
