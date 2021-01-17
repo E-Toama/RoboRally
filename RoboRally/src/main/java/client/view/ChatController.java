@@ -2,10 +2,7 @@ package client.view;
 
 import client.viewmodel.ChatViewModel;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 public class ChatController {
 
@@ -21,10 +18,10 @@ public class ChatController {
     private ListView<String> statusWindow;
 
     @FXML
-    private MenuButton dropDown;
+    private Button sendButton;
 
     @FXML
-    private Button sendButton;
+    private ComboBox dropDown2;
 
     @FXML
     void initialize() {
@@ -32,7 +29,8 @@ public class ChatController {
         chatTextField.textProperty().bindBidirectional(chatViewModel.chatTextProperty());
         statusWindow.setItems(chatViewModel.getClientThread().observablePlayerList);
         chatBox.setItems(chatViewModel.getClientThread().chatMessages);
-        dropDown.getItems().addAll(chatViewModel.addMenuItems(chatViewModel.getClientThread().observablePlayerList));
+        dropDown2.setItems(chatViewModel.getClientThread().observablePlayerListWithDefault);
+        dropDown2.getSelectionModel().selectFirst();
 
     }
 
@@ -45,6 +43,14 @@ public class ChatController {
     public void setReady() {
 
         chatViewModel.setReady();
+
+    }
+
+    public void changeDestination() {
+
+        //ToDo: write a method that sets the destination in ChatViewModel correctly
+
+        System.out.println(dropDown2.getValue());
 
     }
 

@@ -55,12 +55,14 @@ public class ClientThread implements Runnable {
 
     private final HashMap<Integer, Player> playerList = new HashMap<>();
     public ObservableList<String> observablePlayerList = FXCollections.observableArrayList();
+    public ObservableList<String> observablePlayerListWithDefault = FXCollections.observableArrayList();
 
     public ClientThread() throws IOException {
 
         this.socket = new Socket("localhost", 9090);
         this.incoming = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.outgoing = new PrintWriter(socket.getOutputStream(), true);
+        observablePlayerListWithDefault.add("Message To (Default: To All)");
 
     }
 
@@ -267,6 +269,7 @@ public class ClientThread implements Runnable {
                 this.player = receivedMessage.getPlayer();
                 playerList.put(this.ID, player);
                 observablePlayerList.add(player.getName() + ", " + player.getRobotName());
+                observablePlayerListWithDefault.add(player.getName() + ", " + player.getRobotName());
 
                 welcomeViewModel.playerSuccesfullyAdded();
 
@@ -274,6 +277,7 @@ public class ClientThread implements Runnable {
 
                 playerList.put(receivedMessage.getPlayer().getId() ,receivedMessage.getPlayer());
                 observablePlayerList.add(receivedMessage.getPlayer().getName() + ", " + receivedMessage.getPlayer().getRobotName());
+                observablePlayerListWithDefault.add(receivedMessage.getPlayer().getName() + ", " + receivedMessage.getPlayer().getRobotName());
 
                 String notificationName = receivedMessage.getPlayer().getName() + " has joined!";
                 chatMessages.add(notificationName);

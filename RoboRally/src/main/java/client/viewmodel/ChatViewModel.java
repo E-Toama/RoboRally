@@ -15,6 +15,7 @@ public class ChatViewModel {
     private final ClientThread clientThread;
     private final StringProperty chatText = new SimpleStringProperty();
     public final ObservableList<MenuItem> dropDownItems = FXCollections.observableArrayList();
+    private int destination = -1;
 
     public ChatViewModel() {
 
@@ -37,7 +38,7 @@ public class ChatViewModel {
 
     public void sendChat() {
 
-        clientThread.sendMessage(getChatText(), -1);
+        clientThread.sendMessage(getChatText(), destination);
         chatText.set("");
     }
 
