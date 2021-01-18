@@ -32,11 +32,4 @@ public class BoardElement {
         return new MapElement(position, fields);
     }
 
-    public String toConcatenatedString() {
-        String result = "";
-        for (FieldElement fe : fields) {
-            result += fe.getType() + "\n";
-        }
-        return result;
-    }
 }

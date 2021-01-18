@@ -22,7 +22,7 @@ public class BoardViewModel {
         Group root = new Group();
         for (int i = 0; i < horizontalTiles; i++) {
             for (int j = 0; j < verticalTiles; j++) {
-                BoardTile tile = new BoardTile(gameBoard[j][i].toConcatenatedString(), i * gridWidth, j * gridHeight, gridHeight, gridWidth);
+                BoardTile tile = new BoardTile(gameBoard[j][i], i * gridWidth, j * gridHeight, gridHeight, gridWidth);
                 root.getChildren().add(tile);
                 playfield[j][i] = tile;
             }
