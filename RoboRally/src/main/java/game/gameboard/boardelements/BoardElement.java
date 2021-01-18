@@ -8,25 +8,14 @@ import game.gameboard.MapElement;
  * It can hold multiple values, e.g. a "Wall" and a "Laser".
  */
 public class BoardElement {
-    /**
-     * The type-variable is needed for the message protocol and holds the String representation of the class name
-     */
-    private String type;
-    private FieldElement[] fields;
 
-    /**
-     * Default Constructor for BoardElements without additional values, e.g. "Empty" or "Pit"
-     */
-    public BoardElement() {
-        this.type = this.getClass().getSimpleName();
-    }
+    private FieldElement[] fields;
 
     /**
      * Constructor for BoardElements with multiple entries, e.g. Wall and Laser
      * @param fields Array of field elements
      */
     public BoardElement(FieldElement[] fields) {
-        this.type = this.getClass().getSimpleName();
         this.fields = fields;
     }
 
@@ -42,4 +31,5 @@ public class BoardElement {
     public MapElement createMapElement(int position) {
         return new MapElement(position, fields);
     }
+
 }

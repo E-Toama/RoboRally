@@ -2,7 +2,7 @@ package game.gameboard.boardelements;
 
 import game.gameboard.FieldElement;
 
-public class PushPanel extends BoardElement  implements FieldElement {
+public class PushPanel extends FieldElement {
     private String orientation;
     private int[] registers;
 

@@ -18,4 +18,7 @@ public class BoardElement {
         return new GameBoardMapObject(position, field);
     }
 
+    public GameBoardFieldObject[] getField() {
+        return field;
+    }
 }

@@ -42,6 +42,10 @@ public class GameBoard {
         }
     }
 
+    public BoardElement[][] getGameBoard() {
+        return gameBoard;
+    }
+
     public MapElement[] createMapForJSONMessage() {
         System.out.println(gameBoard.length);
         System.out.println(gameBoard[0].length);

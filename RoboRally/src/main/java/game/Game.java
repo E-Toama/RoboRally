@@ -5,7 +5,7 @@ import game.gameboardV2.boards.StartBoard;
 
 public class Game {
 
-    private GameBoardV2 gameBoard = new GameBoardV2(StartBoard.startBoard);
+    private GameBoardV2 gameBoard = new GameBoardV2();
 
     public Game() {
 

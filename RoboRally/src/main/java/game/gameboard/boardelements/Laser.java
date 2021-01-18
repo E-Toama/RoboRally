@@ -2,7 +2,7 @@ package game.gameboard.boardelements;
 
 import game.gameboard.FieldElement;
 
-public class Laser extends BoardElement  implements FieldElement {
+public class Laser extends FieldElement {
     private String orientation;
     private int count;
 

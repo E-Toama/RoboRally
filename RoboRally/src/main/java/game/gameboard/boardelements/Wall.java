@@ -2,7 +2,7 @@ package game.gameboard.boardelements;
 
 import game.gameboard.FieldElement;
 
-public class Wall extends BoardElement implements FieldElement {
+public class Wall extends FieldElement {
     private String[] orientations;
 
     public Wall(String[] orientations) {

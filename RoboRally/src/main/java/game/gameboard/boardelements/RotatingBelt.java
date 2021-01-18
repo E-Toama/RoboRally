@@ -2,7 +2,7 @@ package game.gameboard.boardelements;
 
 import game.gameboard.FieldElement;
 
-public class RotatingBelt extends BoardElement implements FieldElement {
+public class RotatingBelt extends FieldElement {
     private int speed;
     private boolean isCrossing;
     private String[] orientations;
