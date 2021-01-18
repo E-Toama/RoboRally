@@ -1,7 +1,7 @@
 package client.viewmodel;
 
-import client.view.BoardTile;
-import game.gameboard.boardelements.BoardElement;
+import client.view.BoardTileView;
+import game.gameboardV2.BoardElement;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 
@@ -16,13 +16,13 @@ public class BoardViewModel {
     double gridWidth = boardWidth / horizontalTiles;
     double gridHeight = boardHeight / verticalTiles;
 
-    BoardTile[][] playfield = new BoardTile[verticalTiles][horizontalTiles];
+    BoardTileView[][] playfield = new BoardTileView[verticalTiles][horizontalTiles];
 
     public Scene createGameBoardView(BoardElement[][] gameBoard) {
         Group root = new Group();
         for (int i = 0; i < horizontalTiles; i++) {
             for (int j = 0; j < verticalTiles; j++) {
-                BoardTile tile = new BoardTile(gameBoard[j][i], i * gridWidth, j * gridHeight, gridHeight, gridWidth);
+                BoardTileView tile = new BoardTileView(gameBoard[j][i], i * gridWidth, j * gridHeight, gridHeight, gridWidth);
                 root.getChildren().add(tile);
                 playfield[j][i] = tile;
             }

@@ -1,7 +1,8 @@
 package client.view;
 
 import game.gameboard.FieldElement;
-import game.gameboard.boardelements.BoardElement;
+import game.gameboardV2.BoardElement;
+import game.gameboardV2.gameboardfieldobjects.GameBoardFieldObject;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -11,9 +12,9 @@ import javafx.scene.layout.StackPane;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-public class BoardTile extends StackPane {
+public class BoardTileView extends StackPane {
 
-    public BoardTile(BoardElement boardElement, double x, double y, double width, double height) {
+    public BoardTileView(BoardElement boardElement, double x, double y, double width, double height) {
         //Creating an image
         Image image = null;
         try {
@@ -57,7 +58,7 @@ public class BoardTile extends StackPane {
      */
     public String toConcatenatedString(BoardElement boardElement) {
         String result = "";
-        for (FieldElement fe : boardElement.getFields()) {
+        for (GameBoardFieldObject fe : boardElement.getField()) {
             result += fe.getType() + "\n";
         }
         return result;
