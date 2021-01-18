@@ -279,13 +279,22 @@ public class ClientThread implements Runnable {
             } else if (this.player != null) {
 
                 playerList.put(receivedMessage.getPlayer().getId() ,receivedMessage.getPlayer());
-                observablePlayerList.add(receivedMessage.getPlayer().getName() + ", " + receivedMessage.getPlayer().getRobotName());
+
+                Platform.runLater(() -> {
+                    observablePlayerList.add(receivedMessage.getPlayer().getName() + ", " + receivedMessage.getPlayer().getRobotName());
+                });
 
                 String notificationName = receivedMessage.getPlayer().getName() + " has joined!";
-                chatMessages.add(notificationName);
+
+                Platform.runLater(() -> {
+                    chatMessages.add(notificationName);
+                });
 
                 String notificationRobot = "He has Robot No. " + receivedMessage.getPlayer().getFigure();
-                chatMessages.add(notificationRobot);
+
+                Platform.runLater(() -> {
+                    chatMessages.add(notificationRobot);
+                });
 
             } else {
 
