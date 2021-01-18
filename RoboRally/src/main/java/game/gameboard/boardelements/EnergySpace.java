@@ -2,7 +2,7 @@ package game.gameboard.boardelements;
 
 import game.gameboard.FieldElement;
 
-public class EnergySpace extends BoardElement implements FieldElement {
+public class EnergySpace extends FieldElement {
     private int count;
 
     public EnergySpace(int count) {

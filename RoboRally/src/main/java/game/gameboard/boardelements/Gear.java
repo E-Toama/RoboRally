@@ -2,7 +2,7 @@ package game.gameboard.boardelements;
 
 import game.gameboard.FieldElement;
 
-public class Gear extends BoardElement implements FieldElement {
+public class Gear extends FieldElement {
     private String orientation;
 
     public Gear(String orientation) {
