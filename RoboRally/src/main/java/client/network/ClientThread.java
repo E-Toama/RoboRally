@@ -1,11 +1,17 @@
 package client.network;
 
+import client.view.ViewController;
+import client.viewmodel.BoardViewModel;
 import client.viewmodel.ChatViewModel;
 import client.viewmodel.WelcomeViewModel;
 import game.cards.Card;
+import game.gameboardV2.BoardElement;
+import game.gameboardV2.GameBoardMapObject;
+import game.gameboardV2.GameBoardV2;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.Scene;
 import player.Player;
 import utilities.MessageHandler;
 import utilities.messages.*;
@@ -320,8 +326,11 @@ public class ClientThread implements Runnable {
         //ToDo: handleGameStarted
         if (incomingMessage.getMessageBody() instanceof GameStarted){
             GameStarted receivedMessage = (GameStarted) incomingMessage.getMessageBody();
-
-            System.out.println(receivedMessage);
+            GameBoardV2 gameBoard = new GameBoardV2(receivedMessage.getMap());
+            Scene boardView = new BoardViewModel().createGameBoardView(gameBoard.getGameBoard());
+            Platform.runLater(() -> {
+                ViewController.getViewController().setScene(boardView);
+            });
 
         } else {
 
