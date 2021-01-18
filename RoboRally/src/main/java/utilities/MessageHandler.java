@@ -115,7 +115,7 @@ public class MessageHandler {
                         return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboardV2.gameboardfieldobjects.BeltFieldObject"));
 
                     case "ControlPoint":
-                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboardV2.gameboardfieldobjects.ControlPointObject"));
+                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboardV2.gameboardfieldobjects.ControlPointFieldObject"));
 
                     case "Empty":
                         return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboardV2.gameboardfieldobjects.EmptyFieldObject"));
