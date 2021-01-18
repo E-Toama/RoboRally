@@ -18,7 +18,7 @@ public class StartBoard {
             },
             {
                     new BoardElement(6, new GameBoardFieldObject[]{new EmptyFieldObject()}),
-                    new BoardElement(7, new GameBoardFieldObject[]{new LaserFieldObject("down", 3), new WallFieldObject(new String[]{"up", "left"})}),
+                    new BoardElement(7, new GameBoardFieldObject[]{new WallFieldObject(new String[]{"up"})}),
                     new BoardElement(8, new GameBoardFieldObject[]{new EmptyFieldObject()})
             },
             {
