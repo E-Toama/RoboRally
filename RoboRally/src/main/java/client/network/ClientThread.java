@@ -11,6 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import game.player.Player;
+import javafx.scene.layout.GridPane;
 import utilities.MessageHandler;
 import utilities.messages.*;
 import utilities.messages.Error;
@@ -330,11 +331,13 @@ public class ClientThread implements Runnable {
 
     private void handleGameStarted(Message incomingMessage) throws IOException {
 
-        //ToDo: handleGameStarted
         if (incomingMessage.getMessageBody() instanceof GameStarted){
             GameStarted receivedMessage = (GameStarted) incomingMessage.getMessageBody();
             GameBoard gameBoard = new GameBoard(receivedMessage.getMap());
-            Scene boardView = new GameBoardViewModel().createGameBoardView(gameBoard.getGameBoard());
+            //toDo: GridPane, consisting of StackPanes, to be loaded into the MainView
+
+            GridPane boardView = new GameBoardViewModel().createGameBoardView(gameBoard.getGameBoard());
+
             Platform.runLater(() -> {
                 ViewController.getViewController().setScene(boardView);
             });

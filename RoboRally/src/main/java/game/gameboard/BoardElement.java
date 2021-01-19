@@ -4,6 +4,7 @@ import client.utilities.BoardTile;
 import client.utilities.ImageBuilder;
 import game.gameboard.gameboardfieldobjects.GameBoardFieldObject;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class BoardElement {
 
@@ -25,9 +26,9 @@ public class BoardElement {
 
     public BoardTile getBoardTile() {
 
-        Image image = ImageBuilder.buildImage();
+        ImageView imageView = ImageBuilder.buildImage(this);
 
-        return new BoardTile(image);
+        return new BoardTile(imageView);
 
     }
 }
