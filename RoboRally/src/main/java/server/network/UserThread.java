@@ -1,6 +1,6 @@
 package server.network;
 
-import player.Player;
+import game.player.Player;
 import utilities.MessageHandler;
 import utilities.messages.*;
 import utilities.messages.Error;

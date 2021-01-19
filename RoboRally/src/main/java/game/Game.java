@@ -1,18 +1,17 @@
 package game;
 
-import game.gameboardV2.GameBoardV2;
-import game.gameboardV2.boards.StartBoard;
+import game.gameboard.GameBoard;
 
 public class Game {
 
-    private GameBoardV2 gameBoard = new GameBoardV2();
+    private GameBoard gameBoard = new GameBoard();
 
     public Game() {
 
 
     }
 
-    public GameBoardV2 getGameBoard() {
+    public GameBoard getGameBoard() {
         return gameBoard;
     }
 }

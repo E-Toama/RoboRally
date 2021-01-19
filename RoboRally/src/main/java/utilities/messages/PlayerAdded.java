@@ -1,6 +1,6 @@
 package utilities.messages;
 
-import player.Player;
+import game.player.Player;
 
 public class PlayerAdded extends MessageBody {
 

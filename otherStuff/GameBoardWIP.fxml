@@ -155,7 +155,7 @@
             </MenuButton>
             <MenuButton fx:id="playerInfo5" alignment="CENTER" mnemonicParsing="false" prefHeight="41.0" prefWidth="160.0" style="-fx-background-color: lightblue;" text="user5" textAlignment="CENTER">
               <items>
-                <MenuItem fx:id="playerInfoText5" mnemonicParsing="false" text="player Info 5" />
+                <MenuItem fx:id="playerInfoText5" mnemonicParsing="false" text="game.player Info 5" />
               </items>
             </MenuButton>
          </children>

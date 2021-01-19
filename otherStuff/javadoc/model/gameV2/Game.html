@@ -171,7 +171,7 @@ extends java.lang.Object</pre>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#chooseAnotherPlayer(java.lang.String,java.lang.String)">chooseAnotherPlayer</a></span>&#8203;(java.lang.String&nbsp;username,
 java.lang.String&nbsp;chosenName)</code></th>
 <td class="col-last">
-<div class="block">Checks whether it's the requesting player's turn.</div>
+<div class="block">Checks whether it's the requesting game.player's turn.</div>
 </td>
 </tr>
 <tr class="alt-color" id="i2">
@@ -179,7 +179,7 @@ java.lang.String&nbsp;chosenName)</code></th>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#chooseAnyPlayer(java.lang.String,java.lang.String)">chooseAnyPlayer</a></span>&#8203;(java.lang.String&nbsp;username,
 java.lang.String&nbsp;chosenName)</code></th>
 <td class="col-last">
-<div class="block">Checks whether it's the requesting player's turn.</div>
+<div class="block">Checks whether it's the requesting game.player's turn.</div>
 </td>
 </tr>
 <tr class="row-color" id="i3">
@@ -191,7 +191,7 @@ java.lang.String&nbsp;chosenName)</code></th>
 </tr>
 <tr class="alt-color" id="i4">
 <td class="col-first"><code>void</code></td>
-<th class="col-second" scope="row"><code><span class="member-name-link"><a href="#gameMove(model.gameV2.Player)">gameMove</a></span>&#8203;(<a href="Player.html" title="class in model.gameV2">Player</a>&nbsp;player)</code></th>
+<th class="col-second" scope="row"><code><span class="member-name-link"><a href="#gameMove(model.gameV2.Player)">gameMove</a></span>&#8203;(<a href="Player.html" title="class in model.gameV2">Player</a>&nbsp;game.player)</code></th>
 <td class="col-last">
 <div class="block">Starts a players game move.</div>
 </td>
@@ -200,8 +200,8 @@ java.lang.String&nbsp;chosenName)</code></th>
 <td class="col-first"><code><a href="Player.html" title="class in model.gameV2">Player</a></code></td>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#getActivePlayerByUsername(java.lang.String)">getActivePlayerByUsername</a></span>&#8203;(java.lang.String&nbsp;playerName)</code></th>
 <td class="col-last">
-<div class="block">Checks whether there is a player with the given username,
- if so it returns the player object,
+<div class="block">Checks whether there is a game.player with the given username,
+ if so it returns the game.player object,
  otherwise returns null.</div>
 </td>
 </tr>
@@ -209,7 +209,7 @@ java.lang.String&nbsp;chosenName)</code></th>
 <td class="col-first"><code>java.util.List&lt;<a href="Player.html" title="class in model.gameV2">Player</a>&gt;</code></td>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#getActivePlayerList()">getActivePlayerList</a></span>()</code></th>
 <td class="col-last">
-<div class="block">Returns the active player list.</div>
+<div class="block">Returns the active game.player list.</div>
 </td>
 </tr>
 <tr class="row-color" id="i7">
@@ -223,14 +223,14 @@ java.lang.String&nbsp;chosenName)</code></th>
 <td class="col-first"><code>java.util.List&lt;<a href="Player.html" title="class in model.gameV2">Player</a>&gt;</code></td>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#getNextRoundActivePlayerList()">getNextRoundActivePlayerList</a></span>()</code></th>
 <td class="col-last">
-<div class="block">Returns the next round active player list.</div>
+<div class="block">Returns the next round active game.player list.</div>
 </td>
 </tr>
 <tr class="row-color" id="i9">
 <td class="col-first"><code>void</code></td>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#getStatus(java.lang.String)">getStatus</a></span>&#8203;(java.lang.String&nbsp;username)</code></th>
 <td class="col-last">
-<div class="block">Displays the requesting player how many wins each player has.</div>
+<div class="block">Displays the requesting game.player how many wins each game.player has.</div>
 </td>
 </tr>
 <tr class="alt-color" id="i10">
@@ -238,7 +238,7 @@ java.lang.String&nbsp;chosenName)</code></th>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#guessCard(java.lang.String,java.lang.String)">guessCard</a></span>&#8203;(java.lang.String&nbsp;username,
 java.lang.String&nbsp;value)</code></th>
 <td class="col-last">
-<div class="block">Checks whether it's the requesting player's turn.</div>
+<div class="block">Checks whether it's the requesting game.player's turn.</div>
 </td>
 </tr>
 <tr class="row-color" id="i11">
@@ -258,31 +258,31 @@ java.lang.String&nbsp;value)</code></th>
 <tr class="row-color" id="i13">
 <td class="col-first"><code>void</code></td>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#playCard(model.gameV2.cards.Card,model.gameV2.Player)">playCard</a></span>&#8203;(<a href="cards/Card.html" title="class in model.gameV2.cards">Card</a>&nbsp;playedCard,
-<a href="Player.html" title="class in model.gameV2">Player</a>&nbsp;player)</code></th>
+<a href="Player.html" title="class in model.gameV2">Player</a>&nbsp;game.player)</code></th>
 <td class="col-last">
-<div class="block">Notifies all players that the active player has played the playedCard.</div>
+<div class="block">Notifies all players that the active game.player has played the playedCard.</div>
 </td>
 </tr>
 <tr class="alt-color" id="i14">
 <td class="col-first"><code>void</code></td>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#playCardWithoutEffect(model.gameV2.cards.Card,model.gameV2.Player)">playCardWithoutEffect</a></span>&#8203;(<a href="cards/Card.html" title="class in model.gameV2.cards">Card</a>&nbsp;playedCard,
-<a href="Player.html" title="class in model.gameV2">Player</a>&nbsp;player)</code></th>
+<a href="Player.html" title="class in model.gameV2">Player</a>&nbsp;game.player)</code></th>
 <td class="col-last">
-<div class="block">Notifies all players that the player has discarded a Card without an Effect.</div>
+<div class="block">Notifies all players that the game.player has discarded a Card without an Effect.</div>
 </td>
 </tr>
 <tr class="row-color" id="i15">
 <td class="col-first"><code>void</code></td>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#playLeftCard(java.lang.String)">playLeftCard</a></span>&#8203;(java.lang.String&nbsp;username)</code></th>
 <td class="col-last">
-<div class="block">Checks whether it's the requesting player's turn.</div>
+<div class="block">Checks whether it's the requesting game.player's turn.</div>
 </td>
 </tr>
 <tr class="alt-color" id="i16">
 <td class="col-first"><code>void</code></td>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#playRightCard(java.lang.String)">playRightCard</a></span>&#8203;(java.lang.String&nbsp;username)</code></th>
 <td class="col-last">
-<div class="block">Checks whether it's the requesting player's turn.</div>
+<div class="block">Checks whether it's the requesting game.player's turn.</div>
 </td>
 </tr>
 <tr class="row-color" id="i17">
@@ -347,7 +347,7 @@ java.lang.String&nbsp;value)</code></th>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>server</code> - The server on which the game is played</dd>
-<dd><code>firstPlayer</code> - The player who created the game (first player)</dd>
+<dd><code>firstPlayer</code> - The game.player who created the game (first game.player)</dd>
 </dl>
 </section>
 </li>
@@ -386,10 +386,10 @@ java.lang.String&nbsp;value)</code></th>
 <section class="detail" id="getStatus(java.lang.String)">
 <h3>getStatus</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="member-name">getStatus</span>&#8203;(<span class="parameters">java.lang.String&nbsp;username)</span></div>
-<div class="block">Displays the requesting player how many wins each player has.</div>
+<div class="block">Displays the requesting game.player how many wins each game.player has.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>username</code> - The requesting player's username</dd>
+<dd><code>username</code> - The requesting game.player's username</dd>
 </dl>
 </section>
 </li>
@@ -400,7 +400,7 @@ java.lang.String&nbsp;value)</code></th>
 <div class="block">Adds a new Player to the Game.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>newPlayer</code> - The new player</dd>
+<dd><code>newPlayer</code> - The new game.player</dd>
 </dl>
 </section>
 </li>
@@ -419,7 +419,7 @@ java.lang.String&nbsp;value)</code></th>
 <section class="detail" id="getActivePlayerList()">
 <h3>getActivePlayerList</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">java.util.List&lt;<a href="Player.html" title="class in model.gameV2">Player</a>&gt;</span>&nbsp;<span class="member-name">getActivePlayerList</span>()</div>
-<div class="block">Returns the active player list.</div>
+<div class="block">Returns the active game.player list.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>The "activePlayerList".</dd>
@@ -430,14 +430,14 @@ java.lang.String&nbsp;value)</code></th>
 <section class="detail" id="getActivePlayerByUsername(java.lang.String)">
 <h3>getActivePlayerByUsername</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="Player.html" title="class in model.gameV2">Player</a></span>&nbsp;<span class="member-name">getActivePlayerByUsername</span>&#8203;(<span class="parameters">java.lang.String&nbsp;playerName)</span></div>
-<div class="block">Checks whether there is a player with the given username,
- if so it returns the player object,
+<div class="block">Checks whether there is a game.player with the given username,
+ if so it returns the game.player object,
  otherwise returns null.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>playerName</code> - The specified username.</dd>
 <dt>Returns:</dt>
-<dd>The player object if it exists, otherwise null.</dd>
+<dd>The game.player object if it exists, otherwise null.</dd>
 </dl>
 </section>
 </li>
@@ -445,7 +445,7 @@ java.lang.String&nbsp;value)</code></th>
 <section class="detail" id="getNextRoundActivePlayerList()">
 <h3>getNextRoundActivePlayerList</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">java.util.List&lt;<a href="Player.html" title="class in model.gameV2">Player</a>&gt;</span>&nbsp;<span class="member-name">getNextRoundActivePlayerList</span>()</div>
-<div class="block">Returns the next round active player list.</div>
+<div class="block">Returns the next round active game.player list.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>The "getNextRoundActivePlayerList".</dd>
@@ -468,23 +468,23 @@ java.lang.String&nbsp;value)</code></th>
 <h3>startGame</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="member-name">startGame</span>&#8203;(<span class="parameters">java.lang.String&nbsp;userName)</span></div>
 <div class="block">Starts the Game.
- Checks if the player who requested to start the game is the same one, who created the game.</div>
+ Checks if the game.player who requested to start the game is the same one, who created the game.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userName</code> - The requesting player.</dd>
+<dd><code>userName</code> - The requesting game.player.</dd>
 </dl>
 </section>
 </li>
 <li>
 <section class="detail" id="gameMove(model.gameV2.Player)">
 <h3>gameMove</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="member-name">gameMove</span>&#8203;(<span class="parameters"><a href="Player.html" title="class in model.gameV2">Player</a>&nbsp;player)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="member-name">gameMove</span>&#8203;(<span class="parameters"><a href="Player.html" title="class in model.gameV2">Player</a>&nbsp;game.player)</span></div>
 <div class="block">Starts a players game move.
- Checks if the deck is empty and whether it is the requesting player's turn.
+ Checks if the deck is empty and whether it is the requesting game.player's turn.
  If the deck is empty it determines the round winner, and starts a new round.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>player</code> - The requesting Player.</dd>
+<dd><code>game.player</code> - The requesting Player.</dd>
 </dl>
 </section>
 </li>
@@ -492,7 +492,7 @@ java.lang.String&nbsp;value)</code></th>
 <section class="detail" id="playLeftCard(java.lang.String)">
 <h3>playLeftCard</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="member-name">playLeftCard</span>&#8203;(<span class="parameters">java.lang.String&nbsp;username)</span></div>
-<div class="block">Checks whether it's the requesting player's turn.
+<div class="block">Checks whether it's the requesting game.player's turn.
  If so calls / plays the left card on the players hand (cards(0)).
  Removes the discarded Card from the players hand.</div>
 <dl class="notes">
@@ -505,7 +505,7 @@ java.lang.String&nbsp;value)</code></th>
 <section class="detail" id="playRightCard(java.lang.String)">
 <h3>playRightCard</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="member-name">playRightCard</span>&#8203;(<span class="parameters">java.lang.String&nbsp;username)</span></div>
-<div class="block">Checks whether it's the requesting player's turn.
+<div class="block">Checks whether it's the requesting game.player's turn.
  If so calls / plays the right card on the players hand (cards(1)).
  Removes the discarded Card from the players hand.</div>
 <dl class="notes">
@@ -518,14 +518,14 @@ java.lang.String&nbsp;value)</code></th>
 <section class="detail" id="playCard(model.gameV2.cards.Card,model.gameV2.Player)">
 <h3>playCard</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="member-name">playCard</span>&#8203;(<span class="parameters"><a href="cards/Card.html" title="class in model.gameV2.cards">Card</a>&nbsp;playedCard,
-<a href="Player.html" title="class in model.gameV2">Player</a>&nbsp;player)</span></div>
-<div class="block">Notifies all players that the active player has played the playedCard.
+<a href="Player.html" title="class in model.gameV2">Player</a>&nbsp;game.player)</span></div>
+<div class="block">Notifies all players that the active game.player has played the playedCard.
  Ads the playedCard to the discardedCards List.
  Calls the play method of the playedCard.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>playedCard</code> - The played card.</dd>
-<dd><code>player</code> - The active player.</dd>
+<dd><code>game.player</code> - The active game.player.</dd>
 </dl>
 </section>
 </li>
@@ -533,13 +533,13 @@ java.lang.String&nbsp;value)</code></th>
 <section class="detail" id="playCardWithoutEffect(model.gameV2.cards.Card,model.gameV2.Player)">
 <h3>playCardWithoutEffect</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="member-name">playCardWithoutEffect</span>&#8203;(<span class="parameters"><a href="cards/Card.html" title="class in model.gameV2.cards">Card</a>&nbsp;playedCard,
-<a href="Player.html" title="class in model.gameV2">Player</a>&nbsp;player)</span></div>
-<div class="block">Notifies all players that the player has discarded a Card without an Effect.
+<a href="Player.html" title="class in model.gameV2">Player</a>&nbsp;game.player)</span></div>
+<div class="block">Notifies all players that the game.player has discarded a Card without an Effect.
  Ads the playedCard to the discardedCards List.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>playedCard</code> - The played / discarded card.</dd>
-<dd><code>player</code> - The active player.</dd>
+<dd><code>game.player</code> - The active game.player.</dd>
 </dl>
 </section>
 </li>
@@ -559,13 +559,13 @@ java.lang.String&nbsp;value)</code></th>
 <h3>chooseAnotherPlayer</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="member-name">chooseAnotherPlayer</span>&#8203;(<span class="parameters">java.lang.String&nbsp;username,
 java.lang.String&nbsp;chosenName)</span></div>
-<div class="block">Checks whether it's the requesting player's turn.
- Checks if the chosen player is not the requesting player.
- If both are correct, it calls the correct completePlay function.</div>
+<div class="block">Checks whether it's the requesting game.player's turn.
+    Checks if the chosen game.player is not the requesting game.player.
+    If both are correct, it calls the correct completePlay function.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>username</code> - The requesting player.</dd>
-<dd><code>chosenName</code> - The chosen player.</dd>
+<dd><code>username</code> - The requesting game.player.</dd>
+<dd><code>chosenName</code> - The chosen game.player.</dd>
 </dl>
 </section>
 </li>
@@ -574,12 +574,12 @@ java.lang.String&nbsp;chosenName)</span></div>
 <h3>chooseAnyPlayer</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="member-name">chooseAnyPlayer</span>&#8203;(<span class="parameters">java.lang.String&nbsp;username,
 java.lang.String&nbsp;chosenName)</span></div>
-<div class="block">Checks whether it's the requesting player's turn.
+<div class="block">Checks whether it's the requesting game.player's turn.
  If so, it calls the Princes completePlay method.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>username</code> - The requesting player.</dd>
-<dd><code>chosenName</code> - The chosen player.</dd>
+<dd><code>username</code> - The requesting game.player.</dd>
+<dd><code>chosenName</code> - The chosen game.player.</dd>
 </dl>
 </section>
 </li>
@@ -588,12 +588,12 @@ java.lang.String&nbsp;chosenName)</span></div>
 <h3>guessCard</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="member-name">guessCard</span>&#8203;(<span class="parameters">java.lang.String&nbsp;username,
 java.lang.String&nbsp;value)</span></div>
-<div class="block">Checks whether it's the requesting player's turn.
+<div class="block">Checks whether it's the requesting game.player's turn.
  Checks if the Guess is valid.
  If both are correct, it calls the Guards guessCard method.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>username</code> - The requesting player.</dd>
+<dd><code>username</code> - The requesting game.player.</dd>
 <dd><code>value</code> - The guessed value.</dd>
 </dl>
 </section>

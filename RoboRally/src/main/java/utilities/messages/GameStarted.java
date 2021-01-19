@@ -1,6 +1,6 @@
 package utilities.messages;
 
-import game.gameboardV2.GameBoardMapObject;
+import game.gameboard.GameBoardMapObject;
 
 public class GameStarted extends MessageBody {
 

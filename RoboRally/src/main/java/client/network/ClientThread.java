@@ -1,18 +1,16 @@
 package client.network;
 
 import client.view.ViewController;
-import client.viewmodel.BoardViewModel;
+import client.viewmodel.GameBoardViewModel;
 import client.viewmodel.ChatViewModel;
 import client.viewmodel.WelcomeViewModel;
 import game.cards.Card;
-import game.gameboardV2.BoardElement;
-import game.gameboardV2.GameBoardMapObject;
-import game.gameboardV2.GameBoardV2;
+import game.gameboard.GameBoard;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
-import player.Player;
+import game.player.Player;
 import utilities.MessageHandler;
 import utilities.messages.*;
 import utilities.messages.Error;
@@ -272,7 +270,7 @@ public class ClientThread implements Runnable {
 
                 this.player = receivedMessage.getPlayer();
                 playerList.put(this.ID, player);
-                observablePlayerList.add(player.getName() + ", " + player.getRobotName());
+                observablePlayerList.add(player.getName() + ", " + player.getRobot().getRobotName(player.getFigure()));
 
                 welcomeViewModel.playerSuccesfullyAdded();
 
@@ -281,7 +279,7 @@ public class ClientThread implements Runnable {
                 playerList.put(receivedMessage.getPlayer().getId() ,receivedMessage.getPlayer());
 
                 Platform.runLater(() -> {
-                    observablePlayerList.add(receivedMessage.getPlayer().getName() + ", " + receivedMessage.getPlayer().getRobotName());
+                    observablePlayerList.add(receivedMessage.getPlayer().getName() + ", " + receivedMessage.getPlayer().getRobot().getRobotName(player.getFigure()));
                 });
 
                 String notificationName = receivedMessage.getPlayer().getName() + " has joined!";
@@ -335,8 +333,8 @@ public class ClientThread implements Runnable {
         //ToDo: handleGameStarted
         if (incomingMessage.getMessageBody() instanceof GameStarted){
             GameStarted receivedMessage = (GameStarted) incomingMessage.getMessageBody();
-            GameBoardV2 gameBoard = new GameBoardV2(receivedMessage.getMap());
-            Scene boardView = new BoardViewModel().createGameBoardView(gameBoard.getGameBoard());
+            GameBoard gameBoard = new GameBoard(receivedMessage.getMap());
+            Scene boardView = new GameBoardViewModel().createGameBoardView(gameBoard.getGameBoard());
             Platform.runLater(() -> {
                 ViewController.getViewController().setScene(boardView);
             });
@@ -388,7 +386,7 @@ public class ClientThread implements Runnable {
     private void handleConnectionUpdate(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof ConnectionUpdate) {
             ConnectionUpdate connectionUpdate = (ConnectionUpdate) incomingMessage.getMessageBody();
-            //ToDo: Implement "Remove player"-option
+            //ToDo: Implement "Remove game.player"-option
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of ConnectionUpdate)");
         }
