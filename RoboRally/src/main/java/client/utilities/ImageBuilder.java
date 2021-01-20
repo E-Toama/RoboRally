@@ -1,12 +1,7 @@
 package client.utilities;
 
 import game.gameboard.BoardElement;
-import game.gameboard.gameboardfieldobjects.BeltFieldObject;
-import game.gameboard.gameboardfieldobjects.ControlPointFieldObject;
-import game.gameboard.gameboardfieldobjects.EnergySpaceFieldObject;
-import game.gameboard.gameboardfieldobjects.GameBoardFieldObject;
-import game.gameboard.gameboardfieldobjects.LaserFieldObject;
-import game.gameboard.gameboardfieldobjects.WallFieldObject;
+import game.gameboard.gameboardfieldobjects.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -70,11 +65,45 @@ public class ImageBuilder {
                 case "EnergySpace":
                 case "StartingPoint":
                 case "Wall":
+
                 case "ControlPoint":
+                    Image checkImage = new Image("Checkpoint_1.png");
+                    ImageView checkImageView = adjustToBoard(checkImage);
+                    return checkImageView;
+
                 case "RestartPoint":
+                    Image restartImage = new Image("RestartToken.png");
+                    ImageView restartPoint = adjustToBoard(restartImage);
+                    return restartPoint;
+
                 case "Antenna":
+                    Image antennaImage = new Image("Antenna.png");
+                    ImageView antenna = adjustToBoard(antennaImage);
+                    return antenna;
+
                 case "Pit":
+                    Image pitImage = new Image("Pit.png");
+                    ImageView pit = adjustToBoard(pitImage);
+                    return pit;
+
                 case "Gear":
+                    GearFieldObject gearFieldObject = (GearFieldObject) gameBoardFieldObject;
+                    String gearOrientation = gearFieldObject.getOrientation();
+
+                    if (gearOrientation.equals("clockwise")) {
+                        Image gearImageClockwise = new Image("Gear_clockwise.png");
+                        ImageView gearClockWise = adjustToBoard(gearImageClockwise);
+                        return gearClockWise;
+                    }
+                    else if (gearOrientation.equals("counterclockwise")) {
+                        Image gearImageCounterClockwise = new Image("Gear_counterclockwise.png");
+                        ImageView gearCounterClockwise = adjustToBoard(gearImageCounterClockwise);
+                        return gearCounterClockwise;
+                    }
+
+                    else { //evtl Fehlerbehebung?
+
+                    }
             }
 
 
