@@ -58,13 +58,17 @@ public class ClientThread implements Runnable {
     private ChatViewModel chatViewModel;
 
     private final HashMap<Integer, Player> playerList = new HashMap<>();
+    public HashMap<String, Integer> messageMatchMap = new HashMap<>();
     public ObservableList<String> observablePlayerList = FXCollections.observableArrayList();
+    public ObservableList<String> observablePlayerListWithDefault = FXCollections.observableArrayList();
 
     public ClientThread() throws IOException {
 
         this.socket = new Socket("localhost", 9090);
         this.incoming = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.outgoing = new PrintWriter(socket.getOutputStream(), true);
+        observablePlayerListWithDefault.add("Message To (Default: To All)");
+        messageMatchMap.put("Message To (Default: To All)",-1);
 
     }
 
@@ -275,17 +279,18 @@ public class ClientThread implements Runnable {
 
                 this.player = receivedMessage.getPlayer();
                 playerList.put(this.ID, player);
-                observablePlayerList.add(player.getName() + ", " + player.getRobot().getRobotName(player.getFigure()));
+                observablePlayerList.add(player.getName() + ", " + player.getRobotName());
+                observablePlayerListWithDefault.add(player.getName() + ", " + player.getRobotName());
+                messageMatchMap.put(player.getName() + ", " + player.getRobotName(),player.getId());
 
                 welcomeViewModel.playerSuccesfullyAdded();
 
             } else if (this.player != null) {
 
                 playerList.put(receivedMessage.getPlayer().getId() ,receivedMessage.getPlayer());
-
-                Platform.runLater(() -> {
-                    observablePlayerList.add(receivedMessage.getPlayer().getName() + ", " + receivedMessage.getPlayer().getRobot().getRobotName(player.getFigure()));
-                });
+                observablePlayerList.add(receivedMessage.getPlayer().getName() + ", " + receivedMessage.getPlayer().getRobotName());
+                observablePlayerListWithDefault.add(receivedMessage.getPlayer().getName() + ", " + receivedMessage.getPlayer().getRobotName());
+                messageMatchMap.put(receivedMessage.getPlayer().getName() + ", " + receivedMessage.getPlayer().getRobotName(),receivedMessage.getPlayer().getId());
 
                 String notificationName = receivedMessage.getPlayer().getName() + " has joined!";
 
