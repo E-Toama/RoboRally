@@ -37,27 +37,27 @@ public class WelcomeViewModel {
     }
 
     public void setSmashBot() {
-        this.selectedRobot = 3;
-    }
-
-    public void setHulk() {
         this.selectedRobot = 2;
     }
 
-    public void setSpinBot() {
-        this.selectedRobot = 4;
-    }
-
-    public void setHammerBot() {
+    public void setHulk() {
         this.selectedRobot = 1;
     }
 
+    public void setSpinBot() {
+        this.selectedRobot = 3;
+    }
+
+    public void setHammerBot() {
+        this.selectedRobot = 0;
+    }
+
     public void setTwonky() {
-        this.selectedRobot = 5;
+        this.selectedRobot = 4;
     }
 
     public void setZoomBot() {
-        this.selectedRobot = 6;
+        this.selectedRobot = 5;
     }
 
     public void submitPlayer() {

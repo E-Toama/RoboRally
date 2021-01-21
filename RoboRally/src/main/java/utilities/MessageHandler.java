@@ -1,20 +1,13 @@
 package utilities;
 
 import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
-import game.gameboard.MapElement;
-import game.gameboard.boardelements.Antenna;
-import game.gameboardV2.GameBoardMapObject;
-import game.gameboardV2.gameboardfieldobjects.AntennaFieldObject;
-import game.gameboardV2.gameboardfieldobjects.BeltFieldObject;
-import game.gameboardV2.gameboardfieldobjects.GameBoardFieldObject;
+import game.gameboard.GameBoardMapObject;
+import game.gameboard.gameboardfieldobjects.GameBoardFieldObject;
 import utilities.messages.GameStarted;
 import utilities.messages.Message;
 import utilities.messages.MessageBody;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 public class MessageHandler {
 
@@ -30,7 +23,6 @@ public class MessageHandler {
 
     public Message handleMessage(String incomingMessage) {
 
-        //Gson gson = new Gson();
         Gson gson = new GsonBuilder().registerTypeAdapter(Message.class, new MessageDeserializer()).create();
 
         Message returnValue = null;
@@ -66,7 +58,6 @@ public class MessageHandler {
                 if (messageType.equals("GameStarted")) {
 
                     JsonArray mapArray = body.getAsJsonArray("map");
-                    Type mapType = new TypeToken<ArrayList<GameBoardMapObject>>() {}.getType();
 
                     GameBoardMapObject[] map = gsonGameBoardBuilder.fromJson(mapArray, GameBoardMapObject[].class);
 
@@ -109,43 +100,43 @@ public class MessageHandler {
                 switch (type) {
 
                     case "Antenna":
-                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboardV2.gameboardfieldobjects.AntennaFieldObject"));
+                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboard.gameboardfieldobjects.AntennaFieldObject"));
 
                     case "Belt":
-                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboardV2.gameboardfieldobjects.BeltFieldObject"));
+                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboard.gameboardfieldobjects.BeltFieldObject"));
 
                     case "ControlPoint":
-                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboardV2.gameboardfieldobjects.ControlPointFieldObject"));
+                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboard.gameboardfieldobjects.ControlPointFieldObject"));
 
                     case "Empty":
-                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboardV2.gameboardfieldobjects.EmptyFieldObject"));
+                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboard.gameboardfieldobjects.EmptyFieldObject"));
 
                     case "EnergySpace":
-                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboardV2.gameboardfieldobjects.EnergySpaceFieldObject"));
+                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboard.gameboardfieldobjects.EnergySpaceFieldObject"));
 
                     case "Gear":
-                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboardV2.gameboardfieldobjects.GearFieldObject"));
+                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboard.gameboardfieldobjects.GearFieldObject"));
 
                     case "Laser":
-                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboardV2.gameboardfieldobjects.LaserFieldObject"));
+                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboard.gameboardfieldobjects.LaserFieldObject"));
 
                     case "Pit":
-                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboardV2.gameboardfieldobjects.PitFieldObject"));
+                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboard.gameboardfieldobjects.PitFieldObject"));
 
                     case "PushPanel":
-                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboardV2.gameboardfieldobjects.PushPanelFieldObject"));
+                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboard.gameboardfieldobjects.PushPanelFieldObject"));
 
                     case "RestartPoint":
-                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboardV2.gameboardfieldobjects.RestartPointFieldObject"));
+                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboard.gameboardfieldobjects.RestartPointFieldObject"));
 
                     case "RotatingBelt":
-                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboardV2.gameboardfieldobjects.RotatingBeltFieldObject"));
+                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboard.gameboardfieldobjects.RotatingBeltFieldObject"));
 
                     case "StartPoint":
-                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboardV2.gameboardfieldobjects.StartPointFieldObject"));
+                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboard.gameboardfieldobjects.StartPointFieldObject"));
 
                     case "Wall":
-                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboardV2.gameboardfieldobjects.WallFieldObject"));
+                        return gson.fromJson(jsonElement, (Type) Class.forName("game.gameboard.gameboardfieldobjects.WallFieldObject"));
 
                 }
 

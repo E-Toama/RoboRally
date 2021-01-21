@@ -1,42 +1,52 @@
 package game.gameboard;
 
-import game.gameboard.boardelements.BoardElement;
+import game.gameboard.boards.DizzyHighway;
+import game.gameboard.boards.StartBoard;
 
-/**
- * This class holds the actual GameBoard. It has two constructors:
- * 1. For creating the GameBoard on the server side by providing the name of the course
- * 2. For creating the GameBoard on the client side by providing the map from the protocol-message
- */
 public class GameBoard {
 
     private BoardElement[][] gameBoard;
 
-    /**
-     * Constructor for creating a course by name
-     * @param course Course-name as string
-     */
-    public GameBoard(String course) {
-        switch (course) {
-            case "DizzyHighway":
-                gameBoard = createDizzyHighway();
-                break;
-            default:
-                gameBoard = null;
+    public GameBoard() {
+
+        this.gameBoard = createDizzyHighway();
+
+    }
+
+    public GameBoardMapObject[] toMap() {
+
+        int length = gameBoard.length * gameBoard[0].length;
+        GameBoardMapObject[] returnValue = new GameBoardMapObject[length];
+
+        int x = 0;
+
+        for (int i = 0; i < gameBoard.length; i++) {
+
+            for (int j = 0; j < gameBoard[i].length; j++) {
+
+                returnValue[x] = gameBoard[i][j].returnGameBoardMapObject();
+                x++;
+
+            }
+
         }
+
+        return returnValue;
+
     }
 
     /**
      * Second Constructor for recreating a GameBoard from JSON
      * WARNING: Hard-coded size of GameBoard-array (10 * 13)!!!
-     * (because it is impossible to guess the board-format from a simple list)
-     * @param map Array of MapElements from JSON-Message
+     * (because it is impossible to guess the board-format from a one-dimensional list)
+     * @param map Array of GameBoardMapObjects from JSON-Message
      */
-    public GameBoard(MapElement[] map) {
+    public GameBoard(GameBoardMapObject[] map) {
         gameBoard = new BoardElement[10][13];
         int position = 0;
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 13; j++) {
-                gameBoard[i][j] = new BoardElement(map[position].getField());
+                gameBoard[i][j] = new BoardElement(position, map[position].getField());
                 position++;
             }
         }
@@ -46,34 +56,17 @@ public class GameBoard {
         return gameBoard;
     }
 
-    public MapElement[] createMapForJSONMessage() {
-        System.out.println(gameBoard.length);
-        System.out.println(gameBoard[0].length);
-        int length = gameBoard.length * gameBoard[0].length;
-        MapElement[] map = new MapElement[length];
-        int position = 0;
-        for (int i = 0; i < gameBoard.length; i++) {
-            for (int j = 0; j < gameBoard[0].length; j++) {
-                map[position] = gameBoard[i][j].createMapElement(position+1);
-                position++;
-            }
-        }
-        return map;
-    }
-
     private BoardElement[][] createDizzyHighway() {
         BoardElement[][] dizzyHighway = new BoardElement[10][13];
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 13; j++) {
                 if (j < 3) {
-                    dizzyHighway[i][j] = BoardParts.StartBoard[i][j];
+                    dizzyHighway[i][j] = StartBoard.startBoard[i][j];
                 } else {
-                    dizzyHighway[i][j] = BoardParts._5B[i][j-3];
+                    dizzyHighway[i][j] = DizzyHighway._5B[i][j-3];
                 }
             }
         }
         return dizzyHighway;
     }
-
-
 }

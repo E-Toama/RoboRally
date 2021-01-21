@@ -1,8 +1,8 @@
 package server.network;
 
 import game.Game;
-import game.gameboardV2.GameBoardMapObject;
-import player.Player;
+import game.gameboard.GameBoardMapObject;
+import game.player.Player;
 import utilities.MessageHandler;
 import utilities.messages.GameStarted;
 import utilities.messages.PlayerAdded;

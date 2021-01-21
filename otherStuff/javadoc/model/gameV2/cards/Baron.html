@@ -146,7 +146,7 @@ extends <a href="Card.html" title="class in model.gameV2.cards">Card</a></pre>
 <tr class="row-color" id="i1">
 <td class="col-first"><code>void</code></td>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#play(model.gameV2.Game,model.gameV2.Player)">play</a></span>&#8203;(<a href="../Game.html" title="class in model.gameV2">Game</a>&nbsp;game,
-<a href="../Player.html" title="class in model.gameV2">Player</a>&nbsp;player)</code></th>
+<a href="../Player.html" title="class in model.gameV2">Player</a>&nbsp;game.player)</code></th>
 <td class="col-last">
 <div class="block">This method is responsible for playing the Baron card.</div>
 </td>
@@ -191,14 +191,14 @@ extends <a href="Card.html" title="class in model.gameV2.cards">Card</a></pre>
 <section class="detail" id="play(model.gameV2.Game,model.gameV2.Player)">
 <h3>play</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="member-name">play</span>&#8203;(<span class="parameters"><a href="../Game.html" title="class in model.gameV2">Game</a>&nbsp;game,
-<a href="../Player.html" title="class in model.gameV2">Player</a>&nbsp;player)</span></div>
+<a href="../Player.html" title="class in model.gameV2">Player</a>&nbsp;game.player)</span></div>
 <div class="block">This method is responsible for playing the Baron card.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="Card.html#play(model.gameV2.Game,model.gameV2.Player)">play</a></code>&nbsp;in class&nbsp;<code><a href="Card.html" title="class in model.gameV2.cards">Card</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>game</code> - The current game state.</dd>
-<dd><code>player</code> - The player who played the Baron card.</dd>
+<dd><code>game.player</code> - The game.player who played the Baron card.</dd>
 </dl>
 </section>
 </li>
@@ -212,8 +212,8 @@ extends <a href="Card.html" title="class in model.gameV2.cards">Card</a></pre>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>game</code> - The current game state.</dd>
-<dd><code>activePlayer</code> - The current player.</dd>
-<dd><code>chosenPlayer</code> - The choice of the current player.</dd>
+<dd><code>activePlayer</code> - The current game.player.</dd>
+<dd><code>chosenPlayer</code> - The choice of the current game.player.</dd>
 </dl>
 </section>
 </li>

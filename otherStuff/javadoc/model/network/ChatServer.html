@@ -143,7 +143,7 @@ java.io.PrintWriter&nbsp;newWriter)</code></th>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#chooseAnotherPlayer(java.lang.String,java.lang.String)">chooseAnotherPlayer</a></span>&#8203;(java.lang.String&nbsp;username,
 java.lang.String&nbsp;chosenName)</code></th>
 <td class="col-last">
-<div class="block">Method passes user-choice of target player to the game.</div>
+<div class="block">Method passes user-choice of target game.player to the game.</div>
 </td>
 </tr>
 <tr class="alt-color" id="i2">
@@ -151,7 +151,7 @@ java.lang.String&nbsp;chosenName)</code></th>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#chooseAnyPlayer(java.lang.String,java.lang.String)">chooseAnyPlayer</a></span>&#8203;(java.lang.String&nbsp;username,
 java.lang.String&nbsp;chosenName)</code></th>
 <td class="col-last">
-<div class="block">Method passes user-choice of target player to game.</div>
+<div class="block">Method passes user-choice of target game.player to game.</div>
 </td>
 </tr>
 <tr class="row-color" id="i3">
@@ -187,7 +187,7 @@ java.lang.String&nbsp;chosenName)</code></th>
 <td class="col-first"><code>void</code></td>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#getStatus(java.lang.String)">getStatus</a></span>&#8203;(java.lang.String&nbsp;username)</code></th>
 <td class="col-last">
-<div class="block">Displays the current score to the player who requested "?STATS"</div>
+<div class="block">Displays the current score to the game.player who requested "?STATS"</div>
 </td>
 </tr>
 <tr class="alt-color" id="i8">
@@ -406,11 +406,11 @@ java.lang.String&nbsp;message)</span></div>
 <h3>chooseAnyPlayer</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="member-name">chooseAnyPlayer</span>&#8203;(<span class="parameters">java.lang.String&nbsp;username,
 java.lang.String&nbsp;chosenName)</span></div>
-<div class="block">Method passes user-choice of target player to game.
- Choose any player for card effect (including self, e.g. for Prince)</div>
+<div class="block">Method passes user-choice of target game.player to game.
+ Choose any game.player for card effect (including self, e.g. for Prince)</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>username</code> - the player currently active</dd>
+<dd><code>username</code> - the game.player currently active</dd>
 <dd><code>chosenName</code> - the chosen opponent</dd>
 </dl>
 </section>
@@ -420,11 +420,11 @@ java.lang.String&nbsp;chosenName)</span></div>
 <h3>chooseAnotherPlayer</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="member-name">chooseAnotherPlayer</span>&#8203;(<span class="parameters">java.lang.String&nbsp;username,
 java.lang.String&nbsp;chosenName)</span></div>
-<div class="block">Method passes user-choice of target player to the game.
- Choose any player excluding self (e.g. for King, Priest, ...)</div>
+<div class="block">Method passes user-choice of target game.player to the game.
+ Choose any game.player excluding self (e.g. for King, Priest, ...)</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>username</code> - the player currently active</dd>
+<dd><code>username</code> - the game.player currently active</dd>
 <dd><code>chosenName</code> - the chosen opponent</dd>
 </dl>
 </section>
@@ -457,7 +457,7 @@ java.lang.String&nbsp;value)</span></div>
 <section class="detail" id="getStatus(java.lang.String)">
 <h3>getStatus</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="member-name">getStatus</span>&#8203;(<span class="parameters">java.lang.String&nbsp;username)</span></div>
-<div class="block">Displays the current score to the player who requested "?STATS"</div>
+<div class="block">Displays the current score to the game.player who requested "?STATS"</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>username</code> - user to send the current score to.</dd>
