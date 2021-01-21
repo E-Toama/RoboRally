@@ -2,11 +2,11 @@ package game.Robots;
 
 public abstract class Robot {
 
-    private String RobotImageUp;
+   /* private String RobotImageUp;
     private String RobotImageLeft;
     private String RobotImageDown;
-    private String RobotImageRight;
-    private int Figure;
+    private String RobotImageRight;*/
+    //private int Figure;
 
     public static String getRobotName(int figure) {
 

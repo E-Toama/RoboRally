@@ -8,7 +8,7 @@ public class Player {
     private final String name;
 
     private final int figure;
-    private final Robot robot;
+    private final transient Robot robot;
 
     private Boolean status = false;
 

@@ -29,7 +29,7 @@ public class GameBoardViewModel {
             for (int j = 0; j < verticalTiles; j++) {
                 ImageView imageOfBoardElement = ImageBuilder.buildImage(gameBoard[j][i]);
                 BoardTile boardTile = new BoardTile(imageOfBoardElement);
-                gridPane.add(boardTile, i, j);
+                gridPane.add(imageOfBoardElement, i, j);
             }
         }
         return gridPane;
