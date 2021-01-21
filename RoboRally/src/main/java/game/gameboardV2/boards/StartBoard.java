@@ -12,49 +12,49 @@ public class StartBoard {
                     new BoardElement(2, new GameBoardFieldObject[]{new BeltFieldObject("right", 1)})
             },
             {
-                    new BoardElement(3, new GameBoardFieldObject[]{new EmptyFieldObject()}),
-                    new BoardElement(4, new GameBoardFieldObject[]{new StartPointFieldObject()}),
-                    new BoardElement(5, new GameBoardFieldObject[]{new EmptyFieldObject()})
+                    new BoardElement(13, new GameBoardFieldObject[]{new EmptyFieldObject()}),
+                    new BoardElement(14, new GameBoardFieldObject[]{new StartPointFieldObject()}),
+                    new BoardElement(15, new GameBoardFieldObject[]{new EmptyFieldObject()})
             },
             {
-                    new BoardElement(6, new GameBoardFieldObject[]{new EmptyFieldObject()}),
-                    new BoardElement(7, new GameBoardFieldObject[]{new WallFieldObject(new String[]{"up"})}),
-                    new BoardElement(8, new GameBoardFieldObject[]{new EmptyFieldObject()})
+                    new BoardElement(26, new GameBoardFieldObject[]{new EmptyFieldObject()}),
+                    new BoardElement(27, new GameBoardFieldObject[]{new WallFieldObject(new String[]{"up"})}),
+                    new BoardElement(28, new GameBoardFieldObject[]{new EmptyFieldObject()})
             },
             {
-                    new BoardElement(9, new GameBoardFieldObject[]{new StartPointFieldObject()}),
-                    new BoardElement(10, new GameBoardFieldObject[]{new EmptyFieldObject()}),
-                    new BoardElement(11, new GameBoardFieldObject[]{new EmptyFieldObject()})
+                    new BoardElement(39, new GameBoardFieldObject[]{new StartPointFieldObject()}),
+                    new BoardElement(40, new GameBoardFieldObject[]{new EmptyFieldObject()}),
+                    new BoardElement(41, new GameBoardFieldObject[]{new EmptyFieldObject()})
             },
             {
-                    new BoardElement(12, new GameBoardFieldObject[]{new AntennaFieldObject()}),
-                    new BoardElement(13, new GameBoardFieldObject[]{new StartPointFieldObject()}),
-                    new BoardElement(14, new GameBoardFieldObject[]{new WallFieldObject(new String[]{"right"})})
+                    new BoardElement(52, new GameBoardFieldObject[]{new AntennaFieldObject()}),
+                    new BoardElement(53, new GameBoardFieldObject[]{new StartPointFieldObject()}),
+                    new BoardElement(54, new GameBoardFieldObject[]{new WallFieldObject(new String[]{"right"})})
             },
             {
-                    new BoardElement(15, new GameBoardFieldObject[]{new EmptyFieldObject()}),
-                    new BoardElement(16, new GameBoardFieldObject[]{new StartPointFieldObject()}),
-                    new BoardElement(17, new GameBoardFieldObject[]{new WallFieldObject(new String[]{"right"})})
+                    new BoardElement(65, new GameBoardFieldObject[]{new EmptyFieldObject()}),
+                    new BoardElement(66, new GameBoardFieldObject[]{new StartPointFieldObject()}),
+                    new BoardElement(67, new GameBoardFieldObject[]{new WallFieldObject(new String[]{"right"})})
             },
             {
-                    new BoardElement(18, new GameBoardFieldObject[]{new StartPointFieldObject()}),
-                    new BoardElement(19, new GameBoardFieldObject[]{new EmptyFieldObject()}),
-                    new BoardElement(20, new GameBoardFieldObject[]{new EmptyFieldObject()})
+                    new BoardElement(78, new GameBoardFieldObject[]{new StartPointFieldObject()}),
+                    new BoardElement(79, new GameBoardFieldObject[]{new EmptyFieldObject()}),
+                    new BoardElement(80, new GameBoardFieldObject[]{new EmptyFieldObject()})
             },
             {
-                    new BoardElement(21, new GameBoardFieldObject[]{new EmptyFieldObject()}),
-                    new BoardElement(22, new GameBoardFieldObject[]{new WallFieldObject(new String[]{"down"})}),
-                    new BoardElement(23, new GameBoardFieldObject[]{new EmptyFieldObject()})
+                    new BoardElement(91, new GameBoardFieldObject[]{new EmptyFieldObject()}),
+                    new BoardElement(92, new GameBoardFieldObject[]{new WallFieldObject(new String[]{"down"})}),
+                    new BoardElement(93, new GameBoardFieldObject[]{new EmptyFieldObject()})
             },
             {
-                    new BoardElement(24, new GameBoardFieldObject[]{new EmptyFieldObject()}),
-                    new BoardElement(25, new GameBoardFieldObject[]{new StartPointFieldObject()}),
-                    new BoardElement(26, new GameBoardFieldObject[]{new EmptyFieldObject()})
+                    new BoardElement(104, new GameBoardFieldObject[]{new EmptyFieldObject()}),
+                    new BoardElement(105, new GameBoardFieldObject[]{new StartPointFieldObject()}),
+                    new BoardElement(106, new GameBoardFieldObject[]{new EmptyFieldObject()})
             },
             {
-                    new BoardElement(27, new GameBoardFieldObject[]{new EmptyFieldObject()}),
-                    new BoardElement(28, new GameBoardFieldObject[]{new EmptyFieldObject()}),
-                    new BoardElement(29, new GameBoardFieldObject[]{new BeltFieldObject("right", 1)})
+                    new BoardElement(117, new GameBoardFieldObject[]{new EmptyFieldObject()}),
+                    new BoardElement(118, new GameBoardFieldObject[]{new EmptyFieldObject()}),
+                    new BoardElement(119, new GameBoardFieldObject[]{new BeltFieldObject("right", 1)})
             }
     };
 
