@@ -220,6 +220,10 @@ public class ClientThread implements Runnable {
                     case "DrawDamage":
                         handleDrawDamage(incomingMessage);
                         break;
+                        
+                    case "PickDamage":
+                      handlePickDamage(incomingMessage);
+                      break;
 
                     case "PlayerShooting":
                         handlePlayerShooting(incomingMessage);
@@ -259,6 +263,7 @@ public class ClientThread implements Runnable {
         }
 
     }
+
 
     private void handlePlayerAdded(Message incomingMessage) throws IOException {
 
@@ -533,6 +538,16 @@ public class ClientThread implements Runnable {
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of DrawDamage)");
         }
+    }
+    
+
+    private void handlePickDamage(Message incomingMessage) throws IOException {
+      if (incomingMessage.getMessageBody() instanceof PickDamage) {
+        PickDamage pickDamage = (PickDamage) incomingMessage.getMessageBody();
+        // TODO: Update GUI PickDamage
+      } else {
+        throw new IOException("Something went wrong! Invalid Message Body! (Not instance of PickDamage)");
+      }    
     }
 
     private void handlePlayerShooting(Message incomingMessage) throws IOException {
