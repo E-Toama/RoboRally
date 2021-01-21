@@ -337,9 +337,9 @@ public class ClientThread implements Runnable {
             //toDo: GridPane, consisting of StackPanes, to be loaded into the MainView
 
             GridPane boardView = new GameBoardViewModel().createGameBoardView(gameBoard.getGameBoard());
-
+            Scene scene = new Scene(boardView);
             Platform.runLater(() -> {
-                ViewController.getViewController().setScene(boardView);
+                ViewController.getViewController().setScene(scene);
             });
 
         } else {
