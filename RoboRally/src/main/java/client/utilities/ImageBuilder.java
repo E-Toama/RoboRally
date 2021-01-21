@@ -42,7 +42,7 @@ public class ImageBuilder {
 
             switch (type) {
                 case "Empty":
-                    Image emptyTileImage = new Image("Pfad zum Empty Image");
+                    Image emptyTileImage = new Image("EmptyTile.png");
                     ImageView emptyTile = adjustToBoard(emptyTileImage);
                     return emptyTile;
                 case "Laser":
@@ -61,10 +61,66 @@ public class ImageBuilder {
 
                 //TODO: IMPLEMENT remaining cases
                 case "Belt":
+                    BeltFieldObject belt = (BeltFieldObject) gameBoardFieldObject;
+                    String beltOrientation = belt.getOrientation();
+                    Image belts = new Image("Conveyor_"+ ((BeltFieldObject) fields[1]).getSpeed()+".png");
+                    ImageView beltImage = adjustToBoard(belts);
+                    switch  (((BeltFieldObject) fields[0]).getOrientation()) {
+                        case "down":
+                            beltImage.setRotate(90);
+                            return beltImage;
+                        case "left":
+                            beltImage.setRotate(180);
+                            return beltImage;
+                        case "up":
+                            beltImage.setRotate(270);
+                            return beltImage;
+                        default:
+                            return beltImage;
+                    }
+
                 case "RotatingBelt":
-                case "EnergySpace":
+                    Image RotatingBeltTile = new Image("ConveyorRotating_"+((RotatingBeltFieldObject) fields[0]).getSpeed()+ "_" +((RotatingBeltFieldObject) fields[2]).getOrientations()[1]+"_"+((RotatingBeltFieldObject) fields[1]).isCrossing()+".png");
+                    ImageView RotatingBeltImage = adjustToBoard(RotatingBeltTile);
+                    switch (((RotatingBeltFieldObject) fields[2]).getOrientations()[0]){
+                        case "right":
+                            RotatingBeltImage.setRotate(90);
+                            return RotatingBeltImage;
+                        case "down":
+                            RotatingBeltImage.setRotate(180);
+                            return RotatingBeltImage;
+                        case "left":
+                            RotatingBeltImage.setRotate(270);
+                            return RotatingBeltImage;
+                        default:
+                            return RotatingBeltImage;
+                    }
+                case "EnergySpace": //TODO: create EnergySpaceImage without EnergyTokens and adjust name
+                    Image EnergySpaceTile = new Image("Energy_"+((EnergySpaceFieldObject) fields[0]).getCount()+".png");
+                    ImageView EnergySpaceImage = adjustToBoard(EnergySpaceTile);
+                    return EnergySpaceImage;
+
                 case "StartingPoint":
+                    Image StartingPointTile = new Image("StartingPoint.png");
+                    ImageView StartingPointImage = adjustToBoard(StartingPointTile);
+                    return  StartingPointImage;
+
                 case "Wall":
+                    Image WallTile = new Image("Wall.png");
+                    ImageView WallImage = adjustToBoard(WallTile);
+                    switch (((WallFieldObject) fields[0]).getOrientations()[0]){
+                        case "right":
+                            WallImage.setRotate(90);
+                            return WallImage;
+                        case "down":
+                            WallImage.setRotate(180);
+                            return WallImage;
+                        case "left":
+                            WallImage.setRotate(270);
+                            return WallImage;
+                        default:
+                            return  WallImage;
+                    }
 
                 case "ControlPoint":
                     Image checkImage = new Image("Checkpoint_1.png");
@@ -156,7 +212,7 @@ public class ImageBuilder {
                 }
             } else if (fields[0] instanceof BeltFieldObject) {
                 //Default image: Belt upwards
-                Image beltWithLaser = new Image("Pfad zum LaserBelt");
+                Image beltWithLaser = new Image("ConveyorLaser_2");
                 ImageView beltWithLaserTile = adjustToBoard(beltWithLaser);
                 switch (((BeltFieldObject) fields[0]).getOrientation()) {
                     case "down":
@@ -210,7 +266,7 @@ public class ImageBuilder {
 
             switch (type) {
                 case "Empty":
-                    Image emptyTileImage = new Image("Pfad zum Empty Image");
+                    Image emptyTileImage = new Image("EmptyTile.png");
                     ImageView emptyTile = new ImageView(emptyTileImage);
                     emptyTile.setFitHeight(50);
                     emptyTile.setPreserveRatio(true);
@@ -219,7 +275,7 @@ public class ImageBuilder {
                     LaserFieldObject laser = (LaserFieldObject) gbfo;
                     int count = laser.getCount();
                     String orientation = laser.getOrientation();
-                    Image laserImage = new Image("Pfad zum LaserImage");
+                    Image laserImage = new Image("Laser"+count+".png");
                     ImageView laserTile = new ImageView(laserImage);
                     laserTile.setFitHeight(50);
 
