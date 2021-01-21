@@ -137,7 +137,7 @@ extends <a href="Card.html" title="class in model.gameV2.cards">Card</a></pre>
 <tr class="alt-color" id="i0">
 <td class="col-first"><code>void</code></td>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#play(model.gameV2.Game,model.gameV2.Player)">play</a></span>&#8203;(<a href="../Game.html" title="class in model.gameV2">Game</a>&nbsp;game,
-<a href="../Player.html" title="class in model.gameV2">Player</a>&nbsp;player)</code></th>
+<a href="../Player.html" title="class in model.gameV2">Player</a>&nbsp;game.player)</code></th>
 <td class="col-last">
 <div class="block">Set's the Protected Property of the Player to "true", when played (called).</div>
 </td>
@@ -182,15 +182,15 @@ extends <a href="Card.html" title="class in model.gameV2.cards">Card</a></pre>
 <section class="detail" id="play(model.gameV2.Game,model.gameV2.Player)">
 <h3>play</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="member-name">play</span>&#8203;(<span class="parameters"><a href="../Game.html" title="class in model.gameV2">Game</a>&nbsp;game,
-<a href="../Player.html" title="class in model.gameV2">Player</a>&nbsp;player)</span></div>
+<a href="../Player.html" title="class in model.gameV2">Player</a>&nbsp;game.player)</span></div>
 <div class="block">Set's the Protected Property of the Player to "true", when played (called).
- Calls the next player to make his move.</div>
+ Calls the next game.player to make his move.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="Card.html#play(model.gameV2.Game,model.gameV2.Player)">play</a></code>&nbsp;in class&nbsp;<code><a href="Card.html" title="class in model.gameV2.cards">Card</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>game</code> - Current Game State</dd>
-<dd><code>player</code> - Active Player, who played the Card</dd>
+<dd><code>game.player</code> - Active Player, who played the Card</dd>
 </dl>
 </section>
 </li>

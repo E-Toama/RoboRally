@@ -42,7 +42,13 @@ public class ChatViewModel {
         chatText.set("");
     }
 
-    public void setReady() {}
+    public void setReady() {
+        if(clientThread.getPlayer().getStatus()) {
+            clientThread.sendPlayerStatus(false);
+        } else {
+            clientThread.sendPlayerStatus(true);
+        }
+    }
 
     public void changeDestination(int destination) {
 

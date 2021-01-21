@@ -140,7 +140,7 @@ extends <a href="Card.html" title="class in model.gameV2.cards">Card</a></pre>
 <a href="../Player.html" title="class in model.gameV2">Player</a>&nbsp;activePlayer,
 <a href="../Player.html" title="class in model.gameV2">Player</a>&nbsp;chosenPlayer)</code></th>
 <td class="col-last">
-<div class="block">Checks if the chosen player is protected, has a Guard on his Hand (because then you can't guess right).</div>
+<div class="block">Checks if the chosen game.player is protected, has a Guard on his Hand (because then you can't guess right).</div>
 </td>
 </tr>
 <tr class="row-color" id="i1">
@@ -155,7 +155,7 @@ int&nbsp;cardValue)</code></th>
 <tr class="alt-color" id="i2">
 <td class="col-first"><code>void</code></td>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#play(model.gameV2.Game,model.gameV2.Player)">play</a></span>&#8203;(<a href="../Game.html" title="class in model.gameV2">Game</a>&nbsp;game,
-<a href="../Player.html" title="class in model.gameV2">Player</a>&nbsp;player)</code></th>
+<a href="../Player.html" title="class in model.gameV2">Player</a>&nbsp;game.player)</code></th>
 <td class="col-last">
 <div class="block">Asks the active Player, whose card he wants to guess.</div>
 </td>
@@ -200,14 +200,14 @@ int&nbsp;cardValue)</code></th>
 <section class="detail" id="play(model.gameV2.Game,model.gameV2.Player)">
 <h3>play</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="member-name">play</span>&#8203;(<span class="parameters"><a href="../Game.html" title="class in model.gameV2">Game</a>&nbsp;game,
-<a href="../Player.html" title="class in model.gameV2">Player</a>&nbsp;player)</span></div>
+<a href="../Player.html" title="class in model.gameV2">Player</a>&nbsp;game.player)</span></div>
 <div class="block">Asks the active Player, whose card he wants to guess.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="Card.html#play(model.gameV2.Game,model.gameV2.Player)">play</a></code>&nbsp;in class&nbsp;<code><a href="Card.html" title="class in model.gameV2.cards">Card</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>game</code> - Current Game State</dd>
-<dd><code>player</code> - Active Player, who played the Card</dd>
+<dd><code>game.player</code> - Active Player, who played the Card</dd>
 </dl>
 </section>
 </li>
@@ -217,8 +217,8 @@ int&nbsp;cardValue)</code></th>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="member-name">completePlay</span>&#8203;(<span class="parameters"><a href="../Game.html" title="class in model.gameV2">Game</a>&nbsp;game,
 <a href="../Player.html" title="class in model.gameV2">Player</a>&nbsp;activePlayer,
 <a href="../Player.html" title="class in model.gameV2">Player</a>&nbsp;chosenPlayer)</span></div>
-<div class="block">Checks if the chosen player is protected, has a Guard on his Hand (because then you can't guess right).
- If both conditions are wrong, the player is asked to guess a card.</div>
+<div class="block">Checks if the chosen game.player is protected, has a Guard on his Hand (because then you can't guess right).
+ If both conditions are wrong, the game.player is asked to guess a card.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>game</code> - Current Game State</dd>

@@ -42,9 +42,7 @@ public class LobbyViewModel {
     public void sendMessage() {
 
         String currentMessage = getChatText();
-
-        //ToDo: send message to single (chosen) player
-
+        //ToDo: send message to single (chosen) game.player
         clientThread.sendMessage(currentMessage, -1);
 
         chatText.set("");

@@ -206,7 +206,7 @@ implements java.lang.Comparable&lt;<a href="Player.html" title="class in model.g
 <td class="col-first"><code>boolean</code></td>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#isProtected()">isProtected</a></span>()</code></th>
 <td class="col-last">
-<div class="block">Returns if the player is protected.</div>
+<div class="block">Returns if the game.player is protected.</div>
 </td>
 </tr>
 <tr class="row-color" id="i7">
@@ -221,7 +221,7 @@ implements java.lang.Comparable&lt;<a href="Player.html" title="class in model.g
 <td class="col-first"><code>void</code></td>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#resetPlayer(model.gameV2.cards.Card)">resetPlayer</a></span>&#8203;(<a href="cards/Card.html" title="class in model.gameV2.cards">Card</a>&nbsp;card)</code></th>
 <td class="col-last">
-<div class="block">"Resets" the player for the next round.</div>
+<div class="block">"Resets" the game.player for the next round.</div>
 </td>
 </tr>
 <tr class="row-color" id="i9">
@@ -295,7 +295,7 @@ implements java.lang.Comparable&lt;<a href="Player.html" title="class in model.g
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="member-name">getWinCounter</span>()</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>Returns the number of rounds that the player has won</dd>
+<dd>Returns the number of rounds that the game.player has won</dd>
 </dl>
 </section>
 </li>
@@ -321,7 +321,7 @@ implements java.lang.Comparable&lt;<a href="Player.html" title="class in model.g
 <section class="detail" id="resetPlayer(model.gameV2.cards.Card)">
 <h3>resetPlayer</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="member-name">resetPlayer</span>&#8203;(<span class="parameters"><a href="cards/Card.html" title="class in model.gameV2.cards">Card</a>&nbsp;card)</span></div>
-<div class="block">"Resets" the player for the next round.</div>
+<div class="block">"Resets" the game.player for the next round.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>card</code> - a new card</dd>
@@ -368,10 +368,10 @@ implements java.lang.Comparable&lt;<a href="Player.html" title="class in model.g
 <section class="detail" id="isProtected()">
 <h3>isProtected</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="member-name">isProtected</span>()</div>
-<div class="block">Returns if the player is protected.</div>
+<div class="block">Returns if the game.player is protected.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>"true" if the player is protected, "false" if not</dd>
+<dd>"true" if the game.player is protected, "false" if not</dd>
 </dl>
 </section>
 </li>
@@ -388,7 +388,7 @@ implements java.lang.Comparable&lt;<a href="Player.html" title="class in model.g
 <div class="block">"In case of a tie, players add the numbers on the cards in their discard pile. The highest total wins."</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>sum of values of the player's discarded cards</dd>
+<dd>sum of values of the game.player's discarded cards</dd>
 </dl>
 </section>
 </li>
@@ -398,7 +398,7 @@ implements java.lang.Comparable&lt;<a href="Player.html" title="class in model.g
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="member-name">compareTo</span>&#8203;(<span class="parameters"><a href="Player.html" title="class in model.gameV2">Player</a>&nbsp;o)</span></div>
 <div class="block">Comparing players according to the game rules:
  1. Compare last card on hand. If tied:
- 2. Compare sum total of discarded cards by the player</div>
+ 2. Compare sum total of discarded cards by the game.player</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>compareTo</code>&nbsp;in interface&nbsp;<code>java.lang.Comparable&lt;<a href="Player.html" title="class in model.gameV2">Player</a>&gt;</code></dd>

@@ -1,9 +1,9 @@
 package server.network;
 
-import game.cards.Card;
-import player.Player;
-import server.messages.*;
-import server.messages.Error;
+import game.player.Player;
+import utilities.MessageHandler;
+import utilities.messages.*;
+import utilities.messages.Error;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,7 +20,7 @@ public class UserThread implements Runnable {
     private final MessageHandler messageHandler = new MessageHandler();
 
     private Player player;
-    private final int ID;
+    private final int playerID;
     private String group;
     private Boolean userIsAI;
 
@@ -28,8 +28,8 @@ public class UserThread implements Runnable {
 
         this.socket = socket;
         this.server = server;
-        this.ID = ID;
-        this.player = new Player(this.ID, Integer.toString(this.ID), 0);
+        this.playerID = ID;
+        this.player = new Player(this.playerID, Integer.toString(this.playerID), 0);
 
         incoming = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         outgoing = new PrintWriter(socket.getOutputStream(), true);
@@ -114,6 +114,10 @@ public class UserThread implements Runnable {
                     case "PlayIt":
                         handlePlayIt(incomingMessage);
                         break;
+                        
+                    case "SelectDamage":
+                      handleSelectDamage(incomingMessage);
+                      break;
 
                     default:
                         break;
@@ -131,6 +135,7 @@ public class UserThread implements Runnable {
 
     }
 
+
     private void handlePlayerValues(Message incomingMessage) throws IOException {
 
         if (incomingMessage.getMessageBody() instanceof PlayerValues) {
@@ -139,11 +144,11 @@ public class UserThread implements Runnable {
 
             if (server.checkIfRobotIsFree(receivedMessage.getFigure())) {
 
-                Player player = new Player(this.ID, receivedMessage.getName(), receivedMessage.getFigure());
+                Player player = new Player(this.playerID, receivedMessage.getName(), receivedMessage.getFigure());
 
                 this.player = player;
 
-                server.addPlayer(this.ID, outgoing, player);
+                server.addPlayer(this.playerID, outgoing, player);
 
                 server.notifyPlayersAboutNewPlayer(this.player);
 
@@ -171,9 +176,13 @@ public class UserThread implements Runnable {
 
             SetStatus receivedMessage = (SetStatus) incomingMessage.getMessageBody();
 
-            String outgoingMessage = messageHandler.buildMessage("PlayerStatus", new PlayerStatus(this.ID, receivedMessage.getReady()));
+            server.setStatus(playerID, receivedMessage.getReady());
+
+            String outgoingMessage = messageHandler.buildMessage("PlayerStatus", new PlayerStatus(this.playerID, receivedMessage.getReady()));
 
             server.sendMessageToAllUsers(outgoingMessage);
+
+            server.checkIfGameCanStart();
 
         } else {
 
@@ -234,7 +243,7 @@ public class UserThread implements Runnable {
             SetStartingPoint setStartingPoint = (SetStartingPoint) incomingMessage.getMessageBody();
             int chosenStartingPoint = setStartingPoint.getPosition();
             if (true) { //ToDo: check if Position is valid (UserThread)
-                String outgoingMessage = messageHandler.buildMessage("StartingPointTaken", new StartingPointTaken(this.ID, chosenStartingPoint));
+                String outgoingMessage = messageHandler.buildMessage("StartingPointTaken", new StartingPointTaken(this.playerID, chosenStartingPoint));
                 server.sendMessageToAllUsers(outgoingMessage);
             } else {
                 String error = messageHandler.buildMessage("Error", new Error("StartingPoint is not valid"));
@@ -252,7 +261,7 @@ public class UserThread implements Runnable {
             int register = selectCard.getRegister();
             //ToDo: Game-Logic for selected cards
 
-            String outgoingMessage = messageHandler.buildMessage("CardSelected", new CardSelected(this.ID, register));
+            String outgoingMessage = messageHandler.buildMessage("CardSelected", new CardSelected(this.playerID, register));
             server.sendMessageToAllUsers(outgoingMessage);
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (not instance of SelectCard)");
@@ -267,6 +276,17 @@ public class UserThread implements Runnable {
             throw new IOException("Something went wrong! Invalid Message Body! (not instance of PlayIt)");
         }
     }
+    
+    private void handleSelectDamage(Message incomingMessage) throws IOException {
+      if (incomingMessage.getMessageBody() instanceof SelectDamage) {
+        SelectDamage selectDamage = (SelectDamage) incomingMessage.getMessageBody();
+        //TODO: Handle SelectDamage
+      } else {
+        throw new IOException("Something went wrong! Invalid Message Body! (not instance of SelectDamage)");
+      }
+      
+    }
+
 
     private void establishConnection() throws IOException {
 
@@ -289,7 +309,7 @@ public class UserThread implements Runnable {
                     this.group = receivedMessage.getGroup();
                     this.userIsAI = receivedMessage.getAI();
 
-                    String welcome = messageHandler.buildMessage("Welcome", new Welcome(this.ID));
+                    String welcome = messageHandler.buildMessage("Welcome", new Welcome(this.playerID));
                     outgoing.println(welcome);
 
                 } else {

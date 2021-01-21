@@ -1,15 +1,19 @@
 package client.network;
 
+import client.view.ViewController;
+import client.viewmodel.GameBoardViewModel;
 import client.viewmodel.ChatViewModel;
 import client.viewmodel.WelcomeViewModel;
 import game.cards.Card;
+import game.gameboard.GameBoard;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
-import player.Player;
-import server.messages.*;
-import server.messages.Error;
+import javafx.scene.Scene;
+import game.player.Player;
+import utilities.MessageHandler;
+import utilities.messages.*;
+import utilities.messages.Error;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -220,6 +224,10 @@ public class ClientThread implements Runnable {
                     case "DrawDamage":
                         handleDrawDamage(incomingMessage);
                         break;
+                        
+                    case "PickDamage":
+                      handlePickDamage(incomingMessage);
+                      break;
 
                     case "PlayerShooting":
                         handlePlayerShooting(incomingMessage);
@@ -260,6 +268,7 @@ public class ClientThread implements Runnable {
 
     }
 
+
     private void handlePlayerAdded(Message incomingMessage) throws IOException {
 
         if (incomingMessage.getMessageBody() instanceof PlayerAdded) {
@@ -284,10 +293,16 @@ public class ClientThread implements Runnable {
                 messageMatchMap.put(receivedMessage.getPlayer().getName() + ", " + receivedMessage.getPlayer().getRobotName(),receivedMessage.getPlayer().getId());
 
                 String notificationName = receivedMessage.getPlayer().getName() + " has joined!";
-                chatMessages.add(notificationName);
+
+                Platform.runLater(() -> {
+                    chatMessages.add(notificationName);
+                });
 
                 String notificationRobot = "He has Robot No. " + receivedMessage.getPlayer().getFigure();
-                chatMessages.add(notificationRobot);
+
+                Platform.runLater(() -> {
+                    chatMessages.add(notificationRobot);
+                });
 
             } else {
 
@@ -311,6 +326,10 @@ public class ClientThread implements Runnable {
 
             playerList.get(receivedMessage.getPlayerID()).setStatus(receivedMessage.getReady());
 
+            Platform.runLater(() -> {
+                chatMessages.add("[" + playerList.get(receivedMessage.getPlayerID()).getName() + "] changed status to: " + receivedMessage.getReady());
+            });
+
         } else {
 
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of PlayerStatus)");
@@ -322,6 +341,19 @@ public class ClientThread implements Runnable {
     private void handleGameStarted(Message incomingMessage) throws IOException {
 
         //ToDo: handleGameStarted
+        if (incomingMessage.getMessageBody() instanceof GameStarted){
+            GameStarted receivedMessage = (GameStarted) incomingMessage.getMessageBody();
+            GameBoard gameBoard = new GameBoard(receivedMessage.getMap());
+            Scene boardView = new GameBoardViewModel().createGameBoardView(gameBoard.getGameBoard());
+            Platform.runLater(() -> {
+                ViewController.getViewController().setScene(boardView);
+            });
+
+        } else {
+
+            throw new IOException("Something went wrong! Invalid Message Body! (Not instance of GameStarted)");
+
+        }
 
     }
 
@@ -364,7 +396,7 @@ public class ClientThread implements Runnable {
     private void handleConnectionUpdate(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof ConnectionUpdate) {
             ConnectionUpdate connectionUpdate = (ConnectionUpdate) incomingMessage.getMessageBody();
-            //ToDo: Implement "Remove player"-option
+            //ToDo: Implement "Remove game.player"-option
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of ConnectionUpdate)");
         }
@@ -512,6 +544,16 @@ public class ClientThread implements Runnable {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of DrawDamage)");
         }
     }
+    
+
+    private void handlePickDamage(Message incomingMessage) throws IOException {
+      if (incomingMessage.getMessageBody() instanceof PickDamage) {
+        PickDamage pickDamage = (PickDamage) incomingMessage.getMessageBody();
+        // TODO: Update GUI PickDamage
+      } else {
+        throw new IOException("Something went wrong! Invalid Message Body! (Not instance of PickDamage)");
+      }    
+    }
 
     private void handlePlayerShooting(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof PlayerShooting) {
@@ -616,6 +658,11 @@ public class ClientThread implements Runnable {
 
     public void submitPlayer(String name, int figure) {
         String outgoingMessage = messageHandler.buildMessage("PlayerValues", new PlayerValues(name, figure));
+        outgoing.println(outgoingMessage);
+    }
+
+    public void sendPlayerStatus(boolean ready) {
+        String outgoingMessage = messageHandler.buildMessage(("SetStatus"), new SetStatus(ready));
         outgoing.println(outgoingMessage);
     }
 
