@@ -44,12 +44,12 @@ public class ChatViewModel {
 
     public void setReady() {}
 
-    public ObservableList<MenuItem> addMenuItems(ObservableList<String> list) {
-        for (String temp : list) {
-            dropDownItems.add(new MenuItem(temp));
-        }
-        return dropDownItems;
+    public void changeDestination(int destination) {
+        this.destination = destination;
+
 
     }
+
+
 
 }
