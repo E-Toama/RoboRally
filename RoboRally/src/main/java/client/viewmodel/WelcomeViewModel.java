@@ -3,6 +3,7 @@ package client.viewmodel;
 import client.network.ClientThread;
 import client.view.ViewController;
 import javafx.application.Platform;
+import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +17,43 @@ public class WelcomeViewModel {
     private final ClientThread clientThread;
     private final StringProperty userNameTextField = new SimpleStringProperty();
     private int selectedRobot;
+
+    private BooleanBinding isSmashBotTaken = new BooleanBinding() {
+        @Override
+        protected boolean computeValue() {
+           return clientThread.takenRobotList.contains(2);
+        }
+    };
+    private BooleanBinding isHulkTaken = new BooleanBinding() {
+        @Override
+        protected boolean computeValue() {
+            return clientThread.takenRobotList.contains(1);
+        }
+    };
+    private BooleanBinding isSpinBotTaken = new BooleanBinding() {
+        @Override
+        protected boolean computeValue() {
+            return clientThread.takenRobotList.contains(3);
+        }
+    };
+    private BooleanBinding isHammerBotTaken = new BooleanBinding() {
+        @Override
+        protected boolean computeValue() {
+            return clientThread.takenRobotList.contains(0);
+        }
+    };
+    private BooleanBinding isTwonkyTaken = new BooleanBinding() {
+        @Override
+        protected boolean computeValue() {
+            return clientThread.takenRobotList.contains(4);
+        }
+    };
+    private BooleanBinding isZoomBotTaken = new BooleanBinding() {
+        @Override
+        protected boolean computeValue() {
+            return clientThread.takenRobotList.contains(5);
+        }
+    };
 
     public WelcomeViewModel() {
 
@@ -92,5 +130,29 @@ public class WelcomeViewModel {
     }
 
     public void playerNotAdded() {}
+
+    public BooleanBinding isSmashRobotTaken() {
+        return isSmashBotTaken;
+    }
+
+    public BooleanBinding isHulkTaken() {
+        return isHulkTaken;
+    }
+
+    public BooleanBinding isSpinBotTaken() {
+        return isSpinBotTaken;
+    }
+
+    public BooleanBinding isHammerBotTaken() {
+        return isHammerBotTaken;
+    }
+
+    public BooleanBinding isTwonkyTaken() {
+        return isTwonkyTaken;
+    }
+
+    public BooleanBinding isZoomBotTaken() {
+        return isZoomBotTaken;
+    }
 
 }

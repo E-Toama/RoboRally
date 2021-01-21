@@ -58,6 +58,7 @@ public class ClientThread implements Runnable {
     private ChatViewModel chatViewModel;
 
     private final HashMap<Integer, Player> playerList = new HashMap<>();
+    public ObservableList<Integer> takenRobotList = FXCollections.observableArrayList();
     public ObservableList<String> observablePlayerList = FXCollections.observableArrayList();
 
     public ClientThread() throws IOException {
@@ -270,16 +271,22 @@ public class ClientThread implements Runnable {
 
                 this.player = receivedMessage.getPlayer();
                 playerList.put(this.ID, player);
-                observablePlayerList.add(player.getName() + ", " + player.getRobot().getRobotName(player.getFigure()));
+                //observablePlayerList.add(player.getName() + ", " + player.getRobot().getRobotName(player.getFigure()));
+                observablePlayerList.add(player.getName() + ", ");
 
                 welcomeViewModel.playerSuccesfullyAdded();
 
             } else if (this.player != null) {
 
+                Platform.runLater(() -> {
+                    takenRobotList.add(receivedMessage.getPlayer().getFigure());
+                });
+
                 playerList.put(receivedMessage.getPlayer().getId() ,receivedMessage.getPlayer());
 
                 Platform.runLater(() -> {
-                    observablePlayerList.add(receivedMessage.getPlayer().getName() + ", " + receivedMessage.getPlayer().getRobot().getRobotName(player.getFigure()));
+                    //observablePlayerList.add(receivedMessage.getPlayer().getName() + ", " + receivedMessage.getPlayer().getRobot().getRobotName(player.getFigure()));
+                    observablePlayerList.add(receivedMessage.getPlayer().getName() + ", ");
                 });
 
                 String notificationName = receivedMessage.getPlayer().getName() + " has joined!";

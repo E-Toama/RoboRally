@@ -2,6 +2,7 @@ package client.view;
 
 import client.viewmodel.WelcomeViewModel;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
 public class WelcomeController {
@@ -12,8 +13,32 @@ public class WelcomeController {
     private TextField userTextField;
 
     @FXML
+    private Button smashBotButton;
+
+    @FXML
+    private Button hulkButton;
+
+    @FXML
+    private Button spinBotButton;
+
+    @FXML
+    private Button hammerBotButton;
+
+    @FXML
+    private Button townkyButton;
+
+    @FXML
+    private Button zoomBotButton;
+
+    @FXML
     void initialize() {
         userTextField.textProperty().bindBidirectional(welcomeViewModel.userNameTextFieldProperty());
+        smashBotButton.disableProperty().bind(welcomeViewModel.isSmashRobotTaken());
+        hulkButton.disableProperty().bind(welcomeViewModel.isHulkTaken());
+        spinBotButton.disableProperty().bind(welcomeViewModel.isSpinBotTaken());
+        hammerBotButton.disableProperty().bind(welcomeViewModel.isHammerBotTaken());
+        townkyButton.disableProperty().bind(welcomeViewModel.isTwonkyTaken());
+        zoomBotButton.disableProperty().bind(welcomeViewModel.isZoomBotTaken());
     }
 
     public void submitPlayer() {
@@ -55,6 +80,12 @@ public class WelcomeController {
     public void setZoomBot() {
 
         welcomeViewModel.setZoomBot();
+
+    }
+
+    public void disableButton(int figure) {
+
+
 
     }
 
