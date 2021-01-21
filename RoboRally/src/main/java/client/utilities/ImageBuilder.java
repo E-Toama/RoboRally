@@ -172,7 +172,7 @@ public class ImageBuilder {
             if(fields[0] instanceof WallFieldObject) {
                 if (fields[1] instanceof EnergySpaceFieldObject) {
                     //Default image has wall at bottom
-                    Image wallWithEnergy = new Image("Pfad zur Wall with Energy 1");
+                    Image wallWithEnergy = new Image("Energy_withWall1");
                     ImageView wallWithEnergyTile = adjustToBoard(wallWithEnergy);
                     switch (((WallFieldObject) fields[0]).getOrientations()[0]) {
                         case "up":
@@ -190,7 +190,7 @@ public class ImageBuilder {
 
                 } else if (fields[1] instanceof LaserFieldObject) {
                     //default direction is: Wall up, Laser pointing down
-                    Image wallWithLaser = new Image("Pfad zur Wall with Laser 1");
+                    Image wallWithLaser = new Image("LaserWall_1");
                     ImageView wallWithLaserTile = adjustToBoard(wallWithLaser);
                     switch (((WallFieldObject) fields[0]).getOrientations()[0]) {
                         case "down":
