@@ -45,8 +45,8 @@ public class ChatViewModel {
     public void setReady() {}
 
     public void changeDestination(int destination) {
-        this.destination = destination;
 
+        this.destination = destination;
 
     }
 

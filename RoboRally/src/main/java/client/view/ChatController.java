@@ -48,9 +48,10 @@ public class ChatController {
 
     public void changeDestination() {
 
-        //ToDo: write a method that sets the destination in ChatViewModel correctly
+         System.out.println(chatViewModel.getClientThread().messageMatchMap.get(dropDown2.getValue()));
+         System.out.println(dropDown2.getValue());
 
-        chatViewModel.changeDestination(chatViewModel.getClientThread().messageMatchMap.get((String) dropDown2.getValue()));
+        chatViewModel.changeDestination(chatViewModel.getClientThread().messageMatchMap.get(dropDown2.getValue()));
 
     }
 

@@ -281,7 +281,7 @@ public class ClientThread implements Runnable {
                 playerList.put(receivedMessage.getPlayer().getId() ,receivedMessage.getPlayer());
                 observablePlayerList.add(receivedMessage.getPlayer().getName() + ", " + receivedMessage.getPlayer().getRobotName());
                 observablePlayerListWithDefault.add(receivedMessage.getPlayer().getName() + ", " + receivedMessage.getPlayer().getRobotName());
-                messageMatchMap.put(receivedMessage.getPlayer().getName() + ", " + receivedMessage.getPlayer().getRobotName(),player.getId());
+                messageMatchMap.put(receivedMessage.getPlayer().getName() + ", " + receivedMessage.getPlayer().getRobotName(),receivedMessage.getPlayer().getId());
 
                 String notificationName = receivedMessage.getPlayer().getName() + " has joined!";
                 chatMessages.add(notificationName);
