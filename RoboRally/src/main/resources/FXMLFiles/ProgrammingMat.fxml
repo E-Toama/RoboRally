@@ -39,16 +39,25 @@
          <image>
             <Image url="@Cards/PlayerDeckBack.png" />
          </image>
+         <GridPane.margin>
+            <Insets right="10.0" />
+         </GridPane.margin>
       </ImageView>
       <ImageView fitHeight="154.0" fitWidth="91.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
          <image>
             <Image url="@Cards/PlayerDeckBack.png" />
          </image>
+         <GridPane.margin>
+            <Insets right="10.0" />
+         </GridPane.margin>
       </ImageView>
       <ImageView fitHeight="154.0" fitWidth="91.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3">
          <image>
             <Image url="@Cards/PlayerDeckBack.png" />
          </image>
+         <GridPane.margin>
+            <Insets right="10.0" />
+         </GridPane.margin>
       </ImageView>
       <ImageView fitHeight="154.0" fitWidth="91.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4">
          <image>
@@ -59,26 +68,41 @@
          <image>
             <Image url="@Cards/PlayerDeckBack.png" />
          </image>
+         <GridPane.margin>
+            <Insets left="10.0" />
+         </GridPane.margin>
       </ImageView>
       <ImageView fitHeight="154.0" fitWidth="91.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="6">
          <image>
             <Image url="@Cards/PlayerDeckBack.png" />
          </image>
+         <GridPane.margin>
+            <Insets left="10.0" />
+         </GridPane.margin>
       </ImageView>
       <ImageView fitHeight="154.0" fitWidth="91.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="7">
          <image>
             <Image url="@Cards/PlayerDeckBack.png" />
          </image>
+         <GridPane.margin>
+            <Insets left="10.0" />
+         </GridPane.margin>
       </ImageView>
       <ImageView fitHeight="154.0" fitWidth="91.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="8">
          <image>
             <Image url="@Cards/PlayerDeckBack.png" />
          </image>
+         <GridPane.margin>
+            <Insets left="10.0" />
+         </GridPane.margin>
       </ImageView>
       <ImageView fitHeight="154.0" fitWidth="91.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Cards/PlayerDeckBack.png" />
          </image>
+         <GridPane.margin>
+            <Insets right="10.0" />
+         </GridPane.margin>
       </ImageView>
       <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="9">
          <children>
