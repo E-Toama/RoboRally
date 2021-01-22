@@ -1,4 +1,7 @@
+import client.view.ProgrammingController;
 import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class ProgrammingViewTest extends Application {
@@ -10,5 +13,11 @@ public class ProgrammingViewTest extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
+        String[] cardArray = new String[]{"MoveI", "MoveII", "MoveIII", "TurnLeft", "TurnRight", "UTurn", "BackUp", "PowerUp"};
+        ProgrammingController programmingController = new ProgrammingController(cardArray);
+        GridPane pane = programmingController.getGridPane();
+        Scene scene = new Scene(pane);
+        stage.setScene(scene);
+        stage.show();
     }
 }

@@ -1,7 +1,9 @@
 package client.view;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -11,67 +13,47 @@ import java.io.IOException;
 public class ProgrammingController {
 
     GridPane gridPane;
+    int registerCounter = 0;
 
-    {
+    public ProgrammingController(String[] cards) {
         try {
-            gridPane = FXMLLoader.load(getClass().getResource("../../FXMLFiles/ProgrammingMat.fxml"));
+
+            Parent root = FXMLLoader.load(getClass().getResource("/home/ada/IdeaProjects/vp-neidische-narwale/RoboRally/src/main/resources/FXMLFiles/ProgrammingMat.fxml"));
+            gridPane = (GridPane) root;
         } catch (IOException e) {
             e.printStackTrace();
         }
+        createCardButtons(cards);
     }
+
 
 
     public void createCardButtons(String[] cards) {
 
         for (int i = 0; i < 9; i++) {
-            Button cardButton = new Button();
-            cardButton.setGraphic(createCardImage(cards[i]));
-            cardButton.setId(String.valueOf(i));
+            ProgrammingButton cardButton = new ProgrammingButton(i, cards[i]);
+            Label label = new Label();
+            label.setId(String.valueOf(i));
+            cardButton.setOnAction(e -> selectCard(cardButton, label));
+            gridPane.add(cardButton, 0, i);
+            gridPane.add(label, 1, i);
         }
     }
 
-    private static ImageView createCardImage(String cardType) {
-        Image cardImage;
-        switch (cardType) {
-            case "MoveI":
-                cardImage = new Image("");
-                return adjustToSlot(cardImage);
-            case "MoveII":
-                cardImage = new Image("");
-                return adjustToSlot(cardImage);
-            case "MoveIII":
-                cardImage = new Image("");
-                return adjustToSlot(cardImage);
-            case "TurnLeft":
-                cardImage = new Image("a");
-                return adjustToSlot(cardImage);
-            case "TurnRight":
-                cardImage = new Image("");
-                return adjustToSlot(cardImage);
-            case "UTurn":
-                cardImage = new Image("");
-                return adjustToSlot(cardImage);
-            case "BackUp":
-                cardImage = new Image("");
-                return adjustToSlot(cardImage);
-            case "PowerUp":
-                cardImage = new Image("");
-                return adjustToSlot(cardImage);
-            case "Again":
-                cardImage = new Image("");
-                return adjustToSlot(cardImage);
-            default:
-                cardImage = new Image("");
-                return adjustToSlot(cardImage);
+    private void selectCard(ProgrammingButton button, Label label) {
+        if (button.isChosen()) {
+            button.setChosen(false);
+            registerCounter--;
+        } else {
+            button.setChosen(true);
+            //TODO: Highlight chosen card by switch to image with different color
+            registerCounter++;
+            label.setText(String.valueOf(registerCounter));
         }
     }
 
-    private static ImageView adjustToSlot(Image image) {
-        ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(91);
-        imageView.setFitHeight(154);
-        return imageView;
-
+    public GridPane getGridPane() {
+        return gridPane;
     }
 
     /*MoveI, MoveII, MoveIII, TurnLeft, TurnRight, UTurn, BackUp, PowerUp und Again.*/
