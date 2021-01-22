@@ -5,20 +5,6 @@ import game.gameboard.gameboardfieldobjects.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import javax.naming.ldap.ControlFactory;
-
-/**
- * - Image-Dateien aus retajo.de einpflegen und umbenennen
- *  - Image-Builder:
- *  	- Cases implementieren
- *  	- Dateinamen anpassen
- *  - Handgephotoshoppte Bilder für CheckPoints von ExtraCrispy
- *
- *  Später:
- *  - GridPane in MainView einbinden
- *  - Roboterposition
- *  - Startpoints klickbar
- */
 
 public class ImageBuilder {
 
@@ -49,17 +35,13 @@ public class ImageBuilder {
                     LaserFieldObject laser = (LaserFieldObject) gameBoardFieldObject;
                     int count = laser.getCount();
                     String orientation = laser.getOrientation();
-
-                    //TODO: Laser-image-file should be named like laser_1, laser_2, laser_3
-                    Image laserImage = new Image("Tiles/Laser_"+count);
-
+                    Image laserImage = new Image("Tiles/Laser_"+count+".png");
                     ImageView laserTile = adjustToBoard(laserImage);
                     if (orientation.equals("left") || orientation.equals("right")) {
                         laserTile.setRotate(90);
                     }
                     return laserTile;
 
-                //TODO: IMPLEMENT remaining cases
                 case "Belt":
                     BeltFieldObject belt = (BeltFieldObject) gameBoardFieldObject;
                     String beltOrientation = belt.getOrientation();
@@ -96,7 +78,7 @@ public class ImageBuilder {
                         default:
                             return RotatingBeltImage;
                     }
-                case "EnergySpace": //TODO: create EnergySpaceImage without EnergyTokens and adjust name
+                case "EnergySpace": //TODO: create EnergySpaceImage with EnergyTokens and adjust name
                     EnergySpaceFieldObject energySpace = (EnergySpaceFieldObject) gameBoardFieldObject;
                     //Image EnergySpaceTile = new Image("Tiles/Energy_"+energySpace.getCount()+".png");
                     Image EnergySpaceTile = new Image("Tiles/Energy_0.png");
@@ -188,7 +170,7 @@ public class ImageBuilder {
             if(fields[0] instanceof WallFieldObject) {
                 if (fields[1] instanceof EnergySpaceFieldObject) {
                     //Default image has wall at bottom
-                    Image wallWithEnergy = new Image("Tiles/Energy_withWall1");
+                    Image wallWithEnergy = new Image("Tiles/Energy_withWall1.png");
                     ImageView wallWithEnergyTile = adjustToBoard(wallWithEnergy);
                     switch (((WallFieldObject) fields[0]).getOrientations()[0]) {
                         case "up":
@@ -228,7 +210,7 @@ public class ImageBuilder {
                 }
             } else if (fields[0] instanceof BeltFieldObject) {
                 //Default image: Belt upwards
-                Image beltWithLaser = new Image("Tiles/ConveyorLaser_2");
+                Image beltWithLaser = new Image("Tiles/ConveyorLaser_2.png");
                 ImageView beltWithLaserTile = adjustToBoard(beltWithLaser);
                 switch (((BeltFieldObject) fields[0]).getOrientation()) {
                     case "down":
@@ -261,7 +243,7 @@ public class ImageBuilder {
                 ControlPointFieldObject controlPointFieldObject = (ControlPointFieldObject) fields[2];
                 //TODO: Create Laser-Wall-Checkpoint-images (GIMP / Photoshop) customized to ExtraCrispy
                 //TODO: Laser-Wall-image-file should be named like laserwallcheck_1, laserwallcheck_2, laserwallcheck_3, laserwallcheck_4
-                Image wallWithLaserAndCheckPoint = new Image("Antenna.png"+controlPointFieldObject.getCount());
+                Image wallWithLaserAndCheckPoint = new Image("Tiles/Checkpoint_"+controlPointFieldObject.getCount()+".png");
                 ImageView wallLaserCheckTile = adjustToBoard(wallWithLaserAndCheckPoint);
                 return wallLaserCheckTile;
 
