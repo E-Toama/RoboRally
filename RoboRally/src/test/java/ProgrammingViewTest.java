@@ -13,7 +13,7 @@ public class ProgrammingViewTest extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        String[] cardArray = new String[]{"MoveI", "MoveII", "MoveIII", "TurnLeft", "TurnRight", "UTurn", "BackUp", "PowerUp"};
+        String[] cardArray = new String[]{"MoveI", "MoveII", "MoveIII", "TurnLeft", "TurnRight", "UTurn", "BackUp", "PowerUp", "Again"};
         ProgrammingController programmingController = new ProgrammingController(cardArray);
         GridPane pane = programmingController.getGridPane();
         Scene scene = new Scene(pane);

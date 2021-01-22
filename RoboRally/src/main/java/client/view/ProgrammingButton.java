@@ -33,34 +33,34 @@ public class ProgrammingButton extends Button {
         Image cardImage;
         switch (cardType) {
             case "MoveI":
-                cardImage = new Image("Tiles/Energy_withWall1.png");
+                cardImage = new Image("Cards/MoveOne.png");
                 return adjustToSlot(cardImage);
             case "MoveII":
-                cardImage = new Image("/FXML/Cards/MoveTwo.png");
+                cardImage = new Image("Cards/MoveTwo.png");
                 return adjustToSlot(cardImage);
             case "MoveIII":
-                cardImage = new Image("/FXML/Cards/MoveThree.png");
+                cardImage = new Image("Cards/MoveThree.png");
                 return adjustToSlot(cardImage);
             case "TurnLeft":
-                cardImage = new Image("/FXML/Cards/LeftTurn.png");
+                cardImage = new Image("Cards/LeftTurn.png");
                 return adjustToSlot(cardImage);
             case "TurnRight":
-                cardImage = new Image("/FXML/Cards/RightTurn.png");
+                cardImage = new Image("Cards/RightTurn.png");
                 return adjustToSlot(cardImage);
             case "UTurn":
-                cardImage = new Image("/FXML/Cards/UTurn.png");
+                cardImage = new Image("Cards/UTurn.png");
                 return adjustToSlot(cardImage);
             case "BackUp":
-                cardImage = new Image("/FXML/Cards/MoveBack.png");
+                cardImage = new Image("Cards/MoveBack.png");
                 return adjustToSlot(cardImage);
             case "PowerUp":
-                cardImage = new Image("/FXML/Cards/PowerUp.png");
+                cardImage = new Image("Cards/PowerUp.png");
                 return adjustToSlot(cardImage);
             case "Again":
-                cardImage = new Image("/FXML/Cards/Again.png");
+                cardImage = new Image("Cards/Again.png");
                 return adjustToSlot(cardImage);
             default:
-                cardImage = new Image("/FXML/Cards/PlayerDeckBack.png");
+                cardImage = new Image("Cards/PlayerDeckBack.png");
                 return adjustToSlot(cardImage);
         }
     }
@@ -73,5 +73,7 @@ public class ProgrammingButton extends Button {
 
     }
 
-
+    public String getCardString() {
+        return cardString;
+    }
 }
