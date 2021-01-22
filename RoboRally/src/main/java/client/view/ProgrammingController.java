@@ -16,13 +16,8 @@ public class ProgrammingController {
     int registerCounter = 0;
 
     public ProgrammingController(String[] cards) {
-        try {
-
-            Parent root = FXMLLoader.load(getClass().getResource("/home/ada/IdeaProjects/vp-neidische-narwale/RoboRally/src/main/resources/FXMLFiles/ProgrammingMat.fxml"));
-            gridPane = (GridPane) root;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            //Parent root = FXMLLoader.load(getClass().getResource("/FXMLFiles/ProgrammingMat.fxml"));
+            gridPane = new GridPane();
         createCardButtons(cards);
     }
 

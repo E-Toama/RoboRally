@@ -29,11 +29,11 @@ public class ProgrammingButton extends Button {
         this.chosen = chosen;
     }
 
-    public static ImageView createCardImage(String cardType) {
+    public ImageView createCardImage(String cardType) {
         Image cardImage;
         switch (cardType) {
             case "MoveI":
-                cardImage = new Image("/FXML/Cards/MoveOne.png");
+                cardImage = new Image("Tiles/Energy_withWall1.png");
                 return adjustToSlot(cardImage);
             case "MoveII":
                 cardImage = new Image("/FXML/Cards/MoveTwo.png");
