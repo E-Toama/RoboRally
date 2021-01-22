@@ -50,7 +50,7 @@ public class ClientThread implements Runnable {
 
     private Player player;
     private int ID;
-    private final double protocolVersion = 0.1;
+    private final double protocolVersion = 1.0;
     private final String group = "NeidischeNarwale";
     private Boolean isAI;
 
@@ -276,7 +276,9 @@ public class ClientThread implements Runnable {
 
                 welcomeViewModel.playerSuccesfullyAdded();
 
-            } else if (this.player != null) {
+            } else {
+
+                welcomeViewModel.disableRobotButton(receivedMessage.getPlayer().getFigure());
 
                 Platform.runLater(() -> {
                     takenRobotList.add(receivedMessage.getPlayer().getFigure());
@@ -300,10 +302,6 @@ public class ClientThread implements Runnable {
                 Platform.runLater(() -> {
                     chatMessages.add(notificationRobot);
                 });
-
-            } else {
-
-                throw new IOException("Something went wrong! Invalid PlayerAdded message!");
 
             }
 

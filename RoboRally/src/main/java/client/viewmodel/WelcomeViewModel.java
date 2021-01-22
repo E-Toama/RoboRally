@@ -4,6 +4,8 @@ import client.network.ClientThread;
 import client.view.ViewController;
 import javafx.application.Platform;
 import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXMLLoader;
@@ -16,50 +18,67 @@ public class WelcomeViewModel {
 
     private final ClientThread clientThread;
     private final StringProperty userNameTextField = new SimpleStringProperty();
+    private final BooleanProperty hammerBotTaken = new SimpleBooleanProperty();
+    private final BooleanProperty hulkTaken = new SimpleBooleanProperty();
+    private final BooleanProperty smashBotTaken = new SimpleBooleanProperty();
+    private final BooleanProperty spinBotTaken = new SimpleBooleanProperty();
+    private final BooleanProperty townkyTaken = new SimpleBooleanProperty();
+    private final BooleanProperty zoomBotTaken = new SimpleBooleanProperty();
     private int selectedRobot;
-
-    private BooleanBinding isSmashBotTaken = new BooleanBinding() {
-        @Override
-        protected boolean computeValue() {
-           return clientThread.takenRobotList.contains(2);
-        }
-    };
-    private BooleanBinding isHulkTaken = new BooleanBinding() {
-        @Override
-        protected boolean computeValue() {
-            return clientThread.takenRobotList.contains(1);
-        }
-    };
-    private BooleanBinding isSpinBotTaken = new BooleanBinding() {
-        @Override
-        protected boolean computeValue() {
-            return clientThread.takenRobotList.contains(3);
-        }
-    };
-    private BooleanBinding isHammerBotTaken = new BooleanBinding() {
-        @Override
-        protected boolean computeValue() {
-            return clientThread.takenRobotList.contains(0);
-        }
-    };
-    private BooleanBinding isTwonkyTaken = new BooleanBinding() {
-        @Override
-        protected boolean computeValue() {
-            return clientThread.takenRobotList.contains(4);
-        }
-    };
-    private BooleanBinding isZoomBotTaken = new BooleanBinding() {
-        @Override
-        protected boolean computeValue() {
-            return clientThread.takenRobotList.contains(5);
-        }
-    };
 
     public WelcomeViewModel() {
 
         this.clientThread = ClientThread.getClientThread();
         this.clientThread.setWelcomeViewModel(this);
 
+    }
+
+    public boolean isHammerBotTaken() {
+        return hammerBotTaken.get();
+    }
+
+    public BooleanProperty hammerBotTakenProperty() {
+        return hammerBotTaken;
+    }
+
+    public boolean isHulkTaken() {
+        return hulkTaken.get();
+    }
+
+    public BooleanProperty hulkTakenProperty() {
+        return hulkTaken;
+    }
+
+    public boolean isSmashBotTaken() {
+        return smashBotTaken.get();
+    }
+
+    public BooleanProperty smashBotTakenProperty() {
+        return smashBotTaken;
+    }
+
+    public boolean isSpinBotTaken() {
+        return spinBotTaken.get();
+    }
+
+    public BooleanProperty spinBotTakenProperty() {
+        return spinBotTaken;
+    }
+
+    public boolean isTownkyTaken() {
+        return townkyTaken.get();
+    }
+
+    public BooleanProperty townkyTakenProperty() {
+        return townkyTaken;
+    }
+
+    public boolean isZoomBotTaken() {
+        return zoomBotTaken.get();
+    }
+
+    public BooleanProperty zoomBotTakenProperty() {
+        return zoomBotTaken;
     }
 
     public String getUserNameTextField() {
@@ -131,28 +150,39 @@ public class WelcomeViewModel {
 
     public void playerNotAdded() {}
 
-    public BooleanBinding isSmashRobotTaken() {
-        return isSmashBotTaken;
-    }
+    public void disableRobotButton(int figure) {
 
-    public BooleanBinding isHulkTaken() {
-        return isHulkTaken;
-    }
+        switch (figure) {
 
-    public BooleanBinding isSpinBotTaken() {
-        return isSpinBotTaken;
-    }
+            case 0:
+                hammerBotTaken.setValue(true);
+                break;
 
-    public BooleanBinding isHammerBotTaken() {
-        return isHammerBotTaken;
-    }
+            case 1:
+                hulkTaken.setValue(true);
+                break;
 
-    public BooleanBinding isTwonkyTaken() {
-        return isTwonkyTaken;
-    }
+            case 2:
+                smashBotTaken.setValue(true);
+                break;
 
-    public BooleanBinding isZoomBotTaken() {
-        return isZoomBotTaken;
+            case 3:
+                spinBotTaken.setValue(true);
+                break;
+
+            case 4:
+                townkyTaken.setValue(true);
+                break;
+
+            case 5:
+                zoomBotTaken.setValue(true);
+                break;
+
+            default:
+                break;
+
+        }
+
     }
 
 }

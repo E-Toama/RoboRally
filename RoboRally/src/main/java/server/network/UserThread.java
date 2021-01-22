@@ -143,11 +143,11 @@ public class UserThread implements Runnable {
 
                 this.player = player;
 
-                server.addPlayer(this.playerID, outgoing, player);
+                server.addPlayer(this.playerID, player);
 
                 server.notifyPlayersAboutNewPlayer(this.player);
 
-                server.sendStatusToNewPlayer(this.player.getId());
+                //server.(this.player.getId());
 
             } else {
 
@@ -274,9 +274,7 @@ public class UserThread implements Runnable {
 
     private void establishConnection() throws IOException {
 
-        String helloClient =
-                messageHandler.buildMessage(
-                        "HelloClient", new HelloClient(this.server.getProtocolVersion()));
+        String helloClient = messageHandler.buildMessage("HelloClient", new HelloClient(this.server.getProtocolVersion()));
 
         outgoing.println(helloClient);
 
@@ -295,6 +293,10 @@ public class UserThread implements Runnable {
 
                     String welcome = messageHandler.buildMessage("Welcome", new Welcome(this.playerID));
                     outgoing.println(welcome);
+
+                    server.addPrintWriter(this.playerID, outgoing);
+
+                    server.sendStatusToNewPlayer(this.playerID);
 
                 } else {
 
