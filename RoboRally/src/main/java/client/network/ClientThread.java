@@ -9,8 +9,12 @@ import game.gameboard.GameBoard;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import game.player.Player;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import utilities.MessageHandler;
 import utilities.messages.*;
@@ -335,9 +339,17 @@ public class ClientThread implements Runnable {
             GameStarted receivedMessage = (GameStarted) incomingMessage.getMessageBody();
             GameBoard gameBoard = new GameBoard(receivedMessage.getMap());
             //toDo: GridPane, consisting of StackPanes, to be loaded into the MainView
+            GridPane mainView = FXMLLoader.load(getClass().getResource("/FXMLFiles/GridContainer.fxml"));
+
+            AnchorPane playerMat = FXMLLoader.load(getClass().getResource("/FXMLFiles/PlayerMatVorschauCards.fxml"));
 
             GridPane boardView = new GameBoardViewModel().createGameBoardView(gameBoard.getGameBoard());
-            Scene scene = new Scene(boardView);
+            boardView.setAlignment(Pos.TOP_CENTER);
+
+            mainView.add(boardView, 1, 0);
+            mainView.add(playerMat, 0, 1, 1, 2);
+
+            Scene scene = new Scene(mainView);
             Platform.runLater(() -> {
                 ViewController.getViewController().setScene(scene);
             });

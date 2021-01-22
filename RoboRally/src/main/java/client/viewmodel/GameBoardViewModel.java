@@ -32,8 +32,8 @@ public class GameBoardViewModel {
         for (int i = 0; i < horizontalTiles; i++) {
             for (int j = 0; j < verticalTiles; j++) {
                 ImageView imageOfBoardElement = ImageBuilder.buildImage(gameBoard[j][i]);
-                ImageView robotView = RobotImageBuilder.buildRobotImage(gameBoard[j][i]);
-                StackPane pane = new StackPane(imageOfBoardElement, robotView);
+                //ImageView robotView = RobotImageBuilder.buildRobotImage(gameBoard[j][i]);
+                StackPane pane = new StackPane(imageOfBoardElement);
                 //pane.getChildren().addAll(imageOfBoardElement, robotView);
                 //BoardTile boardTile = new BoardTile(imageOfBoardElement);
                 gridPane.add(pane, i, j);

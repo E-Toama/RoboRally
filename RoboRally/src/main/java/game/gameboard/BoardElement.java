@@ -2,6 +2,7 @@ package game.gameboard;
 
 import client.utilities.BoardTile;
 import client.utilities.ImageBuilder;
+import game.Robots.Robot;
 import game.gameboard.gameboardfieldobjects.GameBoardFieldObject;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -10,6 +11,7 @@ public class BoardElement {
 
     private int position;
     private GameBoardFieldObject[] field;
+    private Robot robot;
 
     public BoardElement(int position, GameBoardFieldObject[] field) {
         this.position = position;
@@ -30,5 +32,9 @@ public class BoardElement {
 
         return new BoardTile(imageView);
 
+    }
+
+    public Robot getRobot() {
+        return robot;
     }
 }
