@@ -1,8 +1,11 @@
 package client.viewmodel;
 
 import client.network.ClientThread;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
+import javafx.scene.control.MenuItem;
 
 public class LobbyViewModel {
 
@@ -12,7 +15,7 @@ public class LobbyViewModel {
 
     public LobbyViewModel() {
 
-        this.clientThread = ClientThread.getClientThread();
+        this.clientThread = ClientThread.getInstance();
 
     }
 
@@ -61,5 +64,6 @@ public class LobbyViewModel {
     public void submitUserNameAndRobot() {}
 
     public void setReady() {}
+
 
 }

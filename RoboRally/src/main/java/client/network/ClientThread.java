@@ -55,7 +55,7 @@ public class ClientThread implements Runnable {
 
     private Player player;
     private int ID;
-    private final double protocolVersion = 0.1;
+    private final double protocolVersion = 1.0;
     private final String group = "NeidischeNarwale";
     private Boolean isAI;
 
@@ -63,17 +63,22 @@ public class ClientThread implements Runnable {
     private ChatViewModel chatViewModel;
 
     private final HashMap<Integer, Player> playerList = new HashMap<>();
+    public ObservableList<Integer> takenRobotList = FXCollections.observableArrayList();
+    public HashMap<String, Integer> messageMatchMap = new HashMap<>();
     public ObservableList<String> observablePlayerList = FXCollections.observableArrayList();
+    public ObservableList<String> observablePlayerListWithDefault = FXCollections.observableArrayList();
 
     public ClientThread() throws IOException {
 
         this.socket = new Socket("localhost", 9090);
         this.incoming = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.outgoing = new PrintWriter(socket.getOutputStream(), true);
+        observablePlayerListWithDefault.add("Message To (Default: To All)");
+        messageMatchMap.put("Message To (Default: To All)",-1);
 
     }
 
-    public static ClientThread getClientThread() {
+    public static ClientThread getInstance() {
         return clientThread;
     }
 
@@ -225,6 +230,10 @@ public class ClientThread implements Runnable {
                     case "DrawDamage":
                         handleDrawDamage(incomingMessage);
                         break;
+                        
+                    case "PickDamage":
+                      handlePickDamage(incomingMessage);
+                      break;
 
                     case "PlayerShooting":
                         handlePlayerShooting(incomingMessage);
@@ -265,6 +274,7 @@ public class ClientThread implements Runnable {
 
     }
 
+
     private void handlePlayerAdded(Message incomingMessage) throws IOException {
 
         if (incomingMessage.getMessageBody() instanceof PlayerAdded) {
@@ -275,17 +285,31 @@ public class ClientThread implements Runnable {
 
                 this.player = receivedMessage.getPlayer();
                 playerList.put(this.ID, player);
-                observablePlayerList.add(player.getName() + ", " + player.getRobot().getRobotName(player.getFigure()));
+                //observablePlayerList.add(player.getName() + ", " + player.getRobot().getRobotName(player.getFigure()));
+                observablePlayerList.add(player.getName() + ", ");
+                observablePlayerList.add(player.getName() + ", " + player.getRobotName());
+                observablePlayerListWithDefault.add(player.getName() + ", " + player.getRobotName());
+                messageMatchMap.put(player.getName() + ", " + player.getRobotName(),player.getId());
 
                 welcomeViewModel.playerSuccesfullyAdded();
 
-            } else if (this.player != null) {
+            } else {
+
+                welcomeViewModel.disableRobotButton(receivedMessage.getPlayer().getFigure());
+
+                Platform.runLater(() -> {
+                    takenRobotList.add(receivedMessage.getPlayer().getFigure());
+                });
 
                 playerList.put(receivedMessage.getPlayer().getId() ,receivedMessage.getPlayer());
 
                 Platform.runLater(() -> {
-                    observablePlayerList.add(receivedMessage.getPlayer().getName() + ", " + receivedMessage.getPlayer().getRobot().getRobotName(player.getFigure()));
+                    //observablePlayerList.add(receivedMessage.getPlayer().getName() + ", " + receivedMessage.getPlayer().getRobot().getRobotName(player.getFigure()));
+                    observablePlayerList.add(receivedMessage.getPlayer().getName() + ", ");
                 });
+                observablePlayerList.add(receivedMessage.getPlayer().getName() + ", " + receivedMessage.getPlayer().getRobotName());
+                observablePlayerListWithDefault.add(receivedMessage.getPlayer().getName() + ", " + receivedMessage.getPlayer().getRobotName());
+                messageMatchMap.put(receivedMessage.getPlayer().getName() + ", " + receivedMessage.getPlayer().getRobotName(),receivedMessage.getPlayer().getId());
 
                 String notificationName = receivedMessage.getPlayer().getName() + " has joined!";
 
@@ -298,10 +322,6 @@ public class ClientThread implements Runnable {
                 Platform.runLater(() -> {
                     chatMessages.add(notificationRobot);
                 });
-
-            } else {
-
-                throw new IOException("Something went wrong! Invalid PlayerAdded message!");
 
             }
 
@@ -548,6 +568,16 @@ public class ClientThread implements Runnable {
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of DrawDamage)");
         }
+    }
+    
+
+    private void handlePickDamage(Message incomingMessage) throws IOException {
+      if (incomingMessage.getMessageBody() instanceof PickDamage) {
+        PickDamage pickDamage = (PickDamage) incomingMessage.getMessageBody();
+        // TODO: Update GUI PickDamage
+      } else {
+        throw new IOException("Something went wrong! Invalid Message Body! (Not instance of PickDamage)");
+      }    
     }
 
     private void handlePlayerShooting(Message incomingMessage) throws IOException {

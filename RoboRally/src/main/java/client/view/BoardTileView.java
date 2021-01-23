@@ -1,5 +1,6 @@
 package client.view;
 
+
 import game.gameboard.BoardElement;
 import game.gameboard.gameboardfieldobjects.GameBoardFieldObject;
 import javafx.scene.Group;

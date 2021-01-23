@@ -1,18 +1,25 @@
 package client.viewmodel;
 
 import client.network.ClientThread;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.MenuItem;
+
+
 
 public class ChatViewModel {
 
     private final ClientThread clientThread;
     private final StringProperty chatText = new SimpleStringProperty();
-    private boolean ready = false;
+    public final ObservableList<MenuItem> dropDownItems = FXCollections.observableArrayList();
+    private int destination = -1;
 
     public ChatViewModel() {
 
-        this.clientThread = ClientThread.getClientThread();
+        this.clientThread = ClientThread.getInstance();
         this.clientThread.setChatViewModel(this);
 
     }
@@ -30,7 +37,8 @@ public class ChatViewModel {
     }
 
     public void sendChat() {
-        clientThread.sendMessage(getChatText(), -1);
+
+        clientThread.sendMessage(getChatText(), destination);
         chatText.set("");
     }
 
@@ -41,5 +49,13 @@ public class ChatViewModel {
             clientThread.sendPlayerStatus(true);
         }
     }
+
+    public void changeDestination(int destination) {
+
+        this.destination = destination;
+
+    }
+
+
 
 }

@@ -114,6 +114,10 @@ public class UserThread implements Runnable {
                     case "PlayIt":
                         handlePlayIt(incomingMessage);
                         break;
+                        
+                    case "SelectDamage":
+                      handleSelectDamage(incomingMessage);
+                      break;
 
                     default:
                         break;
@@ -131,6 +135,7 @@ public class UserThread implements Runnable {
 
     }
 
+
     private void handlePlayerValues(Message incomingMessage) throws IOException {
 
         if (incomingMessage.getMessageBody() instanceof PlayerValues) {
@@ -143,11 +148,11 @@ public class UserThread implements Runnable {
 
                 this.player = player;
 
-                server.addPlayer(this.playerID, outgoing, player);
+                server.addPlayer(this.playerID, player);
 
                 server.notifyPlayersAboutNewPlayer(this.player);
 
-                server.sendStatusToNewPlayer(this.player.getId());
+                //server.(this.player.getId());
 
             } else {
 
@@ -271,12 +276,21 @@ public class UserThread implements Runnable {
             throw new IOException("Something went wrong! Invalid Message Body! (not instance of PlayIt)");
         }
     }
+    
+    private void handleSelectDamage(Message incomingMessage) throws IOException {
+      if (incomingMessage.getMessageBody() instanceof SelectDamage) {
+        SelectDamage selectDamage = (SelectDamage) incomingMessage.getMessageBody();
+        //TODO: Handle SelectDamage
+      } else {
+        throw new IOException("Something went wrong! Invalid Message Body! (not instance of SelectDamage)");
+      }
+      
+    }
+
 
     private void establishConnection() throws IOException {
 
-        String helloClient =
-                messageHandler.buildMessage(
-                        "HelloClient", new HelloClient(this.server.getProtocolVersion()));
+        String helloClient = messageHandler.buildMessage("HelloClient", new HelloClient(this.server.getProtocolVersion()));
 
         outgoing.println(helloClient);
 
@@ -295,6 +309,10 @@ public class UserThread implements Runnable {
 
                     String welcome = messageHandler.buildMessage("Welcome", new Welcome(this.playerID));
                     outgoing.println(welcome);
+
+                    server.addPrintWriter(this.playerID, outgoing);
+
+                    server.sendStatusToNewPlayer(this.playerID);
 
                 } else {
 
