@@ -21,7 +21,7 @@ public class Server {
     private final HashMap<Integer, Player> playerMap = new HashMap<>();
     private final HashMap<Integer, Boolean> statusMap = new HashMap<>();
 
-    private final double protocolVersion = 0.1;
+    private final double protocolVersion = 1.0;
     private int currentID = 972123;
 
     private Game game;
@@ -65,10 +65,13 @@ public class Server {
         return protocolVersion;
     }
 
-    public synchronized void addPlayer(int playerID, PrintWriter playerOutgoing, Player player) {
-        printWriterMap.put(playerID, playerOutgoing);
+    public synchronized void addPlayer(int playerID, Player player) {
         playerMap.put(playerID, player);
         statusMap.put(playerID, false);
+    }
+
+    public synchronized void addPrintWriter(int playerID, PrintWriter playerOutgoing) {
+        printWriterMap.put(playerID, playerOutgoing);
     }
 
     public synchronized void setStatus(int playerID, boolean status) {

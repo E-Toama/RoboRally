@@ -15,7 +15,7 @@ public class LobbyViewModel {
 
     public LobbyViewModel() {
 
-        this.clientThread = ClientThread.getClientThread();
+        this.clientThread = ClientThread.getInstance();
 
     }
 
