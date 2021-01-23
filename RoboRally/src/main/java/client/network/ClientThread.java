@@ -69,7 +69,7 @@ public class ClientThread implements Runnable {
 
     }
 
-    public static ClientThread getClientThread() {
+    public static ClientThread getInstance() {
         return clientThread;
     }
 

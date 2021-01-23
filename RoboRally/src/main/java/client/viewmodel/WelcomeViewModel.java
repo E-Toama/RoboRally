@@ -3,7 +3,6 @@ package client.viewmodel;
 import client.network.ClientThread;
 import client.view.ViewController;
 import javafx.application.Platform;
-import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -28,7 +27,7 @@ public class WelcomeViewModel {
 
     public WelcomeViewModel() {
 
-        this.clientThread = ClientThread.getClientThread();
+        this.clientThread = ClientThread.getInstance();
         this.clientThread.setWelcomeViewModel(this);
 
     }

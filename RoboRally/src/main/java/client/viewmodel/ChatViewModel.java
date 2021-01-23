@@ -12,7 +12,7 @@ public class ChatViewModel {
 
     public ChatViewModel() {
 
-        this.clientThread = ClientThread.getClientThread();
+        this.clientThread = ClientThread.getInstance();
         this.clientThread.setChatViewModel(this);
 
     }
