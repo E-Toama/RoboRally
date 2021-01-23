@@ -114,6 +114,10 @@ public class UserThread implements Runnable {
                     case "PlayIt":
                         handlePlayIt(incomingMessage);
                         break;
+                        
+                    case "SelectDamage":
+                      handleSelectDamage(incomingMessage);
+                      break;
 
                     default:
                         break;
@@ -130,6 +134,7 @@ public class UserThread implements Runnable {
         }
 
     }
+
 
     private void handlePlayerValues(Message incomingMessage) throws IOException {
 
@@ -271,6 +276,17 @@ public class UserThread implements Runnable {
             throw new IOException("Something went wrong! Invalid Message Body! (not instance of PlayIt)");
         }
     }
+    
+    private void handleSelectDamage(Message incomingMessage) throws IOException {
+      if (incomingMessage.getMessageBody() instanceof SelectDamage) {
+        SelectDamage selectDamage = (SelectDamage) incomingMessage.getMessageBody();
+        //TODO: Handle SelectDamage
+      } else {
+        throw new IOException("Something went wrong! Invalid Message Body! (not instance of SelectDamage)");
+      }
+      
+    }
+
 
     private void establishConnection() throws IOException {
 
