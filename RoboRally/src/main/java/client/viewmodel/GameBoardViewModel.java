@@ -1,9 +1,17 @@
 package client.viewmodel;
 
+import client.utilities.BoardTile;
+import client.utilities.ImageBuilder;
+import client.utilities.RobotImageBuilder;
 import client.view.BoardTileView;
 import game.gameboard.BoardElement;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 
 public class GameBoardViewModel {
 
@@ -16,18 +24,22 @@ public class GameBoardViewModel {
     double gridWidth = boardWidth / horizontalTiles;
     double gridHeight = boardHeight / verticalTiles;
 
-    BoardTileView[][] playfield = new BoardTileView[verticalTiles][horizontalTiles];
+    BoardTile[][] playfield = new BoardTile[verticalTiles][horizontalTiles];
 
-    public Scene createGameBoardView(BoardElement[][] gameBoard) {
-        Group root = new Group();
+    public GridPane createGameBoardView(BoardElement[][] gameBoard) {
+
+        GridPane gridPane = new GridPane();
         for (int i = 0; i < horizontalTiles; i++) {
             for (int j = 0; j < verticalTiles; j++) {
-                BoardTileView tile = new BoardTileView(gameBoard[j][i], i * gridWidth, j * gridHeight, gridHeight, gridWidth);
-                root.getChildren().add(tile);
-                playfield[j][i] = tile;
+                ImageView imageOfBoardElement = ImageBuilder.buildImage(gameBoard[j][i]);
+                //ImageView robotView = RobotImageBuilder.buildRobotImage(gameBoard[j][i]);
+                StackPane pane = new StackPane(imageOfBoardElement);
+                //pane.getChildren().addAll(imageOfBoardElement, robotView);
+                //BoardTile boardTile = new BoardTile(imageOfBoardElement);
+                gridPane.add(pane, i, j);
             }
         }
-        return new Scene(root, boardWidth, boardHeight);
+        return gridPane;
 
     }
 }

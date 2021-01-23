@@ -1,15 +1,28 @@
 package game.gameboard;
 
+import game.Robots.Twonky;
 import game.gameboard.boards.DizzyHighway;
+import game.gameboard.boards.ExtraCrispy;
 import game.gameboard.boards.StartBoard;
+import game.gameboard.gameboardfieldobjects.GameBoardFieldObject;
+import game.gameboard.gameboardfieldobjects.RestartPointFieldObject;
+
+import javax.print.attribute.standard.PresentationDirection;
 
 public class GameBoard {
 
     private BoardElement[][] gameBoard;
 
-    public GameBoard() {
+    public GameBoard(String board) {
 
-        this.gameBoard = createDizzyHighway();
+        switch (board) {
+            case "DizzyHighway":
+                this.gameBoard = createDizzyHighway();
+                break;
+            case "ExtraCrispy":
+                this.gameBoard = createExtraCrispy();
+                break;
+        }
 
     }
 
@@ -68,5 +81,20 @@ public class GameBoard {
             }
         }
         return dizzyHighway;
+    }
+
+    private BoardElement[][] createExtraCrispy() {
+        BoardElement[][] extraCrispy = new BoardElement[10][13];
+        BoardElement restartTile = new BoardElement(0, new GameBoardFieldObject[]{new RestartPointFieldObject("right")});
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 13; j++) {
+                if (j < 3) {
+                    extraCrispy[i][j] = (i == 0 && j == 0) ? restartTile : StartBoard.startBoard[i][j];
+                } else {
+                    extraCrispy[i][j] = ExtraCrispy._5B[i][j-3];
+                }
+            }
+        }
+        return extraCrispy;
     }
 }

@@ -9,8 +9,13 @@ import game.gameboard.GameBoard;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import game.player.Player;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import utilities.MessageHandler;
 import utilities.messages.*;
 import utilities.messages.Error;
@@ -350,13 +355,23 @@ public class ClientThread implements Runnable {
 
     private void handleGameStarted(Message incomingMessage) throws IOException {
 
-        //ToDo: handleGameStarted
         if (incomingMessage.getMessageBody() instanceof GameStarted){
             GameStarted receivedMessage = (GameStarted) incomingMessage.getMessageBody();
             GameBoard gameBoard = new GameBoard(receivedMessage.getMap());
-            Scene boardView = new GameBoardViewModel().createGameBoardView(gameBoard.getGameBoard());
+            //toDo: GridPane, consisting of StackPanes, to be loaded into the MainView
+            GridPane mainView = FXMLLoader.load(getClass().getResource("/FXMLFiles/GridContainer.fxml"));
+
+            AnchorPane playerMat = FXMLLoader.load(getClass().getResource("/FXMLFiles/PlayerMatVorschauCards.fxml"));
+
+            GridPane boardView = new GameBoardViewModel().createGameBoardView(gameBoard.getGameBoard());
+            boardView.setAlignment(Pos.TOP_CENTER);
+
+            mainView.add(boardView, 1, 0);
+            mainView.add(playerMat, 0, 1, 1, 2);
+
+            Scene scene = new Scene(mainView);
             Platform.runLater(() -> {
-                ViewController.getViewController().setScene(boardView);
+                ViewController.getViewController().setScene(scene);
             });
 
         } else {

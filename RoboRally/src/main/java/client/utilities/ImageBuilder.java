@@ -1,12 +1,267 @@
 package client.utilities;
 
+import game.gameboard.BoardElement;
+import game.gameboard.gameboardfieldobjects.*;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 
 public class ImageBuilder {
 
-    public static Image buildImage() {
+    private static int tileWidth = 50;
 
-        return null;
+
+    private static ImageView adjustToBoard(Image image) {
+        ImageView imageView = new ImageView(image);
+        imageView.setFitHeight(tileWidth);
+        imageView.setPreserveRatio(true);
+        return imageView;
+    }
+
+    public static ImageView buildImage(BoardElement boardElement) {
+
+        GameBoardFieldObject[] fields = boardElement.getField();
+
+        if (fields.length == 1) {
+            String type = fields[0].getType();
+            GameBoardFieldObject gameBoardFieldObject = fields[0];
+
+            switch (type) {
+                case "Empty":
+                    Image emptyTileImage = new Image("Tiles/EmptyTile.png");
+                    ImageView emptyTile = adjustToBoard(emptyTileImage);
+                    return emptyTile;
+                case "Laser":
+                    LaserFieldObject laser = (LaserFieldObject) gameBoardFieldObject;
+                    int count = laser.getCount();
+                    String orientation = laser.getOrientation();
+                    Image laserImage = new Image("Tiles/Laser_"+count+".png");
+                    ImageView laserTile = adjustToBoard(laserImage);
+                    if (orientation.equals("left") || orientation.equals("right")) {
+                        laserTile.setRotate(90);
+                    }
+                    return laserTile;
+
+                case "Belt":
+                    BeltFieldObject belt = (BeltFieldObject) gameBoardFieldObject;
+                    String beltOrientation = belt.getOrientation();
+                    Image belts = new Image("Tiles/Conveyor_"+ belt.getSpeed()+".png");
+                    ImageView beltImage = adjustToBoard(belts);
+                    switch  (belt.getOrientation()) {
+                        case "down":
+                            beltImage.setRotate(90);
+                            return beltImage;
+                        case "left":
+                            beltImage.setRotate(180);
+                            return beltImage;
+                        case "up":
+                            beltImage.setRotate(270);
+                            return beltImage;
+                        default:
+                            return beltImage;
+                    }
+
+                case "RotatingBelt":
+                    RotatingBeltFieldObject rotatingBelt = (RotatingBeltFieldObject) gameBoardFieldObject;
+                    Image RotatingBeltTile = new Image("Tiles/ConveyorRotating_"+rotatingBelt.getSpeed()+ "_" +rotatingBelt.getOrientations()[1]+"_"+rotatingBelt.isCrossing()+".png");
+                    ImageView RotatingBeltImage = adjustToBoard(RotatingBeltTile);
+                    switch (rotatingBelt.getOrientations()[0]){
+                        case "right":
+                            RotatingBeltImage.setRotate(90);
+                            return RotatingBeltImage;
+                        case "down":
+                            RotatingBeltImage.setRotate(180);
+                            return RotatingBeltImage;
+                        case "left":
+                            RotatingBeltImage.setRotate(270);
+                            return RotatingBeltImage;
+                        default:
+                            return RotatingBeltImage;
+                    }
+                case "EnergySpace": //TODO: create EnergySpaceImage with EnergyTokens and adjust name
+                    EnergySpaceFieldObject energySpace = (EnergySpaceFieldObject) gameBoardFieldObject;
+                    //Image EnergySpaceTile = new Image("Tiles/Energy_"+energySpace.getCount()+".png");
+                    Image EnergySpaceTile = new Image("Tiles/Energy_0.png");
+                    ImageView EnergySpaceImage = adjustToBoard(EnergySpaceTile);
+                    return EnergySpaceImage;
+
+                case "StartPoint":
+                    Image StartingPointTile = new Image("Tiles/StartingPoint.png");
+                    ImageView StartingPointImage = adjustToBoard(StartingPointTile);
+                    return  StartingPointImage;
+
+                case "Wall":
+                    Image WallTile = new Image("Tiles/Wall.png");
+                    ImageView WallImage = adjustToBoard(WallTile);
+                    switch (((WallFieldObject) fields[0]).getOrientations()[0]){
+                        case "right":
+                            WallImage.setRotate(90);
+                            return WallImage;
+                        case "down":
+                            WallImage.setRotate(180);
+                            return WallImage;
+                        case "left":
+                            WallImage.setRotate(270);
+                            return WallImage;
+                        default:
+                            return  WallImage;
+                    }
+
+                case "ControlPoint":
+                    Image checkImage = new Image("Tiles/Checkpoint_1.png");
+                    ImageView checkImageView = adjustToBoard(checkImage);
+                    return checkImageView;
+
+                case "RestartPoint":
+                    Image restartImage = new Image("Tiles/RestartToken.png");
+                    ImageView restartPoint = adjustToBoard(restartImage);
+                    RestartPointFieldObject restartPointObject = (RestartPointFieldObject) gameBoardFieldObject;
+                    switch (restartPointObject.getOrientation()) {
+                        case "up":
+                            restartPoint.setRotate(270);
+                            return restartPoint;
+                        case "down":
+                            restartPoint.setRotate(90);
+                            return restartPoint;
+                        case "left":
+                            restartPoint.setRotate(180);
+                            return restartPoint;
+                        default:
+                            return restartPoint;
+                    }
+
+                case "Antenna":
+                    Image antennaImage = new Image("Tiles/Antenna.png");
+                    ImageView antenna = adjustToBoard(antennaImage);
+                    return antenna;
+
+                case "Pit":
+                    Image pitImage = new Image("Tiles/Pit.png");
+                    ImageView pit = adjustToBoard(pitImage);
+                    return pit;
+
+                case "Gear":
+                    GearFieldObject gearFieldObject = (GearFieldObject) gameBoardFieldObject;
+                    String gearOrientation = gearFieldObject.getOrientation();
+
+                    if (gearOrientation.equals("clockwise")) {
+                        Image gearImageClockwise = new Image("Tiles/Gear_clockwise.png");
+                        ImageView gearClockWise = adjustToBoard(gearImageClockwise);
+                        return gearClockWise;
+                    }
+                    else if (gearOrientation.equals("counterclockwise")) {
+                        Image gearImageCounterClockwise = new Image("Tiles/Gear_counterclockwise.png");
+                        ImageView gearCounterClockwise = adjustToBoard(gearImageCounterClockwise);
+                        return gearCounterClockwise;
+                    }
+
+                    else { //evtl Fehlerbehebung?
+
+                    }
+            }
+
+
+        } else if (fields.length == 2) {
+            /*
+            *   Wall, Laser
+            *   Wall, EnergyCube
+                Belt, Laser
+            * */
+            if(fields[0] instanceof WallFieldObject) {
+                if (fields[1] instanceof EnergySpaceFieldObject) {
+                    //Default image has wall at bottom
+                    Image wallWithEnergy = new Image("Tiles/Energy_withWall1.png");
+                    ImageView wallWithEnergyTile = adjustToBoard(wallWithEnergy);
+                    switch (((WallFieldObject) fields[0]).getOrientations()[0]) {
+                        case "up":
+                            wallWithEnergyTile.setRotate(180);
+                            return wallWithEnergyTile;
+                        case "left":
+                            wallWithEnergyTile.setRotate(90);
+                            return wallWithEnergyTile;
+                        case "right":
+                            wallWithEnergyTile.setRotate(270);
+                            return wallWithEnergyTile;
+                        default:
+                            return wallWithEnergyTile;
+                    }
+
+                } else if (fields[1] instanceof LaserFieldObject) {
+                    //default direction is: Wall up, Laser pointing down
+                    Image wallWithLaser = new Image("Tiles/LaserWall_1.png");
+                    ImageView wallWithLaserTile = adjustToBoard(wallWithLaser);
+                    switch (((WallFieldObject) fields[0]).getOrientations()[0]) {
+                        case "up":
+                            wallWithLaserTile.setRotate(180);
+                            return wallWithLaserTile;
+                        case "left":
+                            wallWithLaserTile.setRotate(90);
+                            return wallWithLaserTile;
+                        case "right":
+                            wallWithLaserTile.setRotate(270);
+                            return wallWithLaserTile;
+                        default:
+                            return wallWithLaserTile;
+                    }
+
+
+                } else {
+                    //fields[1] has wrong field type
+                }
+            } else if (fields[0] instanceof BeltFieldObject) {
+                //Default image: Belt upwards
+                Image beltWithLaser = new Image("Tiles/ConveyorLaser_2.png");
+                ImageView beltWithLaserTile = adjustToBoard(beltWithLaser);
+                switch (((BeltFieldObject) fields[0]).getOrientation()) {
+                    case "down":
+                        beltWithLaserTile.setRotate(180);
+                        return beltWithLaserTile;
+                    case "left":
+                        beltWithLaserTile.setRotate(270);
+                        return beltWithLaserTile;
+                    case "right":
+                        beltWithLaserTile.setRotate(90);
+                        return beltWithLaserTile;
+                    default:
+                        return beltWithLaserTile;
+                }
+
+
+            } else {
+                //field[0] has wrong field type
+            }
+
+
+
+
+        } else if (fields.length == 3) {
+            //ImageView: Wall+Laser+Checkpoint
+
+            try {
+                WallFieldObject wallFieldObject = (WallFieldObject) fields[0];
+                LaserFieldObject laserFieldObject = (LaserFieldObject) fields[1];
+                ControlPointFieldObject controlPointFieldObject = (ControlPointFieldObject) fields[2];
+                //TODO: Create Laser-Wall-Checkpoint-images (GIMP / Photoshop) customized to ExtraCrispy
+                //TODO: Laser-Wall-image-file should be named like laserwallcheck_1, laserwallcheck_2, laserwallcheck_3, laserwallcheck_4
+                Image wallWithLaserAndCheckPoint = new Image("Tiles/Checkpoint_"+controlPointFieldObject.getCount()+".png");
+                ImageView wallLaserCheckTile = adjustToBoard(wallWithLaserAndCheckPoint);
+                return wallLaserCheckTile;
+
+
+            } catch (ClassCastException e) {
+                //ToDO: Catch Typecasting errors
+            }
+
+
+
+
+        } else {
+            //Handle wrong length
+        }
+
+
+        Image laser3 = new Image("Tiles/Laser_3.png");
+        return adjustToBoard(laser3);
 
     }
 
