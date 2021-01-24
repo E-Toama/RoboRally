@@ -4,6 +4,7 @@ import client.view.ViewController;
 import client.viewmodel.GameBoardViewModel;
 import client.viewmodel.ChatViewModel;
 import client.viewmodel.WelcomeViewModel;
+import game.Robots.Robot;
 import game.cards.Card;
 import game.gameboard.GameBoard;
 import javafx.application.Platform;
@@ -285,11 +286,18 @@ public class ClientThread implements Runnable {
 
                 this.player = receivedMessage.getPlayer();
                 playerList.put(this.ID, player);
-                //observablePlayerList.add(player.getName() + ", " + player.getRobot().getRobotName(player.getFigure()));
-                observablePlayerList.add(player.getName() + ", ");
-                observablePlayerList.add(player.getName() + ", " + player.getRobotName());
-                observablePlayerListWithDefault.add(player.getName() + ", " + player.getRobotName());
-                messageMatchMap.put(player.getName() + ", " + player.getRobotName(),player.getId());
+
+                Platform.runLater(() -> {
+                    observablePlayerList.add(player.getName() + ", " + Robot.getRobotName(player.getFigure()));
+                });
+
+                Platform.runLater(() -> {
+                    observablePlayerListWithDefault.add(player.getName() + ", " + Robot.getRobotName(player.getFigure()));
+                });
+
+                Platform.runLater(() -> {
+                    messageMatchMap.put(player.getName() + ", " + Robot.getRobotName(player.getFigure()), player.getId());
+                });
 
                 welcomeViewModel.playerSuccesfullyAdded();
 
@@ -304,12 +312,16 @@ public class ClientThread implements Runnable {
                 playerList.put(receivedMessage.getPlayer().getId() ,receivedMessage.getPlayer());
 
                 Platform.runLater(() -> {
-                    //observablePlayerList.add(receivedMessage.getPlayer().getName() + ", " + receivedMessage.getPlayer().getRobot().getRobotName(player.getFigure()));
-                    observablePlayerList.add(receivedMessage.getPlayer().getName() + ", ");
+                    observablePlayerList.add(receivedMessage.getPlayer().getName() + ", " + Robot.getRobotName(receivedMessage.getPlayer().getFigure()));
                 });
-                observablePlayerList.add(receivedMessage.getPlayer().getName() + ", " + receivedMessage.getPlayer().getRobotName());
-                observablePlayerListWithDefault.add(receivedMessage.getPlayer().getName() + ", " + receivedMessage.getPlayer().getRobotName());
-                messageMatchMap.put(receivedMessage.getPlayer().getName() + ", " + receivedMessage.getPlayer().getRobotName(),receivedMessage.getPlayer().getId());
+
+                Platform.runLater(() -> {
+                    observablePlayerListWithDefault.add(receivedMessage.getPlayer().getName() + ", " + Robot.getRobotName(receivedMessage.getPlayer().getFigure()));
+                });
+
+                Platform.runLater(() -> {
+                    messageMatchMap.put(receivedMessage.getPlayer().getName() + ", " + Robot.getRobotName(receivedMessage.getPlayer().getFigure()), receivedMessage.getPlayer().getId());
+                });
 
                 String notificationName = receivedMessage.getPlayer().getName() + " has joined!";
 
