@@ -8,15 +8,15 @@ import game.cards.Card;
  */
 public class YourCards extends MessageBody {
   // TODO programming cards only
-  private final Card[] cards;
+  private final String[] cards;
   private final int cardsInPile;
 
-  public YourCards(Card[] cards, int cardsInPile) {
+  public YourCards(String[] cards, int cardsInPile) {
     this.cards = cards;
     this.cardsInPile = cardsInPile;
   }
 
-  public Card[] getCards() {
+  public String[] getCards() {
     return cards;
   }
 

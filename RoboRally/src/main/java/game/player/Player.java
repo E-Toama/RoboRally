@@ -4,7 +4,6 @@ public class Player {
 
     private final int id;
     private final String name;
-
     private final int figure;
 
     private Boolean status = false;
@@ -37,4 +36,17 @@ public class Player {
         this.status = status;
     }
 
+
+
+    //Additional values for PlayerState including getters/setter
+
+    private int currentPosition;
+
+    public int getCurrentPosition() {
+        return currentPosition;
+    }
+
+    public void setCurrentPosition(int currentPosition) {
+        this.currentPosition = currentPosition;
+    }
 }

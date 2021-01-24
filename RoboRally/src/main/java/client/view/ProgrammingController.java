@@ -1,6 +1,9 @@
 package client.view;
 
+import client.viewmodel.ProgrammingViewModel;
 import com.sun.javafx.scene.control.SelectedCellsMap;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -17,17 +20,24 @@ import java.util.HashMap;
 
 public class ProgrammingController {
 
+    ProgrammingViewModel programmingViewModel;
+
     GridPane gridPane;
     int registerCounter = 0;
     Label[] labelList = new Label[9];
     ProgrammingButton[] buttonList = new ProgrammingButton[9];
-    HashMap<Label, Button> labelButtonMap = new HashMap<>();
+    HashMap<Label, ProgrammingButton> labelButtonMap = new HashMap<>();
     Button sendButton;
     Label timerLabel;
 
-    public ProgrammingController(String[] cards) {
+    public void initialize() {
+        timerLabel.textProperty().bindBidirectional(programmingViewModel.getTimerLabelProperty());
+    }
+
+    public ProgrammingController(ProgrammingViewModel programmingViewModel) {
+        this.programmingViewModel = programmingViewModel;
         gridPane = new GridPane();
-        createCardButtons(cards);
+        createCardButtons(programmingViewModel.getCards());
         Button sendButton = new Button("SEND");
         sendButton.setDisable(true);
         sendButton.setOnAction(e -> confirmChoice());
@@ -42,6 +52,7 @@ public class ProgrammingController {
         for (ProgrammingButton button : buttonList) {
             button.setDisable(true);
         }
+        programmingViewModel.selectionFinished();
     }
 
     private void allRegistersChosen() {
@@ -87,18 +98,38 @@ public class ProgrammingController {
 
     private void selectCard(ProgrammingButton button, Label label) {
         if (button.isChosen()) {
-            button.setChosen(false);
-            button.setStyle("-fx-background-color: #CED0CE");
-            registerCounter--;
-            updateLabels(label);
-            label.setText("");
-            lastRegisterFree();
+            programmingViewModel.selectCard("empty", registerCounter);
         } else {
-            button.setChosen(true);
-            button.setStyle("-fx-background-color: PURPLE");
-            registerCounter++;
-            label.setText("Register: " + String.valueOf(registerCounter));
-            allRegistersChosen();
+            programmingViewModel.selectCard(button.getCardString(), registerCounter);
+        }
+    }
+
+    public void setRegisterActive(int register) {
+
+        for (HashMap.Entry<Label,ProgrammingButton> entry : labelButtonMap.entrySet())
+        {
+            Label label = entry.getKey();
+            int registerNumber = Integer.parseInt(label.getText().split(" ")[1]);
+            if (register == registerNumber) {
+                ProgrammingButton button =  entry.getValue();
+
+                if (button.isChosen()) {
+                    registerCounter--;
+                    button.setChosen(false);
+                    button.setStyle("-fx-background-color: #CED0CE");
+                    label.setText("");
+                    updateLabels(label);
+                    lastRegisterFree();
+
+                } else {
+                    registerCounter++;
+                    button.setChosen(true);
+                    button.setStyle("-fx-background-color: PURPLE");
+                    label.setText("Register: " + String.valueOf(register));
+                    allRegistersChosen();
+                }
+
+            }
         }
     }
 

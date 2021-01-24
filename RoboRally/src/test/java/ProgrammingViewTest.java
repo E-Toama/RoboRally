@@ -1,4 +1,5 @@
 import client.view.ProgrammingController;
+import client.viewmodel.ProgrammingViewModel;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
@@ -14,7 +15,8 @@ public class ProgrammingViewTest extends Application {
     public void start(Stage stage) throws Exception {
 
         String[] cardArray = new String[]{"MoveI", "MoveII", "MoveIII", "TurnLeft", "TurnRight", "UTurn", "BackUp", "PowerUp", "Again"};
-        ProgrammingController programmingController = new ProgrammingController(cardArray);
+        ProgrammingViewModel programmingViewModel = new ProgrammingViewModel(cardArray);
+        ProgrammingController programmingController = new ProgrammingController(programmingViewModel);
         GridPane pane = programmingController.getGridPane();
         Scene scene = new Scene(pane);
         stage.setScene(scene);
