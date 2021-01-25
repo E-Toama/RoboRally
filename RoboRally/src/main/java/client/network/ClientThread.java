@@ -491,7 +491,8 @@ public class ClientThread implements Runnable {
         if (incomingMessage.getMessageBody() instanceof  YourCards) {
             YourCards yourCards = (YourCards) incomingMessage.getMessageBody();
             String[] cards = yourCards.getCards();
-            //ToDo: Implement "YourCards" (Client-Thread)
+            int cardsInPile = yourCards.getCardsInPile();
+            this.player.setCardsInDeck(cardsInPile);
             mainViewModel.createProgrammingView(cards);
 
         } else {
@@ -502,7 +503,10 @@ public class ClientThread implements Runnable {
     private void handleNotYourCards(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof  NotYourCards) {
             NotYourCards notYourCards = (NotYourCards) incomingMessage.getMessageBody();
+            Player player = playerList.get(notYourCards.getPlayerID());
+            player.setCardsInDeck(notYourCards.getCardsInPile());
             //ToDo: Implement "NotYourCards" (Client-Thread)
+            mainViewModel.updateOtherPlayers(playerList);
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of NotYourCards)");
         }
@@ -544,6 +548,7 @@ public class ClientThread implements Runnable {
         if (incomingMessage.getMessageBody() instanceof DiscardHand) {
             DiscardHand discardHand = (DiscardHand) incomingMessage.getMessageBody();
             //ToDo: "Das Ergebnis wird dem Spieler dann mitgeteilt."
+            // Will we do anything with this information? Some Visualization?
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of DiscardHand)");
         }
@@ -552,8 +557,11 @@ public class ClientThread implements Runnable {
     private void handleCardsYouGotNow(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof CardsYouGotNow) {
             CardsYouGotNow cardsYouGotNow = (CardsYouGotNow) incomingMessage.getMessageBody();
-            Card[] yourCards = cardsYouGotNow.getCards();
+            String[] yourCards = cardsYouGotNow.getCards();
+            this.player.setRegisters(yourCards);
+            mainViewModel.setCardsYouGotNow(yourCards);
             //ToDo: Game-logic for CardsYouGotNow
+
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of CardsYouGotNow)");
         }

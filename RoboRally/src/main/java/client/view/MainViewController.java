@@ -10,11 +10,11 @@ import javafx.scene.layout.GridPane;
 
 public class MainViewController {
 
-    private MainViewModel mainViewModel = new MainViewModel();
+    /*private MainViewModel mainViewModel = new MainViewModel();
     private ProgrammingViewModel programmingViewModel;
     private GameBoardViewModel gameBoardViewModel = new GameBoardViewModel();
     private ChatViewModel chatViewModel = new ChatViewModel();
-    private PlayerMatModel playerMatModel = new PlayerMatModel();
+    private PlayerMatModel playerMatModel = new PlayerMatModel();*/
 
     private GameBoardView gameBoardView;
     private PlayerMatView playerMatView;
@@ -22,11 +22,8 @@ public class MainViewController {
     @FXML
     GridPane mainViewPane;
 
-   public void initialize() {
-       //mainViewModel.createMainView();
-   }
 
-
-
-
+    public GridPane getMainViewPane() {
+        return mainViewPane;
+    }
 }

@@ -1,6 +1,7 @@
 package client.view;
 
 
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -10,7 +11,10 @@ import javafx.scene.layout.GridPane;
 import java.io.IOException;
 
 public class PlayerMatView {
-    GridPane PlayerMat;
+
+    @FXML
+    GridPane playerMatPane = new GridPane();
+
     int priority = 1;
     int checkPointCount = 0;
     int deckCardCount;
@@ -24,11 +28,14 @@ public class PlayerMatView {
 
 
     public PlayerMatView() {
-        try {
-            PlayerMat = FXMLLoader.load(getClass().getResource("/FXMLFiles/PlayerMat1.fxml"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        initialize();
+
+
+    }
+
+    @FXML
+    public void initialize() {
         createCardsSlots();
         Label priorityOrder = new Label("Priority: "+ priority) ;
         Label checkPoints= new Label("Checkpoints "+ checkPointCount);
@@ -36,23 +43,22 @@ public class PlayerMatView {
         Label discardSize = new Label("Discarded Cards: "+ deckCardCount);
         Label RobotName = new Label(name);
         Label PlayerName = new Label(userName);
-        PlayerMat.add(priorityOrder, 0, 0);
-        PlayerMat.add(checkPoints, 1, 0);
-        PlayerMat.add(RobotName, 0, 1);
-        PlayerMat.add(PlayerName, 1, 1);
-        PlayerMat.add(deckSize, 0, 2);
-        PlayerMat.add(discardSize, 1, 2);
+        playerMatPane.add(priorityOrder, 0, 0);
+        playerMatPane.add(checkPoints, 1, 0);
+        playerMatPane.add(RobotName, 0, 1);
+        playerMatPane.add(PlayerName, 1, 1);
+        playerMatPane.add(deckSize, 0, 2);
+        playerMatPane.add(discardSize, 1, 2);
+    }
 
-
-
-    }   public void createCardsSlots(){
+    public void createCardsSlots(){
         for(int i = 0; i < 5; i++){
 
             Image cards = new Image(card1);
             ImageView card = new ImageView(cards);
             card.setFitHeight(180);
             card.setPreserveRatio(true);
-            PlayerMat.add(card, 4+i, 0, 1, 2);
+            playerMatPane.add(card, 4+i, 0, 1, 2);
         }
     }
 
@@ -60,7 +66,7 @@ public class PlayerMatView {
 
 
     public GridPane getPlayerMat(){
-        return PlayerMat;
+        return playerMatPane;
     }
 
 }

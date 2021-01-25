@@ -1,23 +1,28 @@
 package client.viewmodel;
 
 import client.network.ClientThread;
+import game.player.Player;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
+import java.util.HashMap;
+
 public class MainViewModel {
+
+
     private final ClientThread clientThread;
     private ProgrammingViewModel programmingViewModel;
     private ChatViewModel chatViewModel;
     private PlayerMatModel playerMatModel;
     private GameBoardViewModel gameBoardViewModel;
 
+
     public MainViewModel() {
         this.clientThread = ClientThread.getInstance();
         clientThread.setMainViewModel(this);
-
     }
 
     public void setTimer() {
@@ -40,10 +45,18 @@ public class MainViewModel {
 
     }
 
+    public void updateOtherPlayers(HashMap<Integer, Player> playerList) {
+        //ToDo: Get values from Playerlist and update PlayerMats
+    }
+
+    public void setCardsYouGotNow(String[] yourCards) {
+        //ToDo: Should this be displayed in the ProgrammingView? Or in the PlayerMat?
+    }
+
    /* public Scene createMainView(){
         GridPane mainView = FXMLLoader.load(getClass().getResource("/FXMLFiles/MainView.fxml"));
 
-        AnchorPane playerMat = FXMLLoader.load(getClass().getResource("/FXMLFiles/PlayerMatVorschauCards.fxml"));
+        AnchorPane playerMat = FXMLLoader.load(getClass().getResource("/FXMLFiles/PlayerMat.fxml"));
 
         GridPane boardView = new GameBoardViewModel().createGameBoardView(gameBoard.getGameBoard());
         boardView.setAlignment(Pos.TOP_CENTER);
