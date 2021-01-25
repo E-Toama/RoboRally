@@ -30,18 +30,18 @@ public class PlayerMatView {
             e.printStackTrace();
         }
         createCardsSlots();
-        Label priorityOrder = new Label("Priority: "+ priority) ;
+
         Label checkPoints= new Label("Checkpoints "+ checkPointCount);
         Label deckSize = new Label("Cards left: "+ deckCardCount);
         Label discardSize = new Label("Discarded Cards: "+ deckCardCount);
         Label RobotName = new Label(name);
         Label PlayerName = new Label(userName);
-        PlayerMat.add(priorityOrder, 0, 0);
+
         PlayerMat.add(checkPoints, 1, 0);
-        PlayerMat.add(RobotName, 0, 1);
-        PlayerMat.add(PlayerName, 1, 1);
-        PlayerMat.add(deckSize, 0, 2);
-        PlayerMat.add(discardSize, 1, 2);
+        PlayerMat.add(RobotName, 0, 0);
+        //PlayerMat.add(PlayerName, 0, 0);
+        PlayerMat.add(deckSize, 2, 0);
+        PlayerMat.add(discardSize, 3, 0);
 
 
 
@@ -52,7 +52,7 @@ public class PlayerMatView {
             ImageView card = new ImageView(cards);
             card.setFitHeight(180);
             card.setPreserveRatio(true);
-            PlayerMat.add(card, 4+i, 0, 1, 2);
+            PlayerMat.add(card, 1+i, 0, 1, 4);
         }
     }
 
