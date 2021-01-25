@@ -67,7 +67,7 @@ public class ProgrammingButton extends Button {
 
     private static ImageView adjustToSlot(Image image) {
         ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(91);
+        imageView.setFitWidth(85);
         imageView.setFitHeight(154);
         return imageView;
 
