@@ -1,3 +1,4 @@
+import client.view.EnemyMatView;
 import client.view.MainViewController;
 import client.view.PlayerMatView;
 import client.view.ProgrammingController;
@@ -8,12 +9,18 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class MainViewTest extends Application {
+
+    GridPane gridPane;
+    GridPane playerMat;
+    GridPane programmingPane;
+    boolean isPlayerMatActive = true;
 
     public static void main(String[] args) {
         launch(args);
@@ -24,9 +31,9 @@ public class MainViewTest extends Application {
         Pane pane = new Pane();
 
         FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/MainView.fxml"));
-        GridPane gridPane = mainLoader.load();
+        gridPane = mainLoader.load();
         FXMLLoader playerMatLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/PlayerMat.fxml"));
-        GridPane playerMat = playerMatLoader.load();
+        playerMat = playerMatLoader.load();
         GridPane boardView = new GameBoardViewModel().createGameBoardView(new GameBoard("DizzyHighway").getGameBoard());
 
         FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/GameViewChat.fxml"));
@@ -35,15 +42,41 @@ public class MainViewTest extends Application {
         gridPane.add(playerMat, 0, 1, 1, 2);
         gridPane.add(chatPane, 0, 0);
         VBox otherPlayers = new VBox();
+
+
         for (int i = 0; i < 3; i++) {
-            PlayerMatView playerMatView = new PlayerMatView();
-            otherPlayers.getChildren().add(playerMatView.getPlayerMat());
+            EnemyMatView enemyMatView = new EnemyMatView();
+            //Zwischensschritt: java -> javafx
+            otherPlayers.getChildren().add(enemyMatView.getEnemyMat());
         }
 
+        Button sceneSwitcher = new Button("SWITCH");
+        sceneSwitcher.setOnAction(e -> switchScenes());
+
+        otherPlayers.getChildren().add(sceneSwitcher);
+
         gridPane.add(otherPlayers, 2,0);
+        String[] cardArray = new String[]{"MoveI", "MoveII", "MoveIII", "TurnLeft", "TurnRight", "UTurn", "BackUp", "PowerUp", "Again"};
+        ProgrammingViewModel programmingViewModel = new ProgrammingViewModel(cardArray);
+        ProgrammingController programmingController = new ProgrammingController(programmingViewModel);
+        programmingPane = programmingController.getGridPane();
+
 
         Scene scene = new Scene(gridPane);
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void switchScenes(){
+        if (isPlayerMatActive) {
+            isPlayerMatActive = false;
+            gridPane.getChildren().remove(playerMat);
+            gridPane.add(programmingPane, 0, 1, 1, 2);
+        } else {
+            isPlayerMatActive = true;
+            gridPane.getChildren().remove(programmingPane);
+            gridPane.add(playerMat, 0, 1, 1, 2);
+        }
+
     }
 }
