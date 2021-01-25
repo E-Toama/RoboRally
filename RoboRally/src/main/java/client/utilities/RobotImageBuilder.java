@@ -22,45 +22,31 @@ public class RobotImageBuilder {
         return imageView;
     }
 
-    public static ImageView buildRobotImage(BoardElement boardElement) {
 
-        Robot robot = boardElement.getRobot();
+    public static ImageView buildRobotImage(int robotFigure) {
 
-        if (robot instanceof Twonky) {
-            Image botImage = new Image("Images/Twonky_transparent.png");
-            ImageView botImageView = adjustToBoard(botImage);
-            return botImageView;
-        } else if (robot instanceof SmashBot) {
-            Image botImage = new Image("Images/Orange.png");
-            ImageView botImageView = adjustToBoard(botImage);
-            return botImageView;
-        } else if (robot instanceof Hulk) {
-            Image botImage = new Image("Images/Orange.png");
-            ImageView botImageView = adjustToBoard(botImage);
-            return botImageView;
-        } else if (robot instanceof SpinBot) {
-            Image botImage = new Image("Images/Orange.png");
-            ImageView botImageView = adjustToBoard(botImage);
-            return botImageView;
-        }else if (robot instanceof ZoomBot) {
-            Image botImage = new Image("Images/Orange.png");
-            ImageView botImageView = adjustToBoard(botImage);
-            return botImageView;
-        }else if (robot instanceof HammerBot) {
-            Image botImage = new Image("Images/Orange.png");
-            ImageView botImageView = adjustToBoard(botImage);
-            return botImageView;
+
+        if (robotFigure == 0) {
+            Image botImage = new Image("Images/HammerBot.png");
+            return adjustToBoard(botImage);
+        } else if (robotFigure == 1) {
+            Image botImage = new Image("Images/HulkX90.png");
+            return adjustToBoard(botImage);
+        } else if (robotFigure == 2) {
+            Image botImage = new Image("Images/SmashBot.png");
+            return adjustToBoard(botImage);
+        } else if (robotFigure == 3) {
+            Image botImage = new Image("Images/SpinBot.png");
+            return adjustToBoard(botImage);
+        }else if (robotFigure == 4) {
+            Image botImage = new Image("Images/Twonky.png");
+            return adjustToBoard(botImage);
+        }else if (robotFigure == 5) {
+            Image botImage = new Image("Images/ZoomBot.png");
+            return adjustToBoard(botImage);
         } else {
             ImageView transparent = adjustToBoard(new Image("Tiles/Transparent_Tile.png"));
             return transparent;
         }
-
-
-
-
     }
-
-
-
-
 }
