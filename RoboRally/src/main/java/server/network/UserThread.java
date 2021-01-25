@@ -110,6 +110,7 @@ public class UserThread implements Runnable {
 
                     case "SelectCard":
                         handleSelectCard(incomingMessage);
+                        break;
 
                     case "PlayIt":
                         handlePlayIt(incomingMessage);
@@ -236,7 +237,10 @@ public class UserThread implements Runnable {
         if (incomingMessage.getMessageBody() instanceof PlayCard) {
             PlayCard playCard = (PlayCard) incomingMessage.getMessageBody();
             String cardPlayed = playCard.getCard();
+
             //ToDo: handle PlayCard (UserThread)
+
+
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (not instance of PlayCard)");
         }
@@ -263,11 +267,11 @@ public class UserThread implements Runnable {
             SelectCard selectCard = (SelectCard) incomingMessage.getMessageBody();
             String selectedCard = selectCard.getCards();
             int register = selectCard.getRegister();
-            //ToDo: Game-Logic for selected cards, store choice in list
-
+            //ToDo: Game-Logic for selected cards, store choice in
             String outgoingMessage = messageHandler.buildMessage("CardSelected", new CardSelected(this.playerID, register));
             server.sendMessageToAllUsers(outgoingMessage);
         } else {
+
             throw new IOException("Something went wrong! Invalid Message Body! (not instance of SelectCard)");
         }
     }

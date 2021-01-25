@@ -23,7 +23,7 @@ public class ProgrammingController {
     ProgrammingViewModel programmingViewModel;
 
     GridPane gridPane;
-    int registerCounter = 0;
+    int registerCounter = 1;
     Label[] labelList = new Label[9];
     ProgrammingButton[] buttonList = new ProgrammingButton[9];
     HashMap<Label, ProgrammingButton> labelButtonMap = new HashMap<>();
@@ -104,6 +104,7 @@ public class ProgrammingController {
         if (button.isChosen()) {
             programmingViewModel.selectCard("empty", registerCounter);
         } else {
+            label.setText("Register: " + String.valueOf(registerCounter));
             programmingViewModel.selectCard(button.getCardString(), registerCounter);
         }
     }
@@ -113,6 +114,9 @@ public class ProgrammingController {
         for (HashMap.Entry<Label,ProgrammingButton> entry : labelButtonMap.entrySet())
         {
             Label label = entry.getKey();
+            if (label.getText().isEmpty()){
+                continue;
+            }
             int registerNumber = Integer.parseInt(label.getText().split(" ")[1]);
             if (register == registerNumber) {
                 ProgrammingButton button =  entry.getValue();

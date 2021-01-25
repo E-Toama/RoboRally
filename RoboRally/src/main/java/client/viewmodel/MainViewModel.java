@@ -2,11 +2,6 @@ package client.viewmodel;
 
 import client.network.ClientThread;
 import game.player.Player;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 
 import java.util.HashMap;
 
@@ -20,9 +15,10 @@ public class MainViewModel {
     private GameBoardViewModel gameBoardViewModel;
 
 
-    public MainViewModel() {
+    public MainViewModel(ProgrammingViewModel programmingViewModel) {
         this.clientThread = ClientThread.getInstance();
         clientThread.setMainViewModel(this);
+        this.programmingViewModel = programmingViewModel;
     }
 
     public void setTimer() {

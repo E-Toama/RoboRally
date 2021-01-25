@@ -1,8 +1,10 @@
+import client.network.ClientThread;
 import client.view.EnemyMatView;
 import client.view.MainViewController;
 import client.view.PlayerMatView;
 import client.view.ProgrammingController;
 import client.viewmodel.GameBoardViewModel;
+import client.viewmodel.MainViewModel;
 import client.viewmodel.ProgrammingViewModel;
 import game.gameboard.GameBoard;
 import javafx.application.Application;
@@ -15,8 +17,12 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class MainViewTest extends Application {
 
+    MainViewModel mainViewModel;
     GridPane gridPane;
     GridPane playerMat;
     GridPane programmingPane;
@@ -28,8 +34,12 @@ public class MainViewTest extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Pane pane = new Pane();
-
+        String[] cardArray = new String[]{"MoveI", "MoveII", "MoveIII", "TurnLeft", "TurnRight", "UTurn", "BackUp", "PowerUp", "Again"};
+        ProgrammingViewModel programmingViewModel = new ProgrammingViewModel(cardArray);
+        ProgrammingController programmingController = new ProgrammingController(programmingViewModel);
+        MainViewModel mainViewModel = new MainViewModel(programmingViewModel);
+        ClientThread clientThread = ClientThread.getInstance();
+        clientThread.setMainViewModel(mainViewModel);
         FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/MainView.fxml"));
         gridPane = mainLoader.load();
         FXMLLoader playerMatLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/PlayerMat.fxml"));
@@ -42,6 +52,9 @@ public class MainViewTest extends Application {
         gridPane.add(playerMat, 0, 1, 1, 2);
         gridPane.add(chatPane, 0, 0);
         VBox otherPlayers = new VBox();
+        Logger logger = Logger.getLogger("MyLogger");
+        System.out.println(logger.getName());
+        logger.log(Level.FINE, "otherPlayer built");
 
 
         for (int i = 0; i < 3; i++) {
@@ -56,9 +69,7 @@ public class MainViewTest extends Application {
         otherPlayers.getChildren().add(sceneSwitcher);
 
         gridPane.add(otherPlayers, 2,0);
-        String[] cardArray = new String[]{"MoveI", "MoveII", "MoveIII", "TurnLeft", "TurnRight", "UTurn", "BackUp", "PowerUp", "Again"};
-        ProgrammingViewModel programmingViewModel = new ProgrammingViewModel(cardArray);
-        ProgrammingController programmingController = new ProgrammingController(programmingViewModel);
+
         programmingPane = programmingController.getGridPane();
 
 
