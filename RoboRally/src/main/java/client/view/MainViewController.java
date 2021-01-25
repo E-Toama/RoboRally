@@ -15,7 +15,7 @@ public class MainViewController {
     private PlayerMatView playerMatView;
 
     @FXML
-    GridPane mainViewPane;
+    GridPane mainViewPane = new GridPane();
 
 
     public GridPane getMainViewPane() {

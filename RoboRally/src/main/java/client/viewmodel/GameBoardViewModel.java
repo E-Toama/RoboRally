@@ -5,6 +5,7 @@ import client.utilities.BoardTile;
 import client.utilities.ImageBuilder;
 import client.utilities.RobotImageBuilder;
 import client.view.BoardTileView;
+import client.view.GameBoardController;
 import game.gameboard.BoardElement;
 import game.gameboard.GameBoard;
 import javafx.geometry.Pos;
@@ -15,13 +16,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class GameBoardViewModel {
 
     ClientThread clientThread;
-
-
+    GameBoardController gameBoardController;
     BoardElement[][] gameBoard;
-
 
     public GameBoardViewModel() {
         this.clientThread = ClientThread.getInstance();
@@ -36,31 +38,16 @@ public class GameBoardViewModel {
         return gameBoard;
     }
 
-    /* private double boardWidth = 650;
-    private double boardHeight = 500;
+    public void setGameBoardController(GameBoardController gameBoardController) {
+        this.gameBoardController = gameBoardController;
+    }
 
-    private int verticalTiles = 10;
-    private int horizontalTiles = 13;
+    public void setStartingPosition(int robotFigure, int row, int column) {
+        gameBoardController.setStartingPosition(robotFigure, row, column);
 
-    double gridWidth = boardWidth / horizontalTiles;
-    double gridHeight = boardHeight / verticalTiles;*/
+    }
 
-    BoardTile[][] playfield = new BoardTile[verticalTiles][horizontalTiles];
-
-    public GridPane createGameBoardView(BoardElement[][] gameBoard) {
-
-        GridPane gridPane = new GridPane();
-        for (int i = 0; i < horizontalTiles; i++) {
-            for (int j = 0; j < verticalTiles; j++) {
-                ImageView imageOfBoardElement = ImageBuilder.buildImage(gameBoard[j][i]);
-                //ImageView robotView = RobotImageBuilder.buildRobotImage(gameBoard[j][i]);
-                StackPane pane = new StackPane(imageOfBoardElement);
-                //pane.getChildren().addAll(imageOfBoardElement, robotView);
-                //BoardTile boardTile = new BoardTile(imageOfBoardElement);
-                gridPane.add(pane, i, j);
-            }
-        }
-        return gridPane;
-
+    public void updateRobotPosition(int robotFigure, int oldRow, int oldColumn, int newRow, int newColumn) {
+       gameBoardController.updateRobotPosition(robotFigure, oldRow, oldColumn, newRow, newColumn);
     }
 }

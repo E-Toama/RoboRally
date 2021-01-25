@@ -1,11 +1,14 @@
 import client.network.ClientThread;
+import client.utilities.BoardTile;
 import client.view.EnemyMatView;
+import client.view.GameBoardController;
 import client.view.MainViewController;
 import client.view.PlayerMatView;
 import client.view.ProgrammingController;
 import client.viewmodel.GameBoardViewModel;
 import client.viewmodel.MainViewModel;
 import client.viewmodel.ProgrammingViewModel;
+import game.gameboard.BoardElement;
 import game.gameboard.GameBoard;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -34,17 +37,31 @@ public class MainViewTest extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+
+        //Dummy Input for ProgrammingView
         String[] cardArray = new String[]{"MoveI", "MoveII", "MoveIII", "TurnLeft", "TurnRight", "UTurn", "BackUp", "PowerUp", "Again"};
+
+        //Initialize the subviews
         ProgrammingViewModel programmingViewModel = new ProgrammingViewModel(cardArray);
         ProgrammingController programmingController = new ProgrammingController(programmingViewModel);
+
         MainViewModel mainViewModel = new MainViewModel(programmingViewModel);
         ClientThread clientThread = ClientThread.getInstance();
         clientThread.setMainViewModel(mainViewModel);
+
         FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/MainView.fxml"));
         gridPane = mainLoader.load();
         FXMLLoader playerMatLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/PlayerMat.fxml"));
         playerMat = playerMatLoader.load();
-        GridPane boardView = new GameBoardViewModel().createGameBoardView(new GameBoard("DizzyHighway").getGameBoard());
+
+        GameBoardViewModel gameBoardViewModel = new GameBoardViewModel();
+        GameBoardController gameBoardController = new GameBoardController();
+        gameBoardViewModel.setGameBoard(new GameBoard("DizzyHighway").getGameBoard());
+        gameBoardViewModel.setGameBoardController(gameBoardController);
+        gameBoardController.setGameBoardViewModel(gameBoardViewModel);
+        gameBoardController.initBoard();
+
+        GridPane boardView = gameBoardController.getGameGrid();
 
         FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/GameViewChat.fxml"));
         GridPane chatPane = chatLoader.load();
@@ -52,9 +69,6 @@ public class MainViewTest extends Application {
         gridPane.add(playerMat, 0, 1, 1, 2);
         gridPane.add(chatPane, 0, 0);
         VBox otherPlayers = new VBox();
-        Logger logger = Logger.getLogger("MyLogger");
-        System.out.println(logger.getName());
-        logger.log(Level.FINE, "otherPlayer built");
 
 
         for (int i = 0; i < 3; i++) {

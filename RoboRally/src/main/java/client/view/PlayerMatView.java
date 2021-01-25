@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class PlayerMatView {
     @FXML
-    GridPane playerMatPane;
+    GridPane playerMatPane = new GridPane();
     int priority = 1;
     int checkPointCount = 0;
     int deckCardCount;
@@ -25,12 +25,7 @@ public class PlayerMatView {
     String card5 = "Cards/Again.png";
 
 
-    public PlayerMatView() {
-       /* try {
-            PlayerMat = FXMLLoader.load(getClass().getResource("/FXMLFiles/PlayerMat1.fxml"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
+    public void initialize() {
         createCardsSlots();
 
         Label checkPoints= new Label("Checkpoints "+ checkPointCount);
@@ -44,6 +39,10 @@ public class PlayerMatView {
         //PlayerMat.add(PlayerName, 0, 0);
         playerMatPane.add(deckSize, 2, 0);
         playerMatPane.add(discardSize, 3, 0);
+    }
+
+    public PlayerMatView() {
+      initialize();
 
 
 
