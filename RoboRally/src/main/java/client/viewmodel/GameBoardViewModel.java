@@ -1,10 +1,12 @@
 package client.viewmodel;
 
+import client.network.ClientThread;
 import client.utilities.BoardTile;
 import client.utilities.ImageBuilder;
 import client.utilities.RobotImageBuilder;
 import client.view.BoardTileView;
 import game.gameboard.BoardElement;
+import game.gameboard.GameBoard;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -15,14 +17,33 @@ import javafx.scene.layout.StackPane;
 
 public class GameBoardViewModel {
 
-    private double boardWidth = 650;
+    ClientThread clientThread;
+
+
+    BoardElement[][] gameBoard;
+
+
+    public GameBoardViewModel() {
+        this.clientThread = ClientThread.getInstance();
+        clientThread.setGameBoardViewModel(this);
+    }
+
+    public void setGameBoard(BoardElement[][] gameBoard) {
+        this.gameBoard = gameBoard;
+    }
+
+    public BoardElement[][] getGameBoard() {
+        return gameBoard;
+    }
+
+    /* private double boardWidth = 650;
     private double boardHeight = 500;
 
     private int verticalTiles = 10;
     private int horizontalTiles = 13;
 
     double gridWidth = boardWidth / horizontalTiles;
-    double gridHeight = boardHeight / verticalTiles;
+    double gridHeight = boardHeight / verticalTiles;*/
 
     BoardTile[][] playfield = new BoardTile[verticalTiles][horizontalTiles];
 

@@ -4,7 +4,11 @@ import client.utilities.ClientGameState;
 import client.utilities.ClientPlayerState;
 import client.view.ViewController;
 import client.viewmodel.ChatViewModel;
+import client.viewmodel.GameBoardViewModel;
+import client.viewmodel.InGameChatModel;
 import client.viewmodel.MainViewModel;
+import client.viewmodel.PlayerMatModel;
+import client.viewmodel.ProgrammingViewModel;
 import client.viewmodel.WelcomeViewModel;
 import game.Robots.Robot;
 import game.cards.Card;
@@ -67,7 +71,14 @@ public class ClientThread implements Runnable {
 
     private WelcomeViewModel welcomeViewModel;
     private ChatViewModel chatViewModel;
+
+    //ViewModels for MainView
     private MainViewModel mainViewModel;
+    private InGameChatModel inGameChatModel;
+    private GameBoardViewModel gameBoardViewModel;
+    private ProgrammingViewModel programmingViewModel;
+    private PlayerMatModel playerMatModel;
+
 
     private final HashMap<Integer, Player> playerList = new HashMap<>();
     public ObservableList<Integer> takenRobotList = FXCollections.observableArrayList();
@@ -99,6 +110,22 @@ public class ClientThread implements Runnable {
 
     public void setMainViewModel(MainViewModel mainViewModel) {
         this.mainViewModel = mainViewModel;
+    }
+
+    public void setInGameChatModel(InGameChatModel inGameChatModel) {
+        this.inGameChatModel = inGameChatModel;
+    }
+
+    public void setGameBoardViewModel(GameBoardViewModel gameBoardViewModel) {
+        this.gameBoardViewModel = gameBoardViewModel;
+    }
+
+    public void setProgrammingViewModel(ProgrammingViewModel programmingViewModel) {
+        this.programmingViewModel = programmingViewModel;
+    }
+
+    public void setPlayerMatModel(PlayerMatModel playerMatModel) {
+        this.playerMatModel = playerMatModel;
     }
 
     public Player getPlayer() {
