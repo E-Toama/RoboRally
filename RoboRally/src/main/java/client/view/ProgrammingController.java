@@ -37,6 +37,10 @@ public class ProgrammingController {
     public ProgrammingController(ProgrammingViewModel programmingViewModel) {
         this.programmingViewModel = programmingViewModel;
         gridPane = new GridPane();
+        gridPane.setMinHeight(190);
+        gridPane.setMaxHeight(190);
+        gridPane.setMinWidth(975);
+        gridPane.setMaxWidth(975);
         createCardButtons(programmingViewModel.getCards());
         Button sendButton = new Button("SEND");
         sendButton.setDisable(true);
