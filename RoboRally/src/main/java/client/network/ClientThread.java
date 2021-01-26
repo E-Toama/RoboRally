@@ -410,7 +410,7 @@ public class ClientThread implements Runnable {
             } else {
 
                 message = "[" + receivedMessage.getFrom() + "]: " + receivedMessage.getMessage();
-                logger.getLogger().info(this.player.getName() + " got a normal message.");
+                logger.getLogger().info(this.player.getName() + " got a normal message from " + receivedMessage.getFrom() + ".");
             }
 
             Platform.runLater(() -> {
