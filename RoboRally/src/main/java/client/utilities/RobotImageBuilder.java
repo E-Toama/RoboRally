@@ -1,12 +1,6 @@
 package client.utilities;
 
-import game.Robots.HammerBot;
-import game.Robots.Hulk;
 import game.Robots.Robot;
-import game.Robots.SmashBot;
-import game.Robots.SpinBot;
-import game.Robots.Twonky;
-import game.Robots.ZoomBot;
 import game.gameboard.BoardElement;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -26,27 +20,27 @@ public class RobotImageBuilder {
 
         Robot robot = boardElement.getRobot();
 
-        if (robot instanceof Twonky) {
+        if (robot.getFigure() == 4) {
             Image botImage = new Image("Images/Twonky_transparent.png");
             ImageView botImageView = adjustToBoard(botImage);
             return botImageView;
-        } else if (robot instanceof SmashBot) {
+        } else if (robot.getFigure() == 2) {
             Image botImage = new Image("Images/Orange.png");
             ImageView botImageView = adjustToBoard(botImage);
             return botImageView;
-        } else if (robot instanceof Hulk) {
+        } else if (robot.getFigure() == 1) {
             Image botImage = new Image("Images/Orange.png");
             ImageView botImageView = adjustToBoard(botImage);
             return botImageView;
-        } else if (robot instanceof SpinBot) {
+        } else if (robot.getFigure() == 3) {
             Image botImage = new Image("Images/Orange.png");
             ImageView botImageView = adjustToBoard(botImage);
             return botImageView;
-        }else if (robot instanceof ZoomBot) {
+        }else if (robot.getFigure() == 5) {
             Image botImage = new Image("Images/Orange.png");
             ImageView botImageView = adjustToBoard(botImage);
             return botImageView;
-        }else if (robot instanceof HammerBot) {
+        }else if (robot.getFigure() == 0) {
             Image botImage = new Image("Images/Orange.png");
             ImageView botImageView = adjustToBoard(botImage);
             return botImageView;

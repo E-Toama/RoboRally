@@ -135,7 +135,6 @@ public class UserThread implements Runnable {
 
     }
 
-
     private void handlePlayerValues(Message incomingMessage) throws IOException {
 
         if (incomingMessage.getMessageBody() instanceof PlayerValues) {
@@ -241,14 +240,7 @@ public class UserThread implements Runnable {
     private void handleSetStartingPoint(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof SetStartingPoint) {
             SetStartingPoint setStartingPoint = (SetStartingPoint) incomingMessage.getMessageBody();
-            int chosenStartingPoint = setStartingPoint.getPosition();
-            if (true) { //ToDo: check if Position is valid (UserThread)
-                String outgoingMessage = messageHandler.buildMessage("StartingPointTaken", new StartingPointTaken(this.playerID, chosenStartingPoint));
-                server.sendMessageToAllUsers(outgoingMessage);
-            } else {
-                String error = messageHandler.buildMessage("Error", new Error("StartingPoint is not valid"));
-                outgoing.println(error);
-            }
+            server.getGame().continueStartingPointSelection(this.player, setStartingPoint.getPosition());
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (not instance of SetStartingPoint)");
         }
@@ -286,7 +278,6 @@ public class UserThread implements Runnable {
       }
       
     }
-
 
     private void establishConnection() throws IOException {
 
