@@ -12,11 +12,11 @@ import java.util.logging.SimpleFormatter;
 public class MyLogger {
   private static FileHandler fileTxt;
   private static SimpleFormatter formatterTxt;
-  private Logger logger;
+  private Logger logger = Logger.getLogger("");
    
 
   public MyLogger(String loggerName) {    
-    Logger.getLogger(loggerName);
+    
     try {
       
       fileTxt = new FileHandler(loggerName + ".txt");
