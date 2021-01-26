@@ -4,10 +4,15 @@ import client.utilities.ImageBuilder;
 import client.utilities.RobotImageBuilder;
 import client.viewmodel.GameBoardViewModel;
 import game.gameboard.BoardElement;
+import game.utilities.Position;
+import game.utilities.PositionLookUp;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+
+import java.util.HashSet;
 
 public class GameBoardController {
 
@@ -19,6 +24,7 @@ public class GameBoardController {
     private int horizontalTiles = 13;
 
     StackPane[][] gameTileArray;
+    HashSet<Button> startingPointButtonList;
 
 
     /**
@@ -26,7 +32,7 @@ public class GameBoardController {
      * Build GameBoard-Array
      */
     public void initialize() {
-
+        startingPointButtonList = new HashSet<>();
     }
 
     public void initBoard() {
@@ -41,6 +47,23 @@ public class GameBoardController {
                 gameGrid.add(pane, i, j);
             }
         }
+    }
+
+    public void initStartingPoints() {
+        startingPointButtonList = new HashSet<>();
+        for (Integer pos : gameBoardViewModel.getStartingPositions()) {
+            Button startingPointButton = new Button();
+            startingPointButton.setId(String.valueOf(pos));
+            startingPointButton.setOnAction(e -> transmitStartingPoint());
+            startingPointButtonList.add(startingPointButton);
+            Position p = PositionLookUp.positionToXY.get(pos);
+            /*gameTileArray[p.getX()][p.getY()].getChildren().add(startingPointButton);*/
+        }
+
+    }
+
+    private void transmitStartingPoint() {
+
     }
 
     public void setStartingPosition(int robotFigure, int row, int column) {

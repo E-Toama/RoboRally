@@ -16,6 +16,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 
+import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,10 +25,22 @@ public class GameBoardViewModel {
     ClientThread clientThread;
     GameBoardController gameBoardController;
     BoardElement[][] gameBoard;
+    HashSet<Integer> startingPositions;
 
     public GameBoardViewModel() {
         this.clientThread = ClientThread.getInstance();
         clientThread.setGameBoardViewModel(this);
+        initStartingPositions();
+    }
+
+    private void initStartingPositions() {
+        startingPositions = new HashSet<>();
+        startingPositions.add(14);
+        startingPositions.add(39);
+        startingPositions.add(53);
+        startingPositions.add(66);
+        startingPositions.add(78);
+        startingPositions.add(105);
     }
 
     public void setGameBoard(BoardElement[][] gameBoard) {
@@ -40,6 +53,10 @@ public class GameBoardViewModel {
 
     public void setGameBoardController(GameBoardController gameBoardController) {
         this.gameBoardController = gameBoardController;
+    }
+
+    public HashSet<Integer> getStartingPositions() {
+        return startingPositions;
     }
 
     public void setStartingPosition(int robotFigure, int row, int column) {
