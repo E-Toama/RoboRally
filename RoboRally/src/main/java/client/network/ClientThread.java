@@ -344,7 +344,7 @@ public class ClientThread implements Runnable {
                 });
 
             }
-            logger.getLogger().info(receivedMessage.getPlayer().getName() + " with id " + receivedMessage.getPlayer().getId() + " added.");
+            logger.getLogger().info("Player with name " + receivedMessage.getPlayer().getName() + " with id " + receivedMessage.getPlayer().getId() + " has been added.");
 
         } else {
             logger.getLogger().severe("Message body error in handlePlayerAdded method.");
@@ -365,8 +365,8 @@ public class ClientThread implements Runnable {
             Platform.runLater(() -> {
                 chatMessages.add("[" + playerList.get(receivedMessage.getPlayerID()).getName() + "] changed status to: " + receivedMessage.getReady());
             });
-            
-            logger.getLogger().info("The player status is " + this.player.getStatus() + ".");
+           
+            logger.getLogger().info("The player with id " + receivedMessage.getPlayerID() + " set his status to " + receivedMessage.getReady() + ".");
 
         } else {
             logger.getLogger().severe("Message body error in handlePlayerStatus method.");
@@ -406,7 +406,7 @@ public class ClientThread implements Runnable {
             if (receivedMessage.getPrivate()) {
 
                 message = "[" + receivedMessage.getFrom() + "] private to you: " + receivedMessage.getMessage();
-                logger.getLogger().info(this.player.getName() + " got a private message from player id " + receivedMessage.getFrom() + ".");
+                logger.getLogger().info(this.player.getName() + " got a private message from " + receivedMessage.getFrom() + ".");
             } else {
 
                 message = "[" + receivedMessage.getFrom() + "]: " + receivedMessage.getMessage();
