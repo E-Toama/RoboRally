@@ -16,9 +16,25 @@ public class MainViewController {
 
     @FXML
     GridPane mainViewPane = new GridPane();
+    private boolean isPlayerMatActive = true;
+
+
 
 
     public GridPane getMainViewPane() {
         return mainViewPane;
     }
+
+   /* public void switchScenes(){
+        if (isPlayerMatActive) {
+            isPlayerMatActive = false;
+            mainViewPane.getChildren().remove(playerMat);
+            mainViewPane.add(programmingPane, 0, 1, 1, 2);
+        } else {
+            isPlayerMatActive = true;
+            mainViewPane.getChildren().remove(programmingPane);
+            mainViewPane.add(playerMat, 0, 1, 1, 2);
+        }
+
+    }*/
 }

@@ -56,8 +56,9 @@ public class MainViewTest extends Application {
 
         GameBoardViewModel gameBoardViewModel = new GameBoardViewModel();
         GameBoardController gameBoardController = new GameBoardController();
-        gameBoardViewModel.setGameBoard(new GameBoard("DizzyHighway").getGameBoard());
         gameBoardViewModel.setGameBoardController(gameBoardController);
+        gameBoardViewModel.setGameBoard(new GameBoard("DizzyHighway").getGameBoard());
+
         gameBoardController.setGameBoardViewModel(gameBoardViewModel);
         gameBoardController.initBoard();
 

@@ -545,7 +545,7 @@ public class ClientThread implements Runnable {
             int playerID = cardSelected.getPlayerID();
             int register = cardSelected.getRegister();
             if (playerID == ID) {
-                mainViewModel.confirmRegister(register);
+                programmingViewModel.confirmRegister(register);
             } //ToDo: else update other PlayerMats with cardbackside
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of CardSelected)");
