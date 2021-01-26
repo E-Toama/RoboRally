@@ -2,6 +2,7 @@ package server.network;
 
 import game.player.Player;
 import utilities.MessageHandler;
+import utilities.MyLogger;
 import utilities.messages.*;
 import utilities.messages.Error;
 
@@ -10,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.logging.Logger;
 
 public class UserThread implements Runnable {
 
@@ -18,6 +20,9 @@ public class UserThread implements Runnable {
     private final PrintWriter outgoing;
     private final Server server;
     private final MessageHandler messageHandler = new MessageHandler();
+    private final MyLogger logger = new MyLogger(UserThread.class.getName());
+
+
 
     private Player player;
     private final int playerID;
@@ -158,12 +163,15 @@ public class UserThread implements Runnable {
                 server.notifyPlayersAboutNewPlayer(this.player);
 
                 //server.(this.player.getId());
+                
+                logger.getLogger().info("Player name: " + receivedMessage.getName() + " Player figure: " + receivedMessage.getFigure());
 
             } else {
-
                 String error = messageHandler.buildMessage("Error", new Error("Figure already taken!"));
 
                 outgoing.println(error);
+                
+                logger.getLogger().warning("Error: '" + error + "' happend.");
 
             }
 

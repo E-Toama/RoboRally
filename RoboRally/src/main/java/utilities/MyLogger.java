@@ -5,33 +5,35 @@ import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
-
+/**
+ * Logger Class to log the project.
+ *
+ */
 public class MyLogger {
   private static FileHandler fileTxt;
   private static SimpleFormatter formatterTxt;
-  private final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+  private Logger logger;
    
-  public Logger getLogger() {
-    return logger;
-  }
 
-  public MyLogger() {
-    
-    Logger root = Logger.getLogger("");
-    
+  public MyLogger(String loggerName) {    
+    Logger.getLogger(loggerName);
     try {
       
-      fileTxt = new FileHandler("log.txt");
+      fileTxt = new FileHandler(loggerName + ".txt");
     } catch (SecurityException | IOException e) {
       
       e.printStackTrace();
     }
-    root.setLevel(Level.ALL);
+    logger.setLevel(Level.ALL);
     formatterTxt = new SimpleFormatter();
     fileTxt.setFormatter(formatterTxt);
     
-    root.addHandler(fileTxt);
+    logger.addHandler(fileTxt);
     
+  }
+  
+  public Logger getLogger() {
+    return logger;
   }
 
 }
