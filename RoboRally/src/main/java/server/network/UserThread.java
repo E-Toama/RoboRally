@@ -255,6 +255,7 @@ public class UserThread implements Runnable {
             if (true) { //ToDo: check if Position is valid (UserThread)
                 String outgoingMessage = messageHandler.buildMessage("StartingPointTaken", new StartingPointTaken(this.playerID, chosenStartingPoint));
                 server.sendMessageToAllUsers(outgoingMessage);
+                server.sendCurrentPlayerForStartingPosition();
             } else {
                 String error = messageHandler.buildMessage("Error", new Error("StartingPoint is not valid"));
                 outgoing.println(error);

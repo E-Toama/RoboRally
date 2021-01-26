@@ -2,6 +2,8 @@ package client.network;
 
 import client.utilities.ClientGameState;
 import client.utilities.ClientPlayerState;
+import client.view.GameBoardController;
+import client.view.MainViewController;
 import client.view.ViewController;
 import client.viewmodel.ChatViewModel;
 import client.viewmodel.GameBoardViewModel;
@@ -43,7 +45,7 @@ public class ClientThread implements Runnable {
 
     private static ClientThread clientThread;
     private static Thread client;
-    private static ClientGameState clientGameState;
+    private static ClientGameState clientGameState = new ClientGameState();
 
     static {
 
@@ -407,10 +409,10 @@ public class ClientThread implements Runnable {
             GameStarted receivedMessage = (GameStarted) incomingMessage.getMessageBody();
             GameBoard gameBoard = new GameBoard(receivedMessage.getMap());
             //toDo: GridPane, consisting of StackPanes, to be loaded into the MainView
-            //Scene mainViewScene = new MainViewModel().createMainView();
-            /*Platform.runLater(() -> {
+            Scene mainViewScene = initMainView(gameBoard);
+            Platform.runLater(() -> {
                 ViewController.getViewController().setScene(mainViewScene);
-            });*/
+            });
 
         } else {
 
@@ -480,7 +482,10 @@ public class ClientThread implements Runnable {
             //ToDo: Implement "CurrentPlayer" == Update GUI and turns
             if (currentPlayer.getPlayerID() == ID) {
                if (clientGameState.getActivePhase() == 0) {
-                   gameBoardViewModel.showStartingPoints();
+                   Platform.runLater(() -> {
+                       gameBoardViewModel.showStartingPoints();
+                   });
+
                }
             }
         } else {
@@ -499,6 +504,9 @@ public class ClientThread implements Runnable {
            * 3 => Aktivierungsphase
            * */
             clientGameState.setActivePhase(activePhase.getPhase());
+            if (activePhase.getPhase() == 2) {
+                //ToDo: Start ProgrammingPhase
+            }
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of ActivePhase)");
         }
@@ -512,7 +520,12 @@ public class ClientThread implements Runnable {
             Player player = playerList.get(playerID);
             player.setCurrentPosition(chosenPoint);
             //ToDo: Implement "StartingPointTaken": "Wenn die gewünschte Position valide ist, werden alle Spieler darüber benachrichtigt."
-            gameBoardViewModel.setStartingPosition(player.getFigure(), chosenPoint);
+            if (playerID == ID) {
+                Platform.runLater(() -> {
+                    gameBoardViewModel.setStartingPosition(player.getFigure(), chosenPoint);
+                });
+            }
+
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of StartingPointTaken)");
         }
@@ -759,5 +772,22 @@ public class ClientThread implements Runnable {
     public void sendSelectedCard(String selectedCard, int register) {
         String outgoingMessage = messageHandler.buildMessage("SelectCard", new SelectCard(selectedCard, register));
         outgoing.println(outgoingMessage);
+    }
+
+    private Scene initMainView(GameBoard gameBoard) {
+        MainViewController mainViewController = new MainViewController();
+        gameBoardViewModel = new GameBoardViewModel();
+        GameBoardController gameBoardController = new GameBoardController();
+        gameBoardViewModel.setGameBoardController(gameBoardController);
+        gameBoardViewModel.setGameBoard(gameBoard.getGameBoard());
+        gameBoardController.setGameBoardViewModel(gameBoardViewModel);
+        gameBoardController.initBoard();
+        try {
+            mainViewController.initializeMainView();
+            mainViewController.setGameBoardPane(gameBoardController.getGameGrid());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new Scene(mainViewController.getMainViewPane());
     }
 }
