@@ -86,7 +86,11 @@ public class MainViewTest extends Application {
         gridPane.add(otherPlayers, 2,0);
 
         programmingPane = programmingController.getGridPane();
+
+        //Single operations
         gameBoardController.initStartingPoints();
+        gameBoardViewModel.setStartingPosition(4, 53);
+
 
         Scene scene = new Scene(gridPane);
         stage.setScene(scene);

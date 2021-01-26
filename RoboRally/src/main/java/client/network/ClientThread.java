@@ -13,6 +13,7 @@ import client.viewmodel.WelcomeViewModel;
 import game.Robots.Robot;
 import game.cards.Card;
 import game.gameboard.GameBoard;
+import game.utilities.PositionLookUp;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,8 +22,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import game.player.Player;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import utilities.MessageHandler;
 import utilities.messages.*;
 import utilities.messages.Error;
@@ -477,7 +480,7 @@ public class ClientThread implements Runnable {
             //ToDo: Implement "CurrentPlayer" == Update GUI and turns
             if (currentPlayer.getPlayerID() == ID) {
                if (clientGameState.getActivePhase() == 0) {
-                   //ToDo: Client can set Starting Positon
+                   gameBoardViewModel.showStartingPoints();
                }
             }
         } else {
@@ -509,6 +512,7 @@ public class ClientThread implements Runnable {
             Player player = playerList.get(playerID);
             player.setCurrentPosition(chosenPoint);
             //ToDo: Implement "StartingPointTaken": "Wenn die gewünschte Position valide ist, werden alle Spieler darüber benachrichtigt."
+            gameBoardViewModel.setStartingPosition(player.getFigure(), chosenPoint);
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of StartingPointTaken)");
         }
@@ -739,6 +743,11 @@ public class ClientThread implements Runnable {
 
     public void sendPlayerStatus(boolean ready) {
         String outgoingMessage = messageHandler.buildMessage(("SetStatus"), new SetStatus(ready));
+        outgoing.println(outgoingMessage);
+    }
+
+    public void sendStartingPosition(int position) {
+        String outgoingMessage = messageHandler.buildMessage("SetStartingPoint", new SetStartingPoint(position));
         outgoing.println(outgoingMessage);
     }
 

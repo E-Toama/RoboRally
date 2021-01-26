@@ -59,9 +59,21 @@ public class GameBoardViewModel {
         return startingPositions;
     }
 
-    public void setStartingPosition(int robotFigure, int row, int column) {
-        gameBoardController.setStartingPosition(robotFigure, row, column);
+    public void transmitStartingPosition(int position) {
+        clientThread.sendStartingPosition(position);
+    }
 
+    public void setStartingPosition(int robotFigure, int position) {
+        startingPositions.remove(position);
+        gameBoardController.setStartingPosition(robotFigure, position);
+        for (Integer i : startingPositions) {
+            System.out.println("Positions in Model: " + i);
+        }
+
+    }
+
+    public void showStartingPoints() {
+        gameBoardController.initStartingPoints();
     }
 
     public void updateRobotPosition(int robotFigure, int oldRow, int oldColumn, int newRow, int newColumn) {

@@ -8,6 +8,7 @@ import game.utilities.Position;
 import game.utilities.PositionLookUp;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -52,24 +53,32 @@ public class GameBoardController {
     public void initStartingPoints() {
         startingPointButtonList = new HashSet<>();
         for (Integer pos : gameBoardViewModel.getStartingPositions()) {
+            System.out.println("Positions in COntroller: " + pos);
             Button startingPointButton = new Button();
+            startingPointButton.setPrefWidth(50);
+            startingPointButton.setPrefHeight(50);
+            startingPointButton.setStyle("-fx-border-color: blue; -fx-border-radius: 90; -fx-background-color: transparent");
             startingPointButton.setId(String.valueOf(pos));
-            startingPointButton.setOnAction(e -> transmitStartingPoint());
+            startingPointButton.setOnAction(e -> transmitStartingPoint(startingPointButton));
             startingPointButtonList.add(startingPointButton);
             Position p = PositionLookUp.positionToXY.get(pos);
-            /*gameTileArray[p.getX()][p.getY()].getChildren().add(startingPointButton);*/
+            gameTileArray[p.getX()][p.getY()].getChildren().add(startingPointButton);
         }
 
     }
 
-    private void transmitStartingPoint() {
-
+    private void transmitStartingPoint(Button startingPointButton) {
+        int position = Integer.parseInt(startingPointButton.getId());
+        gameBoardViewModel.transmitStartingPosition(position);
+        System.out.println(position);
     }
 
-    public void setStartingPosition(int robotFigure, int row, int column) {
+    public void setStartingPosition(int robotFigure, int position) {
         ImageView robotImage = RobotImageBuilder.buildRobotImage(robotFigure);
-        gameTileArray[row][column].getChildren().add(robotImage);
-
+        Position p = PositionLookUp.positionToXY.get(position);
+        gameTileArray[p.getX()][p.getY()].getChildren().remove(1);
+        gameTileArray[p.getX()][p.getY()].getChildren().add(robotImage);
+        startingPointButtonList.removeIf(b -> b.getId().equals(String.valueOf(position)));
     }
 
     public void updateRobotPosition(int robotFigure, int oldRow, int oldColumn, int newRow, int newColumn) {
