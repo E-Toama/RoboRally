@@ -24,7 +24,7 @@ public class MyLogger {
       
       e.printStackTrace();
     }
-    logger.setLevel(Level.ALL);
+    logger.setLevel(Level.INFO);
     formatterTxt = new SimpleFormatter();
     fileTxt.setFormatter(formatterTxt);
     
