@@ -164,7 +164,7 @@ public class UserThread implements Runnable {
 
                 //server.(this.player.getId());
                 
-                logger.getLogger().info("Player name: " + receivedMessage.getName() + " Player figure: " + receivedMessage.getFigure());
+                logger.getLogger().info("Player name: " + receivedMessage.getName() + ", Player figure: " + receivedMessage.getFigure() + ".");
 
             } else {
                 String error = messageHandler.buildMessage("Error", new Error("Figure already taken!"));
@@ -176,6 +176,7 @@ public class UserThread implements Runnable {
             }
 
         } else {
+            logger.getLogger().severe("Message body error in handlePlayerValues method.");
 
             throw new IOException("Something went wrong! Invalid Message Body! (not instance of PlayerValues)");
 
@@ -197,8 +198,11 @@ public class UserThread implements Runnable {
 
             server.checkIfGameCanStart();
 
+            logger.getLogger().info("Player " + player.getName() + ", status: " + receivedMessage.getReady() + ".");
+            
         } else {
-
+          
+            logger.getLogger().severe("Message body error in handleSetStatus method.");
             throw new IOException("Something went wrong! Invalid Message Body! (not instance of SetStatus)");
 
         }
@@ -217,6 +221,8 @@ public class UserThread implements Runnable {
                         "ReceivedChat", new ReceivedChat(receivedMessage.getMessage(), player.getName(), false));
 
                 server.sendMessageToAllUsers(outgoingMessage);
+                
+                logger.getLogger().info(player.getName() + " sent a message to all users.");
 
             } else {
 
@@ -224,11 +230,14 @@ public class UserThread implements Runnable {
                         "ReceivedChat", new ReceivedChat(receivedMessage.getMessage(), player.getName(), true));
 
                 server.sendMessageToSingleUser(outgoingMessage, receivedMessage.getTo());
+                
+                logger.getLogger().info(player.getName() + " sent a message to a single user.");
 
             }
-
+            
+            
         } else {
-
+            logger.getLogger().severe("Message body error in handleSendChat method.");
             throw new IOException("Something went wrong! Invalid Message Body! (not instance of SendChat)");
 
         }
@@ -247,9 +256,11 @@ public class UserThread implements Runnable {
             String cardPlayed = playCard.getCard();
 
             //ToDo: handle PlayCard (UserThread)
-
-
+            
+            logger.getLogger().info(player.getName() + " played " + cardPlayed + ".");
+            
         } else {
+            logger.getLogger().severe("Message body error in handlePlayCard method.");
             throw new IOException("Something went wrong! Invalid Message Body! (not instance of PlayCard)");
         }
     }
@@ -264,8 +275,11 @@ public class UserThread implements Runnable {
             } else {
                 String error = messageHandler.buildMessage("Error", new Error("StartingPoint is not valid"));
                 outgoing.println(error);
+                logger.getLogger().warning("Error '" + error + "' happend.");
             }
+            logger.getLogger().info(player.getName() + " chose position " + chosenStartingPoint + " as his starting point.");
         } else {
+            logger.getLogger().severe("Message body error in handleSetStartingPoint method.");
             throw new IOException("Something went wrong! Invalid Message Body! (not instance of SetStartingPoint)");
         }
     }
@@ -273,13 +287,15 @@ public class UserThread implements Runnable {
     private void handleSelectCard(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof SelectCard) {
             SelectCard selectCard = (SelectCard) incomingMessage.getMessageBody();
-            String selectedCard = selectCard.getCards();
+            String selectedCard = selectCard.getCard();
             int register = selectCard.getRegister();
             //ToDo: Game-Logic for selected cards, store choice in
             String outgoingMessage = messageHandler.buildMessage("CardSelected", new CardSelected(this.playerID, register));
             server.sendMessageToAllUsers(outgoingMessage);
+            
+            logger.getLogger().info(player.getName() + " selected " + selectedCard + " into register " + register + ".");
         } else {
-
+            logger.getLogger().severe("Message body error in handleSelectCard method.");
             throw new IOException("Something went wrong! Invalid Message Body! (not instance of SelectCard)");
         }
     }
@@ -288,7 +304,9 @@ public class UserThread implements Runnable {
         if (incomingMessage.getMessageBody() instanceof PlayIt) {
             PlayIt playIt = (PlayIt) incomingMessage.getMessageBody();
             //ToDo: Game-Logic for PlayIt
+            logger.getLogger().info("got a playIt message.");
         } else {
+            logger.getLogger().severe("Message body error in handlePlayIt method.");
             throw new IOException("Something went wrong! Invalid Message Body! (not instance of PlayIt)");
         }
     }
@@ -297,7 +315,9 @@ public class UserThread implements Runnable {
       if (incomingMessage.getMessageBody() instanceof SelectDamage) {
         SelectDamage selectDamage = (SelectDamage) incomingMessage.getMessageBody();
         //TODO: Handle SelectDamage
+        logger.getLogger().info(player.getName() + " selected " + selectDamage.getCards() + ".");
       } else {
+        logger.getLogger().severe("Message body error in handleSelectDamage method.");
         throw new IOException("Something went wrong! Invalid Message Body! (not instance of SelectDamage)");
       }
       
@@ -313,8 +333,11 @@ public class UserThread implements Runnable {
             server.sendMessageToAllUsers(outgoingMessage);
             //ToDo: If all players sent "SelectionFinished"
             //      Send "TimerEnded"
+            
+            logger.getLogger().info(player.getName() + " finished his cards selection.");
 
         } else {
+            logger.getLogger().severe("Message body error in handleSelectionFinished method.");
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of SelectionFinished)");
         }
     }
@@ -355,9 +378,10 @@ public class UserThread implements Runnable {
                     throw new IOException("Client protocol version is not supported!");
 
                 }
+                logger.getLogger().info("Connection established succesfully.");
 
         } else {
-
+            logger.getLogger().severe("Message body error in establishConnection method.");
             throw new IOException("Couldn't establish connection!");
 
         }
