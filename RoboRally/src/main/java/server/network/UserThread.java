@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.logging.Logger;
 
 public class UserThread implements Runnable {
 
@@ -374,11 +373,11 @@ public class UserThread implements Runnable {
                     String error = messageHandler.buildMessage("Error", new Error("Client protocol version is not supported!"));
 
                     outgoing.println(error);
-
+                    logger.getLogger().warning("Error '" + error + "' happend.");
                     throw new IOException("Client protocol version is not supported!");
 
                 }
-                logger.getLogger().info("Connection established succesfully.");
+                logger.getLogger().info("Connection established succesfully with the Client.");
 
         } else {
             logger.getLogger().severe("Message body error in establishConnection method.");
