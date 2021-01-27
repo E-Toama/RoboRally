@@ -20,6 +20,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import utilities.messages.SelectCard;
@@ -35,7 +36,9 @@ public class ProgrammingController {
     Label[] labelList = new Label[9];
     ProgrammingButton[] buttonList = new ProgrammingButton[9];
     HashMap<Label, ProgrammingButton> labelButtonMap = new HashMap<>();
-    Button sendButton;
+    VBox timerBox;
+    Label timerHeading;
+    Label timerText;
     Label timerLabel;
     private final Integer startTime = 30;
     private Integer seconds = startTime;
@@ -53,10 +56,13 @@ public class ProgrammingController {
         gridPane.setMinWidth(975);
         gridPane.setMaxWidth(975);
 
-
+        timerBox = new VBox();
+        timerBox.setVisible(false);
+        timerHeading = new Label("Timer");
+        timerText = new Label("running:");
         timerLabel = new Label("LEER");
-        timerLabel.setVisible(true);
-        gridPane.addColumn(9, timerLabel);
+        timerBox.getChildren().addAll(timerHeading, timerText, timerLabel);
+        gridPane.addColumn(9, timerBox);
         //initialize();
         //programmingViewModel.setTimer();
         initiateTimer();
@@ -176,6 +182,7 @@ public class ProgrammingController {
      *
      */
     private void initiateTimer(){
+        timerBox.setVisible(true);
 
         Timeline time = new Timeline();
         time.setCycleCount(Timeline.INDEFINITE);
@@ -187,7 +194,7 @@ public class ProgrammingController {
             public void handle(ActionEvent event){
 
                 seconds--;
-                timerLabel.setText("Timer is running: " +seconds.toString());
+                timerLabel.setText(seconds.toString());
                 timerLabel.setTextFill(Color.RED);
 
                 if(seconds <= 0){
