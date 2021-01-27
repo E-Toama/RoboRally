@@ -9,6 +9,7 @@ import utilities.messages.CurrentPlayer;
 import utilities.messages.GameStarted;
 import utilities.messages.PlayerAdded;
 import utilities.messages.PlayerStatus;
+import utilities.messages.YourCards;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -185,6 +186,9 @@ public class Server {
 
     }
 
+    /**
+     * SIMPLIFIED METHOD FOR TESTING REASONS!!!
+     */
     public void sendCurrentPlayerForStartingPosition() {
         //ToDo: Improve current player choice
         //  For testing reasons, the current player is the first of the temporary playerIDList
@@ -197,6 +201,14 @@ public class Server {
             }
         } else {
             String startProgrammingPhase = messageHandler.buildMessage("ActivePhase", new ActivePhase(2));
+            String[] cardArray = new String[]{"MoveI", "MoveII", "MoveIII", "TurnLeft", "TurnRight", "UTurn", "BackUp", "PowerUp", "Again"};
+            String yourCardsMessage = messageHandler.buildMessage("YourCards", new YourCards(cardArray, 12));
+            for (PrintWriter outgoing : printWriterMap.values()) {
+
+                outgoing.println(startProgrammingPhase);
+                outgoing.println(yourCardsMessage);
+
+            }
         }
 
     }

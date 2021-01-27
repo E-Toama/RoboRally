@@ -4,8 +4,10 @@ import client.utilities.ClientGameState;
 import client.utilities.ClientPlayerState;
 import client.view.GameBoardController;
 import client.view.MainViewController;
+import client.view.ProgrammingController;
 import client.view.ViewController;
 import client.viewmodel.ChatViewModel;
+import client.viewmodel.EnemyMatModel;
 import client.viewmodel.GameBoardViewModel;
 import client.viewmodel.InGameChatModel;
 import client.viewmodel.MainViewModel;
@@ -24,10 +26,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import game.player.Player;
-import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import utilities.MessageHandler;
 import utilities.messages.*;
 import utilities.messages.Error;
@@ -83,6 +81,7 @@ public class ClientThread implements Runnable {
     private GameBoardViewModel gameBoardViewModel;
     private ProgrammingViewModel programmingViewModel;
     private PlayerMatModel playerMatModel;
+    private EnemyMatModel enemyMatModel;
 
 
     private final HashMap<Integer, Player> playerList = new HashMap<>();
@@ -131,6 +130,10 @@ public class ClientThread implements Runnable {
 
     public void setPlayerMatModel(PlayerMatModel playerMatModel) {
         this.playerMatModel = playerMatModel;
+    }
+
+    public void setEnemyMatModel(EnemyMatModel enemyMatModel) {
+        this.enemyMatModel = enemyMatModel;
     }
 
     public Player getPlayer() {
@@ -242,6 +245,10 @@ public class ClientThread implements Runnable {
                         handleCardSelected(incomingMessage);
                         break;
 
+                    case "SelectionFinished":
+                        handleSelectionFinished(incomingMessage);
+                        break;
+
                     case "TimerStarted":
                         handleTimerStarted(incomingMessage);
                         break;
@@ -269,7 +276,7 @@ public class ClientThread implements Runnable {
                     case "DrawDamage":
                         handleDrawDamage(incomingMessage);
                         break;
-                        
+
                     case "PickDamage":
                       handlePickDamage(incomingMessage);
                       break;
@@ -485,7 +492,6 @@ public class ClientThread implements Runnable {
                    Platform.runLater(() -> {
                        gameBoardViewModel.showStartingPoints();
                    });
-
                }
             }
         } else {
@@ -504,9 +510,7 @@ public class ClientThread implements Runnable {
            * 3 => Aktivierungsphase
            * */
             clientGameState.setActivePhase(activePhase.getPhase());
-            if (activePhase.getPhase() == 2) {
-                //ToDo: Start ProgrammingPhase
-            }
+
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of ActivePhase)");
         }
@@ -524,6 +528,11 @@ public class ClientThread implements Runnable {
                 Platform.runLater(() -> {
                     gameBoardViewModel.setStartingPosition(player.getFigure(), chosenPoint);
                 });
+            } else {
+
+                Platform.runLater(() -> {
+                    gameBoardViewModel.setOtherRobotStartingPostion(player.getFigure(), chosenPoint);
+                });
             }
 
         } else {
@@ -537,7 +546,13 @@ public class ClientThread implements Runnable {
             String[] cards = yourCards.getCards();
             int cardsInPile = yourCards.getCardsInPile();
             this.player.setCardsInDeck(cardsInPile);
-            mainViewModel.createProgrammingView(cards);
+            programmingViewModel = new ProgrammingViewModel();
+            //CARDS aren't passed to the controller yet!
+            programmingViewModel.setCards(cards);
+            Platform.runLater(() -> {
+                mainViewModel.switchScenes();
+            });
+
 
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of YourCards)");
@@ -569,11 +584,20 @@ public class ClientThread implements Runnable {
         }
     }
 
+    private void handleSelectionFinished(Message incomingMessage) throws IOException {
+        if (incomingMessage.getMessageBody() instanceof  SelectionFinished) {
+            SelectionFinished selectionFinished = (SelectionFinished) incomingMessage.getMessageBody();
+
+        } else {
+            throw new IOException("Something went wrong! Invalid Message Body! (Not instance of SelectionFinished)");
+        }
+    }
+
     private void handleTimerStarted(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof  TimerStarted) {
             TimerStarted timerStarted = (TimerStarted) incomingMessage.getMessageBody();
             //ToDo: "Als Folge des ersten fertigen Spielers startet der 30 Sekunden Timer."
-            mainViewModel.setTimer();
+
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of TimerStarted)");
         }
@@ -637,7 +661,7 @@ public class ClientThread implements Runnable {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of DrawDamage)");
         }
     }
-    
+
 
     private void handlePickDamage(Message incomingMessage) throws IOException {
       if (incomingMessage.getMessageBody() instanceof PickDamage) {
@@ -645,7 +669,7 @@ public class ClientThread implements Runnable {
         // TODO: Update GUI PickDamage
       } else {
         throw new IOException("Something went wrong! Invalid Message Body! (Not instance of PickDamage)");
-      }    
+      }
     }
 
     private void handlePlayerShooting(Message incomingMessage) throws IOException {
@@ -775,19 +799,19 @@ public class ClientThread implements Runnable {
     }
 
     private Scene initMainView(GameBoard gameBoard) {
-        MainViewController mainViewController = new MainViewController();
+        mainViewModel = new MainViewModel();
         gameBoardViewModel = new GameBoardViewModel();
-        GameBoardController gameBoardController = new GameBoardController();
-        gameBoardViewModel.setGameBoardController(gameBoardController);
         gameBoardViewModel.setGameBoard(gameBoard.getGameBoard());
-        gameBoardController.setGameBoardViewModel(gameBoardViewModel);
-        gameBoardController.initBoard();
+
+        gameBoardViewModel.getGameBoardController().initBoard();
         try {
-            mainViewController.initializeMainView();
-            mainViewController.setGameBoardPane(gameBoardController.getGameGrid());
+            mainViewModel.getMainViewController().initializeMainView(playerList.size());
+            mainViewModel.getMainViewController().setGameBoardPane(gameBoardViewModel.getGameBoardController().getGameGrid());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new Scene(mainViewController.getMainViewPane());
+        return new Scene(mainViewModel.getMainViewController().getMainViewPane());
     }
+
+
 }

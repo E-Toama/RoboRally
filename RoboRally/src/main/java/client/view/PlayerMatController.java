@@ -1,6 +1,7 @@
 package client.view;
 
 
+import client.viewmodel.PlayerMatModel;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -10,7 +11,10 @@ import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
 
-public class PlayerMatView {
+public class PlayerMatController {
+
+    private PlayerMatModel playerMatModel;
+
     @FXML
     GridPane playerMatPane = new GridPane();
     int priority = 1;
@@ -23,6 +27,14 @@ public class PlayerMatView {
     String card3 = "Cards/Again.png";
     String card4 = "Cards/Again.png";
     String card5 = "Cards/Again.png";
+
+    public PlayerMatController() {
+        initialize();
+    }
+
+    public void setPlayerMatModel(PlayerMatModel playerMatModel) {
+        this.playerMatModel = playerMatModel;
+    }
 
 
     public void initialize() {
@@ -41,12 +53,11 @@ public class PlayerMatView {
         playerMatPane.add(discardSize, 3, 0);
     }
 
-    public PlayerMatView() {
-      initialize();
 
 
 
-    }   public void createCardsSlots(){
+
+    public void createCardsSlots(){
         for(int i = 0; i < 5; i++){
 
             Image cards = new Image(card1);
@@ -63,5 +74,6 @@ public class PlayerMatView {
     public GridPane getPlayerMat(){
         return playerMatPane;
     }
+
 
 }

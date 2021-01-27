@@ -1,35 +1,28 @@
 package client.viewmodel;
 
 import client.network.ClientThread;
-import client.utilities.BoardTile;
-import client.utilities.ImageBuilder;
-import client.utilities.RobotImageBuilder;
-import client.view.BoardTileView;
 import client.view.GameBoardController;
 import game.gameboard.BoardElement;
-import game.gameboard.GameBoard;
-import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 
 import java.util.HashSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class GameBoardViewModel {
 
     ClientThread clientThread;
     GameBoardController gameBoardController;
+
     BoardElement[][] gameBoard;
     HashSet<Integer> startingPositions;
 
     public GameBoardViewModel() {
+        //Client <-> Model
         this.clientThread = ClientThread.getInstance();
         clientThread.setGameBoardViewModel(this);
+
+        //Model <-> Controller
+        gameBoardController = new GameBoardController();
+        gameBoardController.setGameBoardViewModel(this);
+
         initStartingPositions();
     }
 
@@ -55,6 +48,10 @@ public class GameBoardViewModel {
         this.gameBoardController = gameBoardController;
     }
 
+    public GameBoardController getGameBoardController() {
+        return gameBoardController;
+    }
+
     public HashSet<Integer> getStartingPositions() {
         return startingPositions;
     }
@@ -66,15 +63,21 @@ public class GameBoardViewModel {
     public void setStartingPosition(int robotFigure, int position) {
         startingPositions.remove(position);
         gameBoardController.setStartingPosition(robotFigure, position);
-        for (Integer i : startingPositions) {
-            System.out.println("Positions in Model: " + i);
-        }
+    }
 
+    public void setOtherRobotStartingPostion(int robotFigure, int position) {
+        gameBoardController.setOtherRobotStartingPosition(robotFigure, position);
     }
 
     public void showStartingPoints() {
         gameBoardController.initStartingPoints();
     }
+
+    public void updateBoard() {
+        gameBoardController.updateBoard();
+    }
+
+
 
     public void updateRobotPosition(int robotFigure, int oldRow, int oldColumn, int newRow, int newColumn) {
        gameBoardController.updateRobotPosition(robotFigure, oldRow, oldColumn, newRow, newColumn);

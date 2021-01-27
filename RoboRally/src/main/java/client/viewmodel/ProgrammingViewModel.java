@@ -25,10 +25,22 @@ public class ProgrammingViewModel {
     }
 
 
-    public ProgrammingViewModel(String[] cards) {
-        this.cards = cards;
+    public ProgrammingViewModel() {
+        //Client <-> Model
         clientThread = ClientThread.getInstance();
-        programmingController = new ProgrammingController(this);
+        clientThread.setProgrammingViewModel(this);
+        //Model <-> Controller
+        programmingController = new ProgrammingController();
+        programmingController.setProgrammingModel(this);
+
+    }
+
+    public void setCards(String[] cards) {
+        this.cards = cards;
+    }
+
+    public void setProgrammingController(ProgrammingController programmingController) {
+        this.programmingController = programmingController;
     }
 
     public void selectionFinished() {
@@ -40,15 +52,11 @@ public class ProgrammingViewModel {
         int seconds = 30;
         while (seconds > 0) {
             timerLabelProperty.setValue("Timer started: " + seconds);
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             seconds--;
         }
         // Timer ended...
     }
+
 
     public void selectCard(String cardString, int register) {
         clientThread.sendSelectedCard(cardString, register);

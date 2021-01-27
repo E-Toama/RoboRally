@@ -27,28 +27,26 @@ public class ProgrammingController {
     Label[] labelList = new Label[9];
     ProgrammingButton[] buttonList = new ProgrammingButton[9];
     HashMap<Label, ProgrammingButton> labelButtonMap = new HashMap<>();
-    Button sendButton;
     Label timerLabel;
 
     public void initialize() {
         timerLabel.textProperty().bindBidirectional(programmingViewModel.getTimerLabelProperty());
     }
 
-    public ProgrammingController(ProgrammingViewModel programmingViewModel) {
-        this.programmingViewModel = programmingViewModel;
+    public ProgrammingController() {
         gridPane = new GridPane();
         gridPane.setMinHeight(190);
         gridPane.setMaxHeight(190);
         gridPane.setMinWidth(975);
         gridPane.setMaxWidth(975);
-        createCardButtons(programmingViewModel.getCards());
-        Button sendButton = new Button("SEND");
-        sendButton.setDisable(true);
-        sendButton.setOnAction(e -> confirmChoice());
-        this.sendButton = sendButton;
+
         timerLabel = new Label("Timer here!");
         timerLabel.setVisible(false);
-        gridPane.addColumn(9, sendButton, timerLabel);
+        gridPane.addColumn(9, timerLabel);
+    }
+
+    public void createCards() {
+        createCardButtons(programmingViewModel.getCards());
     }
 
     private void confirmChoice() {
@@ -61,8 +59,6 @@ public class ProgrammingController {
 
     private void allRegistersChosen() {
         if (registerCounter == 5) {
-            sendButton.setDisable(false);
-            sendButton.setStyle("-fx-background-color: GREEN");
             for (ProgrammingButton button : buttonList) {
                     if (!button.isChosen()) {
                         button.setDisable(true);
@@ -73,8 +69,6 @@ public class ProgrammingController {
 
     private void lastRegisterFree() {
         if (registerCounter == 4) {
-            sendButton.setDisable(true);
-            sendButton.setStyle("-fx-background-color: WHITE");
             for (ProgrammingButton button : buttonList) {
                     button.setDisable(false);
             }
@@ -158,4 +152,7 @@ public class ProgrammingController {
         }
     }
 
+    public void setProgrammingModel(ProgrammingViewModel programmingViewModel) {
+        this.programmingViewModel = programmingViewModel;
+    }
 }

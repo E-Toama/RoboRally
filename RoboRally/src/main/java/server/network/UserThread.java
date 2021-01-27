@@ -122,10 +122,6 @@ public class UserThread implements Runnable {
                       handleSelectDamage(incomingMessage);
                       break;
 
-                    case "SelectionFinished":
-                        handleSelectionFinished(incomingMessage);
-                        break;
-
                     default:
                         break;
 
@@ -296,22 +292,6 @@ public class UserThread implements Runnable {
         throw new IOException("Something went wrong! Invalid Message Body! (not instance of SelectDamage)");
       }
       
-    }
-
-    private void handleSelectionFinished(Message incomingMessage) throws IOException {
-        if (incomingMessage.getMessageBody() instanceof  SelectionFinished) {
-            SelectionFinished selectionFinished = (SelectionFinished) incomingMessage.getMessageBody();
-            //ToDo: Add Player-ID to List of finished Players
-
-            //ToDo: If List is empty
-            String outgoingMessage = messageHandler.buildMessage("TimerStarted", new TimerStarted());
-            server.sendMessageToAllUsers(outgoingMessage);
-            //ToDo: If all players sent "SelectionFinished"
-            //      Send "TimerEnded"
-
-        } else {
-            throw new IOException("Something went wrong! Invalid Message Body! (Not instance of SelectionFinished)");
-        }
     }
 
 

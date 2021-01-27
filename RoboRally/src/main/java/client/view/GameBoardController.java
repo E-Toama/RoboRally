@@ -50,10 +50,18 @@ public class GameBoardController {
         }
     }
 
+    public void updateBoard() {
+        gameGrid = new GridPane();
+        for (int i = 0; i < horizontalTiles; i++) {
+            for (int j = 0; j < verticalTiles; j++) {
+                gameGrid.add(gameTileArray[j][i], i, j);
+            }
+        }
+    }
+
     public void initStartingPoints() {
         startingPointButtonList = new HashSet<>();
         for (Integer pos : gameBoardViewModel.getStartingPositions()) {
-            System.out.println("Positions in COntroller: " + pos);
             Button startingPointButton = new Button();
             startingPointButton.setPrefWidth(50);
             startingPointButton.setPrefHeight(50);
@@ -70,7 +78,6 @@ public class GameBoardController {
     private void transmitStartingPoint(Button startingPointButton) {
         int position = Integer.parseInt(startingPointButton.getId());
         gameBoardViewModel.transmitStartingPosition(position);
-        System.out.println(position);
     }
 
     public void setStartingPosition(int robotFigure, int position) {
@@ -79,6 +86,7 @@ public class GameBoardController {
         gameTileArray[p.getX()][p.getY()].getChildren().remove(1);
         gameTileArray[p.getX()][p.getY()].getChildren().add(robotImage);
         startingPointButtonList.removeIf(b -> b.getId().equals(String.valueOf(position)));
+
     }
 
     public void updateRobotPosition(int robotFigure, int oldRow, int oldColumn, int newRow, int newColumn) {
@@ -95,5 +103,11 @@ public class GameBoardController {
 
     public void setGameBoardViewModel(GameBoardViewModel gameBoardViewModel) {
         this.gameBoardViewModel = gameBoardViewModel;
+    }
+
+    public void setOtherRobotStartingPosition(int robotFigure, int position) {
+        ImageView robotImage = RobotImageBuilder.buildRobotImage(robotFigure);
+        Position p = PositionLookUp.positionToXY.get(position);
+        gameTileArray[p.getX()][p.getY()].getChildren().add(robotImage);
     }
 }
