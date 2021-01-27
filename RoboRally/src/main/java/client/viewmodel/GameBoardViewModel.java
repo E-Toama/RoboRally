@@ -57,15 +57,16 @@ public class GameBoardViewModel {
     }
 
     public void transmitStartingPosition(int position) {
+        startingPositions.remove(position);
         clientThread.sendStartingPosition(position);
     }
 
     public void setStartingPosition(int robotFigure, int position) {
-        startingPositions.remove(position);
         gameBoardController.setStartingPosition(robotFigure, position);
     }
 
     public void setOtherRobotStartingPostion(int robotFigure, int position) {
+        startingPositions.remove(position);
         gameBoardController.setOtherRobotStartingPosition(robotFigure, position);
     }
 

@@ -549,6 +549,7 @@ public class ClientThread implements Runnable {
             programmingViewModel = new ProgrammingViewModel();
             //CARDS aren't passed to the controller yet!
             programmingViewModel.setCards(cards);
+            mainViewModel.getMainViewController().setProgrammingPane(programmingViewModel.getProgrammingController().getGridPane());
             Platform.runLater(() -> {
                 mainViewModel.switchScenes();
             });

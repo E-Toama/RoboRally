@@ -44,7 +44,7 @@ public class ProgrammingViewModel {
         //Model <-> Controller
         programmingController = new ProgrammingController();
         programmingController.setProgrammingModel(this);
-
+        setTimer();
     }
 
     public void setCards(String[] cards) {
@@ -63,49 +63,9 @@ public class ProgrammingViewModel {
         clientThread.sendSelectionFinished();
     }
 
-    //same method as initiateTimer() in ProgrammingController
     public void setTimer(){
-        Timeline time = new Timeline();
-        time.setCycleCount(Timeline.INDEFINITE);
-
-        if(time!= null){
-            time.stop();
-        }
-    KeyFrame frame =
-        new KeyFrame(
-            Duration.seconds(1),
-            new EventHandler<ActionEvent>() {
-
-              @Override
-              public void handle(ActionEvent event) {
-
-                seconds--;
-                timerLabelProperty.setValue("Timer started: " + seconds.toString());
-                if (seconds <= 0) {
-                  time.stop();
-                  Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                  alert.setHeaderText("Timer run out!");
-                  alert.show();
-                }
-              }
-            });
-        time.getKeyFrames().add(frame);
-        time.playFromStart();
+       programmingController.initiateTimer();
     }
-
-   /**  public void setTimer() {
-
-
-        int seconds = 30;
-        while (seconds > 0) {
-            timerLabelProperty.setValue("Timer started: " + seconds);
-            seconds--;
-        }
-        // Timer ended...
-    }
-    **/
-
-
 
     public void selectCard(String cardString, int register) {
         clientThread.sendSelectedCard(cardString, register);

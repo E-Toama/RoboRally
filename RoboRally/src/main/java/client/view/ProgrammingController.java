@@ -65,7 +65,7 @@ public class ProgrammingController {
         gridPane.addColumn(9, timerBox);
         //initialize();
         //programmingViewModel.setTimer();
-        initiateTimer();
+        //initiateTimer();
     }
     public void createCards() {
         createCardButtons(programmingViewModel.getCards());
@@ -181,7 +181,7 @@ public class ProgrammingController {
      * Starts timer of 30 seconds in programmingView
      *
      */
-    private void initiateTimer(){
+    public void initiateTimer(){
         timerBox.setVisible(true);
 
         Timeline time = new Timeline();

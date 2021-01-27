@@ -78,6 +78,10 @@ public class GameBoardController {
     private void transmitStartingPoint(Button startingPointButton) {
         int position = Integer.parseInt(startingPointButton.getId());
         gameBoardViewModel.transmitStartingPosition(position);
+        for (Button b : startingPointButtonList) {
+            b.setDisable(true);
+            b.setVisible(false);
+        }
     }
 
     public void setStartingPosition(int robotFigure, int position) {
