@@ -40,7 +40,7 @@ public class MainViewController {
         mainViewPane.add(chatPane, 0, 0);
 
         otherPlayers = new VBox();
-        for (int i = 0; i < playerCount-1; i++) {
+        for (int i = 0; i < playerCount; i++) {
             FXMLLoader enemyMatLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/EnemyMat.fxml"));
             GridPane enemyMatPane = enemyMatLoader.load();
             otherPlayers.getChildren().add(enemyMatPane);

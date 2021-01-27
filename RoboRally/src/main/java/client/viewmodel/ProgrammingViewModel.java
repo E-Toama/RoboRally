@@ -43,6 +43,10 @@ public class ProgrammingViewModel {
         this.programmingController = programmingController;
     }
 
+    public ProgrammingController getProgrammingController() {
+        return programmingController;
+    }
+
     public void selectionFinished() {
         clientThread.sendSelectionFinished();
     }

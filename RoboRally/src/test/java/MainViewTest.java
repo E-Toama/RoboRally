@@ -2,6 +2,7 @@ import client.network.ClientThread;
 import client.view.GameBoardController;
 import client.view.MainViewController;
 import client.view.ProgrammingController;
+import client.view.ViewController;
 import client.viewmodel.EnemyMatModel;
 import client.viewmodel.GameBoardViewModel;
 import client.viewmodel.InGameChatModel;
@@ -15,21 +16,19 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 public class MainViewTest extends Application {
 
-    MainViewModel mainViewModel;
-    PlayerMatModel playerMatModel;
-    GameBoardViewModel gameBoardViewModel;
-    InGameChatModel inGameChatModel;
-    EnemyMatModel enemyMatModel;
-    ProgrammingViewModel programmingViewModel;
 
-    Stage stage;
-    GridPane gridPane;
-    GridPane playerMat;
-    GridPane programmingPane;
-    boolean isPlayerMatActive = true;
-    MainViewController mainViewController;
+    int otherPlayerMats = 3;
+    boolean showProgrammingPhase = false;  // false = show PlayerMat
+    String track = "DizzyHighway"; // "ExtraCrispy"
+
+    String[] testCardsForProgrammingView = new String[]{"MoveI", "MoveII", "MoveIII", "TurnLeft", "TurnRight", "UTurn", "BackUp", "PowerUp", "Again"};
+
+
 
     public static void main(String[] args) {
         launch(args);
@@ -37,55 +36,31 @@ public class MainViewTest extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        this.stage = stage;
-        //Dummy Input for ProgrammingView
-        String[] cardArray = new String[]{"MoveI", "MoveII", "MoveIII", "TurnLeft", "TurnRight", "UTurn", "BackUp", "PowerUp", "Again"};
 
-        ProgrammingController programmingController = new ProgrammingController();
-        //programmingController.setProgrammingViewModel(new ProgrammingViewModel(cardArray));
         MainViewModel mainViewModel = new MainViewModel();
-        ClientThread clientThread = ClientThread.getInstance();
-        clientThread.setMainViewModel(mainViewModel);
+        mainViewModel.getMainViewController().initializeMainView(otherPlayerMats);
 
-        mainViewController = new MainViewController();
         GameBoardViewModel gameBoardViewModel = new GameBoardViewModel();
-        GameBoardController gameBoardController = new GameBoardController();
-        gameBoardViewModel.setGameBoardController(gameBoardController);
-        gameBoardViewModel.setGameBoard(new GameBoard("DizzyHighway").getGameBoard());
-        gameBoardController.setGameBoardViewModel(gameBoardViewModel);
-        gameBoardController.initBoard();
-        mainViewController.initializeMainView(3);
-        mainViewController.setGameBoardPane(gameBoardController.getGameGrid());
-        //Single operations
-        gameBoardController.initStartingPoints();
-        gameBoardViewModel.setStartingPosition(4, 53);
+        gameBoardViewModel.setGameBoard(new GameBoard(track).getGameBoard());
+        gameBoardViewModel.getGameBoardController().initBoard();
+
+        mainViewModel.getMainViewController().setGameBoardPane(gameBoardViewModel.getGameBoardController().getGameGrid());
+
+        if (showProgrammingPhase) {
+            ProgrammingViewModel programmingViewModel = new ProgrammingViewModel();
+            Collections.shuffle(Arrays.asList(testCardsForProgrammingView));
+            programmingViewModel.setCards(testCardsForProgrammingView);
+            programmingViewModel.getProgrammingController().createCards();
+            GridPane pane = programmingViewModel.getProgrammingController().getGridPane();
+            mainViewModel.getMainViewController().setProgrammingPane(pane);
+            mainViewModel.getMainViewController().switchScenes();
+        }
 
 
-        Button sceneSwitcher = new Button("SWITCH");
-        sceneSwitcher.setOnAction(e -> switchScenes());
-
-        programmingPane = programmingController.getGridPane();
-        programmingPane.add(sceneSwitcher, 1,0);
-        mainViewController.getOtherPlayers().getChildren().add(sceneSwitcher);
-
-        Scene scene = new Scene(mainViewController.getMainViewPane());
+        Scene scene = new Scene(mainViewModel.getMainViewController().getMainViewPane());
         stage.setScene(scene);
         stage.show();
 
-
     }
 
-    public void switchScenes(){
-        if (isPlayerMatActive) {
-            isPlayerMatActive = false;
-            stage.setScene(new Scene(programmingPane));
-        } else {
-            isPlayerMatActive = true;
-            Scene scene = new Scene(mainViewController.getMainViewPane());
-            stage.setScene(scene);
-
-        }
-        stage.show();
-
-    }
 }
