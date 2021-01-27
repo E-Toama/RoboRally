@@ -23,7 +23,7 @@ public class MainViewTest extends Application {
 
 
     int otherPlayerMats = 3;
-    boolean showProgrammingPhase = false;  // false = show PlayerMat
+    boolean programmingPhase = false;  // false = show PlayerMat, true = show ProgrammingMat
     String track = "DizzyHighway"; // "ExtraCrispy"
 
     String[] testCardsForProgrammingView = new String[]{"MoveI", "MoveII", "MoveIII", "TurnLeft", "TurnRight", "UTurn", "BackUp", "PowerUp", "Again"};
@@ -46,7 +46,7 @@ public class MainViewTest extends Application {
 
         mainViewModel.getMainViewController().setGameBoardPane(gameBoardViewModel.getGameBoardController().getGameGrid());
 
-        if (showProgrammingPhase) {
+        if (programmingPhase) {
             ProgrammingViewModel programmingViewModel = new ProgrammingViewModel();
             Collections.shuffle(Arrays.asList(testCardsForProgrammingView));
             programmingViewModel.setCards(testCardsForProgrammingView);
