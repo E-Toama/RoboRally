@@ -1,5 +1,6 @@
 package utilities;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
@@ -18,8 +19,7 @@ public class MyLogger {
   public MyLogger(String loggerName) {    
     
     try {
-      
-      fileTxt = new FileHandler(loggerName + ".txt");
+      fileTxt = new FileHandler(loggerName + ".log");
     } catch (SecurityException | IOException e) {
       
       e.printStackTrace();
