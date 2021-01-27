@@ -33,10 +33,6 @@ public class MainViewModel {
         mainViewController.switchScenes();
     }
 
-    public void updateOtherPlayers(HashMap<Integer, Player> playerList) {
-        //ToDo: Get values from Playerlist and update PlayerMats
-    }
-
     public void setCardsYouGotNow(String[] yourCards) {
         //ToDo: Should this be displayed in the ProgrammingView? Or in the PlayerMat?
     }

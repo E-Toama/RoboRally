@@ -67,4 +67,7 @@ public class ProgrammingViewModel {
     }
 
 
+    public void setCardsYouGotNow(String[] yourCards) {
+        //ToDo: Shall we show the cards? Or will it be a surprise?
+    }
 }

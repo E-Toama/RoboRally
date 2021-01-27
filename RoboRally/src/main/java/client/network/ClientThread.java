@@ -36,8 +36,10 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class ClientThread implements Runnable {
 
@@ -85,6 +87,7 @@ public class ClientThread implements Runnable {
 
 
     private final HashMap<Integer, Player> playerList = new HashMap<>();
+    private HashMap<Integer, ClientPlayerState> playerStateList = new HashMap<>();
     public ObservableList<Integer> takenRobotList = FXCollections.observableArrayList();
     public HashMap<String, Integer> messageMatchMap = new HashMap<>();
     public ObservableList<String> observablePlayerList = FXCollections.observableArrayList();
@@ -346,6 +349,13 @@ public class ClientThread implements Runnable {
 
                 welcomeViewModel.playerSuccesfullyAdded();
 
+                //Initialize PlayerState and add to PlayerStateList
+                ClientPlayerState playerState = new ClientPlayerState();
+                playerState.setPlayerID(this.ID);
+                playerState.setUserName(player.getName());
+                playerState.setFigure(player.getFigure());
+                playerStateList.put(this.ID, playerState);
+
             } else {
 
                 welcomeViewModel.disableRobotButton(receivedMessage.getPlayer().getFigure());
@@ -494,6 +504,13 @@ public class ClientThread implements Runnable {
                    });
                }
             }
+
+            //Set all other players' current state to false
+            for (Map.Entry<Integer, ClientPlayerState> state : playerStateList.entrySet()) {
+                state.getValue().setCurrentPlayer(false);
+            }
+            playerStateList.get(currentPlayer.getPlayerID()).setCurrentPlayer(true);
+
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of CurrentPlayer)");
         }
@@ -521,19 +538,21 @@ public class ClientThread implements Runnable {
             StartingPointTaken startingPointTaken = (StartingPointTaken) incomingMessage.getMessageBody();
             int playerID = startingPointTaken.getPlayerID();
             int chosenPoint = startingPointTaken.getPosition();
-            Player player = playerList.get(playerID);
-            player.setCurrentPosition(chosenPoint);
+            Player currentPlayer = playerList.get(playerID);
             //ToDo: Implement "StartingPointTaken": "Wenn die gewünschte Position valide ist, werden alle Spieler darüber benachrichtigt."
             if (playerID == ID) {
                 Platform.runLater(() -> {
-                    gameBoardViewModel.setStartingPosition(player.getFigure(), chosenPoint);
+                    gameBoardViewModel.setStartingPosition(currentPlayer.getFigure(), chosenPoint);
                 });
             } else {
 
                 Platform.runLater(() -> {
-                    gameBoardViewModel.setOtherRobotStartingPostion(player.getFigure(), chosenPoint);
+                    gameBoardViewModel.setOtherRobotStartingPostion(currentPlayer.getFigure(), chosenPoint);
                 });
             }
+
+            //Add position info to ClientPlayerState
+            playerStateList.get(playerID).setCurrentPosition(chosenPoint);
 
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of StartingPointTaken)");
@@ -545,7 +564,6 @@ public class ClientThread implements Runnable {
             YourCards yourCards = (YourCards) incomingMessage.getMessageBody();
             String[] cards = yourCards.getCards();
             int cardsInPile = yourCards.getCardsInPile();
-            this.player.setCardsInDeck(cardsInPile);
 
             //Initialize ProgrammingView with new cards
             programmingViewModel = new ProgrammingViewModel();
@@ -557,6 +575,9 @@ public class ClientThread implements Runnable {
                 mainViewModel.switchScenes();
             });
 
+            //Add info to ClientPlayerState
+            playerStateList.get(this.ID).setDeckCount(cardsInPile);
+
 
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of YourCards)");
@@ -566,10 +587,10 @@ public class ClientThread implements Runnable {
     private void handleNotYourCards(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof  NotYourCards) {
             NotYourCards notYourCards = (NotYourCards) incomingMessage.getMessageBody();
-            Player player = playerList.get(notYourCards.getPlayerID());
-            player.setCardsInDeck(notYourCards.getCardsInPile());
-            //ToDo: Implement "NotYourCards" (Client-Thread)
-            mainViewModel.updateOtherPlayers(playerList);
+
+            //Add deck count to playerstate
+            playerStateList.get(notYourCards.getPlayerID()).setDeckCount(notYourCards.getCardsInPile());
+
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of NotYourCards)");
         }
@@ -584,7 +605,10 @@ public class ClientThread implements Runnable {
                 Platform.runLater(() -> {
                     programmingViewModel.confirmRegister(register);
                 });
-            } //ToDo: else update other PlayerMats with cardbackside
+            } //ToDo: Here we wanted to update other PlayerMats with a card (backside)
+            //      However: This message is sent if card is "null" and if card is valid
+            //      --> no way to find out if the other player actually put a card in the register or removed one
+
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of CardSelected)");
         }
@@ -593,7 +617,7 @@ public class ClientThread implements Runnable {
     private void handleSelectionFinished(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof  SelectionFinished) {
             SelectionFinished selectionFinished = (SelectionFinished) incomingMessage.getMessageBody();
-
+            playerStateList.get(selectionFinished.getPlayerID()).setHasFinishedSelection(true);
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of SelectionFinished)");
         }
@@ -631,8 +655,7 @@ public class ClientThread implements Runnable {
         if (incomingMessage.getMessageBody() instanceof CardsYouGotNow) {
             CardsYouGotNow cardsYouGotNow = (CardsYouGotNow) incomingMessage.getMessageBody();
             String[] yourCards = cardsYouGotNow.getCards();
-            this.player.setRegisters(yourCards);
-            mainViewModel.setCardsYouGotNow(yourCards);
+            programmingViewModel.setCardsYouGotNow(yourCards);
             //ToDo: Game-logic for CardsYouGotNow
 
         } else {
@@ -661,6 +684,7 @@ public class ClientThread implements Runnable {
     private void handleDrawDamage(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof DrawDamage) {
             DrawDamage drawDamage = (DrawDamage) incomingMessage.getMessageBody();
+            playerStateList.get(drawDamage.getPlayerID()).setPickedUpDamageCards(drawDamage.getCards().length);
             //ToDo: Update GUI DrawDamage
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of DrawDamage)");
@@ -672,6 +696,7 @@ public class ClientThread implements Runnable {
       if (incomingMessage.getMessageBody() instanceof PickDamage) {
         PickDamage pickDamage = (PickDamage) incomingMessage.getMessageBody();
         // TODO: Update GUI PickDamage
+        //   OR IS THIS SENT TO THE SERVER???
       } else {
         throw new IOException("Something went wrong! Invalid Message Body! (Not instance of PickDamage)");
       }
@@ -698,6 +723,7 @@ public class ClientThread implements Runnable {
     private void handlePlayerTurning(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof PlayerTurning) {
             PlayerTurning playerTurning = (PlayerTurning) incomingMessage.getMessageBody();
+            playerStateList.get(playerTurning.getPlayerID()).setDirection(playerTurning.getDirection());
             //ToDo: Update GUI PlayerTurning
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of PlayerTurning)");
@@ -707,7 +733,8 @@ public class ClientThread implements Runnable {
     private void handleEnergy(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof Energy) {
             Energy energy = (Energy) incomingMessage.getMessageBody();
-            //ToDo: Update GUI Energy
+            playerStateList.get(energy.getPlayerID()).setEnergyPoints(energy.getCount());
+            //ToDo: Update GUI Energy - maybe switch fields from full to empty?
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of Energy)");
         }
@@ -716,7 +743,7 @@ public class ClientThread implements Runnable {
     private void handleCheckPointReached(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof CheckpointReached) {
             CheckpointReached checkpointReached = (CheckpointReached) incomingMessage.getMessageBody();
-            //ToDo: Update GUI CheckpointReached
+            playerStateList.get(checkpointReached.getPlayerID()).setCheckpointsreached(checkpointReached.getNumber());
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of CheckpointReached)");
         }
