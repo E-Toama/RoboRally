@@ -2,15 +2,20 @@ package client.view;
 
 
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class ProgrammingButton extends Button {
+    private static int cardWidth = 80;
     private String cardString;
     private boolean chosen;
     private final int number;
+    private Label label;
+    private int register;
 
     public ProgrammingButton(int number, String cardString) {
+        this.register = -1;
         this.number = number;
         this.cardString = cardString;
         this.setGraphic(createCardImage(cardString));
@@ -25,8 +30,24 @@ public class ProgrammingButton extends Button {
         return number;
     }
 
+    public int getRegister() {
+        return this.register;
+    }
+
+    public void setRegister(int register) {
+        this.register = register;
+    }
+
     public void setChosen(boolean chosen) {
         this.chosen = chosen;
+    }
+
+    public Label getLabel() {
+        return label;
+    }
+
+    public void setLabel(Label label) {
+        this.label = label;
     }
 
     public ImageView createCardImage(String cardType) {
@@ -67,10 +88,9 @@ public class ProgrammingButton extends Button {
 
     private static ImageView adjustToSlot(Image image) {
         ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(80);
+        imageView.setFitWidth(cardWidth);
         imageView.setPreserveRatio(true);
         return imageView;
-
     }
 
     public String getCardString() {

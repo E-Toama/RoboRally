@@ -36,7 +36,6 @@ public class ProgrammingViewModel {
         return timerLabelProperty;
     }
 
-
     public ProgrammingViewModel() {
         //Client <-> Model
         clientThread = ClientThread.getInstance();
@@ -44,23 +43,15 @@ public class ProgrammingViewModel {
         //Model <-> Controller
         programmingController = new ProgrammingController();
         programmingController.setProgrammingModel(this);
-        setTimer();
     }
 
     public void setCards(String[] cards) {
         this.cards = cards;
-    }
-
-    public void setProgrammingController(ProgrammingController programmingController) {
-        this.programmingController = programmingController;
+        programmingController.createCardButtons(cards);
     }
 
     public ProgrammingController getProgrammingController() {
         return programmingController;
-    }
-
-    public void selectionFinished() {
-        clientThread.sendSelectionFinished();
     }
 
     public void setTimer(){

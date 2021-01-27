@@ -266,9 +266,13 @@ public class UserThread implements Runnable {
             SelectCard selectCard = (SelectCard) incomingMessage.getMessageBody();
             String selectedCard = selectCard.getCards();
             int register = selectCard.getRegister();
-            //ToDo: Game-Logic for selected cards, store choice in
+            //ToDo: Game-Logic for selected cards, store choice in PlayerState
             String outgoingMessage = messageHandler.buildMessage("CardSelected", new CardSelected(this.playerID, register));
             server.sendMessageToAllUsers(outgoingMessage);
+            if (register == 5) {
+                String timerStartedMessage = messageHandler.buildMessage("TimerStarted", new TimerStarted());
+                server.sendMessageToAllUsers(timerStartedMessage);
+            }
         } else {
 
             throw new IOException("Something went wrong! Invalid Message Body! (not instance of SelectCard)");

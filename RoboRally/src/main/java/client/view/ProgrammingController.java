@@ -24,38 +24,34 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import utilities.messages.SelectCard;
+
 import java.io.IOException;
 import java.util.HashMap;
 
 public class ProgrammingController {
 
+    private final Integer startTime = 30;
     ProgrammingViewModel programmingViewModel;
-
     GridPane gridPane;
-    int registerCounter = 1;
-    Label[] labelList = new Label[9];
     ProgrammingButton[] buttonList = new ProgrammingButton[9];
-    HashMap<Label, ProgrammingButton> labelButtonMap = new HashMap<>();
     VBox timerBox;
     Label timerHeading;
     Label timerText;
     Label timerLabel;
-    private final Integer startTime = 30;
     private Integer seconds = startTime;
+    private boolean[] filledRegisters;
 
-
-    public void initialize() {
-        timerLabel.textProperty().bindBidirectional(programmingViewModel.getTimerLabelProperty());
-
-    }
 
     public ProgrammingController() {
+        filledRegisters = new boolean[5];
+        //Build ProgrammingPane
         gridPane = new GridPane();
         gridPane.setMinHeight(190);
         gridPane.setMaxHeight(190);
         gridPane.setMinWidth(975);
         gridPane.setMaxWidth(975);
 
+        //Build Timer display
         timerBox = new VBox();
         timerBox.setVisible(false);
         timerHeading = new Label("Timer");
@@ -63,41 +59,26 @@ public class ProgrammingController {
         timerLabel = new Label("LEER");
         timerBox.getChildren().addAll(timerHeading, timerText, timerLabel);
         gridPane.addColumn(9, timerBox);
-        //initialize();
-        //programmingViewModel.setTimer();
-        //initiateTimer();
     }
+
+    public void initialize() {
+        timerLabel.textProperty().bindBidirectional(programmingViewModel.getTimerLabelProperty());
+    }
+
+    //Getters and Setters
+
+    public GridPane getGridPane() {
+        return gridPane;
+    }
+
+    public void setProgrammingModel(ProgrammingViewModel programmingViewModel) {
+        this.programmingViewModel = programmingViewModel;
+    }
+
+
     public void createCards() {
         createCardButtons(programmingViewModel.getCards());
     }
-
-    private void confirmChoice() {
-        timerLabel.setVisible(true);
-        for (ProgrammingButton button : buttonList) {
-            button.setDisable(true);
-        }
-        programmingViewModel.selectionFinished();
-    }
-
-    private void allRegistersChosen() {
-        if (registerCounter == 5) {
-            for (ProgrammingButton button : buttonList) {
-                    if (!button.isChosen()) {
-                        button.setDisable(true);
-                    }
-                }
-            }
-    }
-
-    private void lastRegisterFree() {
-        if (registerCounter == 4) {
-            for (ProgrammingButton button : buttonList) {
-                    button.setDisable(false);
-            }
-        }
-    }
-
-
 
     public void createCardButtons(String[] cards) {
 
@@ -107,49 +88,52 @@ public class ProgrammingController {
             label.setId(String.valueOf(i));
             label.setPrefWidth(91);
             label.setAlignment(Pos.CENTER);
-            labelButtonMap.put(label, cardButton);
-            labelList[i] = label;
-            cardButton.setOnAction(e -> selectCard(cardButton, label));
-            buttonList[i] = cardButton;
+            cardButton.setOnAction(e -> selectCard(cardButton));
+            cardButton.setLabel(label);
             gridPane.add(cardButton, i, 0);
-            gridPane.add(label, i, 1);
+            gridPane.add(cardButton.getLabel(), i, 1);
+
+            //Add Buttons and labels to way too many lists
+            buttonList[i] = cardButton;
         }
     }
 
-    private void selectCard(ProgrammingButton button, Label label) {
+    private void selectCard(ProgrammingButton button) {
         if (button.isChosen()) {
-            programmingViewModel.selectCard("empty", registerCounter);
+            button.setChosen(false);
+            int concerningRegister = button.getRegister();
+            filledRegisters[concerningRegister] = false;
+            programmingViewModel.selectCard("null", (concerningRegister+1));
         } else {
-            label.setText("Register: " + String.valueOf(registerCounter));
-            programmingViewModel.selectCard(button.getCardString(), registerCounter);
+            button.setChosen(true);
+            int firstFreeRegisterIndex = findFirstFreeRegisterIndex();
+            filledRegisters[firstFreeRegisterIndex] = true;
+            button.setRegister(firstFreeRegisterIndex);
+            programmingViewModel.selectCard(button.getCardString(), firstFreeRegisterIndex + 1);
         }
+    }
+
+    private int findFirstFreeRegisterIndex() {
+        int firstFreeRegister = 0;
+        for (int i = 0; i < filledRegisters.length; i++) {
+            if (!filledRegisters[i]) {
+               firstFreeRegister = i;
+               break;
+            }
+        }
+        return firstFreeRegister;
     }
 
     public void setRegisterActive(int register) {
-
-        for (HashMap.Entry<Label,ProgrammingButton> entry : labelButtonMap.entrySet())
-        {
-            Label label = entry.getKey();
-            if (label.getText().isEmpty()){
-                continue;
-            }
-            int registerNumber = Integer.parseInt(label.getText().split(" ")[1]);
-            if (register == registerNumber) {
-                ProgrammingButton button =  entry.getValue();
-
-                if (button.isChosen()) {
-                    registerCounter--;
-                    button.setChosen(false);
+        for (ProgrammingButton button : buttonList) {
+            if (register == button.getRegister() + 1) {
+                if (!button.isChosen()) {
+                    button.setRegister(-1);
                     button.setStyle("-fx-background-color: #CED0CE");
-                    label.setText("");
-                    updateLabels(label);
-                    lastRegisterFree();
-
+                    button.getLabel().setText("");
                 } else {
-                    registerCounter++;
-                    button.setChosen(true);
                     button.setStyle("-fx-background-color: PURPLE");
-                    label.setText("Register: " + String.valueOf(register));
+                    button.getLabel().setText("Register: " + (button.getRegister()+1));
                     allRegistersChosen();
                 }
 
@@ -157,47 +141,39 @@ public class ProgrammingController {
         }
     }
 
-    public GridPane getGridPane() {
-        return gridPane;
-    }
-
-    private void updateLabels(Label currentLabel) {
-        for (Label label : labelList) {
-            if (!label.getText().isEmpty()) {
-                int registerNumber = Integer.parseInt(label.getText().split(" ")[1]);
-                if (registerNumber > Integer.parseInt(currentLabel.getText().split(" ")[1])) {
-                    registerNumber--;
-                    label.setText("Register: " + registerNumber);
-                }
+    private void allRegistersChosen() {
+        boolean allChosen = true;
+        for (boolean b : filledRegisters)
+        {
+            allChosen = allChosen && b;
+        }
+        if (allChosen) {
+            for (ProgrammingButton button : buttonList) {
+                button.setDisable(true);
             }
-
         }
     }
 
-    public void setProgrammingModel(ProgrammingViewModel programmingViewModel) {
-        this.programmingViewModel = programmingViewModel;
-    }
     /**
      * Starts timer of 30 seconds in programmingView
-     *
      */
-    public void initiateTimer(){
+    public void initiateTimer() {
         timerBox.setVisible(true);
 
         Timeline time = new Timeline();
         time.setCycleCount(Timeline.INDEFINITE);
-        if(time!= null){
+        if (time != null) {
             time.stop();
         }
-        KeyFrame frame = new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>(){
+        KeyFrame frame = new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event){
+            public void handle(ActionEvent event) {
 
                 seconds--;
                 timerLabel.setText(seconds.toString());
                 timerLabel.setTextFill(Color.RED);
 
-                if(seconds <= 0){
+                if (seconds <= 0) {
                     time.stop();
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setHeaderText("Timer run out!");

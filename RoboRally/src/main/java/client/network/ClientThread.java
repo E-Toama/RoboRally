@@ -546,9 +546,12 @@ public class ClientThread implements Runnable {
             String[] cards = yourCards.getCards();
             int cardsInPile = yourCards.getCardsInPile();
             this.player.setCardsInDeck(cardsInPile);
+
+            //Initialize ProgrammingView with new cards
             programmingViewModel = new ProgrammingViewModel();
-            //CARDS aren't passed to the controller yet!
             programmingViewModel.setCards(cards);
+
+            //Update MainView and switch scenes (PlayerMat -> ProgrammingView)
             mainViewModel.getMainViewController().setProgrammingPane(programmingViewModel.getProgrammingController().getGridPane());
             Platform.runLater(() -> {
                 mainViewModel.switchScenes();
@@ -578,7 +581,9 @@ public class ClientThread implements Runnable {
             int playerID = cardSelected.getPlayerID();
             int register = cardSelected.getRegister();
             if (playerID == ID) {
-                programmingViewModel.confirmRegister(register);
+                Platform.runLater(() -> {
+                    programmingViewModel.confirmRegister(register);
+                });
             } //ToDo: else update other PlayerMats with cardbackside
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of CardSelected)");
@@ -597,8 +602,7 @@ public class ClientThread implements Runnable {
     private void handleTimerStarted(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof  TimerStarted) {
             TimerStarted timerStarted = (TimerStarted) incomingMessage.getMessageBody();
-            //ToDo: "Als Folge des ersten fertigen Spielers startet der 30 Sekunden Timer."
-
+            programmingViewModel.setTimer();
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of TimerStarted)");
         }
@@ -786,11 +790,6 @@ public class ClientThread implements Runnable {
 
     public void sendStartingPosition(int position) {
         String outgoingMessage = messageHandler.buildMessage("SetStartingPoint", new SetStartingPoint(position));
-        outgoing.println(outgoingMessage);
-    }
-
-    public void sendSelectionFinished() {
-        String outgoingMessage = messageHandler.buildMessage("SelectionFinished", new SelectionFinished(ID));
         outgoing.println(outgoingMessage);
     }
 
