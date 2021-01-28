@@ -39,6 +39,9 @@ public class MainViewTest extends Application {
 
         MainViewModel mainViewModel = new MainViewModel();
         mainViewModel.getMainViewController().initializeMainView(otherPlayerMats);
+        PlayerMatModel playerMatModel = new PlayerMatModel();
+        playerMatModel.getPlayerMatController().initializePlayerMatView();
+        mainViewModel.getMainViewController().setPlayerMatPane(playerMatModel.getPlayerMatController().getPlayerMat());
 
         GameBoardViewModel gameBoardViewModel = new GameBoardViewModel();
         gameBoardViewModel.setGameBoard(new GameBoard(track).getGameBoard());
