@@ -349,12 +349,16 @@ public class ClientThread implements Runnable {
 
                 welcomeViewModel.playerSuccesfullyAdded();
 
+
+
                 //Initialize PlayerState and add to PlayerStateList
                 ClientPlayerState playerState = new ClientPlayerState();
                 playerState.setPlayerID(this.ID);
                 playerState.setUserName(player.getName());
                 playerState.setFigure(player.getFigure());
                 playerStateList.put(this.ID, playerState);
+                playerMatModel = new PlayerMatModel();
+                playerMatModel.setPlayerState(playerState);
 
             } else {
 

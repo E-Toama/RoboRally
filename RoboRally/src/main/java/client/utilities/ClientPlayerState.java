@@ -14,6 +14,21 @@ public class ClientPlayerState {
     private boolean isCurrentPlayer;
     private boolean hasFinishedSelection;
     private String direction;
+    
+    public ClientPlayerState() {
+       playerID = 0;
+       userName = "";
+       checkpointsreached = 0;
+       energyPoints = 0;
+       pickedUpDamageCards = 0;
+       figure = 0;
+       deckCount = 0;
+       discardedCount = 0;
+       currentPosition = -1;
+       isCurrentPlayer = false;
+       hasFinishedSelection = false;
+       direction = "";
+    }
 
     public String getDirection() {
         return direction;
@@ -46,10 +61,7 @@ public class ClientPlayerState {
     public void setCurrentPosition(int currentPosition) {
         this.currentPosition = currentPosition;
     }
-
-    public ClientPlayerState() {
-    }
-
+    
     public int getPlayerID() {
         return playerID;
     }
