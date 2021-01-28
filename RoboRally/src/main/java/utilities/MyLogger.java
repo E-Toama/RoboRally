@@ -16,18 +16,16 @@ public class MyLogger {
   private Logger logger = Logger.getLogger("");
    
 
-  public MyLogger(String loggerName) {    
-    
+  public MyLogger(String loggerName) {
     try {
-      fileTxt = new FileHandler(loggerName + ".log");
+      fileTxt = new FileHandler("RoboRally/src/main/java/utilities/logfiles/"+loggerName + ".log");
     } catch (SecurityException | IOException e) {
-      
       e.printStackTrace();
     }
     logger.setLevel(Level.INFO);
     formatterTxt = new SimpleFormatter();
     fileTxt.setFormatter(formatterTxt);
-    
+
     logger.addHandler(fileTxt);
     
   }
