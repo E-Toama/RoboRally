@@ -1,6 +1,7 @@
 package client.view;
 
 
+import client.viewmodel.EnemyMatModel;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -18,7 +19,9 @@ import javafx.scene.shape.StrokeType;
 
 import java.io.IOException;
 
-public class EnemyMatView {
+public class EnemyMatController {
+
+    EnemyMatModel enemyMatModel;
 
     @FXML
     GridPane enemyMat = new GridPane();
@@ -33,6 +36,15 @@ public class EnemyMatView {
     String card3 = "Cards/Again.png";
     String card4 = "Cards/Again.png";
     String card5 = "Cards/Again.png";
+
+    public EnemyMatController() {
+        initialize();
+    }
+
+    public void setEnemyMatModel(EnemyMatModel enemyMatModel) {
+        this.enemyMatModel = enemyMatModel;
+    }
+
 
     @FXML
     public void initialize() {
@@ -52,19 +64,12 @@ public class EnemyMatView {
     }
 
 
-    public EnemyMatView() {
-       initialize();
-
-        /* try {
-            enemyMat = FXMLLoader.load(getClass().getResource("/FXMLFiles/EnemyMat.fxml"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
 
 
 
 
-    }   public void createCardsSlots(){
+
+    public void createCardsSlots(){
         for(int i = 0; i < 5; i++){
 
             Image cards = new Image(card1);
@@ -86,5 +91,6 @@ public class EnemyMatView {
     public GridPane getEnemyMat(){
         return enemyMat;
     }
+
 
 }

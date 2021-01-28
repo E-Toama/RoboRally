@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class UserThread implements Runnable {
 
@@ -123,10 +125,6 @@ public class UserThread implements Runnable {
                     case "SelectDamage":
                       handleSelectDamage(incomingMessage);
                       break;
-
-                    case "SelectionFinished":
-                        handleSelectionFinished(incomingMessage);
-                        break;
 
                     default:
                         break;
@@ -271,6 +269,7 @@ public class UserThread implements Runnable {
             if (true) { //ToDo: check if Position is valid (UserThread)
                 String outgoingMessage = messageHandler.buildMessage("StartingPointTaken", new StartingPointTaken(this.playerID, chosenStartingPoint));
                 server.sendMessageToAllUsers(outgoingMessage);
+                server.sendCurrentPlayerForStartingPosition();
             } else {
                 String error = messageHandler.buildMessage("Error", new Error("StartingPoint is not valid"));
                 outgoing.println(error);
@@ -288,11 +287,16 @@ public class UserThread implements Runnable {
             SelectCard selectCard = (SelectCard) incomingMessage.getMessageBody();
             String selectedCard = selectCard.getCard();
             int register = selectCard.getRegister();
-            //ToDo: Game-Logic for selected cards, store choice in
+            //ToDo: Game-Logic for selected cards, store choice in PlayerState
             String outgoingMessage = messageHandler.buildMessage("CardSelected", new CardSelected(this.playerID, register));
             server.sendMessageToAllUsers(outgoingMessage);
-            
+
             logger.getLogger().info(player.getName() + " selected " + selectedCard + " into register " + register + ".");
+
+            if (register == 5) {
+                String timerStartedMessage = messageHandler.buildMessage("TimerStarted", new TimerStarted());
+                server.sendMessageToAllUsers(timerStartedMessage);
+            }
         } else {
             logger.getLogger().severe("Message body error in handleSelectCard method.");
             throw new IOException("Something went wrong! Invalid Message Body! (not instance of SelectCard)");
@@ -321,26 +325,7 @@ public class UserThread implements Runnable {
       }
       
     }
-
-    private void handleSelectionFinished(Message incomingMessage) throws IOException {
-        if (incomingMessage.getMessageBody() instanceof  SelectionFinished) {
-            SelectionFinished selectionFinished = (SelectionFinished) incomingMessage.getMessageBody();
-            //ToDo: Add Player-ID to List of finished Players
-
-            //ToDo: If List is empty
-            String outgoingMessage = messageHandler.buildMessage("TimerStarted", new TimerStarted());
-            server.sendMessageToAllUsers(outgoingMessage);
-            //ToDo: If all players sent "SelectionFinished"
-            //      Send "TimerEnded"
-            
-            logger.getLogger().info(player.getName() + " finished his cards selection.");
-
-        } else {
-            logger.getLogger().severe("Message body error in handleSelectionFinished method.");
-            throw new IOException("Something went wrong! Invalid Message Body! (Not instance of SelectionFinished)");
-        }
-    }
-
+    
 
     private void establishConnection() throws IOException {
 

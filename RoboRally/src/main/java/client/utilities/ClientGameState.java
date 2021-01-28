@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ClientGameState {
 
-    private int ActivePhase;
+    private int ActivePhase = 0;
     private GameBoard gameBoard;
     private List<ClientPlayerState> playerStateList = new LinkedList<>();
 

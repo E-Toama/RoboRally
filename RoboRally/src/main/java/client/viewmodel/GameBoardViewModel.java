@@ -1,45 +1,86 @@
 package client.viewmodel;
 
-import client.utilities.BoardTile;
-import client.utilities.ImageBuilder;
-import client.utilities.RobotImageBuilder;
-import client.view.BoardTileView;
+import client.network.ClientThread;
+import client.view.GameBoardController;
 import game.gameboard.BoardElement;
-import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
+
+import java.util.HashSet;
 
 public class GameBoardViewModel {
 
-    private double boardWidth = 650;
-    private double boardHeight = 500;
+    ClientThread clientThread;
+    GameBoardController gameBoardController;
 
-    private int verticalTiles = 10;
-    private int horizontalTiles = 13;
+    BoardElement[][] gameBoard;
+    HashSet<Integer> startingPositions;
 
-    double gridWidth = boardWidth / horizontalTiles;
-    double gridHeight = boardHeight / verticalTiles;
+    public GameBoardViewModel() {
+        //Client <-> Model
+        this.clientThread = ClientThread.getInstance();
+        clientThread.setGameBoardViewModel(this);
 
-    BoardTile[][] playfield = new BoardTile[verticalTiles][horizontalTiles];
+        //Model <-> Controller
+        gameBoardController = new GameBoardController();
+        gameBoardController.setGameBoardViewModel(this);
 
-    public GridPane createGameBoardView(BoardElement[][] gameBoard) {
+        initStartingPositions();
+    }
 
-        GridPane gridPane = new GridPane();
-        for (int i = 0; i < horizontalTiles; i++) {
-            for (int j = 0; j < verticalTiles; j++) {
-                ImageView imageOfBoardElement = ImageBuilder.buildImage(gameBoard[j][i]);
-                //ImageView robotView = RobotImageBuilder.buildRobotImage(gameBoard[j][i]);
-                StackPane pane = new StackPane(imageOfBoardElement);
-                //pane.getChildren().addAll(imageOfBoardElement, robotView);
-                //BoardTile boardTile = new BoardTile(imageOfBoardElement);
-                gridPane.add(pane, i, j);
-            }
-        }
-        return gridPane;
+    private void initStartingPositions() {
+        startingPositions = new HashSet<>();
+        startingPositions.add(14);
+        startingPositions.add(39);
+        startingPositions.add(53);
+        startingPositions.add(66);
+        startingPositions.add(78);
+        startingPositions.add(105);
+    }
 
+    public void setGameBoard(BoardElement[][] gameBoard) {
+        this.gameBoard = gameBoard;
+    }
+
+    public BoardElement[][] getGameBoard() {
+        return gameBoard;
+    }
+
+    public void setGameBoardController(GameBoardController gameBoardController) {
+        this.gameBoardController = gameBoardController;
+    }
+
+    public GameBoardController getGameBoardController() {
+        return gameBoardController;
+    }
+
+    public HashSet<Integer> getStartingPositions() {
+        return startingPositions;
+    }
+
+    public void transmitStartingPosition(int position) {
+        startingPositions.remove(position);
+        clientThread.sendStartingPosition(position);
+    }
+
+    public void setStartingPosition(int robotFigure, int position) {
+        gameBoardController.setStartingPosition(robotFigure, position);
+    }
+
+    public void setOtherRobotStartingPostion(int robotFigure, int position) {
+        startingPositions.remove(position);
+        gameBoardController.setOtherRobotStartingPosition(robotFigure, position);
+    }
+
+    public void showStartingPoints() {
+        gameBoardController.initStartingPoints();
+    }
+
+    public void updateBoard() {
+        gameBoardController.updateBoard();
+    }
+
+
+
+    public void updateRobotPosition(int robotFigure, int oldRow, int oldColumn, int newRow, int newColumn) {
+       gameBoardController.updateRobotPosition(robotFigure, oldRow, oldColumn, newRow, newColumn);
     }
 }

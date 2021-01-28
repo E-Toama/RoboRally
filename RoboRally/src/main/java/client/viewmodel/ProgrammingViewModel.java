@@ -3,16 +3,28 @@ package client.viewmodel;
 import client.network.ClientThread;
 import client.view.ProgrammingButton;
 import client.view.ProgrammingController;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.beans.Observable;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.util.Duration;
 import utilities.messages.SelectionFinished;
+import javafx.event.ActionEvent;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ProgrammingViewModel {
 
     ClientThread clientThread;
     ProgrammingController programmingController;
     String[] cards;
+    private Integer seconds = 30;
 
     StringProperty timerLabelProperty = new SimpleStringProperty();
 
@@ -24,30 +36,26 @@ public class ProgrammingViewModel {
         return timerLabelProperty;
     }
 
-
-    public ProgrammingViewModel(String[] cards) {
-        this.cards = cards;
+    public ProgrammingViewModel() {
+        //Client <-> Model
         clientThread = ClientThread.getInstance();
-        programmingController = new ProgrammingController(this);
+        clientThread.setProgrammingViewModel(this);
+        //Model <-> Controller
+        programmingController = new ProgrammingController();
+        programmingController.setProgrammingModel(this);
     }
 
-    public void selectionFinished() {
-        clientThread.sendSelectionFinished();
+    public void setCards(String[] cards) {
+        this.cards = cards;
+        programmingController.createCardButtons(cards);
     }
 
-    public void setTimer() {
+    public ProgrammingController getProgrammingController() {
+        return programmingController;
+    }
 
-        int seconds = 30;
-        while (seconds > 0) {
-            timerLabelProperty.setValue("Timer started: " + seconds);
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            seconds--;
-        }
-        // Timer ended...
+    public void setTimer(){
+       programmingController.initiateTimer();
     }
 
     public void selectCard(String cardString, int register) {
@@ -59,4 +67,7 @@ public class ProgrammingViewModel {
     }
 
 
+    public void setCardsYouGotNow(String[] yourCards) {
+        //ToDo: Shall we show the cards? Or will it be a surprise?
+    }
 }

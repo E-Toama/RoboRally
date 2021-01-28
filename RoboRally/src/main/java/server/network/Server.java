@@ -4,14 +4,21 @@ import game.Game;
 import game.gameboard.GameBoardMapObject;
 import game.player.Player;
 import utilities.MessageHandler;
+import utilities.messages.ActivePhase;
+import utilities.messages.CurrentPlayer;
 import utilities.messages.GameStarted;
 import utilities.messages.PlayerAdded;
 import utilities.messages.PlayerStatus;
+import utilities.messages.YourCards;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Set;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -20,6 +27,8 @@ public class Server {
     private final HashMap<Integer, PrintWriter> printWriterMap = new HashMap<>();
     private final HashMap<Integer, Player> playerMap = new HashMap<>();
     private final HashMap<Integer, Boolean> statusMap = new HashMap<>();
+    //Temporary List for determining current player:
+    private final LinkedList<Integer> playerIdList = new LinkedList<>();
 
     private final double protocolVersion = 1.0;
     private int currentID = 972123;
@@ -67,6 +76,7 @@ public class Server {
 
     public synchronized void addPlayer(int playerID, Player player) {
         playerMap.put(playerID, player);
+        playerIdList.add(playerID);
         statusMap.put(playerID, false);
     }
 
@@ -159,12 +169,9 @@ public class Server {
     }
 
     public synchronized void startGame() {
-        System.out.println("Game started");
         game = new Game();
 
         GameBoardMapObject[] testmap = game.getGameBoard().toMap();
-
-        System.out.println(testmap);
 
         String gameStarted = messageHandler.buildMessage("GameStarted", new GameStarted(testmap));
 
@@ -172,6 +179,36 @@ public class Server {
 
             outgoing.println(gameStarted);
 
+        }
+
+        //ToDo: replace this testing method with real currentPlayer-choice
+        sendCurrentPlayerForStartingPosition();
+
+    }
+
+    /**
+     * SIMPLIFIED METHOD FOR TESTING REASONS!!!
+     */
+    public void sendCurrentPlayerForStartingPosition() {
+        //ToDo: Improve current player choice
+        //  For testing reasons, the current player is the first of the temporary playerIDList
+        if (playerIdList.size() > 0) {
+            String currentPlayer = messageHandler.buildMessage("CurrentPlayer", new CurrentPlayer(playerIdList.remove()));
+            for (PrintWriter outgoing : printWriterMap.values()) {
+
+                outgoing.println(currentPlayer);
+
+            }
+        } else {
+            String startProgrammingPhase = messageHandler.buildMessage("ActivePhase", new ActivePhase(2));
+            String[] cardArray = new String[]{"MoveI", "MoveII", "MoveIII", "TurnLeft", "TurnRight", "UTurn", "BackUp", "PowerUp", "Again"};
+            String yourCardsMessage = messageHandler.buildMessage("YourCards", new YourCards(cardArray, 12));
+            for (PrintWriter outgoing : printWriterMap.values()) {
+
+                outgoing.println(startProgrammingPhase);
+                outgoing.println(yourCardsMessage);
+
+            }
         }
 
     }
