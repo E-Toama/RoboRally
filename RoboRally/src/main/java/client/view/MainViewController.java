@@ -31,10 +31,6 @@ public class MainViewController {
         FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/MainView.fxml"));
         mainViewPane = mainLoader.load();
 
-        FXMLLoader playerMatLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/PlayerMat.fxml"));
-        playerMatPane = playerMatLoader.load();
-        mainViewPane.add(playerMatPane, 0, 1, 1, 2);
-
         FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/GameViewChat.fxml"));
         GridPane chatPane = chatLoader.load();
         mainViewPane.add(chatPane, 0, 0);
@@ -59,6 +55,11 @@ public class MainViewController {
     public void setGameBoardPane(GridPane gameBoardPane) {
         this.gameBoardPane = gameBoardPane;
         mainViewPane.add(gameBoardPane, 1, 0);
+    }
+
+    public void setPlayerMatPane(GridPane playerMatPane) {
+        this.playerMatPane = playerMatPane;
+        mainViewPane.add(this.playerMatPane, 0, 1, 1, 2);
 
     }
 

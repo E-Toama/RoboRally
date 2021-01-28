@@ -88,6 +88,7 @@ public class ClientThread implements Runnable {
 
     private final HashMap<Integer, Player> playerList = new HashMap<>();
     private HashMap<Integer, ClientPlayerState> playerStateList = new HashMap<>();
+    private ClientPlayerState clientPlayerState;
     public ObservableList<Integer> takenRobotList = FXCollections.observableArrayList();
     public HashMap<String, Integer> messageMatchMap = new HashMap<>();
     public ObservableList<String> observablePlayerList = FXCollections.observableArrayList();
@@ -349,18 +350,26 @@ public class ClientThread implements Runnable {
 
                 welcomeViewModel.playerSuccesfullyAdded();
 
-
-
-                //Initialize PlayerState and add to PlayerStateList
-                ClientPlayerState playerState = new ClientPlayerState();
-                playerState.setPlayerID(this.ID);
-                playerState.setUserName(player.getName());
-                playerState.setFigure(player.getFigure());
-                playerStateList.put(this.ID, playerState);
+                clientPlayerState = new ClientPlayerState();
+                clientPlayerState.setPlayerID(receivedMessage.getPlayer().getId());
+                System.out.println(receivedMessage.getPlayer().getId());
+                clientPlayerState.setUserName(receivedMessage.getPlayer().getName());
+                System.out.println(receivedMessage.getPlayer().getName());
+                clientPlayerState.setFigure(receivedMessage.getPlayer().getFigure());
+                playerStateList.put(receivedMessage.getPlayer().getId(), clientPlayerState);
                 playerMatModel = new PlayerMatModel();
-                playerMatModel.setPlayerState(playerState);
+                playerMatModel.setPlayerState(clientPlayerState);
+                clientPlayerState.setPlayerMatModel(playerMatModel);
+                playerMatModel.updatePlayerStatus();
+
 
             } else {
+                //Initialize OtherPlayerState and add to PlayerStateList
+                ClientPlayerState otherPlayerState = new ClientPlayerState();
+                otherPlayerState.setPlayerID(receivedMessage.getPlayer().getId());
+                otherPlayerState.setUserName(receivedMessage.getPlayer().getName());
+                otherPlayerState.setFigure(receivedMessage.getPlayer().getFigure());
+                playerStateList.put(receivedMessage.getPlayer().getId(), otherPlayerState);
 
                 welcomeViewModel.disableRobotButton(receivedMessage.getPlayer().getFigure());
 
@@ -512,8 +521,10 @@ public class ClientThread implements Runnable {
             //Set all other players' current state to false
             for (Map.Entry<Integer, ClientPlayerState> state : playerStateList.entrySet()) {
                 state.getValue().setCurrentPlayer(false);
+                state.getValue().printAllThatStuff();
             }
             playerStateList.get(currentPlayer.getPlayerID()).setCurrentPlayer(true);
+
 
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of CurrentPlayer)");
@@ -557,6 +568,7 @@ public class ClientThread implements Runnable {
 
             //Add position info to ClientPlayerState
             playerStateList.get(playerID).setCurrentPosition(chosenPoint);
+            clientPlayerState.printAllThatStuff();
 
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of StartingPointTaken)");
@@ -581,6 +593,8 @@ public class ClientThread implements Runnable {
 
             //Add info to ClientPlayerState
             playerStateList.get(this.ID).setDeckCount(cardsInPile);
+            //todo toesting
+            clientPlayerState.printAllThatStuff();
 
 
         } else {
@@ -622,6 +636,8 @@ public class ClientThread implements Runnable {
         if (incomingMessage.getMessageBody() instanceof  SelectionFinished) {
             SelectionFinished selectionFinished = (SelectionFinished) incomingMessage.getMessageBody();
             playerStateList.get(selectionFinished.getPlayerID()).setHasFinishedSelection(true);
+            //Todo Testing!!!
+            clientPlayerState.printAllThatStuff();
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of SelectionFinished)");
         }
@@ -836,11 +852,19 @@ public class ClientThread implements Runnable {
 
         gameBoardViewModel.getGameBoardController().initBoard();
         try {
-            mainViewModel.getMainViewController().initializeMainView(playerList.size());
+            mainViewModel.getMainViewController().initializeMainView(playerStateList.size());
             mainViewModel.getMainViewController().setGameBoardPane(gameBoardViewModel.getGameBoardController().getGameGrid());
+
+            playerMatModel.getPlayerMatController().initializePlayerMatView();
+            mainViewModel.getMainViewController().setPlayerMatPane(playerMatModel.getPlayerMatController().getPlayerMat());
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        //Todo TESTING
+        clientPlayerState.printAllThatStuff();
+
+
         return new Scene(mainViewModel.getMainViewController().getMainViewPane());
     }
 

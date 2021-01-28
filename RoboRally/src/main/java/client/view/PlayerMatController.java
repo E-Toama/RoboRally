@@ -2,6 +2,7 @@ package client.view;
 
 
 import client.viewmodel.PlayerMatModel;
+import game.Robots.Robot;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -54,33 +55,27 @@ public class PlayerMatController {
 
     String cardBack = "Cards/PlayerDeckBack.png";
 
-    public void initialize() {
-        userNameValue.textProperty().bind(playerMatModel.userNameTextProperty());
-        robotValue.textProperty().bind(playerMatModel.robotTextProperty());
-        checkPointValue.textProperty().bind(playerMatModel.checkPointTextProperty());
-        cardsInDeckValue.textProperty().bind(playerMatModel.cardsInDeckTextProperty());
-        discardedCardsValue.textProperty().bind(playerMatModel.discardedCardsTextProperty());
-        damageCardsValue.textProperty().bind(playerMatModel.damageCardsTextProperty());
-        energyCubesValue.textProperty().bind(playerMatModel.energyCubesTextProperty());
 
-    }
-
-    public PlayerMatController() {
-        playerMatPane = new GridPane();
+    public void initializePlayerMatView() throws IOException {
+        FXMLLoader playerMatLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/PlayerMat.fxml"));
+        playerMatPane = playerMatLoader.load();
         createCardsSlots();
-
     }
 
     public void setPlayerMatModel(PlayerMatModel playerMatModel) {
         this.playerMatModel = playerMatModel;
     }
 
-
-
-
-
-
-
+    public void updateLabels() {
+        userNameValue.setText(playerMatModel.getPlayerState().getUserName());
+        robotValue.setText(String.valueOf(Robot.getRobotByFigure(playerMatModel.getPlayerState().getFigure())));
+        checkPointValue.setText(String.valueOf(playerMatModel.getPlayerState().getCheckpointsreached()));
+        cardsInDeckValue.setText(String.valueOf(playerMatModel.getPlayerState().getDeckCount()));
+        discardedCardsValue.setText(String.valueOf(playerMatModel.getPlayerState().getDiscardedCount()));
+        damageCardsValue.setText(String.valueOf(playerMatModel.getPlayerState().getPickedUpDamageCards()));
+        energyCubesValue.setText(String.valueOf(playerMatModel.getPlayerState().getEnergyPoints()));
+        
+    }
 
     public void createCardsSlots(){
         for(int i = 0; i < 5; i++){
@@ -96,6 +91,5 @@ public class PlayerMatController {
     public GridPane getPlayerMat(){
         return playerMatPane;
     }
-
 
 }
