@@ -679,7 +679,16 @@ public class ClientThread implements Runnable {
     private void handleTimerEnded(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof  TimerEnded) {
             TimerEnded timerEnded = (TimerEnded) incomingMessage.getMessageBody();
-            //ToDo: "Meldung [...] beinhaltet auch die Information über evtl. zu langsam reagierende Spieler."
+            String slowPlayers = "";
+            for (Integer id : timerEnded.getPlayerIDs()) {
+                slowPlayers += playerStateList.get(id).getUserName() + "\n";
+            }
+            programmingViewModel.getProgrammingController().setSlowPlayers(slowPlayers);
+
+            Platform.runLater(()-> {
+                programmingViewModel.endTimer();
+            });
+
             logger.getLogger().info("Timer has ended.");
         } else {
             logger.getLogger().severe("Message body error in handleTimerEnded method.");
@@ -690,11 +699,11 @@ public class ClientThread implements Runnable {
     private void handleDiscardHand(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof DiscardHand) {
             DiscardHand discardHand = (DiscardHand) incomingMessage.getMessageBody();
-            //ToDo: "Das Ergebnis wird dem Spieler dann mitgeteilt."
-            // Will we do anything with this information? Some Visualization?
-            
-            // TODO: write a good comment for the log in the next line then uncomment the line.
-            //logger.getLogger().info("");
+            Platform.runLater(() -> {
+                programmingViewModel.getProgrammingController().discardHand();
+            });
+
+            logger.getLogger().info("Player needs to discard hand");
         } else {
             logger.getLogger().severe("Message body error in handleDiscardHand method.");
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of DiscardHand)");
@@ -706,7 +715,10 @@ public class ClientThread implements Runnable {
             CardsYouGotNow cardsYouGotNow = (CardsYouGotNow) incomingMessage.getMessageBody();
             String[] yourCards = cardsYouGotNow.getCards();
             programmingViewModel.setCardsYouGotNow(yourCards);
-            //ToDo: Game-logic for CardsYouGotNow
+            Platform.runLater(() -> {
+                programmingViewModel.getProgrammingController().cardsYouGotNow();
+            });
+
             logger.getLogger().info(this.player.getName() + " got the cards: " + yourCards + ".");
         } else {
             logger.getLogger().severe("Message body error in handleCardsYouGotNow method.");

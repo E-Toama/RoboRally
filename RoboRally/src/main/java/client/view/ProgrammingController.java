@@ -1,5 +1,6 @@
 package client.view;
 
+import client.utilities.ImageBuilder;
 import client.viewmodel.ProgrammingViewModel;
 import com.sun.javafx.event.CompositeEventHandler;
 import com.sun.javafx.scene.control.SelectedCellsMap;
@@ -40,6 +41,8 @@ public class ProgrammingController {
     Label timerLabel;
     private Integer seconds = startTime;
     private boolean[] filledRegisters;
+    private boolean isTimerEnded = false;
+    private String slowPlayers;
 
 
     public ProgrammingController() {
@@ -75,6 +78,9 @@ public class ProgrammingController {
         this.programmingViewModel = programmingViewModel;
     }
 
+    public void setSlowPlayers(String slowPlayers) {
+        this.slowPlayers = slowPlayers;
+    }
 
     public void createCards() {
         createCardButtons(programmingViewModel.getCards());
@@ -141,6 +147,27 @@ public class ProgrammingController {
         }
     }
 
+    public void discardHand() {
+        for (ProgrammingButton btn : buttonList) {
+
+            if (!btn.isChosen())
+            btn.setDisable(true);
+            btn.setStyle("-fx-background-color: #3e0202");
+            btn.setGraphic(ImageBuilder.createCardImage("default"));
+        }
+    }
+
+    public void cardsYouGotNow() {
+        Alert cardAlert = new Alert(Alert.AlertType.INFORMATION);
+        cardAlert.setHeaderText("Cards you got now:");
+        StringBuilder cardsYouGotNow = new StringBuilder();
+        for (String s : programmingViewModel.getCardsYouGotNow()) {
+            cardsYouGotNow.append(s).append("\n");
+        }
+        cardAlert.setContentText(cardsYouGotNow.toString());
+        cardAlert.show();
+    }
+
     private void allRegistersChosen() {
         boolean allChosen = true;
         for (boolean b : filledRegisters)
@@ -152,6 +179,20 @@ public class ProgrammingController {
                 button.setDisable(true);
             }
         }
+    }
+
+    public void setTimerEnded() {
+        isTimerEnded = true;
+        showTimerEndedAlert();
+    }
+
+    private void showTimerEndedAlert() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText("Timer ran out!");
+        if (slowPlayers != null) {
+            alert.setContentText("Way too slow:\n" + slowPlayers);
+        }
+        alert.show();
     }
 
     /**
@@ -175,9 +216,7 @@ public class ProgrammingController {
 
                 if (seconds <= 0) {
                     time.stop();
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setHeaderText("Timer run out!");
-                    alert.show();
+                    timerLabel.setText("Over!");
                 }
             }
         });

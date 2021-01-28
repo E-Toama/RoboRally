@@ -201,8 +201,7 @@ public class Server {
             }
         } else {
             String startProgrammingPhase = messageHandler.buildMessage("ActivePhase", new ActivePhase(2));
-            String[] cardArray = new String[]{"MoveI", "MoveII", "MoveIII", "TurnLeft", "TurnRight", "UTurn", "BackUp", "PowerUp", "Again"};
-            String yourCardsMessage = messageHandler.buildMessage("YourCards", new YourCards(cardArray, 12));
+            String yourCardsMessage = messageHandler.buildMessage("YourCards", new YourCards(TestMessages.testCardsForProgrammingView, 12));
             for (PrintWriter outgoing : printWriterMap.values()) {
 
                 outgoing.println(startProgrammingPhase);

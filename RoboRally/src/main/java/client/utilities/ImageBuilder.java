@@ -2,6 +2,7 @@ package client.utilities;
 
 import game.gameboard.BoardElement;
 import game.gameboard.gameboardfieldobjects.*;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -9,11 +10,19 @@ import javafx.scene.image.ImageView;
 public class ImageBuilder {
 
     private static int tileWidth = 50;
+    private static int cardWidth = 80;
 
 
     private static ImageView adjustToBoard(Image image) {
         ImageView imageView = new ImageView(image);
         imageView.setFitHeight(tileWidth);
+        imageView.setPreserveRatio(true);
+        return imageView;
+    }
+
+    private static ImageView adjustToSlot(Image image) {
+        ImageView imageView = new ImageView(image);
+        imageView.setFitWidth(cardWidth);
         imageView.setPreserveRatio(true);
         return imageView;
     }
@@ -29,8 +38,7 @@ public class ImageBuilder {
             switch (type) {
                 case "Empty":
                     Image emptyTileImage = new Image("Tiles/EmptyTile.png");
-                    ImageView emptyTile = adjustToBoard(emptyTileImage);
-                    return emptyTile;
+                    return adjustToBoard(emptyTileImage);
                 case "Laser":
                     LaserFieldObject laser = (LaserFieldObject) gameBoardFieldObject;
                     int count = laser.getCount();
@@ -82,13 +90,11 @@ public class ImageBuilder {
                     EnergySpaceFieldObject energySpace = (EnergySpaceFieldObject) gameBoardFieldObject;
                     //Image EnergySpaceTile = new Image("Tiles/Energy_"+energySpace.getCount()+".png");
                     Image EnergySpaceTile = new Image("Tiles/Energy_0.png");
-                    ImageView EnergySpaceImage = adjustToBoard(EnergySpaceTile);
-                    return EnergySpaceImage;
+                    return adjustToBoard(EnergySpaceTile);
 
                 case "StartPoint":
                     Image StartingPointTile = new Image("Tiles/StartingPoint.png");
-                    ImageView StartingPointImage = adjustToBoard(StartingPointTile);
-                    return  StartingPointImage;
+                    return  adjustToBoard(StartingPointTile);
 
                 case "Wall":
                     Image WallTile = new Image("Tiles/Wall.png");
@@ -109,8 +115,7 @@ public class ImageBuilder {
 
                 case "ControlPoint":
                     Image checkImage = new Image("Tiles/Checkpoint_1.png");
-                    ImageView checkImageView = adjustToBoard(checkImage);
-                    return checkImageView;
+                    return adjustToBoard(checkImage);
 
                 case "RestartPoint":
                     Image restartImage = new Image("Tiles/RestartToken.png");
@@ -132,13 +137,11 @@ public class ImageBuilder {
 
                 case "Antenna":
                     Image antennaImage = new Image("Tiles/Antenna.png");
-                    ImageView antenna = adjustToBoard(antennaImage);
-                    return antenna;
+                    return adjustToBoard(antennaImage);
 
                 case "Pit":
                     Image pitImage = new Image("Tiles/Pit.png");
-                    ImageView pit = adjustToBoard(pitImage);
-                    return pit;
+                    return  adjustToBoard(pitImage);
 
                 case "Gear":
                     GearFieldObject gearFieldObject = (GearFieldObject) gameBoardFieldObject;
@@ -146,13 +149,11 @@ public class ImageBuilder {
 
                     if (gearOrientation.equals("clockwise")) {
                         Image gearImageClockwise = new Image("Tiles/Gear_clockwise.png");
-                        ImageView gearClockWise = adjustToBoard(gearImageClockwise);
-                        return gearClockWise;
+                        return adjustToBoard(gearImageClockwise);
                     }
                     else if (gearOrientation.equals("counterclockwise")) {
                         Image gearImageCounterClockwise = new Image("Tiles/Gear_counterclockwise.png");
-                        ImageView gearCounterClockwise = adjustToBoard(gearImageCounterClockwise);
-                        return gearCounterClockwise;
+                        return adjustToBoard(gearImageCounterClockwise);
                     }
 
                     else { //evtl Fehlerbehebung?
@@ -244,8 +245,7 @@ public class ImageBuilder {
                 //TODO: Create Laser-Wall-Checkpoint-images (GIMP / Photoshop) customized to ExtraCrispy
                 //TODO: Laser-Wall-image-file should be named like laserwallcheck_1, laserwallcheck_2, laserwallcheck_3, laserwallcheck_4
                 Image wallWithLaserAndCheckPoint = new Image("Tiles/Checkpoint_"+controlPointFieldObject.getCount()+".png");
-                ImageView wallLaserCheckTile = adjustToBoard(wallWithLaserAndCheckPoint);
-                return wallLaserCheckTile;
+                return adjustToBoard(wallWithLaserAndCheckPoint);
 
 
             } catch (ClassCastException e) {
@@ -265,4 +265,39 @@ public class ImageBuilder {
 
     }
 
+    public static ImageView createCardImage(String cardType) {
+        Image cardImage;
+            switch (cardType) {
+                case "MoveI":
+                    cardImage = new Image("Cards/MoveOne.png");
+                    return adjustToSlot(cardImage);
+                case "MoveII":
+                    cardImage = new Image("Cards/MoveTwo.png");
+                    return adjustToSlot(cardImage);
+                case "MoveIII":
+                    cardImage = new Image("Cards/MoveThree.png");
+                    return adjustToSlot(cardImage);
+                case "TurnLeft":
+                    cardImage = new Image("Cards/LeftTurn.png");
+                    return adjustToSlot(cardImage);
+                case "TurnRight":
+                    cardImage = new Image("Cards/RightTurn.png");
+                    return adjustToSlot(cardImage);
+                case "UTurn":
+                    cardImage = new Image("Cards/UTurn.png");
+                    return adjustToSlot(cardImage);
+                case "BackUp":
+                    cardImage = new Image("Cards/MoveBack.png");
+                    return adjustToSlot(cardImage);
+                case "PowerUp":
+                    cardImage = new Image("Cards/PowerUp.png");
+                    return adjustToSlot(cardImage);
+                case "Again":
+                    cardImage = new Image("Cards/Again.png");
+                    return adjustToSlot(cardImage);
+                default:
+                    cardImage = new Image("Cards/PlayerDeckBack.png");
+                    return adjustToSlot(cardImage);
+            }
+    }
 }

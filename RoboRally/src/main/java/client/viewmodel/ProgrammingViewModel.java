@@ -24,6 +24,7 @@ public class ProgrammingViewModel {
     ClientThread clientThread;
     ProgrammingController programmingController;
     String[] cards;
+    String[] cardsYouGotNow;
     private Integer seconds = 30;
 
     StringProperty timerLabelProperty = new SimpleStringProperty();
@@ -57,6 +58,9 @@ public class ProgrammingViewModel {
     public void setTimer(){
        programmingController.initiateTimer();
     }
+    public void endTimer() {
+        programmingController.setTimerEnded();
+    }
 
     public void selectCard(String cardString, int register) {
         clientThread.sendSelectedCard(cardString, register);
@@ -66,8 +70,11 @@ public class ProgrammingViewModel {
         programmingController.setRegisterActive(register);
     }
 
+    public String[] getCardsYouGotNow() {
+        return cardsYouGotNow;
+    }
 
     public void setCardsYouGotNow(String[] yourCards) {
-        //ToDo: Shall we show the cards? Or will it be a surprise?
+        cardsYouGotNow = yourCards;
     }
 }

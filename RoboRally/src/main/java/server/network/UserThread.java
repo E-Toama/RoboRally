@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,6 +31,10 @@ public class UserThread implements Runnable {
     private final int playerID;
     private String group;
     private Boolean userIsAI;
+
+
+    //Some added fields for Testing purposes:
+    boolean firstPlayerFinishedSelection = false;
 
     public UserThread(Socket socket, Server server, int ID) throws IOException {
 
@@ -293,9 +299,27 @@ public class UserThread implements Runnable {
 
             logger.getLogger().info(player.getName() + " selected " + selectedCard + " into register " + register + ".");
 
-            if (register == 5) {
+            if (register == 5 && !firstPlayerFinishedSelection) {
+                firstPlayerFinishedSelection = true;
                 String timerStartedMessage = messageHandler.buildMessage("TimerStarted", new TimerStarted());
                 server.sendMessageToAllUsers(timerStartedMessage);
+                Timer timer = new Timer();
+                TimerTask timerTask = new TimerTask() {
+                    @Override
+                    public void run() {
+                        int[] slowPlayers = new int[]{playerID};
+                        String timerEndedMessage = messageHandler.buildMessage("TimerEnded", new TimerEnded(slowPlayers));
+                        server.sendMessageToAllUsers(timerEndedMessage);
+
+                        String discardCards = messageHandler.buildMessage("DiscardHand", new DiscardHand(playerID));
+                        server.sendMessageToSingleUser(discardCards, playerID);
+                        String cardsYouGotNow = messageHandler.buildMessage("CardsYouGotNow", new CardsYouGotNow(TestMessages.cardsYouGotNow));
+                        server.sendMessageToSingleUser(cardsYouGotNow, playerID);
+                        String activePhase3 = messageHandler.buildMessage("ActivePhase", new ActivePhase(3));
+                        server.sendMessageToAllUsers(activePhase3);
+                    }
+                };
+                timer.schedule(timerTask, 30000);
             }
         } else {
             logger.getLogger().severe("Message body error in handleSelectCard method.");
