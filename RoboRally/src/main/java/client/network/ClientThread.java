@@ -350,17 +350,18 @@ public class ClientThread implements Runnable {
 
                 welcomeViewModel.playerSuccesfullyAdded();
 
+
                 clientPlayerState = new ClientPlayerState();
                 clientPlayerState.setPlayerID(receivedMessage.getPlayer().getId());
-                System.out.println(receivedMessage.getPlayer().getId());
                 clientPlayerState.setUserName(receivedMessage.getPlayer().getName());
-                System.out.println(receivedMessage.getPlayer().getName());
                 clientPlayerState.setFigure(receivedMessage.getPlayer().getFigure());
                 playerStateList.put(receivedMessage.getPlayer().getId(), clientPlayerState);
                 playerMatModel = new PlayerMatModel();
+                playerMatModel.getPlayerMatController().initializePlayerMatView();
                 playerMatModel.setPlayerState(clientPlayerState);
-                clientPlayerState.setPlayerMatModel(playerMatModel);
                 playerMatModel.updatePlayerStatus();
+                //Todo For simple update mechanism:
+                clientPlayerState.setPlayerMatModel(playerMatModel);
 
 
             } else {
@@ -370,6 +371,7 @@ public class ClientThread implements Runnable {
                 otherPlayerState.setUserName(receivedMessage.getPlayer().getName());
                 otherPlayerState.setFigure(receivedMessage.getPlayer().getFigure());
                 playerStateList.put(receivedMessage.getPlayer().getId(), otherPlayerState);
+
 
                 welcomeViewModel.disableRobotButton(receivedMessage.getPlayer().getFigure());
 
@@ -521,7 +523,6 @@ public class ClientThread implements Runnable {
             //Set all other players' current state to false
             for (Map.Entry<Integer, ClientPlayerState> state : playerStateList.entrySet()) {
                 state.getValue().setCurrentPlayer(false);
-                state.getValue().printAllThatStuff();
             }
             playerStateList.get(currentPlayer.getPlayerID()).setCurrentPlayer(true);
 
@@ -568,7 +569,6 @@ public class ClientThread implements Runnable {
 
             //Add position info to ClientPlayerState
             playerStateList.get(playerID).setCurrentPosition(chosenPoint);
-            clientPlayerState.printAllThatStuff();
 
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of StartingPointTaken)");
@@ -593,8 +593,7 @@ public class ClientThread implements Runnable {
 
             //Add info to ClientPlayerState
             playerStateList.get(this.ID).setDeckCount(cardsInPile);
-            //todo toesting
-            clientPlayerState.printAllThatStuff();
+
 
 
         } else {
@@ -636,8 +635,7 @@ public class ClientThread implements Runnable {
         if (incomingMessage.getMessageBody() instanceof  SelectionFinished) {
             SelectionFinished selectionFinished = (SelectionFinished) incomingMessage.getMessageBody();
             playerStateList.get(selectionFinished.getPlayerID()).setHasFinishedSelection(true);
-            //Todo Testing!!!
-            clientPlayerState.printAllThatStuff();
+
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of SelectionFinished)");
         }
@@ -855,14 +853,11 @@ public class ClientThread implements Runnable {
             mainViewModel.getMainViewController().initializeMainView(playerStateList.size());
             mainViewModel.getMainViewController().setGameBoardPane(gameBoardViewModel.getGameBoardController().getGameGrid());
 
-            playerMatModel.getPlayerMatController().initializePlayerMatView();
+            //playerMatModel.getPlayerMatController().initializePlayerMatView();
             mainViewModel.getMainViewController().setPlayerMatPane(playerMatModel.getPlayerMatController().getPlayerMat());
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        //Todo TESTING
-        clientPlayerState.printAllThatStuff();
 
 
         return new Scene(mainViewModel.getMainViewController().getMainViewPane());
