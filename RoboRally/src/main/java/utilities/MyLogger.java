@@ -18,7 +18,7 @@ public class MyLogger {
 
   public MyLogger(String loggerName) {
     try {
-      fileTxt = new FileHandler("RoboRally/src/main/java/utilities/logfiles/"+loggerName + ".log");
+      fileTxt = new FileHandler(loggerName + ".log");
     } catch (SecurityException | IOException e) {
       e.printStackTrace();
     }
