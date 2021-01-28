@@ -2,6 +2,7 @@ package client.view;
 
 
 import client.viewmodel.PlayerMatModel;
+import game.Robots.Robot;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -16,64 +17,79 @@ public class PlayerMatController {
     private PlayerMatModel playerMatModel;
 
     @FXML
-    GridPane playerMatPane = new GridPane();
-    int priority = 1;
-    int checkPointCount = 0;
-    int deckCardCount;
-    String name = "Twonky";
-    String userName = "Anton";
-    String card1 = "Cards/Again.png";
-    String card2 = "Cards/Again.png";
-    String card3 = "Cards/Again.png";
-    String card4 = "Cards/Again.png";
-    String card5 = "Cards/Again.png";
+    private GridPane playerMatPane;
 
-    public PlayerMatController() {
-        initialize();
+    @FXML
+    private GridPane playerStatusPane;
+
+
+    // Static text labels
+    @FXML
+    private Label checkPointLabel;
+    @FXML
+    private Label CardsInDeckLabel;
+    @FXML
+    private Label DiscardedCardsLabel;
+    @FXML
+    private Label damageCardsLabel;
+    @FXML
+    private Label EnergyCubeLabel;
+
+
+    //Dynamic text values
+    @FXML
+    private Label userNameValue = new Label();
+    @FXML
+    private Label robotValue = new Label();
+    @FXML
+    private Label checkPointValue = new Label();
+    @FXML
+    private Label cardsInDeckValue = new Label();
+    @FXML
+    private Label discardedCardsValue = new Label();
+    @FXML
+    private Label damageCardsValue = new Label();
+    @FXML
+    private Label energyCubesValue = new Label();
+
+
+    String cardBack = "Cards/PlayerDeckBack.png";
+
+
+    public void initializePlayerMatView() throws IOException {
+        FXMLLoader playerMatLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/PlayerMat.fxml"));
+        playerMatPane = playerMatLoader.load();
+        createCardsSlots();
     }
 
     public void setPlayerMatModel(PlayerMatModel playerMatModel) {
         this.playerMatModel = playerMatModel;
     }
 
-
-    public void initialize() {
-        createCardsSlots();
-
-        Label checkPoints= new Label("Checkpoints "+ checkPointCount);
-        Label deckSize = new Label("Cards left: "+ deckCardCount);
-        Label discardSize = new Label("Discarded Cards: "+ deckCardCount);
-        Label RobotName = new Label(name);
-        Label PlayerName = new Label(userName);
-
-        playerMatPane.add(checkPoints, 1, 0);
-        playerMatPane.add(RobotName, 0, 0);
-        //PlayerMat.add(PlayerName, 0, 0);
-        playerMatPane.add(deckSize, 2, 0);
-        playerMatPane.add(discardSize, 3, 0);
+    public void updateLabels() {
+        userNameValue.setText(playerMatModel.getPlayerState().getUserName());
+        robotValue.setText(String.valueOf(Robot.getRobotByFigure(playerMatModel.getPlayerState().getFigure())));
+        checkPointValue.setText(String.valueOf(playerMatModel.getPlayerState().getCheckpointsreached()));
+        cardsInDeckValue.setText(String.valueOf(playerMatModel.getPlayerState().getDeckCount()));
+        discardedCardsValue.setText(String.valueOf(playerMatModel.getPlayerState().getDiscardedCount()));
+        damageCardsValue.setText(String.valueOf(playerMatModel.getPlayerState().getPickedUpDamageCards()));
+        energyCubesValue.setText(String.valueOf(playerMatModel.getPlayerState().getEnergyPoints()));
+        
     }
-
-
-
-
 
     public void createCardsSlots(){
         for(int i = 0; i < 5; i++){
 
-            Image cards = new Image(card1);
+            Image cards = new Image(cardBack);
             ImageView card = new ImageView(cards);
             card.setFitHeight(180);
             card.setPreserveRatio(true);
-            playerMatPane.add(card, 1+i, 0, 1, 4);
+            playerMatPane.add(card, 1+i, 0);
         }
     }
-
-
-
 
     public GridPane getPlayerMat(){
         return playerMatPane;
     }
-
 
 }

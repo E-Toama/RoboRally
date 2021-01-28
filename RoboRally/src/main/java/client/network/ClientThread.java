@@ -88,6 +88,7 @@ public class ClientThread implements Runnable {
 
     private final HashMap<Integer, Player> playerList = new HashMap<>();
     private HashMap<Integer, ClientPlayerState> playerStateList = new HashMap<>();
+    private ClientPlayerState clientPlayerState;
     public ObservableList<Integer> takenRobotList = FXCollections.observableArrayList();
     public HashMap<String, Integer> messageMatchMap = new HashMap<>();
     public ObservableList<String> observablePlayerList = FXCollections.observableArrayList();
@@ -349,14 +350,28 @@ public class ClientThread implements Runnable {
 
                 welcomeViewModel.playerSuccesfullyAdded();
 
-                //Initialize PlayerState and add to PlayerStateList
-                ClientPlayerState playerState = new ClientPlayerState();
-                playerState.setPlayerID(this.ID);
-                playerState.setUserName(player.getName());
-                playerState.setFigure(player.getFigure());
-                playerStateList.put(this.ID, playerState);
+
+                clientPlayerState = new ClientPlayerState();
+                clientPlayerState.setPlayerID(receivedMessage.getPlayer().getId());
+                clientPlayerState.setUserName(receivedMessage.getPlayer().getName());
+                clientPlayerState.setFigure(receivedMessage.getPlayer().getFigure());
+                playerStateList.put(receivedMessage.getPlayer().getId(), clientPlayerState);
+                playerMatModel = new PlayerMatModel();
+                playerMatModel.getPlayerMatController().initializePlayerMatView();
+                playerMatModel.setPlayerState(clientPlayerState);
+                playerMatModel.updatePlayerStatus();
+                //Todo For simple update mechanism:
+                clientPlayerState.setPlayerMatModel(playerMatModel);
+
 
             } else {
+                //Initialize OtherPlayerState and add to PlayerStateList
+                ClientPlayerState otherPlayerState = new ClientPlayerState();
+                otherPlayerState.setPlayerID(receivedMessage.getPlayer().getId());
+                otherPlayerState.setUserName(receivedMessage.getPlayer().getName());
+                otherPlayerState.setFigure(receivedMessage.getPlayer().getFigure());
+                playerStateList.put(receivedMessage.getPlayer().getId(), otherPlayerState);
+
 
                 welcomeViewModel.disableRobotButton(receivedMessage.getPlayer().getFigure());
 
@@ -511,6 +526,7 @@ public class ClientThread implements Runnable {
             }
             playerStateList.get(currentPlayer.getPlayerID()).setCurrentPlayer(true);
 
+
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of CurrentPlayer)");
         }
@@ -579,6 +595,7 @@ public class ClientThread implements Runnable {
             playerStateList.get(this.ID).setDeckCount(cardsInPile);
 
 
+
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of YourCards)");
         }
@@ -618,6 +635,7 @@ public class ClientThread implements Runnable {
         if (incomingMessage.getMessageBody() instanceof  SelectionFinished) {
             SelectionFinished selectionFinished = (SelectionFinished) incomingMessage.getMessageBody();
             playerStateList.get(selectionFinished.getPlayerID()).setHasFinishedSelection(true);
+
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of SelectionFinished)");
         }
@@ -832,11 +850,16 @@ public class ClientThread implements Runnable {
 
         gameBoardViewModel.getGameBoardController().initBoard();
         try {
-            mainViewModel.getMainViewController().initializeMainView(playerList.size());
+            mainViewModel.getMainViewController().initializeMainView(playerStateList.size());
             mainViewModel.getMainViewController().setGameBoardPane(gameBoardViewModel.getGameBoardController().getGameGrid());
+
+            //playerMatModel.getPlayerMatController().initializePlayerMatView();
+            mainViewModel.getMainViewController().setPlayerMatPane(playerMatModel.getPlayerMatController().getPlayerMat());
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
         return new Scene(mainViewModel.getMainViewController().getMainViewPane());
     }
 
