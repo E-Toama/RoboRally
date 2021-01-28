@@ -8,12 +8,12 @@ public class SelectCard extends MessageBody {
   private final String card;
   private final int register;
 
-  public SelectCard(String cards, int register) {
-    this.card = cards;
+  public SelectCard(String card, int register) {
+    this.card = card;
     this.register = register;
   }
 
-  public String getCards() {
+  public String getCard() {
     return card;
   }
 
