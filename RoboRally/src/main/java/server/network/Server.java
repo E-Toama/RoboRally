@@ -1,10 +1,12 @@
 package server.network;
 
 import game.Game;
+import game.cards.ActiveCards;
 import game.gameboard.GameBoardMapObject;
 import game.player.Player;
 import utilities.MessageHandler;
 import utilities.messages.ActivePhase;
+import utilities.messages.CurrentCards;
 import utilities.messages.CurrentPlayer;
 import utilities.messages.GameStarted;
 import utilities.messages.PlayerAdded;
@@ -18,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -29,6 +32,8 @@ public class Server {
     private final HashMap<Integer, Boolean> statusMap = new HashMap<>();
     //Temporary List for determining current player:
     private final LinkedList<Integer> playerIdList = new LinkedList<>();
+    private final LinkedList<Integer> playerListForCurrentCardsMessage = new LinkedList<>();
+
 
     private final double protocolVersion = 1.0;
     private int currentID = 972123;
@@ -77,6 +82,7 @@ public class Server {
     public synchronized void addPlayer(int playerID, Player player) {
         playerMap.put(playerID, player);
         playerIdList.add(playerID);
+        playerListForCurrentCardsMessage.add(playerID);
         statusMap.put(playerID, false);
     }
 
@@ -186,9 +192,11 @@ public class Server {
 
     }
 
-    /**
-     * SIMPLIFIED METHOD FOR TESTING REASONS!!!
+    /*
+     * FROM HERE:
+     * SIMPLIFIED METHODS FOR TESTING REASONS!!!
      */
+
     public void sendCurrentPlayerForStartingPosition() {
         //ToDo: Improve current player choice
         //  For testing reasons, the current player is the first of the temporary playerIDList
@@ -211,5 +219,27 @@ public class Server {
         }
 
     }
+
+
+    //WARNING: Only working for exactly two players
+    //Available cards: {"MoveI", "MoveII", "MoveIII", "TurnLeft", "TurnRight", "UTurn", "BackUp", "PowerUp", "Again"};
+    public void sendCurrentCards() {
+        Random random = new Random();
+        String[] cardArray = TestMessages.testCardsForProgrammingView;
+        for (int i = 0; i < 5; i++) {
+            ActiveCards[] currentCards = {
+                    new ActiveCards(playerListForCurrentCardsMessage.get(0),cardArray[random.nextInt(9)]),
+                    new ActiveCards(playerListForCurrentCardsMessage.get(1),cardArray[random.nextInt(9)])
+            };
+            String outgoingMessage = messageHandler.buildMessage("CurrentCards", new CurrentCards(currentCards));
+            sendMessageToAllUsers(outgoingMessage);
+        }
+
+    }
+
+    /*
+     * END OF TESTING METHODS
+     */
+
 
 }

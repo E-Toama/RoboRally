@@ -1,6 +1,7 @@
 package client.view;
 
 
+import client.utilities.ImageBuilder;
 import client.viewmodel.PlayerMatModel;
 import game.Robots.Robot;
 import javafx.fxml.FXML;
@@ -54,6 +55,9 @@ public class PlayerMatController {
 
 
     String cardBack = "Cards/PlayerDeckBack.png";
+    ImageView[] registers = new ImageView[5];
+
+    int registerForAnimation = 0;
 
 
     public void initializePlayerMatView() throws IOException {
@@ -78,18 +82,30 @@ public class PlayerMatController {
     }
 
     public void createCardsSlots(){
-        for(int i = 0; i < 5; i++){
 
-            Image cards = new Image(cardBack);
-            ImageView card = new ImageView(cards);
-            card.setFitHeight(180);
-            card.setPreserveRatio(true);
-            playerMatPane.add(card, 1+i, 0);
-        }
+            Image backside = new Image(cardBack);
+
+            for (int i = 0; i < 5; i++) {
+                registers[i] = adjustCard(new ImageView(backside));
+                playerMatPane.add(registers[i], i+1, 0);
+            }
+
+    }
+
+    private ImageView adjustCard(ImageView original) {
+        original.setFitHeight(180);
+        original.setPreserveRatio(true);
+        return original;
     }
 
     public GridPane getPlayerMat(){
         return playerMatPane;
     }
 
+    public void setTakenRegister(String card) {
+        ImageView cardToDisplay = adjustCard(ImageBuilder.createCardImage(card));
+        registers[registerForAnimation] = cardToDisplay;
+        playerMatPane.add(cardToDisplay, registerForAnimation+1, 0);
+        registerForAnimation++;
+    }
 }

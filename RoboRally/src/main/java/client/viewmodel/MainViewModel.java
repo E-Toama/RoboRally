@@ -33,9 +33,6 @@ public class MainViewModel {
         mainViewController.switchScenes();
     }
 
-    public void setCardsYouGotNow(String[] yourCards) {
-        //ToDo: Should this be displayed in the ProgrammingView? Or in the PlayerMat?
-    }
 
 
 

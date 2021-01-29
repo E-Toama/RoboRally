@@ -15,6 +15,7 @@ import client.viewmodel.PlayerMatModel;
 import client.viewmodel.ProgrammingViewModel;
 import client.viewmodel.WelcomeViewModel;
 import game.Robots.Robot;
+import game.cards.ActiveCards;
 import game.cards.Card;
 import game.gameboard.GameBoard;
 import game.utilities.PositionLookUp;
@@ -554,6 +555,13 @@ public class ClientThread implements Runnable {
            * 3 => Aktivierungsphase
            * */
             clientGameState.setActivePhase(activePhase.getPhase());
+
+            if (activePhase.getPhase() == 3) {
+                Platform.runLater(() -> {
+                    mainViewModel.switchScenes();
+                });
+            }
+
             logger.getLogger().info("The Active phase is " + activePhase.getPhase() + ".");
 
         } else {
@@ -729,10 +737,22 @@ public class ClientThread implements Runnable {
     private void handleCurrentCards(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof CurrentCards) {
             CurrentCards currentCards = (CurrentCards) incomingMessage.getMessageBody();
-            //ToDo: Update GUI CurrentCards
+            ActiveCards[] activeCards = currentCards.getActiveCards();
+
+            for (ActiveCards cards : activeCards) {
+                logger.getLogger().info("Outside ID-Check: " + cards.getPlayerID());
+                if (cards.getPlayerID() == ID) {
+                    logger.getLogger().info("Inside ID-Check: " + ID + " received card " + cards.getCard());
+                    Platform.runLater(() -> {
+                        playerMatModel.getPlayerMatController().setTakenRegister(cards.getCard());
+                    });
+                    String playIt = messageHandler.buildMessage("PlayIt", new PlayIt());
+                    outgoing.println(playIt);
+                } //ToDo: Else update otherPlayerMats
+            }
+
             
-            //TODO: add a good log message.
-            //logger.getLogger().info();
+            logger.getLogger().info("Received Current Cards.");
         } else {
             logger.getLogger().severe("Message body error in handleCurrentCards method.");
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of CurrentCards)");

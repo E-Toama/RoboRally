@@ -1,5 +1,6 @@
 package server.network;
 
+import game.cards.ActiveCards;
 import game.player.Player;
 import utilities.MessageHandler;
 import utilities.MyLogger;
@@ -288,6 +289,15 @@ public class UserThread implements Runnable {
         }
     }
 
+
+    /**
+     * WARNING: MODIFIED FOR TESTING REASONS
+     * Completely messed up method that generates basically all messages for:
+     *      ProgrammingPhase
+     *      Start of ActivationPhase
+     * @param incomingMessage
+     * @throws IOException
+     */
     private void handleSelectCard(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof SelectCard) {
             SelectCard selectCard = (SelectCard) incomingMessage.getMessageBody();
@@ -317,10 +327,12 @@ public class UserThread implements Runnable {
                         server.sendMessageToSingleUser(cardsYouGotNow, playerID);
                         String activePhase3 = messageHandler.buildMessage("ActivePhase", new ActivePhase(3));
                         server.sendMessageToAllUsers(activePhase3);
+                        server.sendCurrentCards();
                     }
                 };
                 timer.schedule(timerTask, 30000);
             }
+
         } else {
             logger.getLogger().severe("Message body error in handleSelectCard method.");
             throw new IOException("Something went wrong! Invalid Message Body! (not instance of SelectCard)");
