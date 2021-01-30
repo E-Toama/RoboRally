@@ -9,7 +9,6 @@ import client.view.ViewController;
 import client.viewmodel.ChatViewModel;
 import client.viewmodel.EnemyMatModel;
 import client.viewmodel.GameBoardViewModel;
-import client.viewmodel.InGameChatModel;
 import client.viewmodel.MainViewModel;
 import client.viewmodel.PlayerMatModel;
 import client.viewmodel.ProgrammingViewModel;
@@ -71,6 +70,7 @@ public class ClientThread implements Runnable {
     private final MessageHandler messageHandler = new MessageHandler();
     public ObservableList<String> chatMessages = FXCollections.observableArrayList();
 
+
     private Player player;
     private int ID;
     private final double protocolVersion = 1.0;
@@ -82,7 +82,7 @@ public class ClientThread implements Runnable {
 
     //ViewModels for MainView
     private MainViewModel mainViewModel;
-    private InGameChatModel inGameChatModel;
+
     private GameBoardViewModel gameBoardViewModel;
     private ProgrammingViewModel programmingViewModel;
     private PlayerMatModel playerMatModel;
@@ -123,9 +123,6 @@ public class ClientThread implements Runnable {
         this.mainViewModel = mainViewModel;
     }
 
-    public void setInGameChatModel(InGameChatModel inGameChatModel) {
-        this.inGameChatModel = inGameChatModel;
-    }
 
     public void setGameBoardViewModel(GameBoardViewModel gameBoardViewModel) {
         this.gameBoardViewModel = gameBoardViewModel;
@@ -400,12 +397,14 @@ public class ClientThread implements Runnable {
 
                 Platform.runLater(() -> {
                     chatMessages.add(notificationName);
+
                 });
 
                 String notificationRobot = "He has Robot No. " + receivedMessage.getPlayer().getFigure();
 
                 Platform.runLater(() -> {
                     chatMessages.add(notificationRobot);
+
                 });
 
             }
@@ -481,6 +480,7 @@ public class ClientThread implements Runnable {
 
             Platform.runLater(() -> {
                 chatMessages.add(message);
+
             });
 
         } else {
