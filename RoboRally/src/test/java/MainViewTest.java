@@ -5,7 +5,6 @@ import client.view.ProgrammingController;
 import client.view.ViewController;
 import client.viewmodel.EnemyMatModel;
 import client.viewmodel.GameBoardViewModel;
-import client.viewmodel.InGameChatModel;
 import client.viewmodel.MainViewModel;
 import client.viewmodel.PlayerMatModel;
 import client.viewmodel.ProgrammingViewModel;

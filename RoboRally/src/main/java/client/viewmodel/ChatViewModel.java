@@ -12,9 +12,8 @@ import javafx.scene.control.MenuItem;
 
 public class ChatViewModel {
 
-    private final ClientThread clientThread;
+    private static ClientThread clientThread;
     private final StringProperty chatText = new SimpleStringProperty();
-    public final ObservableList<MenuItem> dropDownItems = FXCollections.observableArrayList();
     private int destination = -1;
 
     public ChatViewModel() {
@@ -32,7 +31,7 @@ public class ChatViewModel {
         return chatText;
     }
 
-    public ClientThread getClientThread() {
+    public static ClientThread getClientThread() {
         return clientThread;
     }
 
