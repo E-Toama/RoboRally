@@ -3,6 +3,7 @@ package client.view;
 import client.viewmodel.MainViewModel;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -32,7 +33,7 @@ public class MainViewController {
         mainViewPane = mainLoader.load();
 
         FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/GameViewChat.fxml"));
-        GridPane chatPane = chatLoader.load();
+        Parent chatPane = chatLoader.load();
         mainViewPane.add(chatPane, 0, 0);
 
         otherPlayers = new VBox();

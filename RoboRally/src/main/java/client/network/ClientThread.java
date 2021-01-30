@@ -522,13 +522,14 @@ public class ClientThread implements Runnable {
     private void handleCurrentPlayer(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof  CurrentPlayer) {
             CurrentPlayer currentPlayer = (CurrentPlayer) incomingMessage.getMessageBody();
-            //ToDo: Implement "CurrentPlayer" == Update GUI and turns
             if (currentPlayer.getPlayerID() == ID) {
                if (clientGameState.getActivePhase() == 0) {
                    Platform.runLater(() -> {
-                       gameBoardViewModel.showStartingPoints();
+                       gameBoardViewModel.getGameBoardController().initStartingPoints();
                    });
                }
+
+
             }
             logger.getLogger().info("Current player id " + currentPlayer.getPlayerID() + ".");
 
@@ -762,7 +763,14 @@ public class ClientThread implements Runnable {
     private void handleMovement(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof Movement) {
             Movement movement = (Movement) incomingMessage.getMessageBody();
+            int robotFigure = playerStateList.get(movement.getPlayerID()).getFigure();
+            int currentPosition = playerStateList.get(movement.getPlayerID()).getCurrentPosition();
             //ToDo: Update GUI Movement
+                Platform.runLater(() -> {
+                    gameBoardViewModel.getGameBoardController().move(robotFigure, currentPosition, movement.getTo());
+                });
+
+            playerStateList.get(movement.getPlayerID()).setCurrentPosition(movement.getTo());
             
             logger.getLogger().info("Player with id " + movement.getPlayerID() + " moved his robot to field number " + movement.getTo() + ".");
         } else {

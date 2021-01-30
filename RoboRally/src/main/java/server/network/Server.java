@@ -9,6 +9,7 @@ import utilities.messages.ActivePhase;
 import utilities.messages.CurrentCards;
 import utilities.messages.CurrentPlayer;
 import utilities.messages.GameStarted;
+import utilities.messages.Movement;
 import utilities.messages.PlayerAdded;
 import utilities.messages.PlayerStatus;
 import utilities.messages.YourCards;
@@ -16,12 +17,11 @@ import utilities.messages.YourCards;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Random;
-import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -32,7 +32,7 @@ public class Server {
     private final HashMap<Integer, Boolean> statusMap = new HashMap<>();
     //Temporary List for determining current player:
     private final LinkedList<Integer> playerIdList = new LinkedList<>();
-    private final LinkedList<Integer> playerListForCurrentCardsMessage = new LinkedList<>();
+    private final LinkedList<Integer> testListOfIds = new LinkedList<>();
 
 
     private final double protocolVersion = 1.0;
@@ -82,7 +82,7 @@ public class Server {
     public synchronized void addPlayer(int playerID, Player player) {
         playerMap.put(playerID, player);
         playerIdList.add(playerID);
-        playerListForCurrentCardsMessage.add(playerID);
+        testListOfIds.add(playerID);
         statusMap.put(playerID, false);
     }
 
@@ -228,14 +228,25 @@ public class Server {
         String[] cardArray = TestMessages.testCardsForProgrammingView;
         for (int i = 0; i < 5; i++) {
             ActiveCards[] currentCards = {
-                    new ActiveCards(playerListForCurrentCardsMessage.get(0),cardArray[random.nextInt(9)]),
-                    new ActiveCards(playerListForCurrentCardsMessage.get(1),cardArray[random.nextInt(9)])
+                    new ActiveCards(testListOfIds.get(0),cardArray[random.nextInt(9)]),
+                    new ActiveCards(testListOfIds.get(1),cardArray[random.nextInt(9)])
             };
             String outgoingMessage = messageHandler.buildMessage("CurrentCards", new CurrentCards(currentCards));
             sendMessageToAllUsers(outgoingMessage);
         }
 
     }
+
+    public void sendSomeMovements() {
+        Random random = new Random();
+        for (int i = 0; i < 2000; i ++) {
+            String player1Move = messageHandler.buildMessage("Movement", new Movement(testListOfIds.get(0), random.nextInt(130)));
+            String player2Move = messageHandler.buildMessage("Movement", new Movement(testListOfIds.get(1), random.nextInt(130)));
+            sendMessageToAllUsers(player1Move);
+            sendMessageToAllUsers(player2Move);
+        }
+    }
+
 
     /*
      * END OF TESTING METHODS

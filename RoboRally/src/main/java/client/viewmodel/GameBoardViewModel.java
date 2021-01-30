@@ -57,11 +57,11 @@ public class GameBoardViewModel {
     }
 
     public void transmitStartingPosition(int position) {
-        startingPositions.remove(position);
         clientThread.sendStartingPosition(position);
     }
 
     public void setStartingPosition(int robotFigure, int position) {
+        startingPositions.remove(position);
         gameBoardController.setStartingPosition(robotFigure, position);
     }
 
@@ -80,7 +80,7 @@ public class GameBoardViewModel {
 
 
 
-    public void updateRobotPosition(int robotFigure, int oldRow, int oldColumn, int newRow, int newColumn) {
-       gameBoardController.updateRobotPosition(robotFigure, oldRow, oldColumn, newRow, newColumn);
+    public void move(int robotFigure, int currentPosition, int newPosition) {
+       gameBoardController.move(robotFigure, currentPosition, newPosition);
     }
 }

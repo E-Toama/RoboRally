@@ -7,13 +7,16 @@ import game.gameboard.BoardElement;
 import game.utilities.Position;
 import game.utilities.PositionLookUp;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import utilities.MyLogger;
 
 import java.util.HashSet;
+import java.util.logging.Logger;
 
 public class GameBoardController {
 
@@ -78,23 +81,38 @@ public class GameBoardController {
     private void transmitStartingPoint(Button startingPointButton) {
         int position = Integer.parseInt(startingPointButton.getId());
         gameBoardViewModel.transmitStartingPosition(position);
+        gameBoardViewModel.getStartingPositions().remove(position);
+        removeAllStartingPoints();
+    }
+
+    public void removeAllStartingPoints() {
         for (Button b : startingPointButtonList) {
-            b.setDisable(true);
-            b.setVisible(false);
+            Position p = PositionLookUp.positionToXY.get(Integer.parseInt(b.getId()));
+            if (gameTileArray[p.getX()][p.getY()].getChildren().get(1) instanceof Button) {
+                Logger.getLogger("GameBoardLogger").info("Removed that button from ButtonList at pos " + b.getId());
+                gameTileArray[p.getX()][p.getY()].getChildren().remove(1);
+            }
         }
     }
 
     public void setStartingPosition(int robotFigure, int position) {
         ImageView robotImage = RobotImageBuilder.buildRobotImage(robotFigure);
         Position p = PositionLookUp.positionToXY.get(position);
-        gameTileArray[p.getX()][p.getY()].getChildren().remove(1);
         gameTileArray[p.getX()][p.getY()].getChildren().add(robotImage);
-        startingPointButtonList.removeIf(b -> b.getId().equals(String.valueOf(position)));
 
     }
 
-    public void updateRobotPosition(int robotFigure, int oldRow, int oldColumn, int newRow, int newColumn) {
-        gameTileArray[newRow][newColumn].getChildren().add(deleteRobot(oldRow, oldColumn));
+    public void setOtherRobotStartingPosition(int robotFigure, int position) {
+        ImageView robotImage = RobotImageBuilder.buildRobotImage(robotFigure);
+        Position p = PositionLookUp.positionToXY.get(position);
+        gameTileArray[p.getX()][p.getY()].getChildren().add(robotImage);
+        gameBoardViewModel.getStartingPositions().removeIf(b -> b == position);
+    }
+
+    public void move(int robotFigure, int currentPosition, int newPosition) {
+        Position current = PositionLookUp.positionToXY.get(currentPosition);
+        Position newPos = PositionLookUp.positionToXY.get(newPosition);
+        gameTileArray[newPos.getX()][newPos.getY()].getChildren().add(deleteRobot(current.getX(), current.getY()));
     }
 
     private ImageView deleteRobot(int oldRow, int oldColumn) {
@@ -107,11 +125,5 @@ public class GameBoardController {
 
     public void setGameBoardViewModel(GameBoardViewModel gameBoardViewModel) {
         this.gameBoardViewModel = gameBoardViewModel;
-    }
-
-    public void setOtherRobotStartingPosition(int robotFigure, int position) {
-        ImageView robotImage = RobotImageBuilder.buildRobotImage(robotFigure);
-        Position p = PositionLookUp.positionToXY.get(position);
-        gameTileArray[p.getX()][p.getY()].getChildren().add(robotImage);
     }
 }

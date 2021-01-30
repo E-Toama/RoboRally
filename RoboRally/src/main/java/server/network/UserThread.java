@@ -328,9 +328,10 @@ public class UserThread implements Runnable {
                         String activePhase3 = messageHandler.buildMessage("ActivePhase", new ActivePhase(3));
                         server.sendMessageToAllUsers(activePhase3);
                         server.sendCurrentCards();
+                        server.sendSomeMovements();
                     }
                 };
-                timer.schedule(timerTask, 30000);
+                timer.schedule(timerTask, 3000);
             }
 
         } else {
