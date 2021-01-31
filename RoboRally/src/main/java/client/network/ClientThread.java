@@ -365,15 +365,6 @@ public class ClientThread implements Runnable {
                 playerMatModel.setPlayerState(clientPlayerState);
                 playerStateList.put(receivedMessage.getPlayer().getId(), clientPlayerState);
 
-                /* clientPlayerState = new ClientPlayerState();
-                playerMatModel = new PlayerMatModel();
-                playerMatModel.getPlayerMatController().initializePlayerMatView();
-                playerMatModel.setPlayerState(clientPlayerState);
-                clientPlayerState.setPlayerMatModel(playerMatModel);
-                clientPlayerState.setPlayerID(receivedMessage.getPlayer().getId());
-                clientPlayerState.setUserName(receivedMessage.getPlayer().getName());
-                clientPlayerState.setFigure(receivedMessage.getPlayer().getFigure());
-                playerStateList.put(receivedMessage.getPlayer().getId(), clientPlayerState);*/
 
 
 
@@ -991,26 +982,5 @@ public class ClientThread implements Runnable {
         mainViewModel.getMainViewController().setGameBoardPane(gameGrid);
 
     }
-
-/*    private Scene initMainView(GameBoard gameBoard) {
-        mainViewModel = new MainViewModel();
-        gameBoardViewModel = new GameBoardViewModel();
-        gameBoardViewModel.setGameBoard(gameBoard.getGameBoard());
-
-        gameBoardViewModel.getGameBoardController().initBoard();
-        try {
-            mainViewModel.getMainViewController().initializeMainView(playerStateList.size());
-            mainViewModel.getMainViewController().setGameBoardPane(gameBoardViewModel.getGameBoardController().getGameGrid());
-
-            //playerMatModel.getPlayerMatController().initializePlayerMatView();
-            mainViewModel.getMainViewController().setPlayerMatPane(playerMatModel.getPlayerMatController().getPlayerMat());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        return new Scene(mainViewModel.getMainViewController().getMainViewPane());
-    }*/
-
 
 }

@@ -13,6 +13,7 @@ public class PlayerMatModel {
     private ClientPlayerState playerState;
 
     private StringProperty userName = new SimpleStringProperty();
+    private StringProperty robotName = new SimpleStringProperty();
     private StringProperty checkpointsreached = new SimpleStringProperty();
     private StringProperty energyPoints = new SimpleStringProperty();
     private StringProperty pickedUpDamageCards = new SimpleStringProperty();
@@ -21,6 +22,8 @@ public class PlayerMatModel {
 
     public StringProperty getUserName() {
         return userName;
+    }
+    public StringProperty getRobotName() {return robotName;
     }
     public StringProperty getCheckpointsreached() {
         return checkpointsreached;
@@ -45,8 +48,8 @@ public class PlayerMatModel {
         clientThread.setPlayerMatModel(this);
         //Model <-> Controller
         this.playerMatController = playerMatController;
-        
-        //Default initialization of PlayerState - will be overwritten with
+
+        //Default initialization of PlayerState - will be overwritten with setter in ClientThread (handlePlayerAdded)
         playerState = new ClientPlayerState();
 
         //Setting all values to the Getter-Values of PlayerState

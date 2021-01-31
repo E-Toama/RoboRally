@@ -39,19 +39,19 @@ public class PlayerMatController {
 
     //Dynamic text values
     @FXML
-    private Label userNameValue = new Label();
+    private Label userNameValue;
     @FXML
-    private Label robotValue = new Label();
+    private Label robotValue;
     @FXML
-    private Label checkPointValue = new Label();
+    private Label checkPointValue;
     @FXML
-    private Label cardsInDeckValue = new Label();
+    private Label cardsInDeckValue;
     @FXML
-    private Label discardedCardsValue = new Label();
+    private Label discardedCardsValue;
     @FXML
-    private Label damageCardsValue = new Label();
+    private Label damageCardsValue;
     @FXML
-    private Label energyCubesValue = new Label();
+    private Label energyCubesValue;
 
 
     ImageView[] registers;
@@ -59,12 +59,8 @@ public class PlayerMatController {
 
     @FXML
     public void initialize() {
-
-        //Static Values
         userNameValue.textProperty().bindBidirectional(playerMatModel.getUserName());
-        robotValue.setText(Robot.getRobotName(playerMatModel.getPlayerState().getFigure()));
-
-        //Dynamic Values
+        robotValue.textProperty().bindBidirectional(playerMatModel.getRobotName());
         checkPointValue.textProperty().bindBidirectional(playerMatModel.getCheckpointsreached());
         cardsInDeckValue.textProperty().bindBidirectional(playerMatModel.getDeckCount());
         discardedCardsValue.textProperty().bindBidirectional(playerMatModel.getDiscardedCount());
