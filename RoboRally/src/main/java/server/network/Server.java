@@ -229,8 +229,8 @@ public class Server {
         String[] cardArray = TestMessages.testCardsForProgrammingView;
         for (int i = 0; i < 5; i++) {
             ActiveCards[] currentCards = {
-                    new ActiveCards(testListOfIds.get(0),cardArray[random.nextInt(9)]),
-                    new ActiveCards(testListOfIds.get(1),cardArray[random.nextInt(9)])
+                    new ActiveCards(testListOfIds.get(0),cardArray[random.nextInt(cardArray.length)]),
+                    new ActiveCards(testListOfIds.get(1),cardArray[random.nextInt(cardArray.length)])
             };
             String outgoingMessage = messageHandler.buildMessage("CurrentCards", new CurrentCards(currentCards));
             sendMessageToAllUsers(outgoingMessage);

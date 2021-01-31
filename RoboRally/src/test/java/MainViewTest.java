@@ -23,7 +23,7 @@ public class MainViewTest extends Application {
 
 
     int otherPlayerMats = 3;
-    boolean programmingPhase = false;  // false = show PlayerMat, true = show ProgrammingMat
+    boolean programmingPhase = true;  // false = show PlayerMat, true = show ProgrammingMat
     String track = "DizzyHighway"; // "ExtraCrispy" or "DizzyHighway"
     String[] availableMaps = {"DizzyHighway", "ExtraCrispy"};
     String[] testCardsForProgrammingView = TestMessages.testCardsForProgrammingView;

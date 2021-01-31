@@ -68,6 +68,18 @@ public class ImageBuilder {
             case "CardBack":
                 cardImage = new Image("Cards/PlayerDeckBack.png");
                 return new ImageView(cardImage);
+            case "Virus":
+                cardImage = new Image("Cards/Virus.png");
+                return new ImageView(cardImage);
+            case "Worm":
+                cardImage = new Image("Cards/Worm.png");
+                return new ImageView(cardImage);
+            case "Trojan":
+                cardImage = new Image("Cards/Trojan_Horse.png");
+                return new ImageView(cardImage);
+            case "Spam":
+                cardImage = new Image("Cards/Spam.png");
+                return new ImageView(cardImage);
             default:
                 cardImage = new Image("Cards/PlayerDeckBack.png");
                 return new ImageView(cardImage);
