@@ -43,8 +43,6 @@ public class InGameChatController  {
 
   public void changeDestination() {
 
-    System.out.println(inGameChatModel.getClientThread().messageMatchMap.get(dropDown3.getValue()));
-    System.out.println(dropDown3.getValue());
     inGameChatModel.changeDestination(inGameChatModel.getClientThread().messageMatchMap.get(dropDown3.getValue()));
 
   }
