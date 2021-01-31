@@ -156,6 +156,7 @@ public class ClientThread implements Runnable {
 
             establishConnection();
 
+            //ToDO: FOr Testing reasons, the MainView is now initialized right at the beginning. Can be moved anytime.
             initializeEmptyMainView();
 
             handleIncomingMessages();
