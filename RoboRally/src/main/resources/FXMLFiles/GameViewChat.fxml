@@ -23,7 +23,7 @@
     <children>
         <ScrollPane fx:id="miniChatListScrollPane" prefHeight="429.0" prefWidth="285.0" GridPane.rowIndex="1">
             <content>
-                <ListView fx:id="miniChatListView" prefHeight="500.0" prefWidth="315.0" />
+                <ListView fx:id="miniChatListView" prefHeight="500.0" prefWidth="285.0" />
             </content>
         </ScrollPane>
         <HBox fx:id="miniChatHbox" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
