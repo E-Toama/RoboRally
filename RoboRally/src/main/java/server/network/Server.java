@@ -12,6 +12,7 @@ import utilities.messages.GameStarted;
 import utilities.messages.Movement;
 import utilities.messages.PlayerAdded;
 import utilities.messages.PlayerStatus;
+import utilities.messages.PlayerTurning;
 import utilities.messages.YourCards;
 
 import java.io.IOException;
@@ -237,13 +238,24 @@ public class Server {
 
     }
 
-    public void sendSomeMovements() {
+    public void sendSomeMovementsAndTurns() {
         Random random = new Random();
-        for (int i = 0; i < 2000; i ++) {
+        String[] turnStrings = {"clockwise", "counterClockwise"};
+        for (int i = 0; i < 10; i ++) {
             String player1Move = messageHandler.buildMessage("Movement", new Movement(testListOfIds.get(0), random.nextInt(130)));
             String player2Move = messageHandler.buildMessage("Movement", new Movement(testListOfIds.get(1), random.nextInt(130)));
             sendMessageToAllUsers(player1Move);
             sendMessageToAllUsers(player2Move);
+
+            String player1Turn = messageHandler.buildMessage("PlayerTurning", new PlayerTurning(testListOfIds.get(0), turnStrings[random.nextInt(2)]));
+            String player2Turn = messageHandler.buildMessage("PlayerTurning", new PlayerTurning(testListOfIds.get(1), turnStrings[random.nextInt(2)]));
+            sendMessageToAllUsers(player1Turn);
+            sendMessageToAllUsers(player2Turn);
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 

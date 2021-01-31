@@ -115,6 +115,18 @@ public class GameBoardController {
         gameTileArray[newPos.getX()][newPos.getY()].getChildren().add(deleteRobot(current.getX(), current.getY()));
     }
 
+    public void playerTurning(int currentPosition, String direction) {
+        Position current = PositionLookUp.positionToXY.get(currentPosition);
+        ImageView robotImage = deleteRobot(current.getX(), current.getY());
+        if (direction.equals("clockwise")) {
+            robotImage.setRotate(90);
+        } else {
+            robotImage.setRotate(270);
+        }
+        gameTileArray[current.getX()][current.getY()].getChildren().add(robotImage);
+
+    }
+
     private ImageView deleteRobot(int oldRow, int oldColumn) {
         return (ImageView) gameTileArray[oldRow][oldColumn].getChildren().remove(1);
     }

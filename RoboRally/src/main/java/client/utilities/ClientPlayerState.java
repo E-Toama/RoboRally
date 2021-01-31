@@ -45,7 +45,8 @@ public class ClientPlayerState {
     //Setters that include update-commands for ViewModel
     public void setDirection(String direction) {
         this.direction = direction;
-        playerMatModel.updatePlayerStatus();
+        //ToDO: FOr some strange reason the playerMatModel is null, commented out the update method:
+        //playerMatModel.updatePlayerStatus();
     }
     public void setCheckpointsreached(int checkpointsreached) {
         this.checkpointsreached = checkpointsreached;

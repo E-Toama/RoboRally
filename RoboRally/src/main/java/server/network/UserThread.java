@@ -1,6 +1,5 @@
 package server.network;
 
-import game.cards.ActiveCards;
 import game.player.Player;
 import utilities.MessageHandler;
 import utilities.MyLogger;
@@ -14,8 +13,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class UserThread implements Runnable {
 
@@ -328,7 +325,7 @@ public class UserThread implements Runnable {
                         String activePhase3 = messageHandler.buildMessage("ActivePhase", new ActivePhase(3));
                         server.sendMessageToAllUsers(activePhase3);
                         server.sendCurrentCards();
-                        server.sendSomeMovements();
+                        server.sendSomeMovementsAndTurns();
                     }
                 };
                 timer.schedule(timerTask, 3000);
