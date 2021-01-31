@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<GridPane fx:id="gridPane" hgap="7.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="873.0" prefWidth="546.0" style="-fx-background-color: #0B0B3B #0B0B3B #0B0B3B #0B0B3B;" vgap="5.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.WelcomeController">
+<GridPane fx:id="gridPane" hgap="7.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="546.0" style="-fx-background-color: #0B0B3B #0B0B3B #0B0B3B #0B0B3B;" vgap="5.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.WelcomeController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="667.1327514648438" minWidth="10.0" prefWidth="452.41088485717773" />
   </columnConstraints>
