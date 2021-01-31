@@ -2,32 +2,17 @@ package client.view;
 
 import client.utilities.ImageBuilder;
 import client.viewmodel.ProgrammingViewModel;
-import com.sun.javafx.event.CompositeEventHandler;
-import com.sun.javafx.scene.control.SelectedCellsMap;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
-import utilities.messages.SelectCard;
-
-import java.io.IOException;
-import java.util.HashMap;
 
 public class ProgrammingController {
 
@@ -153,7 +138,7 @@ public class ProgrammingController {
             if (!btn.isChosen())
             btn.setDisable(true);
             btn.setStyle("-fx-background-color: #3e0202");
-            btn.setGraphic(ImageBuilder.createCardImage("default"));
+            btn.setGraphic(ImageBuilder.adjustToProgrammingView("default"));
         }
     }
 

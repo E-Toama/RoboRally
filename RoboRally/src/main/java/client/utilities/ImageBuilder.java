@@ -2,29 +2,76 @@ package client.utilities;
 
 import game.gameboard.BoardElement;
 import game.gameboard.gameboardfieldobjects.*;
-import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 
 public class ImageBuilder {
 
-    private static int tileWidth = 50;
-    private static int cardWidth = 80;
+    private static final int TILE_WIDTH = 50;
+    private static final int PROGRAMMING_CARD_WIDTH = 80;
+    private static final int PLAYERMAT_CARD_HEIGHT = 180;
 
 
     private static ImageView adjustToBoard(Image image) {
         ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(tileWidth);
+        imageView.setFitHeight(TILE_WIDTH);
         imageView.setPreserveRatio(true);
         return imageView;
     }
 
-    private static ImageView adjustToSlot(Image image) {
-        ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(cardWidth);
+    public static ImageView adjustToProgrammingView(String cardString) {
+        ImageView imageView = createCardImageView(cardString);
+        imageView.setFitWidth(PROGRAMMING_CARD_WIDTH);
         imageView.setPreserveRatio(true);
         return imageView;
+    }
+
+    public static ImageView adjustToPlayerMatView(String cardString) {
+        ImageView imageView = createCardImageView(cardString);
+        imageView.setFitHeight(PLAYERMAT_CARD_HEIGHT);
+        imageView.setPreserveRatio(true);
+        return imageView;
+    }
+
+
+    public static ImageView createCardImageView(String cardType) {
+        Image cardImage;
+        switch (cardType) {
+            case "MoveI":
+                cardImage = new Image("Cards/MoveOne.png");
+                return new ImageView(cardImage);
+            case "MoveII":
+                cardImage = new Image("Cards/MoveTwo.png");
+                return new ImageView(cardImage);
+            case "MoveIII":
+                cardImage = new Image("Cards/MoveThree.png");
+                return new ImageView(cardImage);
+            case "TurnLeft":
+                cardImage = new Image("Cards/LeftTurn.png");
+                return new ImageView(cardImage);
+            case "TurnRight":
+                cardImage = new Image("Cards/RightTurn.png");
+                return new ImageView(cardImage);
+            case "UTurn":
+                cardImage = new Image("Cards/UTurn.png");
+                return new ImageView(cardImage);
+            case "BackUp":
+                cardImage = new Image("Cards/MoveBack.png");
+                return new ImageView(cardImage);
+            case "PowerUp":
+                cardImage = new Image("Cards/PowerUp.png");
+                return new ImageView(cardImage);
+            case "Again":
+                cardImage = new Image("Cards/Again.png");
+                return new ImageView(cardImage);
+            case "CardBack":
+                cardImage = new Image("Cards/PlayerDeckBack.png");
+                return new ImageView(cardImage);
+            default:
+                cardImage = new Image("Cards/PlayerDeckBack.png");
+                return new ImageView(cardImage);
+        }
     }
 
     public static ImageView buildImage(BoardElement boardElement) {
@@ -263,41 +310,5 @@ public class ImageBuilder {
         Image laser3 = new Image("Tiles/Laser_3.png");
         return adjustToBoard(laser3);
 
-    }
-
-    public static ImageView createCardImage(String cardType) {
-        Image cardImage;
-            switch (cardType) {
-                case "MoveI":
-                    cardImage = new Image("Cards/MoveOne.png");
-                    return adjustToSlot(cardImage);
-                case "MoveII":
-                    cardImage = new Image("Cards/MoveTwo.png");
-                    return adjustToSlot(cardImage);
-                case "MoveIII":
-                    cardImage = new Image("Cards/MoveThree.png");
-                    return adjustToSlot(cardImage);
-                case "TurnLeft":
-                    cardImage = new Image("Cards/LeftTurn.png");
-                    return adjustToSlot(cardImage);
-                case "TurnRight":
-                    cardImage = new Image("Cards/RightTurn.png");
-                    return adjustToSlot(cardImage);
-                case "UTurn":
-                    cardImage = new Image("Cards/UTurn.png");
-                    return adjustToSlot(cardImage);
-                case "BackUp":
-                    cardImage = new Image("Cards/MoveBack.png");
-                    return adjustToSlot(cardImage);
-                case "PowerUp":
-                    cardImage = new Image("Cards/PowerUp.png");
-                    return adjustToSlot(cardImage);
-                case "Again":
-                    cardImage = new Image("Cards/Again.png");
-                    return adjustToSlot(cardImage);
-                default:
-                    cardImage = new Image("Cards/PlayerDeckBack.png");
-                    return adjustToSlot(cardImage);
-            }
     }
 }

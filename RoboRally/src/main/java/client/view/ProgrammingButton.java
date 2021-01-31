@@ -4,8 +4,6 @@ package client.view;
 import client.utilities.ImageBuilder;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 public class ProgrammingButton extends Button {
     private String cardString;
@@ -18,7 +16,7 @@ public class ProgrammingButton extends Button {
         this.register = -1;
         this.number = number;
         this.cardString = cardString;
-        this.setGraphic(ImageBuilder.createCardImage(cardString));
+        this.setGraphic(ImageBuilder.adjustToProgrammingView(cardString));
         chosen = false;
     }
 

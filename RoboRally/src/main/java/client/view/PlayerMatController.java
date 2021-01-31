@@ -83,19 +83,11 @@ public class PlayerMatController {
 
     public void createCardsSlots(){
 
-            Image backside = new Image(cardBack);
-
             for (int i = 0; i < 5; i++) {
-                registers[i] = adjustCard(new ImageView(backside));
+                registers[i] = ImageBuilder.adjustToPlayerMatView("CardBack");
                 playerMatPane.add(registers[i], i+1, 0);
             }
 
-    }
-
-    private ImageView adjustCard(ImageView original) {
-        original.setFitHeight(180);
-        original.setPreserveRatio(true);
-        return original;
     }
 
     public GridPane getPlayerMat(){
@@ -103,7 +95,7 @@ public class PlayerMatController {
     }
 
     public void setTakenRegister(String card) {
-        ImageView cardToDisplay = adjustCard(ImageBuilder.createCardImage(card));
+        ImageView cardToDisplay = ImageBuilder.adjustToPlayerMatView(card);
         registers[registerForAnimation] = cardToDisplay;
         playerMatPane.add(cardToDisplay, registerForAnimation+1, 0);
         registerForAnimation++;
