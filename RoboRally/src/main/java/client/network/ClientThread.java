@@ -4,6 +4,7 @@ import client.utilities.ClientGameState;
 import client.utilities.ClientPlayerState;
 import client.view.GameBoardController;
 import client.view.MainViewController;
+import client.view.MapChoiceDialog;
 import client.view.PlayerMatController;
 import client.view.ProgrammingController;
 import client.view.ViewController;
@@ -207,6 +208,10 @@ public class ClientThread implements Runnable {
 
                     case "PlayerStatus":
                         handlePlayerStatus(incomingMessage);
+                        break;
+
+                    case "SelectMap":
+                        handleSelectMap(incomingMessage);
                         break;
 
                     case "GameStarted":
@@ -445,12 +450,30 @@ public class ClientThread implements Runnable {
 
     }
 
+    private void handleSelectMap(Message incomingMessage) throws IOException {
+        if (incomingMessage.getMessageBody() instanceof SelectMap){
+            SelectMap receivedMessage = (SelectMap) incomingMessage.getMessageBody();
+            MapChoiceDialog mapChoiceDialog = new MapChoiceDialog();
+            Platform.runLater(() -> {
+                mapChoiceDialog.show(receivedMessage.getAvailableMaps());
+            } );
+
+        } else {
+            logger.getLogger().severe("Message body error in handleSelectMap method.");
+            throw new IOException("Something went wrong! Invalid Message Body! (Not instance of SelectMap)");
+
+        }
+    }
+
     private void handleGameStarted(Message incomingMessage) throws IOException {
 
         if (incomingMessage.getMessageBody() instanceof GameStarted){
             GameStarted receivedMessage = (GameStarted) incomingMessage.getMessageBody();
             GameBoard gameBoard = new GameBoard(receivedMessage.getMap());
-            gameBoardViewModel.setGameBoard(gameBoard.getGameBoard());
+            Platform.runLater(() -> {
+                gameBoardViewModel.setGameBoard(gameBoard.getGameBoard());
+            });
+
             Scene mainScene = new Scene(mainViewModel.getMainViewController().getMainViewPane());
             Platform.runLater(() -> {
                 ViewController.getViewController().setScene(mainScene);
@@ -834,6 +857,7 @@ public class ClientThread implements Runnable {
             int playerID = playerTurning.getPlayerID();
             int currentPosition = playerStateList.get(playerID).getCurrentPosition();
             String direction = playerTurning.getDirection();
+            //ToDo: First Working Test for Self-Updating PlayerMat is bypassing ClientPlayerState
             Platform.runLater(()-> {
                 gameBoardViewModel.getGameBoardController().playerTurning(currentPosition, direction);
             });
@@ -851,6 +875,10 @@ public class ClientThread implements Runnable {
             Energy energy = (Energy) incomingMessage.getMessageBody();
             //TODO: Has the player got energy or he has it already? update log according to answer.
             logger.getLogger().info("Player with id " + energy.getPlayerID() + " has " + energy.getCount() + " energy cubes.");
+            Platform.runLater(() -> {
+                playerMatModel.setEnergyPoints(energy.getCount());
+            });
+
             playerStateList.get(energy.getPlayerID()).setEnergyPoints(energy.getCount());
             //ToDo: Update GUI Energy - maybe switch fields from full to empty?
         } else {
@@ -947,6 +975,11 @@ public class ClientThread implements Runnable {
     public void sendSelectedCard(String selectedCard, int register) {
         String outgoingMessage = messageHandler.buildMessage("SelectCard", new SelectCard(selectedCard, register));
         outgoing.println(outgoingMessage);
+    }
+
+    public void sendSelectedMap(String userChoice) {
+        String outgoingMessage = messageHandler.buildMessage("MapSelected", new MapSelected(userChoice));
+        outgoing.println(userChoice);
     }
 
 

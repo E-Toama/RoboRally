@@ -279,6 +279,7 @@ public class UserThread implements Runnable {
                 outgoing.println(error);
                 logger.getLogger().warning("Error '" + error + "' happend.");
             }
+            server.sendSomeStatusUpdates();
             logger.getLogger().info(player.getName() + " chose position " + chosenStartingPoint + " as his starting point.");
         } else {
             logger.getLogger().severe("Message body error in handleSetStartingPoint method.");

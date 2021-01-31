@@ -62,6 +62,10 @@ public class PlayerMatModel {
         
     }
 
+    public void setEnergyPoints(int energyPoints) {
+        int energyPointSum = energyPoints + Integer.parseInt(this.energyPoints.getValue());
+        this.energyPoints.set(String.valueOf(energyPointSum));
+    }
 
     public ClientPlayerState getPlayerState() {
         return playerState;

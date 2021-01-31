@@ -23,10 +23,11 @@ public class Server {
     private final HashMap<Integer, PrintWriter> printWriterMap = new HashMap<>();
     private final HashMap<Integer, Player> playerMap = new HashMap<>();
     private final HashMap<Integer, Boolean> statusMap = new HashMap<>();
-    //Temporary List for determining current player:
+
+    //BEGIN Temporary Stuff for Testing
     private final LinkedList<Integer> playerIdList = new LinkedList<>();
     private final LinkedList<Integer> testListOfIds = new LinkedList<>();
-
+    //END Temporary Stuff for Testing
 
     private final double protocolVersion = 1.0;
     private int currentID = 972123;
@@ -252,8 +253,8 @@ public class Server {
     }
 
     public void sendSomeStatusUpdates() {
-        String energy = messageHandler.buildMessage("Energy", new Energy(testListOfIds.get(0), 1));
-        String energy2 = messageHandler.buildMessage("Energy", new Energy(testListOfIds.get(1), 3));
+        String energy = messageHandler.buildMessage("Energy", new Energy(testListOfIds.get(0), 3));
+        String energy2 = messageHandler.buildMessage("Energy", new Energy(testListOfIds.get(1), 7));
         sendMessageToAllUsers(energy);
         sendMessageToAllUsers(energy2);
     }
