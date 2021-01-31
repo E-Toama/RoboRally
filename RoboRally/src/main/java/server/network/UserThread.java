@@ -326,6 +326,7 @@ public class UserThread implements Runnable {
                         server.sendMessageToAllUsers(activePhase3);
                         server.sendCurrentCards();
                         server.sendSomeMovementsAndTurns();
+                        server.sendSomeStatusUpdates();
                     }
                 };
                 timer.schedule(timerTask, 3000);

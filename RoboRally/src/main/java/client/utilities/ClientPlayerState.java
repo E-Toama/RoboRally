@@ -45,8 +45,8 @@ public class ClientPlayerState {
 
     public void setDirection(String direction) {
         this.direction = direction;
-        //ToDO: FOr some strange reason the playerMatModel is null, commented out the update method:
     }
+
     public void setCheckpointsreached(int checkpointsreached) {
         this.checkpointsreached = checkpointsreached;
     }

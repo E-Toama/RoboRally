@@ -59,6 +59,19 @@ public class PlayerMatController {
 
     @FXML
     public void initialize() {
+
+        //Static Values
+        userNameValue.textProperty().bindBidirectional(playerMatModel.getUserName());
+        robotValue.setText(Robot.getRobotName(playerMatModel.getPlayerState().getFigure()));
+
+        //Dynamic Values
+        checkPointValue.textProperty().bindBidirectional(playerMatModel.getCheckpointsreached());
+        cardsInDeckValue.textProperty().bindBidirectional(playerMatModel.getDeckCount());
+        discardedCardsValue.textProperty().bindBidirectional(playerMatModel.getDiscardedCount());
+        damageCardsValue.textProperty().bindBidirectional(playerMatModel.getPickedUpDamageCards());
+        energyCubesValue.textProperty().bindBidirectional(playerMatModel.getEnergyPoints());
+
+        //Controller-Specific actions
         registers = new ImageView[5];
         registerForAnimation = 0;
         createCardsSlots();
@@ -66,17 +79,6 @@ public class PlayerMatController {
 
     public PlayerMatModel getPlayerMatModel() {
         return playerMatModel;
-    }
-
-    public void updateLabels() {
-        userNameValue.setText(playerMatModel.getPlayerState().getUserName());
-        robotValue.setText(String.valueOf(Robot.getRobotByFigure(playerMatModel.getPlayerState().getFigure())));
-        checkPointValue.setText(String.valueOf(playerMatModel.getPlayerState().getCheckpointsreached()));
-        cardsInDeckValue.setText(String.valueOf(playerMatModel.getPlayerState().getDeckCount()));
-        discardedCardsValue.setText(String.valueOf(playerMatModel.getPlayerState().getDiscardedCount()));
-        damageCardsValue.setText(String.valueOf(playerMatModel.getPlayerState().getPickedUpDamageCards()));
-        energyCubesValue.setText(String.valueOf(playerMatModel.getPlayerState().getEnergyPoints()));
-        
     }
 
     public void createCardsSlots(){

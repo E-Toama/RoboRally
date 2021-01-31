@@ -5,15 +5,7 @@ import game.cards.ActiveCards;
 import game.gameboard.GameBoardMapObject;
 import game.player.Player;
 import utilities.MessageHandler;
-import utilities.messages.ActivePhase;
-import utilities.messages.CurrentCards;
-import utilities.messages.CurrentPlayer;
-import utilities.messages.GameStarted;
-import utilities.messages.Movement;
-import utilities.messages.PlayerAdded;
-import utilities.messages.PlayerStatus;
-import utilities.messages.PlayerTurning;
-import utilities.messages.YourCards;
+import utilities.messages.*;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -257,6 +249,13 @@ public class Server {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void sendSomeStatusUpdates() {
+        String energy = messageHandler.buildMessage("Energy", new Energy(testListOfIds.get(0), 1));
+        String energy2 = messageHandler.buildMessage("Energy", new Energy(testListOfIds.get(1), 3));
+        sendMessageToAllUsers(energy);
+        sendMessageToAllUsers(energy2);
     }
 
 
