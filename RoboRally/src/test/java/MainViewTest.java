@@ -1,6 +1,7 @@
 import client.network.ClientThread;
 import client.view.GameBoardController;
 import client.view.MainViewController;
+import client.view.MapChoiceDialog;
 import client.view.ProgrammingController;
 import client.view.ViewController;
 import client.viewmodel.EnemyMatModel;
@@ -24,7 +25,7 @@ public class MainViewTest extends Application {
     int otherPlayerMats = 3;
     boolean programmingPhase = false;  // false = show PlayerMat, true = show ProgrammingMat
     String track = "DizzyHighway"; // "ExtraCrispy" or "DizzyHighway"
-
+    String[] availableMaps = {"DizzyHighway", "ExtraCrispy"};
     String[] testCardsForProgrammingView = TestMessages.testCardsForProgrammingView;
 
     public static void main(String[] args) {
@@ -39,6 +40,10 @@ public class MainViewTest extends Application {
         PlayerMatModel playerMatModel = new PlayerMatModel();
         playerMatModel.getPlayerMatController().initializePlayerMatView();
         mainViewModel.getMainViewController().setPlayerMatPane(playerMatModel.getPlayerMatController().getPlayerMat());
+
+        MapChoiceDialog mapChoiceDialog = new MapChoiceDialog();
+        mapChoiceDialog.show(availableMaps);
+        track = mapChoiceDialog.getUserChoice();
 
         GameBoardViewModel gameBoardViewModel = new GameBoardViewModel();
         gameBoardViewModel.setGameBoard(new GameBoard(track).getGameBoard());

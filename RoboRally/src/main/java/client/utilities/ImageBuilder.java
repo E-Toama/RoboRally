@@ -78,6 +78,7 @@ public class ImageBuilder {
 
         GameBoardFieldObject[] fields = boardElement.getField();
 
+        // If there is only one element to display (e.g. "Empty")
         if (fields.length == 1) {
             String type = fields[0].getType();
             GameBoardFieldObject gameBoardFieldObject = fields[0];
@@ -208,7 +209,7 @@ public class ImageBuilder {
                     }
             }
 
-
+            // If there are two elements to display (e.g. "Wall and Laser")
         } else if (fields.length == 2) {
             /*
             *   Wall, Laser
@@ -281,9 +282,8 @@ public class ImageBuilder {
 
 
 
-
+            // If there are three elements to display (e.g. Wall+Laser+Checkpoint)
         } else if (fields.length == 3) {
-            //ImageView: Wall+Laser+Checkpoint
 
             try {
                 WallFieldObject wallFieldObject = (WallFieldObject) fields[0];
