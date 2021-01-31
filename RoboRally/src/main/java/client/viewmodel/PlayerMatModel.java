@@ -10,13 +10,12 @@ public class PlayerMatModel {
     private PlayerMatController playerMatController;
     private ClientPlayerState playerState;
 
-    public PlayerMatModel() {
+    public PlayerMatModel(PlayerMatController playerMatController) {
         //Client <-> Model
         clientThread = ClientThread.getInstance();
         clientThread.setPlayerMatModel(this);
         //Model <-> Controller
-        playerMatController = new PlayerMatController();
-        playerMatController.setPlayerMatModel(this);
+        this.playerMatController = playerMatController;
     }
 
     public ClientPlayerState getPlayerState() {
@@ -26,11 +25,6 @@ public class PlayerMatModel {
     public void setPlayerState(ClientPlayerState state) {
         this.playerState = state;
     }
-
-    public void updatePlayerStatus() {
-        playerMatController.updateLabels();
-    }
-
 
     public PlayerMatController getPlayerMatController() {
         return playerMatController;

@@ -1,6 +1,7 @@
 package client.utilities;
 
 import client.viewmodel.PlayerMatModel;
+import game.player.Player;
 
 public class ClientPlayerState {
 
@@ -35,42 +36,33 @@ public class ClientPlayerState {
        direction = "";
     }
 
-
-    // Used for update commands
-    public void setPlayerMatModel(PlayerMatModel playerMatModel) {
-        this.playerMatModel = playerMatModel;
+    public void setPlayerValues(Player player) {
+        this.userName = player.getName();
+        this.figure = player.getFigure();
+        this.playerID = player.getId();
     }
 
 
-    //Setters that include update-commands for ViewModel
     public void setDirection(String direction) {
         this.direction = direction;
         //ToDO: FOr some strange reason the playerMatModel is null, commented out the update method:
-        //playerMatModel.updatePlayerStatus();
     }
     public void setCheckpointsreached(int checkpointsreached) {
         this.checkpointsreached = checkpointsreached;
-        playerMatModel.updatePlayerStatus();
     }
     public void setEnergyPoints(int energyPoints) {
         this.energyPoints = energyPoints;
-        playerMatModel.updatePlayerStatus();
     }
     public void setPickedUpDamageCards(int pickedUpDamageCards) {
         this.pickedUpDamageCards = pickedUpDamageCards;
-        playerMatModel.updatePlayerStatus();
     }
     public void setDeckCount(int deckCount) {
         this.deckCount = deckCount;
-        playerMatModel.updatePlayerStatus();
     }
     public void setDiscardedCount(int discardedCount) {
         this.discardedCount = discardedCount;
-        playerMatModel.updatePlayerStatus();
     }
 
-
-    // Traditional setters (without update commands to model)
     public void setCurrentPlayer(boolean currentPlayer) {
         isCurrentPlayer = currentPlayer;
     }

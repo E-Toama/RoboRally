@@ -15,7 +15,7 @@ import java.io.IOException;
 
 public class PlayerMatController {
 
-    private PlayerMatModel playerMatModel;
+    private PlayerMatModel playerMatModel = new PlayerMatModel(this);
 
     @FXML
     private GridPane playerMatPane;
@@ -54,20 +54,18 @@ public class PlayerMatController {
     private Label energyCubesValue = new Label();
 
 
-    String cardBack = "Cards/PlayerDeckBack.png";
-    ImageView[] registers = new ImageView[5];
-
+    ImageView[] registers;
     int registerForAnimation = 0;
 
-
-    public void initializePlayerMatView() throws IOException {
-        FXMLLoader playerMatLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/PlayerMat.fxml"));
-        playerMatPane = playerMatLoader.load();
+    @FXML
+    public void initialize() {
+        registers = new ImageView[5];
+        registerForAnimation = 0;
         createCardsSlots();
     }
 
-    public void setPlayerMatModel(PlayerMatModel playerMatModel) {
-        this.playerMatModel = playerMatModel;
+    public PlayerMatModel getPlayerMatModel() {
+        return playerMatModel;
     }
 
     public void updateLabels() {
@@ -82,7 +80,7 @@ public class PlayerMatController {
     }
 
     public void createCardsSlots(){
-
+            registers = new ImageView[5];
             for (int i = 0; i < 5; i++) {
                 registers[i] = ImageBuilder.adjustToPlayerMatView("CardBack");
                 playerMatPane.add(registers[i], i+1, 0);

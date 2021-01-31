@@ -38,15 +38,13 @@ public class GameBoardViewModel {
 
     public void setGameBoard(BoardElement[][] gameBoard) {
         this.gameBoard = gameBoard;
+        gameBoardController.initBoard();
     }
 
     public BoardElement[][] getGameBoard() {
         return gameBoard;
     }
 
-    public void setGameBoardController(GameBoardController gameBoardController) {
-        this.gameBoardController = gameBoardController;
-    }
 
     public GameBoardController getGameBoardController() {
         return gameBoardController;
@@ -77,7 +75,6 @@ public class GameBoardViewModel {
     public void updateBoard() {
         gameBoardController.updateBoard();
     }
-
 
 
     public void move(int robotFigure, int currentPosition, int newPosition) {

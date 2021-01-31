@@ -12,16 +12,18 @@ import java.io.IOException;
 
 public class MainViewController {
 
+    private MainViewModel mainViewModel = new MainViewModel(this);
 
     @FXML
     GridPane mainViewPane;
-    VBox otherPlayers;
-    GridPane playerMatPane;
-    GridPane programmingPane;
+    Parent playerMatPane;
+    Parent programmingPane;
     private GridPane gameBoardPane;
     private boolean isPlayerMatActive = true;
-    private MainViewModel mainViewModel;
 
+    public MainViewModel getMainViewModel() {
+        return mainViewModel;
+    }
 
     public void setMainViewModel(MainViewModel mainViewModel) {
         this.mainViewModel = mainViewModel;
@@ -29,28 +31,28 @@ public class MainViewController {
     }
 
     public void initializeMainView(int playerCount) throws IOException {
-        FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/MainView.fxml"));
-        mainViewPane = mainLoader.load();
+        /*FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/MainView.fxml"));
+        mainViewPane = mainLoader.load();*/
 
-        FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/GameViewChat.fxml"));
+       /* FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/GameViewChat.fxml"));
         Parent chatPane = chatLoader.load();
         mainViewPane.add(chatPane, 0, 0);
-
-        otherPlayers = new VBox();
+*/
+       /* otherPlayers = new VBox();
         for (int i = 0; i < playerCount; i++) {
             FXMLLoader enemyMatLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/EnemyMat.fxml"));
             GridPane enemyMatPane = enemyMatLoader.load();
             otherPlayers.getChildren().add(enemyMatPane);
         }
-        mainViewPane.add(otherPlayers, 2, 0);
+        mainViewPane.add(otherPlayers, 2, 0);*/
+    }
+
+    public void setChatPane(Parent chatPane) {
+        mainViewPane.add(chatPane, 0, 0);
     }
 
     public void setProgrammingPane(GridPane programmingPane) {
         this.programmingPane = programmingPane;
-    }
-
-    public GridPane getMainViewPane() {
-        return mainViewPane;
     }
 
     public void setGameBoardPane(GridPane gameBoardPane) {
@@ -58,14 +60,14 @@ public class MainViewController {
         mainViewPane.add(gameBoardPane, 1, 0);
     }
 
-    public void setPlayerMatPane(GridPane playerMatPane) {
+    public void setPlayerMatPane(Parent playerMatPane) {
         this.playerMatPane = playerMatPane;
         mainViewPane.add(this.playerMatPane, 0, 1, 1, 2);
 
     }
 
-    public VBox getOtherPlayers() {
-        return otherPlayers;
+    public GridPane getMainViewPane() {
+        return mainViewPane;
     }
 
     public void switchScenes() {
@@ -81,4 +83,7 @@ public class MainViewController {
 
     }
 
+    public void setEnemyPane(GridPane enemyMatPane) {
+        mainViewPane.add(enemyMatPane, 2, 0);
+    }
 }
