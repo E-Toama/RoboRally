@@ -22,7 +22,6 @@ public class GameBoardController {
 
     GameBoardViewModel gameBoardViewModel;
 
-    @FXML
     GridPane gameGrid = new GridPane();
     private int verticalTiles = 10;
     private int horizontalTiles = 13;

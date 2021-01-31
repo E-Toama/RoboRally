@@ -11,18 +11,13 @@ public class MainViewModel {
     private final ClientThread clientThread;
     private MainViewController mainViewController;
 
-    public MainViewModel() {
+    public MainViewModel(MainViewController mainViewController) {
         //Client <-> Model
         this.clientThread = ClientThread.getInstance();
         clientThread.setMainViewModel(this);
         //Model <-> Controller
-        mainViewController = new MainViewController();
-        mainViewController.setMainViewModel(this);
-
-    }
-
-    public void setMainViewController(MainViewController mainViewController) {
         this.mainViewController = mainViewController;
+
     }
 
     public MainViewController getMainViewController() {

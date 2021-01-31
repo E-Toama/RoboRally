@@ -35,11 +35,9 @@ public class MainViewTest extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        MainViewModel mainViewModel = new MainViewModel();
-        mainViewModel.getMainViewController().initializeMainView(otherPlayerMats);
-        PlayerMatModel playerMatModel = new PlayerMatModel();
-        playerMatModel.getPlayerMatController().initializePlayerMatView();
-        mainViewModel.getMainViewController().setPlayerMatPane(playerMatModel.getPlayerMatController().getPlayerMat());
+        ClientThread clientThread = ClientThread.getInstance();
+        clientThread.initializeEmptyMainView();
+        MainViewModel mainViewModel = clientThread.getMainViewModel();
 
         MapChoiceDialog mapChoiceDialog = new MapChoiceDialog();
         mapChoiceDialog.show(availableMaps);

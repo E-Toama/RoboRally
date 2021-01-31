@@ -4,6 +4,7 @@ import client.utilities.ClientGameState;
 import client.utilities.ClientPlayerState;
 import client.view.GameBoardController;
 import client.view.MainViewController;
+import client.view.PlayerMatController;
 import client.view.ProgrammingController;
 import client.view.ViewController;
 import client.viewmodel.ChatViewModel;
@@ -26,6 +27,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import game.player.Player;
+import javafx.scene.layout.GridPane;
 import utilities.MessageHandler;
 import utilities.MyLogger;
 import utilities.messages.*;
@@ -123,6 +125,9 @@ public class ClientThread implements Runnable {
         this.mainViewModel = mainViewModel;
     }
 
+    public MainViewModel getMainViewModel() {
+        return mainViewModel;
+    }
 
     public void setGameBoardViewModel(GameBoardViewModel gameBoardViewModel) {
         this.gameBoardViewModel = gameBoardViewModel;
@@ -150,6 +155,8 @@ public class ClientThread implements Runnable {
         try{
 
             establishConnection();
+
+            initializeEmptyMainView();
 
             handleIncomingMessages();
 
@@ -352,16 +359,21 @@ public class ClientThread implements Runnable {
 
                 //Get all infos from Message for Playerstate
                 //ToDo: REWORK! Initialized PlayerMatModel here and bound to PlayerState for simple update mechanism
+
                 clientPlayerState = new ClientPlayerState();
+                //ToDO: Initialize PlayerMat-FXML and get Model-Instance-Variable
+                playerMatModel.setPlayerState(clientPlayerState);
+                playerStateList.put(receivedMessage.getPlayer().getId(), clientPlayerState);
+
+                /* clientPlayerState = new ClientPlayerState();
                 playerMatModel = new PlayerMatModel();
                 playerMatModel.getPlayerMatController().initializePlayerMatView();
                 playerMatModel.setPlayerState(clientPlayerState);
-                playerMatModel.updatePlayerStatus();
                 clientPlayerState.setPlayerMatModel(playerMatModel);
                 clientPlayerState.setPlayerID(receivedMessage.getPlayer().getId());
                 clientPlayerState.setUserName(receivedMessage.getPlayer().getName());
                 clientPlayerState.setFigure(receivedMessage.getPlayer().getFigure());
-                playerStateList.put(receivedMessage.getPlayer().getId(), clientPlayerState);
+                playerStateList.put(receivedMessage.getPlayer().getId(), clientPlayerState);*/
 
 
 
@@ -370,9 +382,7 @@ public class ClientThread implements Runnable {
             } else {
                 //Initialize OtherPlayerState and add to PlayerStateList
                 ClientPlayerState otherPlayerState = new ClientPlayerState();
-                otherPlayerState.setPlayerID(receivedMessage.getPlayer().getId());
-                otherPlayerState.setUserName(receivedMessage.getPlayer().getName());
-                otherPlayerState.setFigure(receivedMessage.getPlayer().getFigure());
+                otherPlayerState.setPlayerValues(receivedMessage.getPlayer());
                 playerStateList.put(receivedMessage.getPlayer().getId(), otherPlayerState);
 
 
@@ -448,9 +458,10 @@ public class ClientThread implements Runnable {
         if (incomingMessage.getMessageBody() instanceof GameStarted){
             GameStarted receivedMessage = (GameStarted) incomingMessage.getMessageBody();
             GameBoard gameBoard = new GameBoard(receivedMessage.getMap());
-            Scene mainViewScene = initMainView(gameBoard);
+            gameBoardViewModel.setGameBoard(gameBoard.getGameBoard());
+            Scene mainScene = new Scene(mainViewModel.getMainViewController().getMainViewPane());
             Platform.runLater(() -> {
-                ViewController.getViewController().setScene(mainViewScene);
+                ViewController.getViewController().setScene(mainScene);
             });
             logger.getLogger().info("Game started.");
 
@@ -946,7 +957,42 @@ public class ClientThread implements Runnable {
         outgoing.println(outgoingMessage);
     }
 
-    private Scene initMainView(GameBoard gameBoard) {
+
+    public void initializeEmptyMainView() throws IOException {
+        //Init MainView-Container
+        FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/MainView.fxml"));
+        GridPane mainViewPane = mainLoader.load();
+        mainViewModel = mainLoader.<MainViewController>getController().getMainViewModel();
+
+        //Load Chat-View-FXML
+        FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/GameViewChat.fxml"));
+        Parent chatPane = chatLoader.load();
+        mainViewModel.getMainViewController().setChatPane(chatPane);
+
+        //Load PlayerMat-FXML and initialize PlayerMatModel
+        FXMLLoader playerMatLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/PlayerMat.fxml"));
+        Parent playerMatPane = playerMatLoader.load();
+        playerMatModel = playerMatLoader.<PlayerMatController>getController().getPlayerMatModel();
+        mainViewModel.getMainViewController().setPlayerMatPane(playerMatPane);
+
+        //Load One Single OtherPlayers-FXML for Preview
+        FXMLLoader enemyMatLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/EnemyMat.fxml"));
+        GridPane enemyMatPane = enemyMatLoader.load();
+        mainViewModel.getMainViewController().setEnemyPane(enemyMatPane);
+
+        //Load ProgrammingView (non-FXML-based)
+        programmingViewModel = new ProgrammingViewModel();
+        GridPane programmingPane = programmingViewModel.getProgrammingController().getGridPane();
+        mainViewModel.getMainViewController().setProgrammingPane(programmingPane);
+
+        //Load GameBoard (non-FXML-based)
+        gameBoardViewModel = new GameBoardViewModel();
+        GridPane gameGrid = gameBoardViewModel.getGameBoardController().getGameGrid();
+        mainViewModel.getMainViewController().setGameBoardPane(gameGrid);
+
+    }
+
+/*    private Scene initMainView(GameBoard gameBoard) {
         mainViewModel = new MainViewModel();
         gameBoardViewModel = new GameBoardViewModel();
         gameBoardViewModel.setGameBoard(gameBoard.getGameBoard());
@@ -964,7 +1010,7 @@ public class ClientThread implements Runnable {
 
 
         return new Scene(mainViewModel.getMainViewController().getMainViewPane());
-    }
+    }*/
 
 
 }

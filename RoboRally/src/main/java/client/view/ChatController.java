@@ -48,9 +48,6 @@ public class ChatController {
 
     public void changeDestination() {
 
-         System.out.println(chatViewModel.getClientThread().messageMatchMap.get(dropDown2.getValue()));
-         System.out.println(dropDown2.getValue());
-
         chatViewModel.changeDestination(chatViewModel.getClientThread().messageMatchMap.get(dropDown2.getValue()));
 
     }

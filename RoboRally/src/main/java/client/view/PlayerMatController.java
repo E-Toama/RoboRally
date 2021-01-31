@@ -15,7 +15,7 @@ import java.io.IOException;
 
 public class PlayerMatController {
 
-    private PlayerMatModel playerMatModel;
+    private PlayerMatModel playerMatModel = new PlayerMatModel(this);
 
     @FXML
     private GridPane playerMatPane;
@@ -54,35 +54,35 @@ public class PlayerMatController {
     private Label energyCubesValue = new Label();
 
 
-    String cardBack = "Cards/PlayerDeckBack.png";
-    ImageView[] registers = new ImageView[5];
-
+    ImageView[] registers;
     int registerForAnimation = 0;
 
+    @FXML
+    public void initialize() {
 
-    public void initializePlayerMatView() throws IOException {
-        FXMLLoader playerMatLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/PlayerMat.fxml"));
-        playerMatPane = playerMatLoader.load();
+        //Static Values
+        userNameValue.textProperty().bindBidirectional(playerMatModel.getUserName());
+        robotValue.setText(Robot.getRobotName(playerMatModel.getPlayerState().getFigure()));
+
+        //Dynamic Values
+        checkPointValue.textProperty().bindBidirectional(playerMatModel.getCheckpointsreached());
+        cardsInDeckValue.textProperty().bindBidirectional(playerMatModel.getDeckCount());
+        discardedCardsValue.textProperty().bindBidirectional(playerMatModel.getDiscardedCount());
+        damageCardsValue.textProperty().bindBidirectional(playerMatModel.getPickedUpDamageCards());
+        energyCubesValue.textProperty().bindBidirectional(playerMatModel.getEnergyPoints());
+
+        //Controller-Specific actions
+        registers = new ImageView[5];
+        registerForAnimation = 0;
         createCardsSlots();
     }
 
-    public void setPlayerMatModel(PlayerMatModel playerMatModel) {
-        this.playerMatModel = playerMatModel;
-    }
-
-    public void updateLabels() {
-        userNameValue.setText(playerMatModel.getPlayerState().getUserName());
-        robotValue.setText(String.valueOf(Robot.getRobotByFigure(playerMatModel.getPlayerState().getFigure())));
-        checkPointValue.setText(String.valueOf(playerMatModel.getPlayerState().getCheckpointsreached()));
-        cardsInDeckValue.setText(String.valueOf(playerMatModel.getPlayerState().getDeckCount()));
-        discardedCardsValue.setText(String.valueOf(playerMatModel.getPlayerState().getDiscardedCount()));
-        damageCardsValue.setText(String.valueOf(playerMatModel.getPlayerState().getPickedUpDamageCards()));
-        energyCubesValue.setText(String.valueOf(playerMatModel.getPlayerState().getEnergyPoints()));
-        
+    public PlayerMatModel getPlayerMatModel() {
+        return playerMatModel;
     }
 
     public void createCardsSlots(){
-
+            registers = new ImageView[5];
             for (int i = 0; i < 5; i++) {
                 registers[i] = ImageBuilder.adjustToPlayerMatView("CardBack");
                 playerMatPane.add(registers[i], i+1, 0);
