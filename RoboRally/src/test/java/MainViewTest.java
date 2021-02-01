@@ -1,4 +1,5 @@
 import client.network.ClientThread;
+import client.view.DamageChoiceDialog;
 import client.view.GameBoardController;
 import client.view.MainViewController;
 import client.view.MapChoiceDialog;
@@ -15,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import server.network.TestMessages;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -42,6 +44,9 @@ public class MainViewTest extends Application {
         MapChoiceDialog mapChoiceDialog = new MapChoiceDialog();
         mapChoiceDialog.show(availableMaps);
         track = mapChoiceDialog.getUserChoice();
+
+        DamageChoiceDialog damageChoiceDialog = new DamageChoiceDialog();
+        damageChoiceDialog.show(2, TestMessages.availableDamageCards);
 
         GameBoardViewModel gameBoardViewModel = new GameBoardViewModel();
         gameBoardViewModel.setGameBoard(new GameBoard(track).getGameBoard());

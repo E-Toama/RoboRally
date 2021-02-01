@@ -2,6 +2,7 @@ package client.network;
 
 import client.utilities.ClientGameState;
 import client.utilities.ClientPlayerState;
+import client.view.DamageChoiceDialog;
 import client.view.GameBoardController;
 import client.view.MainViewController;
 import client.view.MapChoiceDialog;
@@ -764,11 +765,9 @@ public class ClientThread implements Runnable {
         if (incomingMessage.getMessageBody() instanceof CurrentCards) {
             CurrentCards currentCards = (CurrentCards) incomingMessage.getMessageBody();
             ActiveCards[] activeCards = currentCards.getActiveCards();
-
+            clientGameState.increaseDamageCardCount(activeCards);
             for (ActiveCards cards : activeCards) {
-                logger.getLogger().info("Outside ID-Check: " + cards.getPlayerID());
                 if (cards.getPlayerID() == ID) {
-                    logger.getLogger().info("Inside ID-Check: " + ID + " received card " + cards.getCard());
                     Platform.runLater(() -> {
                         playerMatModel.getPlayerMatController().setTakenRegister(cards.getCard());
                     });
@@ -806,8 +805,9 @@ public class ClientThread implements Runnable {
     private void handleDrawDamage(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof DrawDamage) {
             DrawDamage drawDamage = (DrawDamage) incomingMessage.getMessageBody();
+            clientGameState.decreaseDamageCardCount(drawDamage.getCards());
             playerStateList.get(drawDamage.getPlayerID()).setPickedUpDamageCards(drawDamage.getCards().length);
-            //ToDo: Update GUI DrawDamage
+            //ToDo: Update GUI DrawDamage?
             logger.getLogger().info("Player wiht id " + drawDamage.getPlayerID() + " has drew the damage cards: " + drawDamage.getCards() + ".");
         } else {
             logger.getLogger().severe("Message body error in handleDrawDamage method.");
@@ -819,8 +819,9 @@ public class ClientThread implements Runnable {
     private void handlePickDamage(Message incomingMessage) throws IOException {
       if (incomingMessage.getMessageBody() instanceof PickDamage) {
         PickDamage pickDamage = (PickDamage) incomingMessage.getMessageBody();
-        // TODO: Update GUI PickDamage
-        //   Maybe write custom Popup with buttons for "Virus", "Worm" and "Trojan"
+        // TODO: Bind PopUp to Server-Client-Connection
+          DamageChoiceDialog damageChoiceDialog = new DamageChoiceDialog();
+          damageChoiceDialog.show(pickDamage.getCount(), clientGameState.getAvailableDamageCards());
         logger.getLogger().info(this.player.getName() + " has chosen " + pickDamage.getCount() + " damage cards.");
         
       } else {
