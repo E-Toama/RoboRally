@@ -189,6 +189,12 @@ public class Game {
 
         setActivePhase(3);
 
+        for (PlayerMat playerMat : gameState.playerMatList) {
+
+            playerMat.setWasRebootedThisRound(false);
+
+        }
+
         gameState.nextRegisterList = getGameState().playerMatList;
 
         gameState.register = 1;
@@ -425,7 +431,7 @@ public class Game {
             } else {
 
                 MoveHandler moveHandler = new MoveHandler();
-                moveHandler.move(this, gameState, intermediateState.getPlayerID(), oldPosition, newPosition, movingOrientation, false);
+                moveHandler.move(this, gameState, intermediateState.getPlayerID(), oldPosition, newPosition, movingOrientation, false, true);
 
             }
 

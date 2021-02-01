@@ -14,9 +14,19 @@ public class MoveThree extends Move {
     @Override
     public void action(Game game, GameState gameState, int playerID) {
 
-        moveForward(game, gameState, playerID);
-        moveForward(game, gameState, playerID);
-        moveForward(game, gameState, playerID);
+        moveForward(game, gameState, playerID, false);
+
+        if (!gameState.playerMatHashMap.get(playerID).getWasRebootedThisRound()) {
+
+            moveForward(game, gameState, playerID, false);
+
+        }
+
+        if (!gameState.playerMatHashMap.get(playerID).getWasRebootedThisRound()) {
+
+            moveForward(game, gameState, playerID, true);
+
+        }
 
     }
 
