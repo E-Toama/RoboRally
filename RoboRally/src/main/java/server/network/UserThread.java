@@ -279,9 +279,13 @@ public class UserThread implements Runnable {
 
         if (incomingMessage.getMessageBody() instanceof PlayIt) {
 
-            if (server.getGame().getGameState().registerList.get(0).getPlayer().getPlayerID() == playerID) {
+            if (server.getGame().getGameState().registerList.size() > 0) {
 
-                server.getGame().continuePlayersTurn();
+                if (server.getGame().getGameState().registerList.get(0).getPlayer().getPlayerID() == playerID) {
+
+                    server.getGame().continuePlayersTurn();
+
+                }
 
             }
 
