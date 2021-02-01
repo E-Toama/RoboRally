@@ -38,6 +38,13 @@ public class MoveHandler {
 
                         } else {
 
+                            if (isPlayerAction) {
+
+                                gameState.nextRegisterList.add(gameState.registerList.remove(0));
+                                game.nextPlayersTurn();
+
+                            }
+
                             return false;
 
                         }
@@ -45,6 +52,13 @@ public class MoveHandler {
                     }
 
                 }
+
+            }
+
+            if (isPlayerAction) {
+
+                gameState.nextRegisterList.add(gameState.registerList.remove(0));
+                game.nextPlayersTurn();
 
             }
 
