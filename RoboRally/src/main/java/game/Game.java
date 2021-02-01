@@ -186,7 +186,7 @@ public class Game {
 
         setActivePhase(3);
 
-        gameState.registerList = gameState.playerMatList;
+        gameState.nextRegisterList = getGameState().playerMatList;
 
         gameState.register = 1;
 
