@@ -107,7 +107,7 @@ public class GameBoardController {
         gameBoardViewModel.getStartingPositions().removeIf(b -> b == position);
     }
 
-    public void move(int robotFigure, int currentPosition, int newPosition) {
+    public void move(int currentPosition, int newPosition) {
         Position current = PositionLookUp.positionToXY.get(currentPosition);
         Position newPos = PositionLookUp.positionToXY.get(newPosition);
         gameTileArray[newPos.getY()][newPos.getX()].getChildren().add(deleteRobot(current.getY(), current.getX()));

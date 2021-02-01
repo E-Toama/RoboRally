@@ -1,5 +1,6 @@
 package client.view;
 
+import client.network.ClientThread;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -19,6 +20,7 @@ import java.util.LinkedList;
 
 public class DamageChoiceDialog {
 
+    private ClientThread clientThread;
     private Stage stage;
     private ArrayList<String> clickedButtons;
     private String[] userChoice;
@@ -27,11 +29,13 @@ public class DamageChoiceDialog {
     private Label leftToPick;
 
     public void show(int count, LinkedList<String> availableDamageCards) {
+
+        clientThread = ClientThread.getInstance();
+
         this.count = count;
         cardsLeftToPick = count;
         clickedButtons = new ArrayList<>();
         userChoice = new String[count];
-
 
         stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -92,6 +96,7 @@ public class DamageChoiceDialog {
         if (clickedButtons.size() == count) {
             userChoice = clickedButtons.toArray(new String[0]);
             stage.close();
+            clientThread.sendSelectedDamage(userChoice);
         }
     }
 

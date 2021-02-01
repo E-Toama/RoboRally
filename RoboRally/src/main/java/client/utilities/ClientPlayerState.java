@@ -5,8 +5,6 @@ import game.player.Player;
 
 public class ClientPlayerState {
 
-    private PlayerMatModel playerMatModel;
-
     private int playerID;
     private String userName;
     private int checkpointsreached;
