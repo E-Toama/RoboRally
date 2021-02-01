@@ -88,7 +88,6 @@ public class GameBoardController {
         for (Button b : startingPointButtonList) {
             Position p = PositionLookUp.positionToXY.get(Integer.parseInt(b.getId()));
             if (gameTileArray[p.getY()][p.getX()].getChildren().get(1) instanceof Button) {
-                Logger.getLogger("GameBoardLogger").info("Removed that button from ButtonList at pos " + b.getId());
                 gameTileArray[p.getY()][p.getX()].getChildren().remove(1);
             }
         }
