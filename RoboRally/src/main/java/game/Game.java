@@ -63,10 +63,13 @@ public class Game {
 
     public void continueStartingPointSelection(Player player, int position) {
 
-        gameState.playerMatList.get(player.getPlayerID()).getRobot().setRobotPosition(position);
+        gameState.playerMatHashMap.get(player.getPlayerID()).getRobot().setRobotPosition(position);
 
         Position position1 = PositionLookUp.positionToXY.get(position);
         gameState.gameBoard.getGameBoard()[position1.getY()][position1.getX()].setRobot(gameState.playerMatHashMap.get(player.getPlayerID()).getRobot());
+
+        String startingPointTaken = messageHandler.buildMessage("StartingPointTaken", new StartingPointTaken(player.getPlayerID(), position));
+        server.sendMessageToAllUsers(startingPointTaken);
 
         if (server.getPlayerList().get(server.getPlayerList().size() - 1).getPlayerID() == player.getPlayerID()) {
 
@@ -96,9 +99,9 @@ public class Game {
     public synchronized void selectCard(String card, int register, int playerID) {
 
         Card selectedCard = Card.getCardByString(card);
-        gameState.playerMatHashMap.get(playerID).addCardToRegister(register, selectedCard);
+        gameState.playerMatHashMap.get(playerID).addCardToRegister(register - 1, selectedCard);
 
-        String cardSelected = messageHandler.buildMessage("CardSelected", new CardSelected(playerID, register - 1));
+        String cardSelected = messageHandler.buildMessage("CardSelected", new CardSelected(playerID, register));
         server.sendMessageToAllUsers(cardSelected);
 
         if (register == 5 && gameState.playersFinishedSelectionList.size() == 0) {
@@ -390,7 +393,7 @@ public class Game {
         for (ConveyorBeltIntermediateState intermediateState: intermediatePositions) {
 
             Position oldPosition = gameState.playerMatHashMap.get(intermediateState.getPlayerID()).getRobot().getRobotXY();
-            Position newPosition = intermediateState.getNewPosition();
+            Position newPosition = gameState.gameBoard.getGameBoard()[intermediateState.getNewPosition().getY()][intermediateState.getNewPosition().getX()].getXY();
             String movingOrientation = intermediateState.getMovingOrientation();
 
             if (!gameState.playerMatHashMap.get(intermediateState.getPlayerID()).getRobot().getOrientation().equals(intermediateState.getNewOrientation())) {

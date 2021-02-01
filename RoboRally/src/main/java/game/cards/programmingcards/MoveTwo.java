@@ -14,11 +14,8 @@ public class MoveTwo extends Move {
     @Override
     public void action(Game game, GameState gameState, int playerID) {
 
-        for (int i = 0; i < 2; i++) {
-
-            moveForward(game, gameState, playerID);
-
-        }
+        moveForward(game, gameState, playerID);
+        moveForward(game, gameState, playerID);
 
     }
 

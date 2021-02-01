@@ -14,11 +14,9 @@ public class MoveThree extends Move {
     @Override
     public void action(Game game, GameState gameState, int playerID) {
 
-        for (int i = 0; i < 3; i++) {
-
-            moveForward(game, gameState, playerID);
-
-        }
+        moveForward(game, gameState, playerID);
+        moveForward(game, gameState, playerID);
+        moveForward(game, gameState, playerID);
 
     }
 

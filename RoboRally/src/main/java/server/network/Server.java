@@ -4,6 +4,7 @@ import game.Game;
 import game.cards.Card;
 import game.gameboard.GameBoard;
 import game.player.Player;
+import game.utilities.PositionLookUp;
 import utilities.MessageHandler;
 import utilities.messages.*;
 
@@ -50,6 +51,8 @@ public class Server {
     private void start(int portNumber) {
 
         System.out.println("Server is running on port: " + portNumber);
+
+        PositionLookUp.createMaps();
 
         Executor pool = Executors.newCachedThreadPool();
 

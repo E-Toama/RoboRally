@@ -21,6 +21,7 @@ public class MoveHandler {
 
             BoardElement currentBoardElement = gameState.gameBoard.getGameBoard()[oldPosition.getY()][oldPosition.getX()];
             BoardElement destinationBoardElement = gameState.gameBoard.getGameBoard()[newPosition.getY()][newPosition.getX()];
+            Position newPosition1 = destinationBoardElement.getXY();
 
             if (currentBoardElement.checkIfElementCanLeftInThisDirection(movingOrientation)) {
 
@@ -28,13 +29,13 @@ public class MoveHandler {
 
                     if (destinationBoardElement.getRobot() == null) {
 
-                        return completeMove(game, gameState, playerID, newPosition, currentBoardElement, destinationBoardElement, isPlayerAction);
+                        return completeMove(game, gameState, playerID, newPosition1, currentBoardElement, destinationBoardElement, isPlayerAction);
 
                     } else {
 
-                        if (move(game, gameState, destinationBoardElement.getRobot().getPlayerID(), newPosition, getTargetPosition(newPosition, movingOrientation), movingOrientation, false)) {
+                        if (move(game, gameState, destinationBoardElement.getRobot().getPlayerID(), newPosition1, getTargetPosition(newPosition, movingOrientation), movingOrientation, false)) {
 
-                            return completeMove(game, gameState, playerID, newPosition, currentBoardElement, destinationBoardElement, isPlayerAction);
+                            return completeMove(game, gameState, playerID, newPosition1, currentBoardElement, destinationBoardElement, isPlayerAction);
 
                         } else {
 

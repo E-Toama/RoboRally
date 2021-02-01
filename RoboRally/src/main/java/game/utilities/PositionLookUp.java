@@ -4,47 +4,27 @@ import java.util.HashMap;
 
 public class PositionLookUp {
 
-    public static final HashMap<Integer, Position> positionToXY = createPositionToXY();
+    public static HashMap<Integer, Position> positionToXY = new HashMap<>();
 
-    public static final HashMap<Position, Integer> XYToPosition = createXYToPosition();
+    public static HashMap<Position, Integer> XYToPosition = new HashMap<>();
 
-    private static HashMap<Integer, Position> createPositionToXY() {
+    public static void createMaps() {
 
-        HashMap<Integer, Position> returnValue = new HashMap<>();
         int position = 0;
 
         for (int i = 0; i < 10; i++) {
 
             for (int j = 0; j < 13; j++) {
 
-                returnValue.put(position, new Position(j, i));
+                Position xy = new Position(j, i);
+
+                positionToXY.put(position, xy);
+                XYToPosition.put(xy, position);
                 position++;
 
             }
 
         }
-
-        return returnValue;
-
-    }
-
-    private static HashMap<Position, Integer> createXYToPosition() {
-
-        HashMap<Position, Integer> returnValue = new HashMap<>();
-        int position = 0;
-
-        for (int i = 0; i < 10; i++) {
-
-            for (int j = 0; j < 13; j++) {
-
-                returnValue.put(new Position(j, i), position);
-                position++;
-
-            }
-
-        }
-
-        return returnValue;
 
     }
 

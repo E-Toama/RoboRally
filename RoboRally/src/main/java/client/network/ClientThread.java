@@ -557,6 +557,10 @@ public class ClientThread implements Runnable {
                        gameBoardViewModel.getGameBoardController().initStartingPoints();
                    });
                }
+               if (clientGameState.getActivePhase() == 3) {
+                   String playIt = messageHandler.buildMessage("PlayIt", new PlayIt());
+                   outgoing.println(playIt);
+               }
             }
             logger.getLogger().info("Current player id " + currentPlayer.getPlayerID() + ".");
 
@@ -771,8 +775,6 @@ public class ClientThread implements Runnable {
                     Platform.runLater(() -> {
                         playerMatModel.getPlayerMatController().setTakenRegister(cards.getCard());
                     });
-                    String playIt = messageHandler.buildMessage("PlayIt", new PlayIt());
-                    outgoing.println(playIt);
                 } //ToDo: Else update otherPlayerMats
             }
 
@@ -980,7 +982,7 @@ public class ClientThread implements Runnable {
 
     public void sendSelectedMap(String[] userChoice) {
         String outgoingMessage = messageHandler.buildMessage("MapSelected", new MapSelected(userChoice));
-        outgoing.println(userChoice);
+        outgoing.println(outgoingMessage);
     }
 
     public void initializeEmptyMainView() throws IOException {

@@ -5,11 +5,11 @@ import game.utilities.GameState;
 import game.utilities.MoveHandler;
 import game.utilities.Position;
 
-public class Backup extends Move {
+public class BackUp extends Move {
 
-    public Backup() {
+    public BackUp() {
 
-        this.name = "Backup";
+        this.name = "BackUp";
 
     }
 

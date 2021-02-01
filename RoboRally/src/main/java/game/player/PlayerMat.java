@@ -139,7 +139,7 @@ public class PlayerMat {
         deck.add(new LeftTurn());
         deck.add(new LeftTurn());
         deck.add(new LeftTurn());
-        deck.add(new Backup());
+        deck.add(new BackUp());
         deck.add(new PowerUp());
         deck.add(new Again());
         deck.add(new Again());
@@ -307,7 +307,7 @@ public class PlayerMat {
 
         MoveHandler moveHandler = new MoveHandler();
 
-        moveHandler.move(game, gameState, player.getPlayerID(), robot.getRobotXY(), gameState.gameBoard.getRestartPoint().getXY(), gameState.gameBoard.getRestartPoint().getRestartOrientation(), isPlayerAction);
+        moveHandler.move(game, gameState, player.getPlayerID(), robot.getRobotXY(), gameState.gameBoard.getRestartPoint().getXY(), gameState.gameBoard.getRestartPoint().getRestartOrientation(), false);
 
     }
 

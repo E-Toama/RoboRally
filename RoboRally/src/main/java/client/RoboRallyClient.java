@@ -1,6 +1,7 @@
 package client;
 
 import client.view.ViewController;
+import game.utilities.PositionLookUp;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +21,8 @@ public class RoboRallyClient extends Application {
     public void start(Stage primaryStage) {
 
         try{
+
+            PositionLookUp.createMaps();
 
             ViewController.getViewController().setPrimaryStage(primaryStage);
 

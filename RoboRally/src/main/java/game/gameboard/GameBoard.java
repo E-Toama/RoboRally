@@ -134,12 +134,14 @@ public class GameBoard {
 
     private BoardElement[][] createDizzyHighway() {
         BoardElement[][] dizzyHighway = new BoardElement[10][13];
+        StartBoard startBoard = new StartBoard();
+        DizzyHighway dizzyHighway1 = new DizzyHighway();
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 13; j++) {
                 if (j < 3) {
-                    dizzyHighway[i][j] = StartBoard.startBoard[i][j];
+                    dizzyHighway[i][j] = startBoard.startBoard[i][j];
                 } else {
-                    dizzyHighway[i][j] = DizzyHighway._5B[i][j-3];
+                    dizzyHighway[i][j] = dizzyHighway1._5B[i][j-3];
                 }
             }
         }
@@ -149,12 +151,14 @@ public class GameBoard {
     private BoardElement[][] createExtraCrispy() {
         BoardElement[][] extraCrispy = new BoardElement[10][13];
         BoardElement restartTile = new BoardElement(0, new GameBoardFieldObject[]{new RestartPointFieldObject("right")});
+        StartBoard startBoard = new StartBoard();
+        ExtraCrispy extraCrispy1 = new ExtraCrispy();
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 13; j++) {
                 if (j < 3) {
-                    extraCrispy[i][j] = (i == 0 && j == 0) ? restartTile : StartBoard.startBoard[i][j];
+                    extraCrispy[i][j] = (i == 0 && j == 0) ? restartTile : startBoard.startBoard[i][j];
                 } else {
-                    extraCrispy[i][j] = ExtraCrispy._5B[i][j-3];
+                    extraCrispy[i][j] = extraCrispy1._5B[i][j-3];
                 }
             }
         }
@@ -163,13 +167,13 @@ public class GameBoard {
 
     private void initializeMaps() {
 
-        for (int y = 0; y < 10; y++) {
+        for (int i = 0; i < 10; i++) {
 
-            for (int x = 0; x < 13; x++) {
+            for (int j = 0; j < 13; j++) {
 
-                BoardElement boardElement = gameBoard[y][x];
+                BoardElement boardElement = gameBoard[i][j];
 
-                Position position = new Position(x, y);
+                Position position = new Position(i, j);
 
                 if (boardElement.isAntenna()) {
 
@@ -245,7 +249,7 @@ public class GameBoard {
 
             String orientation = laser.getLaserOrientation();
 
-            laserAffected.add(createLaserAffectedHashMap(laser, orientation));
+            //laserAffected.add(createLaserAffectedHashMap(laser, orientation));
 
         }
 

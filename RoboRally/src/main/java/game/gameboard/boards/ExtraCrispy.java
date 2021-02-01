@@ -7,7 +7,7 @@ import game.gameboard.gameboardfieldobjects.*;
 public class ExtraCrispy {
 
 
-        public static final BoardElement[][] _5B = {
+        public final BoardElement[][] _5B = {
                 {       new BoardElement(3, new GameBoardFieldObject[]{new EmptyFieldObject()}),
                         new BoardElement(4, new GameBoardFieldObject[]{new BeltFieldObject("down", 2)}),
                         new BoardElement(5, new GameBoardFieldObject[]{new EmptyFieldObject()}),

@@ -72,7 +72,7 @@ public class GameBoardController {
             startingPointButton.setOnAction(e -> transmitStartingPoint(startingPointButton));
             startingPointButtonList.add(startingPointButton);
             Position p = PositionLookUp.positionToXY.get(pos);
-            gameTileArray[p.getX()][p.getY()].getChildren().add(startingPointButton);
+            gameTileArray[p.getY()][p.getX()].getChildren().add(startingPointButton);
         }
 
     }
@@ -87,9 +87,9 @@ public class GameBoardController {
     public void removeAllStartingPoints() {
         for (Button b : startingPointButtonList) {
             Position p = PositionLookUp.positionToXY.get(Integer.parseInt(b.getId()));
-            if (gameTileArray[p.getX()][p.getY()].getChildren().get(1) instanceof Button) {
+            if (gameTileArray[p.getY()][p.getX()].getChildren().get(1) instanceof Button) {
                 Logger.getLogger("GameBoardLogger").info("Removed that button from ButtonList at pos " + b.getId());
-                gameTileArray[p.getX()][p.getY()].getChildren().remove(1);
+                gameTileArray[p.getY()][p.getX()].getChildren().remove(1);
             }
         }
     }
@@ -97,32 +97,32 @@ public class GameBoardController {
     public void setStartingPosition(int robotFigure, int position) {
         ImageView robotImage = RobotImageBuilder.buildRobotImage(robotFigure);
         Position p = PositionLookUp.positionToXY.get(position);
-        gameTileArray[p.getX()][p.getY()].getChildren().add(robotImage);
+        gameTileArray[p.getY()][p.getX()].getChildren().add(robotImage);
 
     }
 
     public void setOtherRobotStartingPosition(int robotFigure, int position) {
         ImageView robotImage = RobotImageBuilder.buildRobotImage(robotFigure);
         Position p = PositionLookUp.positionToXY.get(position);
-        gameTileArray[p.getX()][p.getY()].getChildren().add(robotImage);
+        gameTileArray[p.getY()][p.getX()].getChildren().add(robotImage);
         gameBoardViewModel.getStartingPositions().removeIf(b -> b == position);
     }
 
     public void move(int robotFigure, int currentPosition, int newPosition) {
         Position current = PositionLookUp.positionToXY.get(currentPosition);
         Position newPos = PositionLookUp.positionToXY.get(newPosition);
-        gameTileArray[newPos.getX()][newPos.getY()].getChildren().add(deleteRobot(current.getX(), current.getY()));
+        gameTileArray[newPos.getY()][newPos.getX()].getChildren().add(deleteRobot(current.getY(), current.getX()));
     }
 
     public void playerTurning(int currentPosition, String direction) {
         Position current = PositionLookUp.positionToXY.get(currentPosition);
-        ImageView robotImage = deleteRobot(current.getX(), current.getY());
+        ImageView robotImage = deleteRobot(current.getY(), current.getX());
         if (direction.equals("clockwise")) {
             robotImage.setRotate(90);
         } else {
             robotImage.setRotate(270);
         }
-        gameTileArray[current.getX()][current.getY()].getChildren().add(robotImage);
+        gameTileArray[current.getY()][current.getX()].getChildren().add(robotImage);
 
     }
 

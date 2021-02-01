@@ -38,22 +38,22 @@ public class ImageBuilder {
     public static ImageView createCardImageView(String cardType) {
         Image cardImage;
         switch (cardType) {
-            case "MoveI":
+            case "MoveOne":
                 cardImage = new Image("Cards/MoveOne.png");
                 return new ImageView(cardImage);
-            case "MoveII":
+            case "MoveTwo":
                 cardImage = new Image("Cards/MoveTwo.png");
                 return new ImageView(cardImage);
-            case "MoveIII":
+            case "MoveThree":
                 cardImage = new Image("Cards/MoveThree.png");
                 return new ImageView(cardImage);
-            case "TurnLeft":
+            case "LeftTurn":
                 cardImage = new Image("Cards/LeftTurn.png");
                 return new ImageView(cardImage);
-            case "TurnRight":
+            case "RightTurn":
                 cardImage = new Image("Cards/RightTurn.png");
                 return new ImageView(cardImage);
-            case "UTurn":
+            case "U-Turn":
                 cardImage = new Image("Cards/UTurn.png");
                 return new ImageView(cardImage);
             case "BackUp":
@@ -71,7 +71,7 @@ public class ImageBuilder {
             case "Worm":
                 cardImage = new Image("Cards/WormImage.png");
                 return new ImageView(cardImage);
-            case "Trojan":
+            case "TrojanHorse":
                 cardImage = new Image("Cards/Trojan_HorseImage.png");
                 return new ImageView(cardImage);
             case "Spam":

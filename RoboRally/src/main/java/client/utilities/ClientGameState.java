@@ -1,9 +1,8 @@
 package client.utilities;
 
+import client.network.ClientThread;
 import game.cards.ActiveCard;
 import game.gameboard.GameBoard;
-import game.player.Player;
-import utilities.messages.CurrentCards;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -23,6 +22,12 @@ public class ClientGameState {
     private int wormCardPile = 6;
 
     private HashMap<String, Integer> availableDamageCards;
+
+    public ClientGameState() {
+
+        initializeDamageCardCount();
+
+    }
 
     private void initializeDamageCardCount() {
         availableDamageCards = new HashMap<>();

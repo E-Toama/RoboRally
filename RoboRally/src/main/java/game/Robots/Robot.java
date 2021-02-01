@@ -7,9 +7,10 @@ public class Robot {
 
     private final int figure;
     private final int playerID;
+    private Position position;
     private int x;
     private int y;
-    private String orientation = "up";
+    private String orientation = "right";
 
     public Robot(int figure, int playerID) {
         this.figure = figure;
@@ -22,27 +23,25 @@ public class Robot {
 
     public void setRobotPosition(int position) {
 
-        Position xy = PositionLookUp.positionToXY.get(position);
-        this.x = xy.getX();
-        this.y = xy.getY();
+        this.position = PositionLookUp.positionToXY.get(position);
+        this.x = this.position.getX();
+        this.y = this.position.getY();
 
     }
 
     public void setXY(Position position) {
 
-        this.x = position.getX();
-        this.y = position.getY();
+        this.position = position;
 
     }
 
     public Position getRobotXY() {
-        return new Position(x, y);
+        return position;
     }
 
     public int getRobotPosition() {
 
-        Position xy = new Position(x, y);
-        return PositionLookUp.XYToPosition.get(xy);
+        return PositionLookUp.XYToPosition.get(position);
 
     }
 
