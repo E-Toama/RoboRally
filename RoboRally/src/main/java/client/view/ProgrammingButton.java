@@ -1,19 +1,22 @@
 package client.view;
 
 
+import client.utilities.ImageBuilder;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.Label;
 
 public class ProgrammingButton extends Button {
     private String cardString;
     private boolean chosen;
     private final int number;
+    private Label label;
+    private int register;
 
     public ProgrammingButton(int number, String cardString) {
+        this.register = -1;
         this.number = number;
         this.cardString = cardString;
-        this.setGraphic(createCardImage(cardString));
+        this.setGraphic(ImageBuilder.adjustToProgrammingView(cardString));
         chosen = false;
     }
 
@@ -25,52 +28,24 @@ public class ProgrammingButton extends Button {
         return number;
     }
 
+    public int getRegister() {
+        return this.register;
+    }
+
+    public void setRegister(int register) {
+        this.register = register;
+    }
+
     public void setChosen(boolean chosen) {
         this.chosen = chosen;
     }
 
-    public ImageView createCardImage(String cardType) {
-        Image cardImage;
-        switch (cardType) {
-            case "MoveI":
-                cardImage = new Image("Cards/MoveOne.png");
-                return adjustToSlot(cardImage);
-            case "MoveII":
-                cardImage = new Image("Cards/MoveTwo.png");
-                return adjustToSlot(cardImage);
-            case "MoveIII":
-                cardImage = new Image("Cards/MoveThree.png");
-                return adjustToSlot(cardImage);
-            case "TurnLeft":
-                cardImage = new Image("Cards/LeftTurn.png");
-                return adjustToSlot(cardImage);
-            case "TurnRight":
-                cardImage = new Image("Cards/RightTurn.png");
-                return adjustToSlot(cardImage);
-            case "UTurn":
-                cardImage = new Image("Cards/UTurn.png");
-                return adjustToSlot(cardImage);
-            case "BackUp":
-                cardImage = new Image("Cards/MoveBack.png");
-                return adjustToSlot(cardImage);
-            case "PowerUp":
-                cardImage = new Image("Cards/PowerUp.png");
-                return adjustToSlot(cardImage);
-            case "Again":
-                cardImage = new Image("Cards/Again.png");
-                return adjustToSlot(cardImage);
-            default:
-                cardImage = new Image("Cards/PlayerDeckBack.png");
-                return adjustToSlot(cardImage);
-        }
+    public Label getLabel() {
+        return label;
     }
 
-    private static ImageView adjustToSlot(Image image) {
-        ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(91);
-        imageView.setFitHeight(154);
-        return imageView;
-
+    public void setLabel(Label label) {
+        this.label = label;
     }
 
     public String getCardString() {

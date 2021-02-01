@@ -207,7 +207,7 @@ public class Game {
 
         for (int i = 0; i < gameState.registerList.size(); i++) {
             
-            activeCards[i] = new ActiveCard(gameState.registerList.get(i).getPlayer().getPlayerID(), gameState.registerList.get(i).getRegister()[registerNumber - 1]);
+            activeCards[i] = new ActiveCard(gameState.registerList.get(i).getPlayer().getPlayerID(), gameState.registerList.get(i).getRegister()[registerNumber - 1].getName());
             
         }
 

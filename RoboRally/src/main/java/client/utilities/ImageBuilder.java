@@ -8,20 +8,89 @@ import javafx.scene.image.ImageView;
 
 public class ImageBuilder {
 
-    private static int tileWidth = 50;
+    private static final int TILE_WIDTH = 50;
+    private static final int PROGRAMMING_CARD_WIDTH = 80;
+    private static final int PLAYERMAT_CARD_HEIGHT = 180;
 
 
     private static ImageView adjustToBoard(Image image) {
         ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(tileWidth);
+        imageView.setFitHeight(TILE_WIDTH);
         imageView.setPreserveRatio(true);
         return imageView;
+    }
+
+    public static ImageView adjustToProgrammingView(String cardString) {
+        ImageView imageView = createCardImageView(cardString);
+        imageView.setFitWidth(PROGRAMMING_CARD_WIDTH);
+        imageView.setPreserveRatio(true);
+        return imageView;
+    }
+
+    public static ImageView adjustToPlayerMatView(String cardString) {
+        ImageView imageView = createCardImageView(cardString);
+        imageView.setFitHeight(PLAYERMAT_CARD_HEIGHT);
+        imageView.setPreserveRatio(true);
+        return imageView;
+    }
+
+
+    public static ImageView createCardImageView(String cardType) {
+        Image cardImage;
+        switch (cardType) {
+            case "MoveI":
+                cardImage = new Image("Cards/MoveOne.png");
+                return new ImageView(cardImage);
+            case "MoveII":
+                cardImage = new Image("Cards/MoveTwo.png");
+                return new ImageView(cardImage);
+            case "MoveIII":
+                cardImage = new Image("Cards/MoveThree.png");
+                return new ImageView(cardImage);
+            case "TurnLeft":
+                cardImage = new Image("Cards/LeftTurn.png");
+                return new ImageView(cardImage);
+            case "TurnRight":
+                cardImage = new Image("Cards/RightTurn.png");
+                return new ImageView(cardImage);
+            case "UTurn":
+                cardImage = new Image("Cards/UTurn.png");
+                return new ImageView(cardImage);
+            case "BackUp":
+                cardImage = new Image("Cards/MoveBack.png");
+                return new ImageView(cardImage);
+            case "PowerUp":
+                cardImage = new Image("Cards/PowerUp.png");
+                return new ImageView(cardImage);
+            case "Again":
+                cardImage = new Image("Cards/Again.png");
+                return new ImageView(cardImage);
+            case "Virus":
+                cardImage = new Image("Cards/VirusImage.png");
+                return new ImageView(cardImage);
+            case "Worm":
+                cardImage = new Image("Cards/WormImage.png");
+                return new ImageView(cardImage);
+            case "Trojan":
+                cardImage = new Image("Cards/Trojan_HorseImage.png");
+                return new ImageView(cardImage);
+            case "Spam":
+                cardImage = new Image("Cards/SpamImage.png");
+                return new ImageView(cardImage);
+            case "CardBack":
+                cardImage = new Image("Cards/PlayerDeckBack.png");
+                return new ImageView(cardImage);
+            default:
+                cardImage = new Image("Cards/PlayerDeckBack.png");
+                return new ImageView(cardImage);
+        }
     }
 
     public static ImageView buildImage(BoardElement boardElement) {
 
         GameBoardFieldObject[] fields = boardElement.getField();
 
+        // If there is only one element to display (e.g. "Empty")
         if (fields.length == 1) {
             String type = fields[0].getType();
             GameBoardFieldObject gameBoardFieldObject = fields[0];
@@ -29,8 +98,7 @@ public class ImageBuilder {
             switch (type) {
                 case "Empty":
                     Image emptyTileImage = new Image("Tiles/EmptyTile.png");
-                    ImageView emptyTile = adjustToBoard(emptyTileImage);
-                    return emptyTile;
+                    return adjustToBoard(emptyTileImage);
                 case "Laser":
                     LaserFieldObject laser = (LaserFieldObject) gameBoardFieldObject;
                     int count = laser.getCount();
@@ -82,13 +150,11 @@ public class ImageBuilder {
                     EnergySpaceFieldObject energySpace = (EnergySpaceFieldObject) gameBoardFieldObject;
                     //Image EnergySpaceTile = new Image("Tiles/Energy_"+energySpace.getCount()+".png");
                     Image EnergySpaceTile = new Image("Tiles/Energy_0.png");
-                    ImageView EnergySpaceImage = adjustToBoard(EnergySpaceTile);
-                    return EnergySpaceImage;
+                    return adjustToBoard(EnergySpaceTile);
 
                 case "StartPoint":
                     Image StartingPointTile = new Image("Tiles/StartingPoint.png");
-                    ImageView StartingPointImage = adjustToBoard(StartingPointTile);
-                    return  StartingPointImage;
+                    return  adjustToBoard(StartingPointTile);
 
                 case "Wall":
                     Image WallTile = new Image("Tiles/Wall.png");
@@ -109,8 +175,7 @@ public class ImageBuilder {
 
                 case "ControlPoint":
                     Image checkImage = new Image("Tiles/Checkpoint_1.png");
-                    ImageView checkImageView = adjustToBoard(checkImage);
-                    return checkImageView;
+                    return adjustToBoard(checkImage);
 
                 case "RestartPoint":
                     Image restartImage = new Image("Tiles/RestartToken.png");
@@ -132,13 +197,11 @@ public class ImageBuilder {
 
                 case "Antenna":
                     Image antennaImage = new Image("Tiles/Antenna.png");
-                    ImageView antenna = adjustToBoard(antennaImage);
-                    return antenna;
+                    return adjustToBoard(antennaImage);
 
                 case "Pit":
                     Image pitImage = new Image("Tiles/Pit.png");
-                    ImageView pit = adjustToBoard(pitImage);
-                    return pit;
+                    return  adjustToBoard(pitImage);
 
                 case "Gear":
                     GearFieldObject gearFieldObject = (GearFieldObject) gameBoardFieldObject;
@@ -146,13 +209,11 @@ public class ImageBuilder {
 
                     if (gearOrientation.equals("clockwise")) {
                         Image gearImageClockwise = new Image("Tiles/Gear_clockwise.png");
-                        ImageView gearClockWise = adjustToBoard(gearImageClockwise);
-                        return gearClockWise;
+                        return adjustToBoard(gearImageClockwise);
                     }
                     else if (gearOrientation.equals("counterclockwise")) {
                         Image gearImageCounterClockwise = new Image("Tiles/Gear_counterclockwise.png");
-                        ImageView gearCounterClockwise = adjustToBoard(gearImageCounterClockwise);
-                        return gearCounterClockwise;
+                        return adjustToBoard(gearImageCounterClockwise);
                     }
 
                     else { //evtl Fehlerbehebung?
@@ -160,7 +221,7 @@ public class ImageBuilder {
                     }
             }
 
-
+            // If there are two elements to display (e.g. "Wall and Laser")
         } else if (fields.length == 2) {
             /*
             *   Wall, Laser
@@ -233,9 +294,8 @@ public class ImageBuilder {
 
 
 
-
+            // If there are three elements to display (e.g. Wall+Laser+Checkpoint)
         } else if (fields.length == 3) {
-            //ImageView: Wall+Laser+Checkpoint
 
             try {
                 WallFieldObject wallFieldObject = (WallFieldObject) fields[0];
@@ -244,8 +304,7 @@ public class ImageBuilder {
                 //TODO: Create Laser-Wall-Checkpoint-images (GIMP / Photoshop) customized to ExtraCrispy
                 //TODO: Laser-Wall-image-file should be named like laserwallcheck_1, laserwallcheck_2, laserwallcheck_3, laserwallcheck_4
                 Image wallWithLaserAndCheckPoint = new Image("Tiles/Checkpoint_"+controlPointFieldObject.getCount()+".png");
-                ImageView wallLaserCheckTile = adjustToBoard(wallWithLaserAndCheckPoint);
-                return wallLaserCheckTile;
+                return adjustToBoard(wallWithLaserAndCheckPoint);
 
 
             } catch (ClassCastException e) {
@@ -264,5 +323,4 @@ public class ImageBuilder {
         return adjustToBoard(laser3);
 
     }
-
 }

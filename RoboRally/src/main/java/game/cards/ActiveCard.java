@@ -7,9 +7,9 @@ package game.cards;
 public class ActiveCard {
 
   private final int playerID;
-  private final Card card;
+  private final String card;
 
-  public ActiveCard(int playerID, Card card) {
+  public ActiveCard(int playerID, String card) {
     this.playerID = playerID;
     this.card = card;
   }
@@ -18,7 +18,7 @@ public class ActiveCard {
     return playerID;
   }
 
-  public Card getCard() {
+  public String getCard() {
     return card;
   }
 
