@@ -5,11 +5,11 @@ import game.cards.Card;
 import game.utilities.GameState;
 import utilities.messages.PlayerTurning;
 
-public class RightTurn extends Card {
+public class UTurn extends Card {
 
-    public RightTurn() {
+    public UTurn() {
 
-        this.name = "RightTurn";
+        this.name = "U-Turn";
 
     }
 
@@ -17,8 +17,10 @@ public class RightTurn extends Card {
     public void action(Game game, GameState gameState, int playerID) {
 
         gameState.playerMatHashMap.get(playerID).getRobot().turnRight();
+        gameState.playerMatHashMap.get(playerID).getRobot().turnRight();
 
         String playerTurning = messageHandler.buildMessage("PlayerTurning", new PlayerTurning(playerID, "clockwise"));
+        gameState.server.sendMessageToAllUsers(playerTurning);
         gameState.server.sendMessageToAllUsers(playerTurning);
 
         gameState.nextRegisterList.add(gameState.registerList.remove(0));

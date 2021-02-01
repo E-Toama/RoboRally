@@ -6,7 +6,7 @@ public class Player {
     private final String name;
     private final int figure;
 
-    private transient Boolean status = false;
+    private Boolean status = false;
 
     public Player(int id, String name, int figure) {
 

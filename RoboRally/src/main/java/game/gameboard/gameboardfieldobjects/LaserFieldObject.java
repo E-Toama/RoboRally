@@ -1,5 +1,8 @@
 package game.gameboard.gameboardfieldobjects;
 
+import game.Game;
+import game.utilities.GameState;
+
 public class LaserFieldObject extends GameBoardFieldObject {
 
     private final String orientation;
@@ -19,4 +22,8 @@ public class LaserFieldObject extends GameBoardFieldObject {
         return count;
     }
 
+    @Override
+    public void activate(Game game, GameState gameState, int playerID) {
+
+    }
 }

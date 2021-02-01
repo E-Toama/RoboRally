@@ -483,7 +483,7 @@ public class ClientThread implements Runnable {
     private void handleYourCards(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof  YourCards) {
             YourCards yourCards = (YourCards) incomingMessage.getMessageBody();
-            Card[] cards = yourCards.getCards();
+            String[] cards = yourCards.getCards();
             //ToDo: Implement "YourCards" (Client-Thread)
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of YourCards)");
@@ -547,7 +547,7 @@ public class ClientThread implements Runnable {
     private void handleCardsYouGotNow(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof CardsYouGotNow) {
             CardsYouGotNow cardsYouGotNow = (CardsYouGotNow) incomingMessage.getMessageBody();
-            Card[] yourCards = cardsYouGotNow.getCards();
+            String[] yourCards = cardsYouGotNow.getCards();
             //ToDo: Game-logic for CardsYouGotNow
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of CardsYouGotNow)");

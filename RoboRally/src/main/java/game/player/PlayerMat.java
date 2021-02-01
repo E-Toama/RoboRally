@@ -1,8 +1,12 @@
 package game.player;
 
+import game.Game;
 import game.Robots.Robot;
 import game.cards.Card;
 import game.cards.programmingcards.*;
+import game.utilities.GameState;
+import game.utilities.MoveHandler;
+import game.utilities.Position;
 import server.network.Server;
 import utilities.MessageHandler;
 import utilities.messages.ShuffleCoding;
@@ -18,17 +22,18 @@ public class PlayerMat {
     private final Server server;
     private final MessageHandler messageHandler = new MessageHandler();
 
-    private int priority;
+    private int distanceToAntenna;
 
     private List<Card> deck = new ArrayList<>();
     private List<Card> discardedCards = new ArrayList<>();
     private Card[] register = new Card[5];
 
     private int checkpointsReached = 0;
+    private int energyCubes = 0;
     private int deckCount = deck.size();
     private int discardedCount = discardedCards.size();
 
-    private Card[] tmpCardStack;
+    private List<Card> currentHand = new ArrayList<>();
 
     public PlayerMat(Player player, Robot robot, Server server) {
 
@@ -36,6 +41,10 @@ public class PlayerMat {
         this.robot = robot;
         this.server = server;
 
+    }
+
+    public List<Card> getCurrentHand() {
+        return currentHand;
     }
 
     public Player getPlayer() {
@@ -46,12 +55,24 @@ public class PlayerMat {
         return robot;
     }
 
-    public int getPriority() {
-        return priority;
+    public int getDistanceToAntenna() {
+        return distanceToAntenna;
     }
 
-    public void setPriority(int priority) {
-        this.priority = priority;
+    public int getEnergyCubes() {
+        return energyCubes;
+    }
+
+    public void setEnergyCubes(int energyCubes) {
+        this.energyCubes = energyCubes;
+    }
+
+    public void calculateDistanceToAntenna(Position antennaPosition) {
+
+        Position robotPosition = robot.getRobotXY();
+
+        distanceToAntenna = Position.calculateDistance(robotPosition, antennaPosition);
+
     }
 
     public Card[] getRegister() {
@@ -66,12 +87,19 @@ public class PlayerMat {
         return checkpointsReached;
     }
 
-    public void setCheckpointsReached(int checkpointsReached) {
-        this.checkpointsReached = checkpointsReached;
+    public void setCheckpointsReached() {
+
+        this.checkpointsReached = checkpointsReached + 1;
+
+
     }
 
     public int getDeckCount() {
         return deckCount;
+    }
+
+    public void addCardToDeck(Card card) {
+        deck.add(card);
     }
 
     public void setDeckCount(int deckCount) {
@@ -88,6 +116,10 @@ public class PlayerMat {
 
     public void resetRegister() {
         this.register = new Card[5];
+    }
+
+    public void addDiscardedCard(Card discardedCard) {
+        this.discardedCards.add(discardedCard);
     }
 
     public void initializeDeck() {
@@ -111,11 +143,34 @@ public class PlayerMat {
         deck.add(new PowerUp());
         deck.add(new Again());
         deck.add(new Again());
+        deck.add(new UTurn());
 
     }
 
     public Card drawRandomCard() {
-        return deck.remove( (int) (Math.random() * (deck.size() - 1)));
+
+        if (deck.size() > 0) {
+
+            return deck.remove( (int) (Math.random() * (deck.size() - 1)));
+
+        } else {
+
+            shuffleDeck();
+            return deck.remove( (int) (Math.random() * (deck.size() - 1)));
+
+        }
+
+
+    }
+
+    public void shuffleDeck() {
+
+        deck = discardedCards;
+        discardedCards = new ArrayList<>();
+
+        String shuffleCoding = messageHandler.buildMessage("ShuffleCoding", new ShuffleCoding(player.getPlayerID()));
+        server.sendMessageToAllUsers(shuffleCoding);
+
     }
 
     public Card[] drawNineCards() {
@@ -126,6 +181,7 @@ public class PlayerMat {
 
             for (int i = 0; i < 9; i++) {
                 returnValue[i] = drawRandomCard();
+                currentHand.add(returnValue[i]);
             }
 
             return returnValue;
@@ -140,19 +196,15 @@ public class PlayerMat {
 
             }
 
-            deck = discardedCards;
-            discardedCards = new ArrayList<>();
-
-            String shuffleCoding = messageHandler.buildMessage("ShuffleCoding", new ShuffleCoding(player.getPlayerID()));
-            server.sendMessageToAllUsers(shuffleCoding);
+            shuffleDeck();
 
             for (int i = remainingCards; i < 9; i++) {
 
                 returnValue[i] = drawRandomCard();
+                currentHand.add(returnValue[i]);
 
             }
 
-            tmpCardStack = returnValue;
             return returnValue;
 
         }
@@ -181,11 +233,7 @@ public class PlayerMat {
 
             }
 
-            deck = discardedCards;
-            discardedCards = new ArrayList<>();
-
-            String shuffleCoding = messageHandler.buildMessage("ShuffleCoding", new ShuffleCoding(player.getPlayerID()));
-            server.sendMessageToAllUsers(shuffleCoding);
+            shuffleDeck();
 
             for (int i = remainingCards; i < 5; i++) {
 
@@ -193,12 +241,74 @@ public class PlayerMat {
 
             }
 
-            tmpCardStack = returnValue;
             return returnValue;
 
         }
 
     }
 
+    public void addRemainingCardsToDiscardedPile() {
+
+        for (Card card : register) {
+
+            currentHand.remove(card);
+
+        }
+
+        discardedCards.addAll(currentHand);
+
+        currentHand = new ArrayList<>();
+
+    }
+
+    public void addCompleteHandToDiscardedPile() {
+
+        discardedCards.addAll(currentHand);
+
+        currentHand = new ArrayList<>();
+
+    }
+
+    public void discardRegister() {
+
+        for (Card card : register) {
+
+            if (card != null) {
+
+                addDiscardedCard(card);
+
+            }
+
+        }
+
+        register = new Card[5];
+
+    }
+
+    public void reboot(Game game, GameState gameState, boolean isPlayerAction) {
+
+        String[] wantedDamageCards = {"Spam", "Spam"};
+
+        gameState.drawDamageCardHandler.drawDamageCards(player.getPlayerID(), wantedDamageCards);
+
+        if (gameState.registerList.contains(this)) {
+
+            gameState.registerList.remove(this);
+
+        } else {
+
+            gameState.nextRegisterList.remove(this);
+
+        }
+
+        discardRegister();
+
+        robot.setOrientation("up");
+
+        MoveHandler moveHandler = new MoveHandler();
+
+        moveHandler.move(game, gameState, player.getPlayerID(), robot.getRobotXY(), gameState.gameBoard.getRestartPoint().getXY(), gameState.gameBoard.getRestartPoint().getRestartOrientation(), isPlayerAction);
+
+    }
 
 }

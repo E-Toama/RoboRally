@@ -6,12 +6,14 @@ import game.utilities.PositionLookUp;
 public class Robot {
 
     private final int figure;
+    private final int playerID;
     private int x;
     private int y;
     private String orientation = "up";
 
-    public Robot(int figure) {
+    public Robot(int figure, int playerID) {
         this.figure = figure;
+        this.playerID = playerID;
     }
 
     public int getFigure() {
@@ -24,6 +26,17 @@ public class Robot {
         this.x = xy.getX();
         this.y = xy.getY();
 
+    }
+
+    public void setXY(Position position) {
+
+        this.x = position.getX();
+        this.y = position.getY();
+
+    }
+
+    public Position getRobotXY() {
+        return new Position(x, y);
     }
 
     public int getRobotPosition() {
@@ -80,4 +93,29 @@ public class Robot {
 
     }
 
+    public void turnLeft() {
+
+        switch (orientation) {
+            case "up" -> orientation = "left";
+            case "left" -> orientation = "down";
+            case "down" -> orientation = "right";
+            case "right" -> orientation = "up";
+        }
+
+    }
+
+    public void turnRight() {
+
+        switch (orientation) {
+            case "up" -> orientation = "right";
+            case "left" -> orientation = "up";
+            case "down" -> orientation = "left";
+            case "right" -> orientation = "down";
+        }
+
+    }
+
+    public int getPlayerID() {
+        return playerID;
+    }
 }

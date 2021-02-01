@@ -2,6 +2,7 @@ package server.network;
 
 import game.Game;
 import game.cards.Card;
+import game.gameboard.GameBoard;
 import game.player.Player;
 import utilities.MessageHandler;
 import utilities.messages.*;
@@ -27,6 +28,11 @@ public class Server {
     private int currentID = 972123;
 
     private Game game;
+    private int firstReadyPlayerID;
+    private String[] availableMaps = {"DizzyHighway", "ExtraCrispy"};
+
+    private String selectedGameBoard;
+    private Boolean firstPlayer = true;
 
     private final MessageHandler messageHandler = new MessageHandler();
 
@@ -35,6 +41,10 @@ public class Server {
         Server server = new Server();
         server.start(9090);
 
+    }
+
+    public void setSelectedGameBoard(String selectedGameBoard) {
+        this.selectedGameBoard = selectedGameBoard;
     }
 
     private void start(int portNumber) {
@@ -57,10 +67,6 @@ public class Server {
 
         }
 
-    }
-
-    public synchronized HashMap<Integer, PrintWriter> getPrintWriterMap() {
-        return printWriterMap;
     }
 
     public double getProtocolVersion() {
@@ -86,8 +92,27 @@ public class Server {
     }
 
     public synchronized void setStatus(int playerID, boolean status) {
+
         statusMap.replace(playerID, status);
         playerMap.get(playerID).setStatus(status);
+
+        if (firstPlayer) {
+
+            firstPlayer = false;
+            firstReadyPlayerID = playerID;
+
+            String selectedMap = messageHandler.buildMessage("SelectMap", new SelectMap(availableMaps));
+            sendMessageToSingleUser(selectedMap, playerID);
+
+        }
+
+        if (playerID == firstReadyPlayerID && !status) {
+
+            firstPlayer = true;
+            selectedGameBoard = null;
+
+        }
+
     }
 
     private synchronized int getNewID() {
@@ -161,7 +186,7 @@ public class Server {
 
             }
 
-            if (playerReady) {
+            if (playerReady && selectedGameBoard != null) {
                 startGame();
             }
 
@@ -171,7 +196,7 @@ public class Server {
 
     public synchronized void startGame() {
 
-        this.game = new Game(this, playerList);
+        this.game = new Game(this, playerList, new GameBoard(selectedGameBoard));
 
         String gameStarted = messageHandler.buildMessage("GameStarted", new GameStarted(game.getGameBoard().toMap()));
         sendMessageToAllUsers(gameStarted);
@@ -182,7 +207,7 @@ public class Server {
 
     public synchronized void handOutCards(int playerID, Card[] cards, int cardsInPile) {
 
-        String yourCards = messageHandler.buildMessage("YourCards", new YourCards(cards, cardsInPile));
+        String yourCards = messageHandler.buildMessage("YourCards", new YourCards(Card.toStringArray(cards), cardsInPile));
         String notYourCards = messageHandler.buildMessage("NotYourCards", new NotYourCards(playerID, cards.length, cardsInPile));
 
         printWriterMap.get(playerID).println(yourCards);
@@ -197,6 +222,10 @@ public class Server {
 
         }
 
+    }
+
+    public void endGame() {
+        this.game = null;
     }
 
 }

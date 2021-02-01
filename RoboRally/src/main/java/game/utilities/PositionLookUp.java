@@ -15,9 +15,9 @@ public class PositionLookUp {
 
         for (int i = 0; i < 10; i++) {
 
-            for (int j = 0; i < 13; j++) {
+            for (int j = 0; j < 13; j++) {
 
-                returnValue.put(position, new Position(i, j));
+                returnValue.put(position, new Position(j, i));
                 position++;
 
             }
@@ -35,9 +35,9 @@ public class PositionLookUp {
 
         for (int i = 0; i < 10; i++) {
 
-            for (int j = 0; i < 13; j++) {
+            for (int j = 0; j < 13; j++) {
 
-                returnValue.put(new Position(i, j), position);
+                returnValue.put(new Position(j, i), position);
                 position++;
 
             }

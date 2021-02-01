@@ -110,14 +110,18 @@ public class UserThread implements Runnable {
 
                     case "SelectCard":
                         handleSelectCard(incomingMessage);
+                        break;
 
                     case "PlayIt":
                         handlePlayIt(incomingMessage);
                         break;
                         
                     case "SelectDamage":
-                      handleSelectDamage(incomingMessage);
-                      break;
+                        handleSelectDamage(incomingMessage);
+                        break;
+
+                    case "MapSelected":
+                        handleMapSelected(incomingMessage, incomingJSON);
 
                     default:
                         break;
@@ -238,45 +242,91 @@ public class UserThread implements Runnable {
     }
 
     private void handleSetStartingPoint(Message incomingMessage) throws IOException {
+
         if (incomingMessage.getMessageBody() instanceof SetStartingPoint) {
+
             SetStartingPoint setStartingPoint = (SetStartingPoint) incomingMessage.getMessageBody();
             server.getGame().continueStartingPointSelection(this.player, setStartingPoint.getPosition());
+
         } else {
+
             throw new IOException("Something went wrong! Invalid Message Body! (not instance of SetStartingPoint)");
+
         }
+
     }
 
     private void handleSelectCard(Message incomingMessage) throws IOException {
+
         if (incomingMessage.getMessageBody() instanceof SelectCard) {
+
             SelectCard selectCard = (SelectCard) incomingMessage.getMessageBody();
             String selectedCard = selectCard.getCards();
             int register = selectCard.getRegister();
-            //ToDo: Game-Logic for selected cards
 
-            String outgoingMessage = messageHandler.buildMessage("CardSelected", new CardSelected(this.playerID, register));
-            server.sendMessageToAllUsers(outgoingMessage);
+            server.getGame().selectCard(selectedCard, register, playerID);
+
+
         } else {
+
             throw new IOException("Something went wrong! Invalid Message Body! (not instance of SelectCard)");
+
         }
+
     }
 
     private void handlePlayIt(Message incomingMessage) throws IOException {
+
         if (incomingMessage.getMessageBody() instanceof PlayIt) {
-            PlayIt playIt = (PlayIt) incomingMessage.getMessageBody();
-            //ToDo: Game-Logic for PlayIt
+
+            if (server.getGame().getGameState().registerList.get(0).getPlayer().getPlayerID() == playerID) {
+
+                server.getGame().continuePlayersTurn();
+
+            }
+
         } else {
+
             throw new IOException("Something went wrong! Invalid Message Body! (not instance of PlayIt)");
+
         }
+
     }
     
     private void handleSelectDamage(Message incomingMessage) throws IOException {
-      if (incomingMessage.getMessageBody() instanceof SelectDamage) {
-        SelectDamage selectDamage = (SelectDamage) incomingMessage.getMessageBody();
-        //TODO: Handle SelectDamage
-      } else {
-        throw new IOException("Something went wrong! Invalid Message Body! (not instance of SelectDamage)");
-      }
+
+        if (incomingMessage.getMessageBody() instanceof SelectDamage) {
+
+            SelectDamage selectDamage = (SelectDamage) incomingMessage.getMessageBody();
+
+            server.getGame().getGameState().drawDamageCardHandler.selectDamage(playerID, selectDamage.getCards());
+
+        } else {
+
+            throw new IOException("Something went wrong! Invalid Message Body! (not instance of SelectDamage)");
+
+        }
       
+    }
+
+    private void handleMapSelected(Message incomingMessage, String incomingJson) throws IOException {
+
+        if (incomingMessage.getMessageBody() instanceof MapSelected) {
+
+            MapSelected mapSelected = (MapSelected) incomingMessage.getMessageBody();
+
+            server.setSelectedGameBoard(mapSelected.getMap()[0]);
+
+            server.sendMessageToAllUsers(incomingJson);
+
+            server.checkIfGameCanStart();
+
+        } else {
+
+            throw new IOException("Something went wrong! Invalid Message Body! (not instance of SelectDamage)");
+
+        }
+
     }
 
     private void establishConnection() throws IOException {
