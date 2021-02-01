@@ -1,17 +1,18 @@
 package server.network;
 
 import game.Game;
-import game.gameboard.GameBoardMapObject;
+import game.cards.Card;
+import game.gameboard.GameBoard;
 import game.player.Player;
 import utilities.MessageHandler;
-import utilities.messages.GameStarted;
-import utilities.messages.PlayerAdded;
-import utilities.messages.PlayerStatus;
+import utilities.messages.*;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -19,12 +20,19 @@ public class Server {
 
     private final HashMap<Integer, PrintWriter> printWriterMap = new HashMap<>();
     private final HashMap<Integer, Player> playerMap = new HashMap<>();
+
+    private final List<Player> playerList = new ArrayList<>();
     private final HashMap<Integer, Boolean> statusMap = new HashMap<>();
 
     private final double protocolVersion = 1.0;
     private int currentID = 972123;
 
     private Game game;
+    private int firstReadyPlayerID;
+    private String[] availableMaps = {"DizzyHighway", "ExtraCrispy"};
+
+    private String selectedGameBoard;
+    private Boolean firstPlayer = true;
 
     private final MessageHandler messageHandler = new MessageHandler();
 
@@ -33,6 +41,10 @@ public class Server {
         Server server = new Server();
         server.start(9090);
 
+    }
+
+    public void setSelectedGameBoard(String selectedGameBoard) {
+        this.selectedGameBoard = selectedGameBoard;
     }
 
     private void start(int portNumber) {
@@ -57,17 +69,22 @@ public class Server {
 
     }
 
-    public synchronized HashMap<Integer, PrintWriter> getPrintWriterMap() {
-        return printWriterMap;
-    }
-
     public double getProtocolVersion() {
         return protocolVersion;
+    }
+
+    public List<Player> getPlayerList() {
+        return playerList;
+    }
+
+    public Game getGame() {
+        return game;
     }
 
     public synchronized void addPlayer(int playerID, Player player) {
         playerMap.put(playerID, player);
         statusMap.put(playerID, false);
+        playerList.add(player);
     }
 
     public synchronized void addPrintWriter(int playerID, PrintWriter playerOutgoing) {
@@ -75,8 +92,27 @@ public class Server {
     }
 
     public synchronized void setStatus(int playerID, boolean status) {
+
         statusMap.replace(playerID, status);
         playerMap.get(playerID).setStatus(status);
+
+        if (firstPlayer) {
+
+            firstPlayer = false;
+            firstReadyPlayerID = playerID;
+
+            String selectedMap = messageHandler.buildMessage("SelectMap", new SelectMap(availableMaps));
+            sendMessageToSingleUser(selectedMap, playerID);
+
+        }
+
+        if (playerID == firstReadyPlayerID && !status) {
+
+            firstPlayer = true;
+            selectedGameBoard = null;
+
+        }
+
     }
 
     private synchronized int getNewID() {
@@ -122,12 +158,12 @@ public class Server {
 
         for(Player player: playerMap.values()) {
 
-            if (player.getId() != ID) {
+            if (player.getPlayerID() != ID) {
 
                 String playerAdded = messageHandler.buildMessage("PlayerAdded", new PlayerAdded(player));
                 outgoing.println(playerAdded);
 
-                String playerStatus = messageHandler.buildMessage("PlayerStatus", new PlayerStatus(player.getId(), player.getStatus()));
+                String playerStatus = messageHandler.buildMessage("PlayerStatus", new PlayerStatus(player.getPlayerID(), player.getStatus()));
                 outgoing.println(playerStatus);
 
             }
@@ -150,7 +186,7 @@ public class Server {
 
             }
 
-            if (playerReady) {
+            if (playerReady && selectedGameBoard != null) {
                 startGame();
             }
 
@@ -159,21 +195,37 @@ public class Server {
     }
 
     public synchronized void startGame() {
-        System.out.println("Game started");
-        game = new Game();
 
-        GameBoardMapObject[] testmap = game.getGameBoard().toMap();
+        this.game = new Game(this, playerList, new GameBoard(selectedGameBoard));
 
-        System.out.println(testmap);
+        String gameStarted = messageHandler.buildMessage("GameStarted", new GameStarted(game.getGameBoard().toMap()));
+        sendMessageToAllUsers(gameStarted);
 
-        String gameStarted = messageHandler.buildMessage("GameStarted", new GameStarted(testmap));
+        game.startGame();
 
-        for (PrintWriter outgoing : printWriterMap.values()) {
+    }
 
-            outgoing.println(gameStarted);
+    public synchronized void handOutCards(int playerID, Card[] cards, int cardsInPile) {
+
+        String yourCards = messageHandler.buildMessage("YourCards", new YourCards(Card.toStringArray(cards), cardsInPile));
+        String notYourCards = messageHandler.buildMessage("NotYourCards", new NotYourCards(playerID, cards.length, cardsInPile));
+
+        printWriterMap.get(playerID).println(yourCards);
+
+        for (int key : printWriterMap.keySet()) {
+
+            if (key != playerID) {
+
+                printWriterMap.get(key).println(notYourCards);
+
+            }
 
         }
 
+    }
+
+    public void endGame() {
+        this.game = null;
     }
 
 }

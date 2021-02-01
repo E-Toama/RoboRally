@@ -9,14 +9,14 @@ import game.cards.Card;
 public class DrawDamage extends MessageBody {
   private final int playerID;
   // TODO Damage Cards only.
-  private final Card[] cards;
+  private final String[] cards;
 
-  public DrawDamage(int playerID, Card[] cards) {
+  public DrawDamage(int playerID, String[] cards) {
     this.playerID = playerID;
     this.cards = cards;
   }
 
-  public Card[] getCards() {
+  public String[] getCards() {
     return cards;
   }
 

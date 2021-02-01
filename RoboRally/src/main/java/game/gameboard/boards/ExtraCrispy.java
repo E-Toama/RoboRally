@@ -55,7 +55,7 @@ public class ExtraCrispy {
                 {       new BoardElement(55, new GameBoardFieldObject[]{new WallFieldObject(new String[]{"up"}), new EnergySpaceFieldObject(1)}),
                         new BoardElement(56, new GameBoardFieldObject[]{new EmptyFieldObject()}),
                         new BoardElement(57, new GameBoardFieldObject[]{new EmptyFieldObject()}),
-                        new BoardElement(58, new GameBoardFieldObject[]{new GearFieldObject("clockwise")}),
+                        new BoardElement(58, new GameBoardFieldObject[]{new GearFieldObject("right")}),
                         new BoardElement(59, new GameBoardFieldObject[]{new EmptyFieldObject()}),
                         new BoardElement(60, new GameBoardFieldObject[]{new EmptyFieldObject()}),
                         new BoardElement(61, new GameBoardFieldObject[]{new WallFieldObject(new String[]{"right"})}),
@@ -69,7 +69,7 @@ public class ExtraCrispy {
                         new BoardElement(71, new GameBoardFieldObject[]{new WallFieldObject(new String[]{"left"})}),
                         new BoardElement(72, new GameBoardFieldObject[]{new EnergySpaceFieldObject(1)}),
                         new BoardElement(73, new GameBoardFieldObject[]{new EmptyFieldObject()}),
-                        new BoardElement(74, new GameBoardFieldObject[]{new GearFieldObject("counterclockwise")}),
+                        new BoardElement(74, new GameBoardFieldObject[]{new GearFieldObject("left")}),
                         new BoardElement(75, new GameBoardFieldObject[]{new LaserFieldObject("up", 1)}),
                         new BoardElement(76, new GameBoardFieldObject[]{new EmptyFieldObject()}),
                         new BoardElement(77, new GameBoardFieldObject[]{new WallFieldObject(new String[]{"down"})})

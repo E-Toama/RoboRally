@@ -1,5 +1,8 @@
 package game.gameboard.gameboardfieldobjects;
 
+import game.Game;
+import game.utilities.GameState;
+
 public class RotatingBeltFieldObject extends GameBoardFieldObject {
 
     private final int speed;
@@ -25,4 +28,8 @@ public class RotatingBeltFieldObject extends GameBoardFieldObject {
         return orientations;
     }
 
+    @Override
+    public void activate(Game game, GameState gameState, int playerID) {
+
+    }
 }

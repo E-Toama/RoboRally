@@ -8,13 +8,13 @@ import game.cards.Card;
  */
 public class CardsYouGotNow extends MessageBody {
   // TODO add cards list (register cards only)
-  private final Card[] cards;
+  private final String[] cards;
 
-  public CardsYouGotNow(Card[] cards) {
+  public CardsYouGotNow(String[] cards) {
     this.cards = cards;
   }
 
-  public Card[] getCards() {
+  public String[] getCards() {
     return cards;
   }
 }

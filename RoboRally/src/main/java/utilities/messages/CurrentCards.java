@@ -1,6 +1,6 @@
 package utilities.messages;
 
-import game.cards.ActiveCards;
+import game.cards.ActiveCard;
 
 /**
  * 
@@ -8,13 +8,13 @@ import game.cards.ActiveCards;
  */
 public class CurrentCards extends MessageBody {
   // TODO add list activeCards
-  private final ActiveCards[] activeCards;
+  private final ActiveCard[] activeCards;
 
-  public CurrentCards(ActiveCards[] activeCards) {
+  public CurrentCards(ActiveCard[] activeCards) {
     this.activeCards = activeCards;
   }
 
-  public ActiveCards[] getActiveCards() {
+  public ActiveCard[] getActiveCards() {
     return activeCards;
   }
 

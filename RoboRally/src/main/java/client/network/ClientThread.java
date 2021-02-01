@@ -12,7 +12,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import game.player.Player;
 import javafx.scene.layout.AnchorPane;
@@ -282,7 +281,7 @@ public class ClientThread implements Runnable {
 
             PlayerAdded receivedMessage = (PlayerAdded) incomingMessage.getMessageBody();
 
-            if (receivedMessage.getPlayer().getId() == this.ID) {
+            if (receivedMessage.getPlayer().getPlayerID() == this.ID) {
 
                 this.player = receivedMessage.getPlayer();
                 playerList.put(this.ID, player);
@@ -296,7 +295,7 @@ public class ClientThread implements Runnable {
                 });
 
                 Platform.runLater(() -> {
-                    messageMatchMap.put(player.getName() + ", " + Robot.getRobotName(player.getFigure()), player.getId());
+                    messageMatchMap.put(player.getName() + ", " + Robot.getRobotName(player.getFigure()), player.getPlayerID());
                 });
 
                 welcomeViewModel.playerSuccesfullyAdded();
@@ -309,7 +308,7 @@ public class ClientThread implements Runnable {
                     takenRobotList.add(receivedMessage.getPlayer().getFigure());
                 });
 
-                playerList.put(receivedMessage.getPlayer().getId() ,receivedMessage.getPlayer());
+                playerList.put(receivedMessage.getPlayer().getPlayerID() ,receivedMessage.getPlayer());
 
                 Platform.runLater(() -> {
                     observablePlayerList.add(receivedMessage.getPlayer().getName() + ", " + Robot.getRobotName(receivedMessage.getPlayer().getFigure()));
@@ -320,7 +319,7 @@ public class ClientThread implements Runnable {
                 });
 
                 Platform.runLater(() -> {
-                    messageMatchMap.put(receivedMessage.getPlayer().getName() + ", " + Robot.getRobotName(receivedMessage.getPlayer().getFigure()), receivedMessage.getPlayer().getId());
+                    messageMatchMap.put(receivedMessage.getPlayer().getName() + ", " + Robot.getRobotName(receivedMessage.getPlayer().getFigure()), receivedMessage.getPlayer().getPlayerID());
                 });
 
                 String notificationName = receivedMessage.getPlayer().getName() + " has joined!";
@@ -484,7 +483,7 @@ public class ClientThread implements Runnable {
     private void handleYourCards(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof  YourCards) {
             YourCards yourCards = (YourCards) incomingMessage.getMessageBody();
-            Card[] cards = yourCards.getCards();
+            String[] cards = yourCards.getCards();
             //ToDo: Implement "YourCards" (Client-Thread)
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of YourCards)");
@@ -548,7 +547,7 @@ public class ClientThread implements Runnable {
     private void handleCardsYouGotNow(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof CardsYouGotNow) {
             CardsYouGotNow cardsYouGotNow = (CardsYouGotNow) incomingMessage.getMessageBody();
-            Card[] yourCards = cardsYouGotNow.getCards();
+            String[] yourCards = cardsYouGotNow.getCards();
             //ToDo: Game-logic for CardsYouGotNow
         } else {
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of CardsYouGotNow)");
