@@ -29,6 +29,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import game.player.Player;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.GridPane;
 import utilities.MessageHandler;
 import utilities.MyLogger;
@@ -558,8 +559,14 @@ public class ClientThread implements Runnable {
                    });
                }
                if (clientGameState.getActivePhase() == 3) {
-                   String playIt = messageHandler.buildMessage("PlayIt", new PlayIt());
-                   outgoing.println(playIt);
+                   Platform.runLater(() -> {
+                       Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                       alert.setHeaderText("PlayIt?");
+                       alert.setContentText("Do you want to play that register?");
+                       alert.showAndWait();
+                       String playIt = messageHandler.buildMessage("PlayIt", new PlayIt());
+                       outgoing.println(playIt);
+                   });
                }
             }
             logger.getLogger().info("Current player id " + currentPlayer.getPlayerID() + ".");

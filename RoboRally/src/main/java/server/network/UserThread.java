@@ -2,6 +2,7 @@ package server.network;
 
 import game.player.Player;
 import utilities.MessageHandler;
+import utilities.MyLogger;
 import utilities.messages.*;
 import utilities.messages.Error;
 
@@ -18,6 +19,9 @@ public class UserThread implements Runnable {
     private final PrintWriter outgoing;
     private final Server server;
     private final MessageHandler messageHandler = new MessageHandler();
+    private final MyLogger logger = new MyLogger(UserThread.class.getName());
+
+
 
     private Player player;
     private final int playerID;
@@ -157,15 +161,20 @@ public class UserThread implements Runnable {
 
                 //server.(this.player.getId());
 
+                logger.getLogger().info("Player name: " + receivedMessage.getName() + ", Player figure: " + receivedMessage.getFigure() + ".");
+
             } else {
 
                 String error = messageHandler.buildMessage("Error", new Error("Figure already taken!"));
 
                 outgoing.println(error);
 
+                logger.getLogger().warning("Error: '" + error + "' happend.");
+
             }
 
         } else {
+            logger.getLogger().severe("Message body error in handlePlayerValues method.");
 
             throw new IOException("Something went wrong! Invalid Message Body! (not instance of PlayerValues)");
 
@@ -187,8 +196,11 @@ public class UserThread implements Runnable {
 
             server.checkIfGameCanStart();
 
+            logger.getLogger().info("Player " + player.getName() + ", status: " + receivedMessage.getReady() + ".");
+
         } else {
 
+            logger.getLogger().severe("Message body error in handleSetStatus method.");
             throw new IOException("Something went wrong! Invalid Message Body! (not instance of SetStatus)");
 
         }
@@ -208,6 +220,8 @@ public class UserThread implements Runnable {
 
                 server.sendMessageToAllUsers(outgoingMessage);
 
+                logger.getLogger().info(player.getName() + " sent a message to all users.");
+
             } else {
 
                 String outgoingMessage = messageHandler.buildMessage(
@@ -215,10 +229,12 @@ public class UserThread implements Runnable {
 
                 server.sendMessageToSingleUser(outgoingMessage, receivedMessage.getTo());
 
+                logger.getLogger().info(player.getName() + " sent a message to a single user.");
+
             }
 
         } else {
-
+            logger.getLogger().severe("Message body error in handleSendChat method.");
             throw new IOException("Something went wrong! Invalid Message Body! (not instance of SendChat)");
 
         }
@@ -236,7 +252,11 @@ public class UserThread implements Runnable {
             PlayCard playCard = (PlayCard) incomingMessage.getMessageBody();
             String cardPlayed = playCard.getCard();
             //ToDo: handle PlayCard (UserThread)
+
+            logger.getLogger().info(player.getName() + " played " + cardPlayed + ".");
+
         } else {
+            logger.getLogger().severe("Message body error in handlePlayCard method.");
             throw new IOException("Something went wrong! Invalid Message Body! (not instance of PlayCard)");
         }
     }
@@ -247,9 +267,9 @@ public class UserThread implements Runnable {
 
             SetStartingPoint setStartingPoint = (SetStartingPoint) incomingMessage.getMessageBody();
             server.getGame().continueStartingPointSelection(this.player, setStartingPoint.getPosition());
-
+            logger.getLogger().info(player.getName() + " chose position " + setStartingPoint.getPosition() + " as his starting point.");
         } else {
-
+            logger.getLogger().severe("Message body error in handleSetStartingPoint method.");
             throw new IOException("Something went wrong! Invalid Message Body! (not instance of SetStartingPoint)");
 
         }
@@ -265,10 +285,10 @@ public class UserThread implements Runnable {
             int register = selectCard.getRegister();
 
             server.getGame().selectCard(selectedCard, register, playerID);
-
+            logger.getLogger().info(player.getName() + " selected " + selectedCard + " into register " + register + ".");
 
         } else {
-
+            logger.getLogger().severe("Message body error in handleSelectCard method.");
             throw new IOException("Something went wrong! Invalid Message Body! (not instance of SelectCard)");
 
         }
@@ -288,9 +308,9 @@ public class UserThread implements Runnable {
                 }
 
             }
-
+            logger.getLogger().info("got a playIt message.");
         } else {
-
+            logger.getLogger().severe("Message body error in handlePlayIt method.");
             throw new IOException("Something went wrong! Invalid Message Body! (not instance of PlayIt)");
 
         }
@@ -304,9 +324,9 @@ public class UserThread implements Runnable {
             SelectDamage selectDamage = (SelectDamage) incomingMessage.getMessageBody();
 
             server.getGame().getGameState().drawDamageCardHandler.selectDamage(playerID, selectDamage.getCards());
-
+            logger.getLogger().info(player.getName() + " selected " + selectDamage.getCards() + ".");
         } else {
-
+            logger.getLogger().severe("Message body error in handleSelectDamage method.");
             throw new IOException("Something went wrong! Invalid Message Body! (not instance of SelectDamage)");
 
         }
@@ -364,13 +384,14 @@ public class UserThread implements Runnable {
                     String error = messageHandler.buildMessage("Error", new Error("Client protocol version is not supported!"));
 
                     outgoing.println(error);
-
+                    logger.getLogger().warning("Error '" + error + "' happend.");
                     throw new IOException("Client protocol version is not supported!");
 
                 }
+                logger.getLogger().info("Connection established succesfully with the Client.");
 
         } else {
-
+            logger.getLogger().severe("Message body error in establishConnection method.");
             throw new IOException("Couldn't establish connection!");
 
         }
