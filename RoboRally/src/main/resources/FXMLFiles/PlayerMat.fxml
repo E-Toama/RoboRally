@@ -4,7 +4,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane fx:id="playerMatPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="190.0" prefWidth="975.0" style="-fx-background-color: lightgrey;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.PlayerMatController">
+<?import java.net.URL?>
+<GridPane fx:id="playerMatPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="190.0" prefWidth="975.0" style="-fx-background-color: lightgrey;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.PlayerMatController" >
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="275.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="140.0" />
@@ -31,14 +32,14 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label fx:id="userNameValue" text="userName" />
-            <Label fx:id="robotValue" GridPane.columnIndex="1" />
-            <Label fx:id="checkPointLabel" text="Checkpoints: " GridPane.rowIndex="1" />
-            <Label fx:id="checkPointValue" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label fx:id="CardsInDeckLabel" text="Cards in Deck:" GridPane.rowIndex="2" />
-            <Label fx:id="DiscardedCardsLabel" text="Discarded Cards: " GridPane.rowIndex="3" />
-            <Label fx:id="damageCardsLabel" text="DamageCards:" GridPane.rowIndex="4" />
-            <Label fx:id="EnergyCubeLabel" text="EnergyCubes:" GridPane.rowIndex="5" />
+            <Label fx:id="userNameValue" text="userName" style="-fx-font-weight= bold"/>
+            <Label fx:id="robotValue" GridPane.columnIndex="1" style="-fx-font-weight= bold"/>
+            <Label fx:id="checkPointLabel" text="Checkpoints: " GridPane.rowIndex="1" style="-fx-font-weight= bold"/>
+            <Label fx:id="checkPointValue" GridPane.columnIndex="1" GridPane.rowIndex="1" style="-fx-font-weight= bold" />
+            <Label fx:id="CardsInDeckLabel" text="Cards in Deck:" GridPane.rowIndex="2" style="-fx-font-weight= bold" />
+            <Label fx:id="DiscardedCardsLabel" text="Discarded Cards: " GridPane.rowIndex="3" style="-fx-font-weight= bold" />
+            <Label fx:id="damageCardsLabel" text="DamageCards:" GridPane.rowIndex="4" style="-fx-font-weight= bold" />
+            <Label fx:id="EnergyCubeLabel" text="EnergyCubes:" GridPane.rowIndex="5" style="-fx-font-weight= bold, -fx-font-color=green" />
             <Label fx:id="cardsInDeckValue" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label fx:id="discardedCardsValue" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <Label fx:id="damageCardsValue" GridPane.columnIndex="1" GridPane.rowIndex="4" />

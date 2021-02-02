@@ -1,0 +1,98 @@
+
+.checkPointLabel {
+-fx-text-fill: red;
+}
+
+
+#DiscardedCardsLabel {
+
+-fx-text-fill: red;
+
+}
+
+#programmingGridPane {
+
+-fx-background-color: lightgrey;
+-fx-min-height: 190;
+-fx-max-height: 190;
+-fx-min-width: 975;
+-fx-max-width: 975;
+
+}
+
+#timerbox {
+
+-fx-background-color: #ffd966;
+-fx-padding: 10;
+-fx-font-family: Arial;
+-fx-width: 120;
+}
+
+#timerlabel {
+
+-fx-text-fill: red;
+-fx-font-weight: bold;
+-fx-padding: 12;
+-fx-font-size: 18;
+}
+
+#timerheading {
+
+-fx-padding: 5;
+
+}
+
+#register {
+
+-fx-color: red;
+-fx-font-weight: bold;
+
+}
+
+.registerButtons {
+
+-fx-background-color: purple;
+
+
+}
+
+
+
+
+#titleLabel {
+
+-fx-text-alignment: CENTER;
+-fx-padding: 10;
+-fx-font-size: 30;
+-fx-font-weight: bolder;
+-fx-font-family: monospace;
+-fx-text-fill: #ffd966;
+
+
+}
+
+#popupContainer {
+
+-fx-background-color: #0B0B3B;
+-fx-pref-width: 600;
+-fx-alignment: center;
+
+}
+
+#contentContainer {
+
+-fx-padding: 10 0 50 0;
+-fx-hgap: 20;
+-fx-alignment: center;
+-fx-margin-bottom: 50;
+
+}
+
+
+#contentLabel {
+
+-fx-font-size: 15;
+-fx-text-fill: white;
+-fx-padding: 10;
+
+}

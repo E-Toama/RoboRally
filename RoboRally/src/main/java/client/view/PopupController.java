@@ -30,8 +30,6 @@ public class PopupController {
     private double mapButtonWidth = 250;
     private double programmingCardButtonWidth = 80;
 
-
-
     //Instance Variables for PickDamage
     private ArrayList<String> clickedButtons;
     private String[] userChoice;
@@ -47,24 +45,22 @@ public class PopupController {
 
         //Init outer container
         popupContainer = new VBox();
-        popupContainer.setPrefWidth(600);
-        popupContainer.setAlignment(Pos.CENTER);
+        //popupContainer.setPrefWidth(600);
+        //popupContainer.setAlignment(Pos.CENTER);
+
 
         //init title label
         titleLabel = new Label();
-        titleLabel.setFont(new Font(30));
-        titleLabel.setPadding(new Insets(10));
-        titleLabel.setAlignment(Pos.CENTER);
-
         contentLabel = new Label();
-        contentLabel.setPadding(new Insets(10));
-
         contentContainer = new GridPane();
-        contentContainer.setAlignment(Pos.CENTER);
-        contentContainer.setHgap(10);
-
         popupContainer.getChildren().addAll(titleLabel, contentLabel, contentContainer);
 
+        //Adding stylesheet.css
+        popupContainer.getStylesheets().add("stylesheet.css");
+        popupContainer.setId("popupContainer");
+        titleLabel.setId("titleLabel");
+        contentLabel.setId("contentLabel");
+        contentContainer.setId("contentContainer");
     }
 
     public void showMapChoice(String[] availableMaps) {
