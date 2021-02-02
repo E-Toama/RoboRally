@@ -1,8 +1,8 @@
 package utilities.messages;
 
 /**
- * The class SendChat is responsible for sending chats from one user to other or
- * to all.
+ * The class SendChat is responsible for sending private chats from one user to
+ * other or not private to all.
  * 
  * @author
  */
