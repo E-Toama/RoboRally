@@ -1,15 +1,4 @@
 
-.checkPointLabel {
--fx-text-fill: red;
-}
-
-
-#DiscardedCardsLabel {
-
--fx-text-fill: red;
-
-}
-
 #programmingGridPane {
 
 -fx-background-color: lightgrey;
@@ -22,8 +11,8 @@
 
 #timerbox {
 
--fx-background-color: #ffd966;
--fx-padding: 10;
+-fx-background-color: #E0E0F8;
+-fx-padding: 22;
 -fx-font-family: Arial;
 -fx-width: 120;
 }
@@ -45,7 +34,7 @@
 #register {
 
 -fx-color: red;
--fx-font-weight: bold;
+-fx-font-weight: bolder;
 
 }
 
@@ -56,7 +45,11 @@
 
 }
 
+.cartButtonLabel {
 
+-fx-text-fill: #DF7401;
+-fx-padding: 4;
+}
 
 
 #titleLabel {

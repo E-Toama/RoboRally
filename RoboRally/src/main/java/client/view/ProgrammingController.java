@@ -87,8 +87,7 @@ public class ProgrammingController {
       cardButton.setLabel(label);
       gridPane.add(cardButton, i, 0);
       gridPane.add(cardButton.getLabel(), i, 1);
-      cardButton.setId("cardButton");
-      cardButton.getLabel().setId("cardButtonLabel");
+      cardButton.getLabel().getStyleClass().add("cartButtonLabel");
 
       // Add Buttons and labels to way too many lists
       buttonList[i] = cardButton;
