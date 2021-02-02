@@ -14,7 +14,7 @@ public class Welcome extends MessageBody {
    * A Constructor to initialize the player id.
    * 
    * @param id
-   *          is the given player ID.
+   *          is the given player ID
    */
   public Welcome(int id) {
 
