@@ -1,26 +1,7 @@
-import client.network.ClientThread;
-import client.view.DamageChoiceDialog;
-import client.view.GameBoardController;
-import client.view.MainViewController;
-import client.view.MapChoiceDialog;
 import client.view.PopupController;
-import client.view.ProgrammingController;
-import client.view.ViewController;
-import client.viewmodel.EnemyMatModel;
-import client.viewmodel.GameBoardViewModel;
-import client.viewmodel.MainViewModel;
-import client.viewmodel.PlayerMatModel;
-import client.viewmodel.ProgrammingViewModel;
-import game.gameboard.GameBoard;
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import server.network.TestMessages;
-
-import java.util.Arrays;
-import java.util.Collections;
 
 public class MainViewTest extends Application {
 
@@ -45,13 +26,7 @@ public class MainViewTest extends Application {
         PopupController popupController = new PopupController();
         popupController.showPickDamage(2, TestMessages.availableDamageCards);
 
-       /* MapChoiceDialog mapChoiceDialog = new MapChoiceDialog();
-        mapChoiceDialog.show(availableMaps);
-        track = mapChoiceDialog.getUserChoice();
-
-        DamageChoiceDialog damageChoiceDialog = new DamageChoiceDialog();
-        damageChoiceDialog.show(3, TestMessages.availableDamageCards);
-
+       /*
         GameBoardViewModel gameBoardViewModel = new GameBoardViewModel();
         gameBoardViewModel.setGameBoard(new GameBoard(track).getGameBoard());
         gameBoardViewModel.getGameBoardController().initBoard();

@@ -96,8 +96,13 @@ public class ProgrammingController {
             filledRegisters[concerningRegister] = false;
             programmingViewModel.selectCard("null", (concerningRegister+1));
         } else {
-            button.setChosen(true);
             int firstFreeRegisterIndex = findFirstFreeRegisterIndex();
+
+            //Again-Card cannot be placed in first register
+            if (firstFreeRegisterIndex == 0 && "Again".equals(button.getCardString())) {
+                return;
+            }
+            button.setChosen(true);
             filledRegisters[firstFreeRegisterIndex] = true;
             button.setRegister(firstFreeRegisterIndex);
             programmingViewModel.selectCard(button.getCardString(), firstFreeRegisterIndex + 1);
@@ -141,17 +146,6 @@ public class ProgrammingController {
             btn.setGraphic(ImageBuilder.adjustToProgrammingView("default"));
         }
     }
-
-/*    public void cardsYouGotNow() {
-        Alert cardAlert = new Alert(Alert.AlertType.INFORMATION);
-        cardAlert.setHeaderText("Cards you got now:");
-        StringBuilder cardsYouGotNow = new StringBuilder();
-        for (String s : programmingViewModel.getCardsYouGotNow()) {
-            cardsYouGotNow.append(s).append("\n");
-        }
-        cardAlert.setContentText(cardsYouGotNow.toString());
-        cardAlert.show();
-    }*/
 
     private void allRegistersChosen() {
         boolean allChosen = true;

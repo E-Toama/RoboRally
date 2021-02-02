@@ -1,14 +1,9 @@
 package client.network;
 
 import client.utilities.ClientGameState;
-import client.utilities.ClientPlayerState;
-import client.view.DamageChoiceDialog;
-import client.view.GameBoardController;
 import client.view.MainViewController;
-import client.view.MapChoiceDialog;
 import client.view.PlayerMatController;
 import client.view.PopupController;
-import client.view.ProgrammingController;
 import client.view.ViewController;
 import client.viewmodel.ChatViewModel;
 import client.viewmodel.EnemyMatModel;
@@ -19,18 +14,14 @@ import client.viewmodel.ProgrammingViewModel;
 import client.viewmodel.WelcomeViewModel;
 import game.Robots.Robot;
 import game.cards.ActiveCard;
-import game.cards.Card;
 import game.gameboard.GameBoard;
-import game.utilities.PositionLookUp;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import game.player.Player;
-import javafx.scene.control.Alert;
 import javafx.scene.layout.GridPane;
 import utilities.MessageHandler;
 import utilities.MyLogger;
@@ -43,9 +34,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 public class ClientThread implements Runnable {

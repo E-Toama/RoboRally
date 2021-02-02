@@ -119,7 +119,7 @@ public class GameBoardController {
         if (direction.equals("clockwise")) {
             robotImage.setRotate(90);
         } else {
-            robotImage.setRotate(270);
+            robotImage.setRotate(-90);
         }
         gameTileArray[current.getY()][current.getX()].getChildren().add(robotImage);
 

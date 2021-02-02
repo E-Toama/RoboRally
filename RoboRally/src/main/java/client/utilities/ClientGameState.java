@@ -13,7 +13,6 @@ public class ClientGameState {
 
     private int ActivePhase = 0;
     private GameBoard gameBoard;
-    private List<ClientPlayerState> playerStateList = new LinkedList<>();
 
     // Initial count of DamageCards according to Rules / FAQ
     private int spamCardPile = 38;
