@@ -12,7 +12,7 @@ public class HelloClient extends MessageBody {
   
   /**
    * Constructor to initialize the protocol with its version.
-   * @param protocol is the version of the protocol.
+   * @param protocol is the version of the protocol
    */
   public HelloClient(double protocol) {
 
