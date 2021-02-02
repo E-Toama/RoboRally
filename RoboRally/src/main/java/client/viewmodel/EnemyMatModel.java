@@ -12,6 +12,15 @@ public class EnemyMatModel {
     //Rudimentary attributes for Robot Movements
     private int playerID;
     private int currentPosition;
+    private boolean isCurrentPlayer;
+
+    public boolean isCurrentPlayer() {
+        return isCurrentPlayer;
+    }
+
+    public void setCurrentPlayer(boolean currentPlayer) {
+        isCurrentPlayer = currentPlayer;
+    }
 
     public EnemyMatModel() {
         //Client <-> Model

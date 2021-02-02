@@ -532,28 +532,28 @@ public class ClientThread implements Runnable {
     private void handleCurrentPlayer(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof CurrentPlayer) {
             CurrentPlayer currentPlayer = (CurrentPlayer) incomingMessage.getMessageBody();
-            if (currentPlayer.getPlayerID() == ID) {
+            int playerID = currentPlayer.getPlayerID();
+            if (playerID == ID) {
+                playerMatModel.setCurrentPlayer(true);
+                for (Map.Entry<Integer, EnemyMatModel> enemy : enemyList.entrySet()) {
+                    enemy.getValue().setCurrentPlayer(false);
+                }
+
                 if (clientGameState.getActivePhase() == 0) {
                     Platform.runLater(() -> {
                         gameBoardViewModel.getGameBoardController().initStartingPoints();
                     });
                 }
                 if (clientGameState.getActivePhase() == 3) {
-                    Platform.runLater(() -> {
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setHeaderText("PlayIt?");
-                        alert.setContentText("Do you want to play that register?");
-                        alert.showAndWait();
-                        String playIt = messageHandler.buildMessage("PlayIt", new PlayIt());
-                        outgoing.println(playIt);
-                    });
+                    playerMatModel.getPlayerMatController().activateRegisterButton();
                 }
+            } else {
+                enemyList.get(playerID).setCurrentPlayer(true);
+                playerMatModel.setCurrentPlayer(false);
             }
+
+
             logger.getLogger().info("Current player id " + currentPlayer.getPlayerID() + ".");
-
-            //ToDo: Set all other players' current state to false
-
-            playerMatModel.setCurrentPlayer(true);
 
         } else {
             logger.getLogger().severe("Message body error in handleCurrentPlayer method.");
@@ -816,7 +816,10 @@ public class ClientThread implements Runnable {
             clientGameState.decreaseDamageCardCount(damageCards);
 
             if (playerID == ID) {
-                playerMatModel.setPickedUpDamageCards(damageCards.length);
+                Platform.runLater(() -> {
+                    playerMatModel.setPickedUpDamageCards(damageCards.length);
+                });
+
             } else {
                 //ToDo: Update OtherPlayers-DamageCount
             }
@@ -926,7 +929,9 @@ public class ClientThread implements Runnable {
             //todo Is this a number or a counter?
             int checkPoint = checkpointReached.getNumber();
             if (playerID == ID) {
-                playerMatModel.setCheckpointsreached(String.valueOf(checkPoint));
+                Platform.runLater(() -> {
+                    playerMatModel.setCheckpointsreached(String.valueOf(checkPoint));
+                });
             } else {
                 //todo update other players checkpoints
             }
@@ -1027,6 +1032,11 @@ public class ClientThread implements Runnable {
 
     public void sendSelectedDamage(String[] selectedDamageCards) {
         String outgoingMessage = messageHandler.buildMessage("SelectDamage", new SelectDamage(selectedDamageCards));
+        outgoing.println(outgoingMessage);
+    }
+
+    public void sendPlayIt() {
+        String outgoingMessage = messageHandler.buildMessage("PlayIt", new PlayIt());
         outgoing.println(outgoingMessage);
     }
 

@@ -146,7 +146,8 @@ public class Game {
 
         Timer timer = new Timer();
 
-        timer.schedule(timerEndedTask, 30000);
+        //TODO: Reset TImer to 30
+        timer.schedule(timerEndedTask, 5000);
 
     }
 

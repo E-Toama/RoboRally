@@ -46,13 +46,14 @@ public class PlayerMatModel {
         this.finishedSelection = false;
         this.direction = "";
 
-/*        //Setting all values to the Getter-Values of PlayerState
-        userName.setValue(playerState.getUserName());
-        checkpointsreached.setValue(String.valueOf(playerState.getCheckpointsreached()));
-        energyPoints.setValue(String.valueOf(playerState.getEnergyPoints()));
-        pickedUpDamageCards.setValue(String.valueOf(playerState.getPickedUpDamageCards()));
-        deckCount.setValue(String.valueOf(playerState.getDeckCount()));
-        discardedCount.setValue(String.valueOf(playerState.getDiscardedCount()));*/
+        this.checkpointsreached.set("0");
+        this.userName.set("");
+        this.robotName.set("");
+        this.pickedUpDamageCards.set("0");
+        this.energyPoints.set("0");
+        this.deckCount.set("20");
+        this.robotName.set("");
+        this.discardedCount.set("0");
 
     }
 
@@ -158,5 +159,9 @@ public class PlayerMatModel {
 
     public void setDirection(String direction) {
         this.direction = direction;
+    }
+
+    public void sendPlayIt() {
+        clientThread.sendPlayIt();
     }
 }

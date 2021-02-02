@@ -25,7 +25,7 @@ public class ProgrammingViewModel {
     ProgrammingController programmingController;
     String[] cards;
     String slowPlayers = "";
-    String[] cardsYouGotNow;
+    String[] cardsYouGotNow = new String[5];
 
     private Integer seconds = 30;
 
