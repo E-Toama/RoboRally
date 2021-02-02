@@ -2,17 +2,33 @@ package utilities.messages;
 
 import game.gameboard.GameBoardMapObject;
 
+/**
+ * The class GameStarted represents the map of the game board.
+ * 
+ * @author
+ */
 public class GameStarted extends MessageBody {
 
-    private final GameBoardMapObject[] map;
+  private final GameBoardMapObject[] map;
 
-    public GameStarted(GameBoardMapObject[] map) {
+  /**
+   * Constructor for initializing the game board map.
+   * 
+   * @param map
+   *          is the game board
+   */
+  public GameStarted(GameBoardMapObject[] map) {
 
-        this.map = map;
+    this.map = map;
 
-    }
+  }
 
-    public GameBoardMapObject[] getMap() {
-        return map;
-    }
+  /**
+   * The method returns the map of the game board.
+   * 
+   * @return an array of the game board map
+   */
+  public GameBoardMapObject[] getMap() {
+    return map;
+  }
 }
