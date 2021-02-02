@@ -142,7 +142,7 @@ public class ProgrammingController {
         }
     }
 
-    public void cardsYouGotNow() {
+/*    public void cardsYouGotNow() {
         Alert cardAlert = new Alert(Alert.AlertType.INFORMATION);
         cardAlert.setHeaderText("Cards you got now:");
         StringBuilder cardsYouGotNow = new StringBuilder();
@@ -151,7 +151,7 @@ public class ProgrammingController {
         }
         cardAlert.setContentText(cardsYouGotNow.toString());
         cardAlert.show();
-    }
+    }*/
 
     private void allRegistersChosen() {
         boolean allChosen = true;
@@ -168,16 +168,6 @@ public class ProgrammingController {
 
     public void setTimerEnded() {
         isTimerEnded = true;
-        showTimerEndedAlert();
-    }
-
-    private void showTimerEndedAlert() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText("Timer ran out!");
-        if (!slowPlayers.isEmpty()) {
-            alert.setContentText("Way too slow:\n" + slowPlayers);
-        }
-        alert.show();
     }
 
     /**

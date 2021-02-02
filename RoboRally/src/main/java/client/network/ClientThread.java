@@ -7,6 +7,7 @@ import client.view.GameBoardController;
 import client.view.MainViewController;
 import client.view.MapChoiceDialog;
 import client.view.PlayerMatController;
+import client.view.PopupController;
 import client.view.ProgrammingController;
 import client.view.ViewController;
 import client.viewmodel.ChatViewModel;
@@ -433,9 +434,11 @@ public class ClientThread implements Runnable {
     private void handleSelectMap(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof SelectMap) {
             SelectMap receivedMessage = (SelectMap) incomingMessage.getMessageBody();
-            MapChoiceDialog mapChoiceDialog = new MapChoiceDialog();
+            String[] availableMaps = receivedMessage.getAvailableMaps();
+
             Platform.runLater(() -> {
-                mapChoiceDialog.show(receivedMessage.getAvailableMaps());
+                PopupController popupController = new PopupController();
+                popupController.showMapChoice(availableMaps);
             });
 
         } else {
@@ -570,10 +573,15 @@ public class ClientThread implements Runnable {
             clientGameState.setActivePhase(activePhase.getPhase());
 
             if (activePhase.getPhase() == 3) {
+                String slowPlayers = programmingViewModel.getSlowPlayers();
+                String[] cardsInRegister = programmingViewModel.getCardsYouGotNow();
                 Platform.runLater(() -> {
+                    PopupController popupController = new PopupController();
+                    popupController.showEndOfProgrammingPhase(slowPlayers, cardsInRegister);
                     mainViewModel.switchScenes();
                 });
             }
+
 
             logger.getLogger().info("The Active phase is " + activePhase.getPhase() + ".");
 
@@ -703,12 +711,16 @@ public class ClientThread implements Runnable {
     private void handleTimerEnded(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof TimerEnded) {
             TimerEnded timerEnded = (TimerEnded) incomingMessage.getMessageBody();
-            String slowPlayers = "";
+            StringBuilder slowPlayers = new StringBuilder();
             for (Integer id : timerEnded.getPlayerIDs()) {
-                //ToDo: Transform IDs in String to actual username (or robotNames)
-                slowPlayers += id + "\n";
+                if (id == ID) {
+                    String robotFigure = Robot.getRobotName(playerMatModel.getFigure());
+                    slowPlayers.append(robotFigure).append(" ");
+                } else {
+                    //ToDo: Add slow enemys to slowPlayers
+                }
             }
-            programmingViewModel.getProgrammingController().setSlowPlayers(slowPlayers);
+            programmingViewModel.setSlowPlayers(slowPlayers.toString());
 
             Platform.runLater(() -> {
                 programmingViewModel.endTimer();
@@ -740,9 +752,6 @@ public class ClientThread implements Runnable {
             CardsYouGotNow cardsYouGotNow = (CardsYouGotNow) incomingMessage.getMessageBody();
             String[] yourCards = cardsYouGotNow.getCards();
             programmingViewModel.setCardsYouGotNow(yourCards);
-            Platform.runLater(() -> {
-                programmingViewModel.getProgrammingController().cardsYouGotNow();
-            });
 
             logger.getLogger().info(this.player.getName() + " got the cards: " + yourCards + ".");
         } else {
@@ -823,8 +832,13 @@ public class ClientThread implements Runnable {
     private void handlePickDamage(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof PickDamage) {
             PickDamage pickDamage = (PickDamage) incomingMessage.getMessageBody();
-            DamageChoiceDialog damageChoiceDialog = new DamageChoiceDialog();
-            damageChoiceDialog.show(pickDamage.getCount(), clientGameState.getAvailableDamageCards());
+            int count = pickDamage.getCount();
+            PopupController popupController = new PopupController();
+            LinkedList<String> availableCards = clientGameState.getAvailableDamageCards();
+            Platform.runLater(() -> {
+                popupController.showPickDamage(count, availableCards);
+            });
+
             logger.getLogger().info(this.player.getName() + " has chosen " + pickDamage.getCount() + " damage cards.");
 
         } else {
@@ -837,6 +851,7 @@ public class ClientThread implements Runnable {
         if (incomingMessage.getMessageBody() instanceof PlayerShooting) {
             PlayerShooting playerShooting = (PlayerShooting) incomingMessage.getMessageBody();
             //ToDo: Update GUI PlayerShooting
+            //      Append Chat with "Robots are shooting now"
             logger.getLogger().info("Player is shooting!");
         } else {
             logger.getLogger().severe("Message body error in handlePlayerShooting method.");
@@ -929,6 +944,7 @@ public class ClientThread implements Runnable {
         if (incomingMessage.getMessageBody() instanceof GameWon) {
             GameWon gameWon = (GameWon) incomingMessage.getMessageBody();
             //ToDo: Update GUI GameWon - Simple PopUp?
+
 
             logger.getLogger().info("Player with id " + gameWon.getPlayerID() + " has won the game.");
         } else {

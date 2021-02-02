@@ -92,6 +92,7 @@ public class PlayerMatController {
 
     public void setTakenRegister(String card) {
         ImageView cardToDisplay = ImageBuilder.adjustToPlayerMatView(card);
+        //ToDO: FX-Transition? FlipCard-Animation
         registers[registerForAnimation] = cardToDisplay;
         playerMatPane.add(cardToDisplay, registerForAnimation+1, 0);
         registerForAnimation++;

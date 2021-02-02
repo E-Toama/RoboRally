@@ -24,7 +24,9 @@ public class ProgrammingViewModel {
     ClientThread clientThread;
     ProgrammingController programmingController;
     String[] cards;
+    String slowPlayers = "";
     String[] cardsYouGotNow;
+
     private Integer seconds = 30;
 
     StringProperty timerLabelProperty = new SimpleStringProperty();
@@ -35,6 +37,14 @@ public class ProgrammingViewModel {
 
     public StringProperty getTimerLabelProperty() {
         return timerLabelProperty;
+    }
+
+    public void setSlowPlayers(String slowPlayers) {
+        this.slowPlayers = slowPlayers;
+    }
+
+    public String getSlowPlayers() {
+        return slowPlayers;
     }
 
     public ProgrammingViewModel() {
@@ -63,6 +73,7 @@ public class ProgrammingViewModel {
     }
 
     public void selectCard(String cardString, int register) {
+        cardsYouGotNow[register-1] = cardString;
         clientThread.sendSelectedCard(cardString, register);
     }
 

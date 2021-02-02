@@ -28,6 +28,7 @@ public class DamageChoiceDialog {
     private int cardsLeftToPick;
     private Label leftToPick;
 
+
     public void show(int count, LinkedList<String> availableDamageCards) {
 
         clientThread = ClientThread.getInstance();
@@ -78,6 +79,7 @@ public class DamageChoiceDialog {
             singleTrack.getChildren().add(button);
             trackDisplay.add(singleTrack, columnCounter, 0);
             columnCounter++;
+            singleTrack.setSpacing(10);
         }
 
         outerFrame.getChildren().add(trackDisplay);
