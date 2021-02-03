@@ -1,9 +1,8 @@
 package client.utilities;
 
-import game.cards.ActiveCards;
+import client.network.ClientThread;
+import game.cards.ActiveCard;
 import game.gameboard.GameBoard;
-import game.player.Player;
-import utilities.messages.CurrentCards;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -23,6 +22,12 @@ public class ClientGameState {
     private int wormCardPile = 6;
 
     private HashMap<String, Integer> availableDamageCards;
+
+    public ClientGameState() {
+
+        initializeDamageCardCount();
+
+    }
 
     private void initializeDamageCardCount() {
         availableDamageCards = new HashMap<>();
@@ -84,8 +89,8 @@ public class ClientGameState {
         }
     }
 
-    public void increaseDamageCardCount(ActiveCards[] activeCards) {
-        for (ActiveCards card : activeCards) {
+    public void increaseDamageCardCount(ActiveCard[] activeCards) {
+        for (ActiveCard card : activeCards) {
             switch (card.getCard()) {
                 case "Spam":
                     spamCardPile++;

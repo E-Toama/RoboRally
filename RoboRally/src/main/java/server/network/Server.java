@@ -1,20 +1,19 @@
 package server.network;
 
 import game.Game;
-import game.cards.ActiveCards;
-import game.gameboard.GameBoardMapObject;
+import game.cards.Card;
+import game.gameboard.GameBoard;
 import game.player.Player;
+import game.utilities.PositionLookUp;
 import utilities.MessageHandler;
 import utilities.messages.*;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -22,17 +21,19 @@ public class Server {
 
     private final HashMap<Integer, PrintWriter> printWriterMap = new HashMap<>();
     private final HashMap<Integer, Player> playerMap = new HashMap<>();
-    private final HashMap<Integer, Boolean> statusMap = new HashMap<>();
 
-    //BEGIN Temporary Stuff for Testing
-    private final LinkedList<Integer> playerIdList = new LinkedList<>();
-    private final LinkedList<Integer> testListOfIds = new LinkedList<>();
-    //END Temporary Stuff for Testing
+    private final List<Player> playerList = new ArrayList<>();
+    private final HashMap<Integer, Boolean> statusMap = new HashMap<>();
 
     private final double protocolVersion = 1.0;
     private int currentID = 972123;
 
     private Game game;
+    private int firstReadyPlayerID;
+    private String[] availableMaps = {"DizzyHighway", "ExtraCrispy"};
+
+    private String selectedGameBoard;
+    private Boolean firstPlayer = true;
 
     private final MessageHandler messageHandler = new MessageHandler();
 
@@ -43,9 +44,15 @@ public class Server {
 
     }
 
+    public void setSelectedGameBoard(String selectedGameBoard) {
+        this.selectedGameBoard = selectedGameBoard;
+    }
+
     private void start(int portNumber) {
 
         System.out.println("Server is running on port: " + portNumber);
+
+        PositionLookUp.createMaps();
 
         Executor pool = Executors.newCachedThreadPool();
 
@@ -65,19 +72,22 @@ public class Server {
 
     }
 
-    public synchronized HashMap<Integer, PrintWriter> getPrintWriterMap() {
-        return printWriterMap;
-    }
-
     public double getProtocolVersion() {
         return protocolVersion;
     }
 
+    public List<Player> getPlayerList() {
+        return playerList;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
     public synchronized void addPlayer(int playerID, Player player) {
         playerMap.put(playerID, player);
-        playerIdList.add(playerID);
-        testListOfIds.add(playerID);
         statusMap.put(playerID, false);
+        playerList.add(player);
     }
 
     public synchronized void addPrintWriter(int playerID, PrintWriter playerOutgoing) {
@@ -85,8 +95,27 @@ public class Server {
     }
 
     public synchronized void setStatus(int playerID, boolean status) {
+
         statusMap.replace(playerID, status);
         playerMap.get(playerID).setStatus(status);
+
+        if (firstPlayer) {
+
+            firstPlayer = false;
+            firstReadyPlayerID = playerID;
+
+            String selectedMap = messageHandler.buildMessage("SelectMap", new SelectMap(availableMaps));
+            sendMessageToSingleUser(selectedMap, playerID);
+
+        }
+
+        if (playerID == firstReadyPlayerID && !status) {
+
+            firstPlayer = true;
+            selectedGameBoard = null;
+
+        }
+
     }
 
     private synchronized int getNewID() {
@@ -132,12 +161,12 @@ public class Server {
 
         for(Player player: playerMap.values()) {
 
-            if (player.getId() != ID) {
+            if (player.getPlayerID() != ID) {
 
                 String playerAdded = messageHandler.buildMessage("PlayerAdded", new PlayerAdded(player));
                 outgoing.println(playerAdded);
 
-                String playerStatus = messageHandler.buildMessage("PlayerStatus", new PlayerStatus(player.getId(), player.getStatus()));
+                String playerStatus = messageHandler.buildMessage("PlayerStatus", new PlayerStatus(player.getPlayerID(), player.getStatus()));
                 outgoing.println(playerStatus);
 
             }
@@ -160,7 +189,7 @@ public class Server {
 
             }
 
-            if (playerReady) {
+            if (playerReady && selectedGameBoard != null) {
                 startGame();
             }
 
@@ -169,100 +198,37 @@ public class Server {
     }
 
     public synchronized void startGame() {
-        game = new Game();
 
-        GameBoardMapObject[] testmap = game.getGameBoard().toMap();
+        this.game = new Game(this, playerList, new GameBoard(selectedGameBoard));
 
-        String gameStarted = messageHandler.buildMessage("GameStarted", new GameStarted(testmap));
+        String gameStarted = messageHandler.buildMessage("GameStarted", new GameStarted(game.getGameBoard().toMap()));
+        sendMessageToAllUsers(gameStarted);
 
-        for (PrintWriter outgoing : printWriterMap.values()) {
-
-            outgoing.println(gameStarted);
-
-        }
-
-        //ToDo: replace this testing method with real currentPlayer-choice
-        sendCurrentPlayerForStartingPosition();
+        game.startGame();
 
     }
 
-    /*
-     * FROM HERE:
-     * SIMPLIFIED METHODS FOR TESTING REASONS!!!
-     */
+    public synchronized void handOutCards(int playerID, Card[] cards, int cardsInPile) {
 
-    public void sendCurrentPlayerForStartingPosition() {
-        //ToDo: Improve current player choice
-        //  For testing reasons, the current player is the first of the temporary playerIDList
-        if (playerIdList.size() > 0) {
-            String currentPlayer = messageHandler.buildMessage("CurrentPlayer", new CurrentPlayer(playerIdList.remove()));
-            for (PrintWriter outgoing : printWriterMap.values()) {
+        String yourCards = messageHandler.buildMessage("YourCards", new YourCards(Card.toStringArray(cards), cardsInPile));
+        String notYourCards = messageHandler.buildMessage("NotYourCards", new NotYourCards(playerID, cards.length, cardsInPile));
 
-                outgoing.println(currentPlayer);
+        printWriterMap.get(playerID).println(yourCards);
+
+        for (int key : printWriterMap.keySet()) {
+
+            if (key != playerID) {
+
+                printWriterMap.get(key).println(notYourCards);
 
             }
-        } else {
-            String startProgrammingPhase = messageHandler.buildMessage("ActivePhase", new ActivePhase(2));
-            String yourCardsMessage = messageHandler.buildMessage("YourCards", new YourCards(TestMessages.testCardsForProgrammingView, 12));
-            for (PrintWriter outgoing : printWriterMap.values()) {
 
-                outgoing.println(startProgrammingPhase);
-                outgoing.println(yourCardsMessage);
-
-            }
         }
 
     }
 
-
-    //WARNING: Only working for exactly two players
-    //Available cards: {"MoveI", "MoveII", "MoveIII", "TurnLeft", "TurnRight", "UTurn", "BackUp", "PowerUp", "Again"};
-    public void sendCurrentCards() {
-        Random random = new Random();
-        String[] cardArray = TestMessages.testCardsForProgrammingView;
-        for (int i = 0; i < 5; i++) {
-            ActiveCards[] currentCards = {
-                    new ActiveCards(testListOfIds.get(0),cardArray[random.nextInt(cardArray.length)]),
-                    new ActiveCards(testListOfIds.get(1),cardArray[random.nextInt(cardArray.length)])
-            };
-            String outgoingMessage = messageHandler.buildMessage("CurrentCards", new CurrentCards(currentCards));
-            sendMessageToAllUsers(outgoingMessage);
-        }
-
+    public void endGame() {
+        this.game = null;
     }
-
-    public void sendSomeMovementsAndTurns() {
-        Random random = new Random();
-        String[] turnStrings = {"clockwise", "counterClockwise"};
-        for (int i = 0; i < 10; i ++) {
-            String player1Move = messageHandler.buildMessage("Movement", new Movement(testListOfIds.get(0), random.nextInt(130)));
-            String player2Move = messageHandler.buildMessage("Movement", new Movement(testListOfIds.get(1), random.nextInt(130)));
-            sendMessageToAllUsers(player1Move);
-            sendMessageToAllUsers(player2Move);
-
-            String player1Turn = messageHandler.buildMessage("PlayerTurning", new PlayerTurning(testListOfIds.get(0), turnStrings[random.nextInt(2)]));
-            String player2Turn = messageHandler.buildMessage("PlayerTurning", new PlayerTurning(testListOfIds.get(1), turnStrings[random.nextInt(2)]));
-            sendMessageToAllUsers(player1Turn);
-            sendMessageToAllUsers(player2Turn);
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void sendSomeStatusUpdates() {
-        String energy = messageHandler.buildMessage("Energy", new Energy(testListOfIds.get(0), 3));
-        String energy2 = messageHandler.buildMessage("Energy", new Energy(testListOfIds.get(1), 7));
-        sendMessageToAllUsers(energy);
-        sendMessageToAllUsers(energy2);
-    }
-
-
-    /*
-     * END OF TESTING METHODS
-     */
-
 
 }

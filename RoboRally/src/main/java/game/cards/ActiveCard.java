@@ -4,11 +4,12 @@ package game.cards;
  * 
  * @author
  */
-public class ActiveCards {
+public class ActiveCard {
+
   private final int playerID;
   private final String card;
 
-  public ActiveCards(int playerID, String card) {
+  public ActiveCard(int playerID, String card) {
     this.playerID = playerID;
     this.card = card;
   }

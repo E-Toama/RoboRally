@@ -5,7 +5,7 @@ import game.gameboard.gameboardfieldobjects.*;
 
 public class StartBoard {
 
-    public static BoardElement[][] startBoard = {
+    public BoardElement[][] startBoard = {
             {
                     new BoardElement(0, new GameBoardFieldObject[]{new EmptyFieldObject()}),
                     new BoardElement(1, new GameBoardFieldObject[]{new EmptyFieldObject()}),

@@ -17,7 +17,7 @@ import client.viewmodel.PlayerMatModel;
 import client.viewmodel.ProgrammingViewModel;
 import client.viewmodel.WelcomeViewModel;
 import game.Robots.Robot;
-import game.cards.ActiveCards;
+import game.cards.ActiveCard;
 import game.cards.Card;
 import game.gameboard.GameBoard;
 import game.utilities.PositionLookUp;
@@ -29,6 +29,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import game.player.Player;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.GridPane;
 import utilities.MessageHandler;
 import utilities.MyLogger;
@@ -345,7 +346,7 @@ public class ClientThread implements Runnable {
 
             PlayerAdded receivedMessage = (PlayerAdded) incomingMessage.getMessageBody();
 
-            if (receivedMessage.getPlayer().getId() == this.ID) {
+            if (receivedMessage.getPlayer().getPlayerID() == this.ID) {
 
                 this.player = receivedMessage.getPlayer();
                 playerList.put(this.ID, player);
@@ -359,7 +360,7 @@ public class ClientThread implements Runnable {
                 });
 
                 Platform.runLater(() -> {
-                    messageMatchMap.put(player.getName() + ", " + Robot.getRobotName(player.getFigure()), player.getId());
+                    messageMatchMap.put(player.getName() + ", " + Robot.getRobotName(player.getFigure()), player.getPlayerID());
                 });
 
                 welcomeViewModel.playerSuccesfullyAdded();
@@ -370,7 +371,7 @@ public class ClientThread implements Runnable {
                 clientPlayerState = new ClientPlayerState();
                 //ToDO: Initialize PlayerMat-FXML and get Model-Instance-Variable
                 playerMatModel.setPlayerState(clientPlayerState);
-                playerStateList.put(receivedMessage.getPlayer().getId(), clientPlayerState);
+                playerStateList.put(receivedMessage.getPlayer().getPlayerID(), clientPlayerState);
 
 
 
@@ -381,7 +382,7 @@ public class ClientThread implements Runnable {
                 //Initialize OtherPlayerState and add to PlayerStateList
                 ClientPlayerState otherPlayerState = new ClientPlayerState();
                 otherPlayerState.setPlayerValues(receivedMessage.getPlayer());
-                playerStateList.put(receivedMessage.getPlayer().getId(), otherPlayerState);
+                playerStateList.put(receivedMessage.getPlayer().getPlayerID(), otherPlayerState);
 
 
                 welcomeViewModel.disableRobotButton(receivedMessage.getPlayer().getFigure());
@@ -390,7 +391,7 @@ public class ClientThread implements Runnable {
                     takenRobotList.add(receivedMessage.getPlayer().getFigure());
                 });
 
-                playerList.put(receivedMessage.getPlayer().getId() ,receivedMessage.getPlayer());
+                playerList.put(receivedMessage.getPlayer().getPlayerID() ,receivedMessage.getPlayer());
 
                 Platform.runLater(() -> {
                     observablePlayerList.add(receivedMessage.getPlayer().getName() + ", " + Robot.getRobotName(receivedMessage.getPlayer().getFigure()));
@@ -401,7 +402,7 @@ public class ClientThread implements Runnable {
                 });
 
                 Platform.runLater(() -> {
-                    messageMatchMap.put(receivedMessage.getPlayer().getName() + ", " + Robot.getRobotName(receivedMessage.getPlayer().getFigure()), receivedMessage.getPlayer().getId());
+                    messageMatchMap.put(receivedMessage.getPlayer().getName() + ", " + Robot.getRobotName(receivedMessage.getPlayer().getFigure()), receivedMessage.getPlayer().getPlayerID());
                 });
 
                 String notificationName = receivedMessage.getPlayer().getName() + " has joined!";
@@ -419,7 +420,7 @@ public class ClientThread implements Runnable {
                 });
 
             }
-            logger.getLogger().info("Player with name " + receivedMessage.getPlayer().getName() + " with id " + receivedMessage.getPlayer().getId() + " has been added.");
+            logger.getLogger().info("Player with name " + receivedMessage.getPlayer().getName() + " with id " + receivedMessage.getPlayer().getPlayerID() + " has been added.");
 
         } else {
             logger.getLogger().severe("Message body error in handlePlayerAdded method.");
@@ -555,6 +556,16 @@ public class ClientThread implements Runnable {
                if (clientGameState.getActivePhase() == 0) {
                    Platform.runLater(() -> {
                        gameBoardViewModel.getGameBoardController().initStartingPoints();
+                   });
+               }
+               if (clientGameState.getActivePhase() == 3) {
+                   Platform.runLater(() -> {
+                       Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                       alert.setHeaderText("PlayIt?");
+                       alert.setContentText("Do you want to play that register?");
+                       alert.showAndWait();
+                       String playIt = messageHandler.buildMessage("PlayIt", new PlayIt());
+                       outgoing.println(playIt);
                    });
                }
             }
@@ -764,15 +775,13 @@ public class ClientThread implements Runnable {
     private void handleCurrentCards(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof CurrentCards) {
             CurrentCards currentCards = (CurrentCards) incomingMessage.getMessageBody();
-            ActiveCards[] activeCards = currentCards.getActiveCards();
+            ActiveCard[] activeCards = currentCards.getActiveCards();
             clientGameState.increaseDamageCardCount(activeCards);
-            for (ActiveCards cards : activeCards) {
+            for (ActiveCard cards : activeCards) {
                 if (cards.getPlayerID() == ID) {
                     Platform.runLater(() -> {
                         playerMatModel.getPlayerMatController().setTakenRegister(cards.getCard());
                     });
-                    String playIt = messageHandler.buildMessage("PlayIt", new PlayIt());
-                    outgoing.println(playIt);
                 } //ToDo: Else update otherPlayerMats
             }
 
@@ -978,11 +987,10 @@ public class ClientThread implements Runnable {
         outgoing.println(outgoingMessage);
     }
 
-    public void sendSelectedMap(String userChoice) {
+    public void sendSelectedMap(String[] userChoice) {
         String outgoingMessage = messageHandler.buildMessage("MapSelected", new MapSelected(userChoice));
-        outgoing.println(userChoice);
+        outgoing.println(outgoingMessage);
     }
-
 
     public void initializeEmptyMainView() throws IOException {
         //Init MainView-Container

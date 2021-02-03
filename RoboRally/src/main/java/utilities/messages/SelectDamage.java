@@ -8,13 +8,13 @@ import game.cards.Card;
  */
 public class SelectDamage extends MessageBody {
   // TODO damage Cards only.
-  private final Card[] cards;
+  private final String[] cards;
   
-  public SelectDamage(Card[] cards) {
+  public SelectDamage(String[] cards) {
     this.cards = cards;
   }
 
-  public Card[] getCards() {
+  public String[] getCards() {
     return cards;
   }
 

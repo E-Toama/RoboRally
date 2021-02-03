@@ -1,13 +1,5 @@
 package client.utilities;
 
-import game.Robots.HammerBot;
-import game.Robots.Hulk;
-import game.Robots.Robot;
-import game.Robots.SmashBot;
-import game.Robots.SpinBot;
-import game.Robots.Twonky;
-import game.Robots.ZoomBot;
-import game.gameboard.BoardElement;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 

@@ -1,13 +1,17 @@
 package utilities.messages;
 
 public class MapSelected extends MessageBody {
-    String selectedMap;
 
-    public MapSelected(String selectedMap) {
-        this.selectedMap = selectedMap;
+    private final String[] map;
+
+    public MapSelected(String[] map) {
+
+        this.map = map;
+
     }
 
-    public String getSelectedMap() {
-        return selectedMap;
+    public String[] getMap() {
+        return map;
     }
+
 }

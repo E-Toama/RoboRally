@@ -39,7 +39,7 @@ public class ClientPlayerState {
     public void setPlayerValues(Player player) {
         this.userName = player.getName();
         this.figure = player.getFigure();
-        this.playerID = player.getId();
+        this.playerID = player.getPlayerID();
     }
 
 

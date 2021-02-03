@@ -20,4 +20,10 @@ public class Position {
         return y;
     }
 
+    public static int calculateDistance(Position position1, Position position2) {
+
+        return Math.abs(position1.getX() - position1.x) + Math.abs(position1.getY() - position2.y);
+
+    }
+
 }

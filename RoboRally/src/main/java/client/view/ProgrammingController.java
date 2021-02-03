@@ -174,7 +174,7 @@ public class ProgrammingController {
     private void showTimerEndedAlert() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText("Timer ran out!");
-        if (slowPlayers != null) {
+        if (!slowPlayers.isEmpty()) {
             alert.setContentText("Way too slow:\n" + slowPlayers);
         }
         alert.show();

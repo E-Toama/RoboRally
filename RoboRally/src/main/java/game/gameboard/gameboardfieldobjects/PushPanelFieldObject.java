@@ -1,5 +1,10 @@
 package game.gameboard.gameboardfieldobjects;
 
+import game.Game;
+import game.utilities.GameState;
+import game.utilities.MoveHandler;
+import game.utilities.Position;
+
 public class PushPanelFieldObject extends GameBoardFieldObject{
 
     private final String orientation;
@@ -19,4 +24,15 @@ public class PushPanelFieldObject extends GameBoardFieldObject{
         return registers;
     }
 
+    @Override
+    public void activate(Game game, GameState gameState, int playerID) {
+
+        MoveHandler moveHandler = new MoveHandler();
+
+        Position position = gameState.playerMatHashMap.get(playerID).getRobot().getRobotXY();
+        Position newPosition = moveHandler.getTargetPosition(position, orientation);
+
+        moveHandler.move(game, gameState, playerID, position, newPosition, orientation, false, true);
+
+    }
 }

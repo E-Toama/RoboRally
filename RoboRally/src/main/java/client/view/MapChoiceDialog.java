@@ -17,11 +17,13 @@ import javafx.stage.Stage;
 
 public class MapChoiceDialog {
 
+    private ClientThread clientThread;
     private Stage stage;
     private String userChoice = "";
 
     public void show(String[] availableMaps) {
 
+        clientThread = ClientThread.getInstance();
         stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle("Choose Track");
@@ -72,6 +74,8 @@ public class MapChoiceDialog {
     private void submitTrack(Button button) {
         stage.close();
         userChoice = button.getId();
+        String[] selectedMap = {userChoice};
+        clientThread.sendSelectedMap(selectedMap);
     }
 
     public String getUserChoice() {
