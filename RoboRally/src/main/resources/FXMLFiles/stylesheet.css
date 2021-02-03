@@ -1,4 +1,47 @@
+/* PlayerMat */
+#playerMatPane {
 
+-fx-background-color: lightgrey;
+
+}
+
+#energyCubeLabel {
+
+-fx-font-family: Arial;
+-fx-text-fill: #009900;
+
+}
+
+#damageCardsLabel {
+-fx-font-family: Arial;
+-fx-text-fill: #990000;
+
+}
+
+#checkPointLabel{
+-fx-font-family:Arial;
+-fx-text-fill: #FBA006;
+
+}
+
+#robotValue {
+
+-fx-font-family: Arial;
+-fx-font-size: 15;
+-fx-font-weight: bold;
+
+}
+
+#userNameValue {
+
+-fx-font-family: Arial;
+-fx-font-size: 15;
+-fx-font-weight: bold;
+
+}
+
+
+/* Programming */
 #programmingGridPane {
 
 -fx-background-color: lightgrey;
@@ -21,7 +64,7 @@
 
 -fx-text-fill: red;
 -fx-font-weight: bold;
--fx-padding: 12;
+-fx-padding: 14;
 -fx-font-size: 18;
 }
 
@@ -31,36 +74,25 @@
 
 }
 
-#register {
-
--fx-color: red;
--fx-font-weight: bolder;
-
-}
-
-.registerButtons {
-
--fx-background-color: purple;
-
-
-}
 
 .cartButtonLabel {
 
--fx-text-fill: #DF7401;
+-fx-text-fill: #323232;
 -fx-padding: 4;
+-fx-font-family: Arial;
+
 }
 
 
+/* Popup */
 #titleLabel {
 
 -fx-text-alignment: CENTER;
 -fx-padding: 10;
 -fx-font-size: 30;
 -fx-font-weight: bolder;
--fx-font-family: monospace;
+-fx-font-family: Arial;
 -fx-text-fill: #ffd966;
-
 
 }
 
@@ -80,7 +112,6 @@
 -fx-margin-bottom: 50;
 
 }
-
 
 #contentLabel {
 

@@ -3,7 +3,6 @@ package client.view;
 import client.network.ClientThread;
 import client.utilities.ImageBuilder;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -11,7 +10,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -56,7 +54,7 @@ public class PopupController {
         popupContainer.getChildren().addAll(titleLabel, contentLabel, contentContainer);
 
         //Adding stylesheet.css
-        popupContainer.getStylesheets().add("stylesheet.css");
+        popupContainer.getStylesheets().add("FXMLFiles/stylesheet.css");
         popupContainer.setId("popupContainer");
         titleLabel.setId("titleLabel");
         contentLabel.setId("contentLabel");

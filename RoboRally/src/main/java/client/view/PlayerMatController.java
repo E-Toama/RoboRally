@@ -31,13 +31,13 @@ public class PlayerMatController {
     @FXML
     private Label checkPointLabel;
     @FXML
-    private Label CardsInDeckLabel;
+    private Label cardsInDeckLabel;
     @FXML
-    private Label DiscardedCardsLabel;
+    private Label discardedCardsLabel;
     @FXML
     private Label damageCardsLabel;
     @FXML
-    private Label EnergyCubeLabel;
+    private Label energyCubeLabel;
 
 
     //Dynamic text values

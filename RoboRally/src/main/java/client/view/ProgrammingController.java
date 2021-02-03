@@ -7,11 +7,9 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 public class ProgrammingController {
@@ -44,7 +42,7 @@ public class ProgrammingController {
     timerBox.getChildren().addAll(timerHeading, timerText, timerLabel);
 
     //ID's for stylesheet.css
-    gridPane.getStylesheets().add("stylesheet.css");
+    gridPane.getStylesheets().add("FXMLFiles/stylesheet.css");
     gridPane.setId("programmingGridPane");
     timerBox.setId("timerbox");
     timerLabel.setId("timerlabel");
