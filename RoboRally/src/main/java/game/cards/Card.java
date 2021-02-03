@@ -36,7 +36,7 @@ public abstract class Card {
 
         return switch (card) {
             case "Again" -> new Again();
-            case "Backup" -> new BackUp();
+            case "BackUp" -> new BackUp();
             case "LeftTurn" -> new LeftTurn();
             case "MoveOne" -> new MoveOne();
             case "MoveTwo" -> new MoveTwo();

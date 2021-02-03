@@ -6,6 +6,7 @@ import game.gameboard.boards.StartBoard;
 import game.gameboard.gameboardfieldobjects.GameBoardFieldObject;
 import game.gameboard.gameboardfieldobjects.RestartPointFieldObject;
 import game.utilities.Position;
+import game.utilities.PositionLookUp;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -173,7 +174,7 @@ public class GameBoard {
 
                 BoardElement boardElement = gameBoard[i][j];
 
-                Position position = new Position(i, j);
+                Position position = boardElement.getXY();
 
                 if (boardElement.isAntenna()) {
 

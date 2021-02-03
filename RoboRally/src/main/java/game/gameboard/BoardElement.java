@@ -164,7 +164,7 @@ public class BoardElement {
 
         for (GameBoardFieldObject fieldObject : field) {
 
-            if (fieldObject.getType().equals("RestartPoint")) {
+            if (fieldObject.getType().equals("Antenna")) {
 
                 return true;
 
@@ -398,35 +398,18 @@ public class BoardElement {
 
     }
 
-    public boolean isBelt() {
+    @Override
+    public String toString() {
 
-        for (GameBoardFieldObject fieldObject : field) {
+        StringBuilder returnValue = new StringBuilder();
 
-            if (fieldObject.getType().equals("Belt")) {
+        for (GameBoardFieldObject gameBoardFieldObject : field) {
 
-                    return true;
-
-            }
-
-        }
-
-        return false;
-
-    }
-
-    public boolean isRotatingBelt() {
-
-        for (GameBoardFieldObject fieldObject : field) {
-
-            if (fieldObject.getType().equals("RotatingBelt")) {
-
-                    return true;
-
-            }
+            returnValue.append(gameBoardFieldObject.getType());
 
         }
 
-        return false;
+        return returnValue.toString();
 
     }
 
