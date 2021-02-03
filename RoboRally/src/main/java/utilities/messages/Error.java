@@ -11,7 +11,7 @@ public class Error extends MessageBody {
   private final String error;
 
   /**
-   * Constuctor to initialize the error.
+   * Constructor to initialize the error.
    * 
    * @param error
    *          the error
