@@ -51,7 +51,7 @@ public class ClientThread implements Runnable {
 
     private static ClientThread clientThread;
     private static Thread client;
-    private final MyLogger logger = new MyLogger(ClientThread.class.getName());
+    private final MyLogger logger = new MyLogger();
     private static ClientGameState clientGameState = new ClientGameState();
 
     static {
