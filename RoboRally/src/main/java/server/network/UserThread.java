@@ -19,7 +19,7 @@ public class UserThread implements Runnable {
     private final PrintWriter outgoing;
     private final Server server;
     private final MessageHandler messageHandler = new MessageHandler();
-    private final MyLogger logger = new MyLogger(UserThread.class.getName());
+    private final MyLogger logger = new MyLogger();
 
 
 

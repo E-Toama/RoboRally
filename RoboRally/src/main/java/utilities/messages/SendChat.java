@@ -1,22 +1,46 @@
 package utilities.messages;
 
+/**
+ * The class SendChat is responsible for sending private chats from one user to
+ * other or not private to all.
+ * 
+ * @author
+ */
 public class SendChat extends MessageBody {
 
-    private final String message;
-    private final int to;
+  private final String message;
+  private final int to;
 
-    public SendChat(String message, int to) {
+  /**
+   * Constructor for initializing the message and the destination.
+   * 
+   * @param message
+   *          the message
+   * @param to
+   *          the destination
+   */
+  public SendChat(String message, int to) {
 
-        this.message = message;
-        this.to = to;
+    this.message = message;
+    this.to = to;
 
-    }
+  }
 
-    public String getMessage() {
-        return message;
-    }
+  /**
+   * The method returns the message.
+   * 
+   * @return the message
+   */
+  public String getMessage() {
+    return message;
+  }
 
-    public int getTo() {
-        return to;
-    }
+  /**
+   * The method returns the destination.
+   * 
+   * @return the destination
+   */
+  public int getTo() {
+    return to;
+  }
 }
