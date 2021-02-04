@@ -824,9 +824,9 @@ public class ClientThread implements Runnable {
         if (incomingMessage.getMessageBody() instanceof PickDamage) {
             PickDamage pickDamage = (PickDamage) incomingMessage.getMessageBody();
             int count = pickDamage.getCount();
-            PopupController popupController = new PopupController();
             LinkedList<String> availableCards = clientGameState.getAvailableDamageCards();
             Platform.runLater(() -> {
+                PopupController popupController = new PopupController();
                 popupController.showPickDamage(count, availableCards);
             });
 
