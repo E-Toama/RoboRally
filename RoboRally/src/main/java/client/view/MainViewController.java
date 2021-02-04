@@ -21,6 +21,7 @@ public class MainViewController {
     private GridPane gameBoardPane;
     private boolean isPlayerMatActive = true;
 
+
     public MainViewModel getMainViewModel() {
         return mainViewModel;
     }

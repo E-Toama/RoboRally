@@ -13,7 +13,7 @@ public class TestMessages {
     public static String[] cardsYouGotNow = new String[]{"MoveII", "TurnRight", "UTurn", "MoveI", "Again"};
 
     public static ActiveCard[] currentCardsReg1 = {new ActiveCard(1,"Move1")};
-    public static LinkedList<String> availableDamageCards = new LinkedList<>(Arrays.asList("Virus", "Worm"));
+    public static LinkedList<String> availableDamageCards = new LinkedList<>(Arrays.asList("Virus", "Worm", "Spam"));
 
 
 

@@ -4,7 +4,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane fx:id="playerMatPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="190.0" prefWidth="975.0" style="-fx-background-color: lightgrey;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.PlayerMatController">
+<?import java.net.URL?>
+<GridPane fx:id="playerMatPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="190.0" prefWidth="975.0"  xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.PlayerMatController" >
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="275.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="140.0" />
@@ -35,10 +36,10 @@
             <Label fx:id="robotValue" GridPane.columnIndex="1" />
             <Label fx:id="checkPointLabel" text="Checkpoints: " GridPane.rowIndex="1" />
             <Label fx:id="checkPointValue" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label fx:id="CardsInDeckLabel" text="Cards in Deck:" GridPane.rowIndex="2" />
-            <Label fx:id="DiscardedCardsLabel" text="Discarded Cards: " GridPane.rowIndex="3" />
+            <Label fx:id="cardsInDeckLabel" text="Cards in Deck:" GridPane.rowIndex="2" />
+            <Label fx:id="discardedCardsLabel" text="Discarded Cards: " GridPane.rowIndex="3" />
             <Label fx:id="damageCardsLabel" text="DamageCards:" GridPane.rowIndex="4" />
-            <Label fx:id="EnergyCubeLabel" text="EnergyCubes:" GridPane.rowIndex="5" />
+            <Label fx:id="energyCubeLabel" text="EnergyCubes:" GridPane.rowIndex="5" />
             <Label fx:id="cardsInDeckValue" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label fx:id="discardedCardsValue" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <Label fx:id="damageCardsValue" GridPane.columnIndex="1" GridPane.rowIndex="4" />
@@ -49,4 +50,7 @@
          </padding>
       </GridPane>
    </children>
+    <stylesheets>
+        <URL value="@stylesheet.css" />
+    </stylesheets>
 </GridPane>

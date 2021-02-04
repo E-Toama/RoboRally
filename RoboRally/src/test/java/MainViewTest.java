@@ -1,25 +1,7 @@
-import client.network.ClientThread;
-import client.view.DamageChoiceDialog;
-import client.view.GameBoardController;
-import client.view.MainViewController;
-import client.view.MapChoiceDialog;
-import client.view.ProgrammingController;
-import client.view.ViewController;
-import client.viewmodel.EnemyMatModel;
-import client.viewmodel.GameBoardViewModel;
-import client.viewmodel.MainViewModel;
-import client.viewmodel.PlayerMatModel;
-import client.viewmodel.ProgrammingViewModel;
-import game.gameboard.GameBoard;
+import client.view.PopupController;
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import server.network.TestMessages;
-
-import java.util.Arrays;
-import java.util.Collections;
 
 public class MainViewTest extends Application {
 
@@ -37,17 +19,14 @@ public class MainViewTest extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        ClientThread clientThread = ClientThread.getInstance();
+        /*ClientThread clientThread = ClientThread.getInstance();
         clientThread.initializeEmptyMainView();
-        MainViewModel mainViewModel = clientThread.getMainViewModel();
+        MainViewModel mainViewModel = clientThread.getMainViewModel();*/
 
-        MapChoiceDialog mapChoiceDialog = new MapChoiceDialog();
-        mapChoiceDialog.show(availableMaps);
-        track = mapChoiceDialog.getUserChoice();
+        PopupController popupController = new PopupController();
+        popupController.showPickDamage(2, TestMessages.availableDamageCards);
 
-        DamageChoiceDialog damageChoiceDialog = new DamageChoiceDialog();
-        damageChoiceDialog.show(2, TestMessages.availableDamageCards);
-
+       /*
         GameBoardViewModel gameBoardViewModel = new GameBoardViewModel();
         gameBoardViewModel.setGameBoard(new GameBoard(track).getGameBoard());
         gameBoardViewModel.getGameBoardController().initBoard();
@@ -67,7 +46,7 @@ public class MainViewTest extends Application {
 
         Scene scene = new Scene(mainViewModel.getMainViewController().getMainViewPane());
         stage.setScene(scene);
-        stage.show();
+        stage.show();*/
 
     }
 

@@ -1,19 +1,25 @@
 package client.utilities;
 
-import client.network.ClientThread;
 import game.cards.ActiveCard;
 import game.gameboard.GameBoard;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 public class ClientGameState {
 
     private int ActivePhase = 0;
+    private String selectedMap = "";
     private GameBoard gameBoard;
-    private List<ClientPlayerState> playerStateList = new LinkedList<>();
+
+    public String getSelectedMap() {
+        return selectedMap;
+    }
+
+    public void setSelectedMap(String selectedMap) {
+        this.selectedMap = selectedMap;
+    }
 
     // Initial count of DamageCards according to Rules / FAQ
     private int spamCardPile = 38;
