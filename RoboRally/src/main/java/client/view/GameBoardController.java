@@ -117,9 +117,9 @@ public class GameBoardController {
         Position current = PositionLookUp.positionToXY.get(currentPosition);
         ImageView robotImage = deleteRobot(current.getY(), current.getX());
         if (direction.equals("clockwise")) {
-            robotImage.setRotate(90);
+           robotImage.setRotate(robotImage.getRotate() + 90);
         } else {
-            robotImage.setRotate(-90);
+            robotImage.setRotate(robotImage.getRotate() - 90);
         }
         gameTileArray[current.getY()][current.getX()].getChildren().add(robotImage);
 
