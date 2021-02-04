@@ -90,6 +90,8 @@ public class Game {
 
         setActivePhase(2);
 
+        gameState.playersFinishedSelectionList = new ArrayList<>();
+
         for (PlayerMat playerMat : gameState.playerMatList) {
             playerMat.discardRegister();
             server.handOutCards(playerMat.getPlayer().getPlayerID(), playerMat.drawNineCards(), playerMat.getDeckCount());

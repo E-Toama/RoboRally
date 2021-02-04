@@ -422,9 +422,9 @@ public class BoardElement {
 
         for (GameBoardFieldObject gameBoardFieldObject : field) {
 
-            if (gameBoardFieldObject.getType.equals("RotatingBelt")) {
+            if (gameBoardFieldObject.getType().equals("RotatingBelt")) {
 
-                return (RotatingBeltFieldObject) fieldObject;
+                return (RotatingBeltFieldObject) gameBoardFieldObject;
 
             }
 

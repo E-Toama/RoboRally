@@ -41,7 +41,13 @@ public class LaserHandler {
 
         if (condition) {
 
-            handleLaserFire(gameState, getNextBoardElementByMovingDirection(gameState, robotBoardElement.getXY(), direction), count, direction);
+            BoardElement nextBoardElement = getNextBoardElementByMovingDirection(gameState, robotBoardElement.getXY(), direction);
+
+            if (nextBoardElement != null) {
+
+                handleLaserFire(gameState, nextBoardElement, count, direction);
+
+            }
 
         }
 
@@ -84,33 +90,37 @@ public class LaserHandler {
 
         BoardElement nextBordElement = getNextBoardElementByMovingDirection(gameState, boardElement.getXY(), direction);
 
-        if (nextBordElement.isWall()) {
+        if (nextBordElement != null) {
 
-            WallFieldObject wallFieldObject = boardElement.getWalls();
+            if (nextBordElement.isWall()) {
 
-            for (String wallOrientation : wallFieldObject.getOrientations()) {
+                WallFieldObject wallFieldObject = nextBordElement.getWalls();
 
-                String oppositeDirection = nextBordElement.getOppositeDirection(direction);
+                for (String wallOrientation : wallFieldObject.getOrientations()) {
 
-                if (oppositeDirection.equals(wallOrientation)) {
+                    String oppositeDirection = nextBordElement.getOppositeDirection(direction);
 
-                    condition = false;
+                    if (oppositeDirection.equals(wallOrientation)) {
+
+                        condition = false;
+
+                    }
 
                 }
 
             }
 
-        }
+            if (nextBordElement.isAntenna()) {
 
-        if (nextBordElement.isAntenna()) {
+                condition = false;
 
-            condition = false;
+            }
 
-        }
+            if (condition) {
 
-        if (condition) {
+                handleLaserFire(gameState, nextBordElement, count, direction);
 
-            handleLaserFire(gameState, nextBordElement, count, direction);
+            }
 
         }
 
@@ -120,13 +130,32 @@ public class LaserHandler {
 
         BoardElement[][] gameBoard = gameState.gameBoard.getGameBoard();
 
-        return switch (movingDirection) {
-            case "up" -> gameBoard[currentPosition.getY() - 1][currentPosition.getX()];
-            case "right" -> gameBoard[currentPosition.getY()][currentPosition.getX() + 1];
-            case "down" -> gameBoard[currentPosition.getY() + 1][currentPosition.getX()];
-            case "left" -> gameBoard[currentPosition.getY()][currentPosition.getX() - 1];
-            default -> null;
-        };
+        BoardElement boardElement = null;
+
+        switch (movingDirection) {
+            case "up" -> {
+                if (currentPosition.getY() != 0) {
+                    boardElement = gameBoard[currentPosition.getY() - 1][currentPosition.getX()];
+                }
+            }
+            case "right" -> {
+                if (currentPosition.getX() < 12) {
+                    boardElement = gameBoard[currentPosition.getY()][currentPosition.getX() + 1];
+                }
+            }
+            case "down" -> {
+                if (currentPosition.getY() < 9) {
+                    boardElement = gameBoard[currentPosition.getY() + 1][currentPosition.getX()];
+                }
+            }
+            case "left" -> {
+                if (currentPosition.getX() != 0) {
+                    boardElement = gameBoard[currentPosition.getY()][currentPosition.getX() - 1];
+                }
+            }
+        }
+
+        return boardElement;
 
     }
 
