@@ -62,6 +62,7 @@ public class PlayerMatController {
 
     int currentRegisterActiveCount = 0;
 
+
     @FXML
     public void initialize() {
         userNameValue.textProperty().bindBidirectional(playerMatModel.getUserName());
@@ -105,7 +106,6 @@ public class PlayerMatController {
 
     public void setTakenRegister(String card) {
         ImageView cardToDisplay = ImageBuilder.adjustToPlayerMatView(card);
-        //ToDO: FX-Transition? FlipCard-Animation
         Button button = registers[registerForAnimation];
         button.setGraphic(cardToDisplay);
         registers[registerForAnimation] = button;
@@ -123,5 +123,10 @@ public class PlayerMatController {
         button.setDisable(false);
         registers[currentRegisterActiveCount] = button;
         currentRegisterActiveCount++;
+    }
+
+    public void resetRegisterCounts() {
+        currentRegisterActiveCount = 0;
+        registerForAnimation = 0;
     }
 }

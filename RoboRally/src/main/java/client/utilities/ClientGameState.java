@@ -39,7 +39,7 @@ public class ClientGameState {
         availableDamageCards = new HashMap<>();
         availableDamageCards.put("Spam", spamCardPile);
         availableDamageCards.put("Virus", virusCardPile);
-        availableDamageCards.put("Trojan", trojanCardPile);
+        availableDamageCards.put("TrojanHorse", trojanCardPile);
         availableDamageCards.put("Worm", wormCardPile);
     }
 
@@ -77,11 +77,11 @@ public class ClientGameState {
                     }
                     availableDamageCards.replace("Virus", virusCardPile);
                     break;
-                case "Trojan":
+                case "TrojanHorse":
                     if (trojanCardPile > 0) {
                         trojanCardPile--;
                     }
-                    availableDamageCards.replace("Trojan", trojanCardPile);
+                    availableDamageCards.replace("TrojanHorse", trojanCardPile);
                     break;
                 case "Worm":
                     if (wormCardPile > 0) {
@@ -106,9 +106,9 @@ public class ClientGameState {
                     virusCardPile++;
                     availableDamageCards.replace("Virus", virusCardPile);
                     break;
-                case "Trojan":
+                case "TrojanHorse":
                     trojanCardPile++;
-                    availableDamageCards.replace("Trojan", trojanCardPile);
+                    availableDamageCards.replace("TrojanHorse", trojanCardPile);
                     break;
                 case "Worm":
                     wormCardPile++;
