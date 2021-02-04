@@ -76,8 +76,4 @@ public class GameBoardViewModel {
         gameBoardController.updateBoard();
     }
 
-
-    public void move(int robotFigure, int currentPosition, int newPosition) {
-       gameBoardController.move(robotFigure, currentPosition, newPosition);
-    }
 }

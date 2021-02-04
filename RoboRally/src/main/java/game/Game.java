@@ -66,6 +66,7 @@ public class Game {
         gameState.playerMatHashMap.get(player.getPlayerID()).getRobot().setRobotPosition(position);
 
         Position position1 = PositionLookUp.positionToXY.get(position);
+        gameState.playerMatHashMap.get(player.getPlayerID()).getRobot().setStartingPosition(position1);
         gameState.gameBoard.getGameBoard()[position1.getY()][position1.getX()].setRobot(gameState.playerMatHashMap.get(player.getPlayerID()).getRobot());
 
         String startingPointTaken = messageHandler.buildMessage("StartingPointTaken", new StartingPointTaken(player.getPlayerID(), position));
@@ -88,6 +89,8 @@ public class Game {
     public void programmingPhase() {
 
         setActivePhase(2);
+
+        gameState.playersFinishedSelectionList = new ArrayList<>();
 
         for (PlayerMat playerMat : gameState.playerMatList) {
             playerMat.discardRegister();
@@ -146,6 +149,7 @@ public class Game {
 
         Timer timer = new Timer();
 
+        //TODO: Reset TImer to 30
         timer.schedule(timerEndedTask, 30000);
 
     }
@@ -189,7 +193,13 @@ public class Game {
 
         setActivePhase(3);
 
-        gameState.nextRegisterList = getGameState().playerMatList;
+        for (PlayerMat playerMat : gameState.playerMatList) {
+
+            playerMat.setWasRebootedThisRound(false);
+
+        }
+
+        gameState.nextRegisterList.addAll(gameState.playerMatList);
 
         gameState.register = 1;
 
@@ -326,16 +336,16 @@ public class Game {
 
         }
 
-        List<ConveyorBeltIntermediateState> intermediatePositions = new ArrayList<>();
-        ConveyorBeltsHelper conveyorBeltsHelper = new ConveyorBeltsHelper();
+        List<ConveyorBeltTarget> conveyorBeltTargets = new ArrayList<>();
+        ConveyorBeltsHelperV2 conveyorBeltsHelperV2 = new ConveyorBeltsHelperV2();
 
         for (PlayerMat playerMat : playerOnBlueConveyorBelt) {
 
-            intermediatePositions.add(conveyorBeltsHelper.calculateTargetPositionBlueConveyorBelt(gameState, playerMat));
+            conveyorBeltTargets.add(conveyorBeltsHelperV2.calculateBlueConveyorBeltTarget(gameState, playerMat));
 
         }
 
-        completeConveyorBeltActivation(intermediatePositions);
+        completeConveyorBeltActivationV2(conveyorBeltTargets);
 
     }
 
@@ -361,28 +371,29 @@ public class Game {
 
         }
 
-        List<ConveyorBeltIntermediateState> intermediatePositions = new ArrayList<>();
-        ConveyorBeltsHelper conveyorBeltsHelper = new ConveyorBeltsHelper();
+        List<ConveyorBeltTarget> conveyorBeltTargets = new ArrayList<>();
+        ConveyorBeltsHelperV2 conveyorBeltsHelperV2 = new ConveyorBeltsHelperV2();
 
         for (PlayerMat playerMat : playerOnGreenConveyorBelt) {
 
-            intermediatePositions.add(conveyorBeltsHelper.calculateTargetPositionGreenConveyorBelt(gameState, playerMat));
+            conveyorBeltTargets.add(conveyorBeltsHelperV2.calculateGreenConveyorBeltTarget(gameState, playerMat));
 
         }
 
-        completeConveyorBeltActivation(intermediatePositions);
+        completeConveyorBeltActivationV2(conveyorBeltTargets);
 
     }
 
-    private void completeConveyorBeltActivation(List<ConveyorBeltIntermediateState> intermediatePositions) {
-        for (ConveyorBeltIntermediateState intermediateState1 : intermediatePositions) {
+    private void completeConveyorBeltActivationV2(List<ConveyorBeltTarget> conveyorBeltTargets) {
 
-            for (ConveyorBeltIntermediateState intermediateState2 : intermediatePositions) {
+        for (ConveyorBeltTarget targetOne : conveyorBeltTargets) {
 
-                if (intermediateState1.getPlayerID() != intermediateState2.getPlayerID() && intermediateState1.getNewPosition().getX() == intermediateState2.getNewPosition().getX() && intermediateState1.getNewPosition().getY() == intermediateState2.getNewPosition().getY()) {
+            for (ConveyorBeltTarget targetTwo : conveyorBeltTargets) {
 
-                    intermediatePositions.remove(intermediateState1);
-                    intermediatePositions.remove(intermediateState2);
+                if (targetOne.getPlayerID() != targetTwo.getPlayerID() && targetOne.getTargetBoardElement() == targetTwo.getTargetBoardElement()) {
+
+                    conveyorBeltTargets.remove(targetOne);
+                    conveyorBeltTargets.remove(targetTwo);
 
                 }
 
@@ -390,46 +401,51 @@ public class Game {
 
         }
 
-        for (ConveyorBeltIntermediateState intermediateState: intermediatePositions) {
+        for (ConveyorBeltTarget target : conveyorBeltTargets) {
 
-            Position oldPosition = gameState.playerMatHashMap.get(intermediateState.getPlayerID()).getRobot().getRobotXY();
-            Position newPosition = gameState.gameBoard.getGameBoard()[intermediateState.getNewPosition().getY()][intermediateState.getNewPosition().getX()].getXY();
-            String movingOrientation = intermediateState.getMovingOrientation();
+            Position oldPosition = gameState.playerMatHashMap.get(target.getPlayerID()).getRobot().getRobotXY();
+            Position newPosition = target.getTargetBoardElement().getXY();
 
-            if (!gameState.playerMatHashMap.get(intermediateState.getPlayerID()).getRobot().getOrientation().equals(intermediateState.getNewOrientation())) {
+            for (String rotatingDirection : target.getRotationDirection()) {
 
-                gameState.playerMatHashMap.get(intermediateState.getPlayerID()).getRobot().setOrientation(intermediateState.getNewOrientation());
-
-                ConveyorBeltsHelper conveyorBeltsHelper = new ConveyorBeltsHelper();
-
-                String direction = conveyorBeltsHelper.getTurning(gameState.playerMatHashMap.get(intermediateState.getPlayerID()).getRobot().getOrientation(), intermediateState.getNewOrientation());
-
-                String playerTurning = messageHandler.buildMessage("PlayerTurning", new PlayerTurning(intermediateState.getPlayerID(), direction));
-                server.sendMessageToAllUsers(playerTurning);
+                switch (rotatingDirection) {
+                    case "clockwise" -> {
+                        gameState.playerMatHashMap.get(target.getPlayerID()).getRobot().turnRight();
+                        String playerTurningClockwise = messageHandler.buildMessage("PlayerTurning", new PlayerTurning(target.getPlayerID(), "clockwise"));
+                        gameState.server.sendMessageToAllUsers(playerTurningClockwise);
+                    }
+                    case "counterClockwise" -> {
+                        gameState.playerMatHashMap.get(target.getPlayerID()).getRobot().turnLeft();
+                        String playerTurningCounterClockwise = messageHandler.buildMessage("PlayerTurning", new PlayerTurning(target.getPlayerID(), "counterClockwise"));
+                        gameState.server.sendMessageToAllUsers(playerTurningCounterClockwise);
+                    }
+                }
 
             }
 
-            if (intermediateState.isNewPositionBelt()) {
+            if (target.getTargetIsBelt()) {
 
-                BoardElement currentBoardElement = gameState.gameBoard.getGameBoard()[oldPosition.getY()][oldPosition.getY()];
-                BoardElement newBoardElement = gameState.gameBoard.getGameBoard()[newPosition.getY()][newPosition.getX()];
+                BoardElement currentBoardElement = gameState.gameBoard.getGameBoard()[oldPosition.getY()][oldPosition.getX()];
+                BoardElement targetBoardElement = target.getTargetBoardElement();
 
                 currentBoardElement.setRobot(null);
-                newBoardElement.setRobot(gameState.playerMatHashMap.get(intermediateState.getPlayerID()).getRobot());
+                targetBoardElement.setRobot(gameState.playerMatHashMap.get(target.getPlayerID()).getRobot());
 
-                gameState.playerMatHashMap.get(intermediateState.getPlayerID()).getRobot().setXY(newPosition);
+                gameState.playerMatHashMap.get(target.getPlayerID()).getRobot().setXY(targetBoardElement.getXY());
 
-                String movement = messageHandler.buildMessage("Movement", new Movement(intermediateState.getPlayerID(), gameState.playerMatHashMap.get(intermediateState.getPlayerID()).getRobot().getRobotPosition()));
-                gameState.server.sendMessageToAllUsers(movement);
+                String movement = messageHandler.buildMessage("Movement", new Movement(target.getPlayerID(), gameState.playerMatHashMap.get(target.getPlayerID()).getRobot().getRobotPosition()));
+                server.sendMessageToAllUsers(movement);
 
             } else {
 
                 MoveHandler moveHandler = new MoveHandler();
-                moveHandler.move(this, gameState, intermediateState.getPlayerID(), oldPosition, newPosition, movingOrientation, false);
+
+                moveHandler.move(this, gameState, target.getPlayerID(), oldPosition, newPosition, target.getMovingDirection(), false, true);
 
             }
 
         }
+
     }
 
     public void activatePushPanels() {
@@ -487,9 +503,33 @@ public class Game {
 
     }
 
-    public void activateLaser() {}
+    public void activateLaser() {
 
-    public void activateRobotLaser() {}
+        LaserHandler laserHandler = new LaserHandler();
+
+        for (BoardElement laser : gameState.gameBoard.getLasers().values()) {
+
+            laserHandler.handleBoardLaserFire(gameState, laser);
+
+        }
+
+    }
+
+    public void activateRobotLaser() {
+
+        String playerShooting = messageHandler.buildMessage("PlayerShooting", new PlayerShooting());
+        server.sendMessageToAllUsers(playerShooting);
+
+        LaserHandler laserHandler = new LaserHandler();
+        BoardElement[][] gameBoard = getGameBoard().getGameBoard();
+
+        for (PlayerMat playerMat : gameState.playerMatList) {
+
+            laserHandler.handleRobotFire(gameState, gameBoard[playerMat.getRobot().getRobotXY().getY()][playerMat.getRobot().getRobotXY().getX()]);
+
+        }
+
+    }
 
     public void activateEnergySpace() {
 

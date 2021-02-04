@@ -2,14 +2,19 @@ package game.utilities;
 
 import game.Game;
 import game.gameboard.BoardElement;
+import game.player.PlayerMat;
+import server.network.UserThread;
 import utilities.MessageHandler;
+import utilities.MyLogger;
 import utilities.messages.Movement;
+
+import java.util.logging.Logger;
 
 public class MoveHandler {
 
     protected final MessageHandler messageHandler = new MessageHandler();
 
-    public boolean move(Game game, GameState gameState, int playerID, Position oldPosition, Position newPosition, String movingOrientation, boolean isPlayerAction) {
+    public boolean move(Game game, GameState gameState, int playerID, Position oldPosition, Position newPosition, String movingOrientation, boolean isPlayerAction, boolean isLastMovePart) {
 
         if (newPosition.getX() == 13 || newPosition.getY() == 10 || newPosition.getX() == -1 || newPosition.getY() == -1) {
 
@@ -29,19 +34,26 @@ public class MoveHandler {
 
                     if (destinationBoardElement.getRobot() == null) {
 
-                        return completeMove(game, gameState, playerID, newPosition1, currentBoardElement, destinationBoardElement, isPlayerAction);
+                        return completeMove(game, gameState, playerID, newPosition1, currentBoardElement, destinationBoardElement, isPlayerAction, isLastMovePart);
 
                     } else {
 
-                        if (move(game, gameState, destinationBoardElement.getRobot().getPlayerID(), newPosition1, getTargetPosition(newPosition, movingOrientation), movingOrientation, false)) {
+                        if (move(game, gameState, destinationBoardElement.getRobot().getPlayerID(), newPosition1, getTargetPosition(newPosition, movingOrientation), movingOrientation, false, true)) {
 
-                            return completeMove(game, gameState, playerID, newPosition1, currentBoardElement, destinationBoardElement, isPlayerAction);
+                            return completeMove(game, gameState, playerID, newPosition1, currentBoardElement, destinationBoardElement, isPlayerAction, isLastMovePart);
 
                         } else {
 
-                            if (isPlayerAction) {
+                            if (isPlayerAction && isLastMovePart) {
 
-                                gameState.nextRegisterList.add(gameState.registerList.remove(0));
+                                PlayerMat playerMat = gameState.registerList.remove(0);
+
+                                if (!gameState.playerMatHashMap.get(playerID).getWasRebootedThisRound()) {
+
+                                    gameState.nextRegisterList.add(playerMat);
+
+                                }
+
                                 game.nextPlayersTurn();
 
                             }
@@ -56,9 +68,16 @@ public class MoveHandler {
 
             }
 
-            if (isPlayerAction) {
+            if (isPlayerAction && isLastMovePart) {
 
-                gameState.nextRegisterList.add(gameState.registerList.remove(0));
+                PlayerMat playerMat = gameState.registerList.remove(0);
+
+                if (!gameState.playerMatHashMap.get(playerID).getWasRebootedThisRound()) {
+
+                    gameState.nextRegisterList.add(playerMat);
+
+                }
+
                 game.nextPlayersTurn();
 
             }
@@ -69,7 +88,7 @@ public class MoveHandler {
 
     }
 
-    private boolean completeMove(Game game, GameState gameState, int playerID, Position newPosition, BoardElement currentBoardElement, BoardElement destinationBoardElement, boolean isPlayerAction) {
+    private boolean completeMove(Game game, GameState gameState, int playerID, Position newPosition, BoardElement currentBoardElement, BoardElement destinationBoardElement, boolean isPlayerAction, boolean isLastMovePart) {
         if (destinationBoardElement.isPit()) {
 
             gameState.playerMatHashMap.get(playerID).reboot(game, gameState, isPlayerAction);
@@ -79,14 +98,21 @@ public class MoveHandler {
             currentBoardElement.setRobot(null);
             destinationBoardElement.setRobot(gameState.playerMatHashMap.get(playerID).getRobot());
 
-            gameState.playerMatHashMap.get(playerID).getRobot().setXY(newPosition);
+            gameState.playerMatHashMap.get(playerID).getRobot().setXY(destinationBoardElement.getXY());
 
             String movement = messageHandler.buildMessage("Movement", new Movement(playerID, gameState.playerMatHashMap.get(playerID).getRobot().getRobotPosition()));
             gameState.server.sendMessageToAllUsers(movement);
 
-            if (isPlayerAction) {
+            if (isPlayerAction && isLastMovePart) {
 
-                gameState.nextRegisterList.add(gameState.registerList.remove(0));
+                PlayerMat playerMat = gameState.registerList.remove(0);
+
+                if (!gameState.playerMatHashMap.get(playerID).getWasRebootedThisRound()) {
+
+                    gameState.nextRegisterList.add(playerMat);
+
+                }
+
                 game.nextPlayersTurn();
 
             }

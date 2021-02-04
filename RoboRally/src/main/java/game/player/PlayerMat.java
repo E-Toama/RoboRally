@@ -28,10 +28,10 @@ public class PlayerMat {
     private List<Card> discardedCards = new ArrayList<>();
     private Card[] register = new Card[5];
 
+    private boolean wasRebootedThisRound = false;
+
     private int checkpointsReached = 0;
     private int energyCubes = 0;
-    private int deckCount = deck.size();
-    private int discardedCount = discardedCards.size();
 
     private List<Card> currentHand = new ArrayList<>();
 
@@ -45,6 +45,14 @@ public class PlayerMat {
 
     public List<Card> getCurrentHand() {
         return currentHand;
+    }
+
+    public void setWasRebootedThisRound(boolean wasRebootedThisRound) {
+        this.wasRebootedThisRound = wasRebootedThisRound;
+    }
+
+    public boolean getWasRebootedThisRound() {
+        return wasRebootedThisRound;
     }
 
     public Player getPlayer() {
@@ -95,27 +103,11 @@ public class PlayerMat {
     }
 
     public int getDeckCount() {
-        return deckCount;
-    }
-
-    public void addCardToDeck(Card card) {
-        deck.add(card);
-    }
-
-    public void setDeckCount(int deckCount) {
-        this.deckCount = deckCount;
-    }
-
-    public int getDiscardedCount() {
-        return discardedCount;
+        return deck.size();
     }
 
     public void addCardToRegister(int register, Card card) {
         this.register[register] = card;
-    }
-
-    public void resetRegister() {
-        this.register = new Card[5];
     }
 
     public void addDiscardedCard(Card discardedCard) {
@@ -221,8 +213,6 @@ public class PlayerMat {
                 returnValue[i] = drawRandomCard();
             }
 
-            return returnValue;
-
         } else {
 
             int remainingCards = deck.size();
@@ -241,9 +231,17 @@ public class PlayerMat {
 
             }
 
-            return returnValue;
+        }
+
+        if (returnValue[0].getName().equals("Again")) {
+
+            Card secondValue = returnValue[1];
+            returnValue[1] = returnValue[0];
+            returnValue[0] = secondValue;
 
         }
+
+        return returnValue;
 
     }
 
@@ -287,19 +285,13 @@ public class PlayerMat {
 
     public void reboot(Game game, GameState gameState, boolean isPlayerAction) {
 
+        wasRebootedThisRound = true;
+
         String[] wantedDamageCards = {"Spam", "Spam"};
 
         gameState.drawDamageCardHandler.drawDamageCards(player.getPlayerID(), wantedDamageCards);
 
-        if (gameState.registerList.contains(this)) {
-
-            gameState.registerList.remove(this);
-
-        } else {
-
-            gameState.nextRegisterList.remove(this);
-
-        }
+        gameState.nextRegisterList.remove(this);
 
         discardRegister();
 
@@ -307,7 +299,16 @@ public class PlayerMat {
 
         MoveHandler moveHandler = new MoveHandler();
 
-        moveHandler.move(game, gameState, player.getPlayerID(), robot.getRobotXY(), gameState.gameBoard.getRestartPoint().getXY(), gameState.gameBoard.getRestartPoint().getRestartOrientation(), false);
+        if (robot.getRobotXY().getX() < 3) {
+
+            moveHandler.move(game, gameState, player.getPlayerID(), robot.getRobotXY(), robot.getStartingPosition(), "up", isPlayerAction, true);
+
+        } else {
+
+            moveHandler.move(game, gameState, player.getPlayerID(), robot.getRobotXY(), gameState.gameBoard.getRestartPoint().getXY(), gameState.gameBoard.getRestartPoint().getRestartOrientation(), isPlayerAction, true);
+
+
+        }
 
     }
 

@@ -4,8 +4,11 @@ package client.view;
 import client.utilities.ImageBuilder;
 import client.viewmodel.PlayerMatModel;
 import game.Robots.Robot;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -28,13 +31,13 @@ public class PlayerMatController {
     @FXML
     private Label checkPointLabel;
     @FXML
-    private Label CardsInDeckLabel;
+    private Label cardsInDeckLabel;
     @FXML
-    private Label DiscardedCardsLabel;
+    private Label discardedCardsLabel;
     @FXML
     private Label damageCardsLabel;
     @FXML
-    private Label EnergyCubeLabel;
+    private Label energyCubeLabel;
 
 
     //Dynamic text values
@@ -54,8 +57,10 @@ public class PlayerMatController {
     private Label energyCubesValue;
 
 
-    ImageView[] registers;
+    Button[] registers;
     int registerForAnimation = 0;
+
+    int currentRegisterActiveCount = 0;
 
     @FXML
     public void initialize() {
@@ -68,7 +73,7 @@ public class PlayerMatController {
         energyCubesValue.textProperty().bindBidirectional(playerMatModel.getEnergyPoints());
 
         //Controller-Specific actions
-        registers = new ImageView[5];
+        registers = new Button[5];
         registerForAnimation = 0;
         createCardsSlots();
     }
@@ -78,9 +83,17 @@ public class PlayerMatController {
     }
 
     public void createCardsSlots(){
-            registers = new ImageView[5];
+
             for (int i = 0; i < 5; i++) {
-                registers[i] = ImageBuilder.adjustToPlayerMatView("CardBack");
+                Button button = new Button();
+                ImageView cardBackImage =  ImageBuilder.adjustToPlayerMatView("CardBack");
+
+                button.setGraphic(cardBackImage);
+                button.setDisable(true);
+                button.setOnAction(e -> sendPlayIt(button));
+
+                registers[i] = button;
+
                 playerMatPane.add(registers[i], i+1, 0);
             }
 
@@ -92,8 +105,23 @@ public class PlayerMatController {
 
     public void setTakenRegister(String card) {
         ImageView cardToDisplay = ImageBuilder.adjustToPlayerMatView(card);
-        registers[registerForAnimation] = cardToDisplay;
-        playerMatPane.add(cardToDisplay, registerForAnimation+1, 0);
+        //ToDO: FX-Transition? FlipCard-Animation
+        Button button = registers[registerForAnimation];
+        button.setGraphic(cardToDisplay);
+        registers[registerForAnimation] = button;
+        //playerMatPane.add(registers[registerForAnimation], registerForAnimation+1, 0);
         registerForAnimation++;
+    }
+
+    private void sendPlayIt(Button button) {
+            button.setDisable(true);
+            playerMatModel.sendPlayIt();
+    }
+
+    public void activateRegisterButton() {
+        Button button = registers[currentRegisterActiveCount];
+        button.setDisable(false);
+        registers[currentRegisterActiveCount] = button;
+        currentRegisterActiveCount++;
     }
 }

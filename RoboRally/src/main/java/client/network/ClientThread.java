@@ -1,13 +1,9 @@
 package client.network;
 
 import client.utilities.ClientGameState;
-import client.utilities.ClientPlayerState;
-import client.view.DamageChoiceDialog;
-import client.view.GameBoardController;
 import client.view.MainViewController;
-import client.view.MapChoiceDialog;
 import client.view.PlayerMatController;
-import client.view.ProgrammingController;
+import client.view.PopupController;
 import client.view.ViewController;
 import client.viewmodel.ChatViewModel;
 import client.viewmodel.EnemyMatModel;
@@ -18,19 +14,19 @@ import client.viewmodel.ProgrammingViewModel;
 import client.viewmodel.WelcomeViewModel;
 import game.Robots.Robot;
 import game.cards.ActiveCard;
-import game.cards.Card;
 import game.gameboard.GameBoard;
-import game.utilities.PositionLookUp;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import game.player.Player;
-import javafx.scene.control.Alert;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import utilities.MessageHandler;
 import utilities.MyLogger;
 import utilities.messages.*;
@@ -42,9 +38,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 public class ClientThread implements Runnable {
@@ -69,38 +63,31 @@ public class ClientThread implements Runnable {
         }
     }
 
+    private final MyLogger logger = new MyLogger(ClientThread.class.getName());
     private final Socket socket;
     private final BufferedReader incoming;
     private final PrintWriter outgoing;
     private final MessageHandler messageHandler = new MessageHandler();
-    public ObservableList<String> chatMessages = FXCollections.observableArrayList();
-
-
-    private Player player;
-    private int ID;
     private final double protocolVersion = 1.0;
     private final String group = "NeidischeNarwale";
-    private Boolean isAI;
-
-    private WelcomeViewModel welcomeViewModel;
-    private ChatViewModel chatViewModel;
-
-    //ViewModels for MainView
-    private MainViewModel mainViewModel;
-
-    private GameBoardViewModel gameBoardViewModel;
-    private ProgrammingViewModel programmingViewModel;
-    private PlayerMatModel playerMatModel;
-    private EnemyMatModel enemyMatModel;
-
-
     private final HashMap<Integer, Player> playerList = new HashMap<>();
-    private HashMap<Integer, ClientPlayerState> playerStateList = new HashMap<>();
-    private ClientPlayerState clientPlayerState;
+    private final HashMap<Integer, EnemyMatModel> enemyList = new HashMap<>();
+    public ObservableList<String> chatMessages = FXCollections.observableArrayList();
     public ObservableList<Integer> takenRobotList = FXCollections.observableArrayList();
     public HashMap<String, Integer> messageMatchMap = new HashMap<>();
     public ObservableList<String> observablePlayerList = FXCollections.observableArrayList();
     public ObservableList<String> observablePlayerListWithDefault = FXCollections.observableArrayList();
+    private Player player;
+    private int ID;
+    private Boolean isAI;
+    private WelcomeViewModel welcomeViewModel;
+    private ChatViewModel chatViewModel;
+    //ViewModels for MainView
+    private MainViewModel mainViewModel;
+    private GameBoardViewModel gameBoardViewModel;
+    private ProgrammingViewModel programmingViewModel;
+    private PlayerMatModel playerMatModel;
+    private EnemyMatModel enemyMatModel;
 
     public ClientThread() throws IOException {
 
@@ -108,7 +95,7 @@ public class ClientThread implements Runnable {
         this.incoming = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.outgoing = new PrintWriter(socket.getOutputStream(), true);
         observablePlayerListWithDefault.add("Message To (Default: To All)");
-        messageMatchMap.put("Message To (Default: To All)",-1);
+        messageMatchMap.put("Message To (Default: To All)", -1);
 
     }
 
@@ -124,12 +111,12 @@ public class ClientThread implements Runnable {
         this.chatViewModel = chatViewModel;
     }
 
-    public void setMainViewModel(MainViewModel mainViewModel) {
-        this.mainViewModel = mainViewModel;
-    }
-
     public MainViewModel getMainViewModel() {
         return mainViewModel;
+    }
+
+    public void setMainViewModel(MainViewModel mainViewModel) {
+        this.mainViewModel = mainViewModel;
     }
 
     public void setGameBoardViewModel(GameBoardViewModel gameBoardViewModel) {
@@ -155,11 +142,10 @@ public class ClientThread implements Runnable {
     @Override
     public void run() {
 
-        try{
+        try {
 
             establishConnection();
 
-            //ToDO: FOr Testing reasons, the MainView is now initialized right at the beginning. Can be moved anytime.
             initializeEmptyMainView();
 
             handleIncomingMessages();
@@ -168,11 +154,9 @@ public class ClientThread implements Runnable {
 
             e.printStackTrace();
 
-        }
+        } finally {
 
-        finally{
-
-            try{
+            try {
 
                 socket.close();
 
@@ -216,6 +200,10 @@ public class ClientThread implements Runnable {
                         handleSelectMap(incomingMessage);
                         break;
 
+                    case "MapSelected":
+                        handleMapSelected(incomingMessage);
+                        break;
+
                     case "GameStarted":
                         handleGameStarted(incomingMessage);
                         break;
@@ -257,7 +245,7 @@ public class ClientThread implements Runnable {
                         break;
 
                     case "ShuffleCoding":
-                        //TODO: IS this case going to be handled by the client? If so, implement the handlerMethod here
+                        //TODO: What are we doing with this information?
                         break;
 
                     case "CardSelected":
@@ -297,8 +285,8 @@ public class ClientThread implements Runnable {
                         break;
 
                     case "PickDamage":
-                      handlePickDamage(incomingMessage);
-                      break;
+                        handlePickDamage(incomingMessage);
+                        break;
 
                     case "PlayerShooting":
                         handlePlayerShooting(incomingMessage);
@@ -353,70 +341,33 @@ public class ClientThread implements Runnable {
 
                 Platform.runLater(() -> {
                     observablePlayerList.add(player.getName() + ", " + Robot.getRobotName(player.getFigure()));
-                });
-
-                Platform.runLater(() -> {
                     observablePlayerListWithDefault.add(player.getName() + ", " + Robot.getRobotName(player.getFigure()));
-                });
-
-                Platform.runLater(() -> {
                     messageMatchMap.put(player.getName() + ", " + Robot.getRobotName(player.getFigure()), player.getPlayerID());
                 });
 
                 welcomeViewModel.playerSuccesfullyAdded();
 
-                //Get all infos from Message for Playerstate
-                //ToDo: REWORK! Initialized PlayerMatModel here and bound to PlayerState for simple update mechanism
-
-                clientPlayerState = new ClientPlayerState();
-                //ToDO: Initialize PlayerMat-FXML and get Model-Instance-Variable
-                playerMatModel.setPlayerState(clientPlayerState);
-                playerStateList.put(receivedMessage.getPlayer().getPlayerID(), clientPlayerState);
-
-
-
-
+                playerMatModel.setPlayerValues(player);
 
 
             } else {
-                //Initialize OtherPlayerState and add to PlayerStateList
-                ClientPlayerState otherPlayerState = new ClientPlayerState();
-                otherPlayerState.setPlayerValues(receivedMessage.getPlayer());
-                playerStateList.put(receivedMessage.getPlayer().getPlayerID(), otherPlayerState);
-
+                EnemyMatModel enemyMatModel = new EnemyMatModel();
+                enemyMatModel.setPlayerID(receivedMessage.getPlayer().getPlayerID());
+                //ToDO: Add further information about enemyPlayer
+                enemyList.put(receivedMessage.getPlayer().getPlayerID(), enemyMatModel);
 
                 welcomeViewModel.disableRobotButton(receivedMessage.getPlayer().getFigure());
-
-                Platform.runLater(() -> {
-                    takenRobotList.add(receivedMessage.getPlayer().getFigure());
-                });
-
-                playerList.put(receivedMessage.getPlayer().getPlayerID() ,receivedMessage.getPlayer());
-
-                Platform.runLater(() -> {
-                    observablePlayerList.add(receivedMessage.getPlayer().getName() + ", " + Robot.getRobotName(receivedMessage.getPlayer().getFigure()));
-                });
-
-                Platform.runLater(() -> {
-                    observablePlayerListWithDefault.add(receivedMessage.getPlayer().getName() + ", " + Robot.getRobotName(receivedMessage.getPlayer().getFigure()));
-                });
-
-                Platform.runLater(() -> {
-                    messageMatchMap.put(receivedMessage.getPlayer().getName() + ", " + Robot.getRobotName(receivedMessage.getPlayer().getFigure()), receivedMessage.getPlayer().getPlayerID());
-                });
-
+                playerList.put(receivedMessage.getPlayer().getPlayerID(), receivedMessage.getPlayer());
                 String notificationName = receivedMessage.getPlayer().getName() + " has joined!";
-
-                Platform.runLater(() -> {
-                    chatMessages.add(notificationName);
-
-                });
-
                 String notificationRobot = "He has Robot No. " + receivedMessage.getPlayer().getFigure();
 
                 Platform.runLater(() -> {
+                    takenRobotList.add(receivedMessage.getPlayer().getFigure());
+                    observablePlayerList.add(receivedMessage.getPlayer().getName() + ", " + Robot.getRobotName(receivedMessage.getPlayer().getFigure()));
+                    observablePlayerListWithDefault.add(receivedMessage.getPlayer().getName() + ", " + Robot.getRobotName(receivedMessage.getPlayer().getFigure()));
+                    messageMatchMap.put(receivedMessage.getPlayer().getName() + ", " + Robot.getRobotName(receivedMessage.getPlayer().getFigure()), receivedMessage.getPlayer().getPlayerID());
+                    chatMessages.add(notificationName);
                     chatMessages.add(notificationRobot);
-
                 });
 
             }
@@ -441,7 +392,7 @@ public class ClientThread implements Runnable {
             Platform.runLater(() -> {
                 chatMessages.add("[" + playerList.get(receivedMessage.getPlayerID()).getName() + "] changed status to: " + receivedMessage.getReady());
             });
-           
+
             logger.getLogger().info("The player with id " + receivedMessage.getPlayerID() + " set his status to " + receivedMessage.getReady() + ".");
 
         } else {
@@ -453,12 +404,14 @@ public class ClientThread implements Runnable {
     }
 
     private void handleSelectMap(Message incomingMessage) throws IOException {
-        if (incomingMessage.getMessageBody() instanceof SelectMap){
+        if (incomingMessage.getMessageBody() instanceof SelectMap) {
             SelectMap receivedMessage = (SelectMap) incomingMessage.getMessageBody();
-            MapChoiceDialog mapChoiceDialog = new MapChoiceDialog();
+            String[] availableMaps = receivedMessage.getAvailableMaps();
+
             Platform.runLater(() -> {
-                mapChoiceDialog.show(receivedMessage.getAvailableMaps());
-            } );
+                PopupController popupController = new PopupController();
+                popupController.showMapChoice(availableMaps);
+            });
 
         } else {
             logger.getLogger().severe("Message body error in handleSelectMap method.");
@@ -467,14 +420,28 @@ public class ClientThread implements Runnable {
         }
     }
 
-    private void handleGameStarted(Message incomingMessage) throws IOException {
-
-        if (incomingMessage.getMessageBody() instanceof GameStarted){
-            GameStarted receivedMessage = (GameStarted) incomingMessage.getMessageBody();
-            GameBoard gameBoard = new GameBoard(receivedMessage.getMap());
+    private void handleMapSelected(Message incomingMessage) throws IOException {
+        if (incomingMessage.getMessageBody() instanceof MapSelected) {
+            MapSelected receivedMessage = (MapSelected) incomingMessage.getMessageBody();
+            String selectedMap = receivedMessage.getMap()[0];
+            clientGameState.setSelectedMap(selectedMap);
+            GameBoard gameBoard = new GameBoard(selectedMap);
             Platform.runLater(() -> {
                 gameBoardViewModel.setGameBoard(gameBoard.getGameBoard());
             });
+
+        } else {
+            logger.getLogger().severe("Message body error in handleMapSelected method.");
+            throw new IOException("Something went wrong! Invalid Message Body! (Not instance of MapSelected)");
+
+        }
+    }
+
+    private void handleGameStarted(Message incomingMessage) throws IOException {
+
+        if (incomingMessage.getMessageBody() instanceof GameStarted) {
+            GameStarted receivedMessage = (GameStarted) incomingMessage.getMessageBody();
+            GameBoard gameBoard = new GameBoard(receivedMessage.getMap(), clientGameState.getSelectedMap());
 
             Scene mainScene = new Scene(mainViewModel.getMainViewController().getMainViewPane());
             Platform.runLater(() -> {
@@ -522,7 +489,6 @@ public class ClientThread implements Runnable {
     }
 
     private void handleError(Message incomingMessage) throws IOException {
-
         //ToDo: handleError (ClientThread)
 
     }
@@ -550,32 +516,33 @@ public class ClientThread implements Runnable {
     }
 
     private void handleCurrentPlayer(Message incomingMessage) throws IOException {
-        if (incomingMessage.getMessageBody() instanceof  CurrentPlayer) {
+        if (incomingMessage.getMessageBody() instanceof CurrentPlayer) {
             CurrentPlayer currentPlayer = (CurrentPlayer) incomingMessage.getMessageBody();
-            if (currentPlayer.getPlayerID() == ID) {
-               if (clientGameState.getActivePhase() == 0) {
-                   Platform.runLater(() -> {
-                       gameBoardViewModel.getGameBoardController().initStartingPoints();
-                   });
-               }
-               if (clientGameState.getActivePhase() == 3) {
-                   Platform.runLater(() -> {
-                       Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                       alert.setHeaderText("PlayIt?");
-                       alert.setContentText("Do you want to play that register?");
-                       alert.showAndWait();
-                       String playIt = messageHandler.buildMessage("PlayIt", new PlayIt());
-                       outgoing.println(playIt);
-                   });
-               }
-            }
-            logger.getLogger().info("Current player id " + currentPlayer.getPlayerID() + ".");
+            int playerID = currentPlayer.getPlayerID();
+            if (playerID == ID) {
+                playerMatModel.setCurrentPlayer(true);
+                for (Map.Entry<Integer, EnemyMatModel> enemy : enemyList.entrySet()) {
+                    enemy.getValue().setCurrentPlayer(false);
+                }
 
-            //Set all other players' current state to false
-            for (Map.Entry<Integer, ClientPlayerState> state : playerStateList.entrySet()) {
-                state.getValue().setCurrentPlayer(false);
+                if (clientGameState.getActivePhase() == 0) {
+                    String gameMessage = "[GAME] It's your turn to choose a Starting Point!";
+
+                    Platform.runLater(() -> {
+                        chatMessages.add(gameMessage);
+                        gameBoardViewModel.getGameBoardController().initStartingPoints();
+                    });
+                }
+                if (clientGameState.getActivePhase() == 3) {
+                    playerMatModel.getPlayerMatController().activateRegisterButton();
+                }
+            } else {
+                enemyList.get(playerID).setCurrentPlayer(true);
+                playerMatModel.setCurrentPlayer(false);
             }
-            playerStateList.get(currentPlayer.getPlayerID()).setCurrentPlayer(true);
+
+
+            logger.getLogger().info("Current player id " + currentPlayer.getPlayerID() + ".");
 
         } else {
             logger.getLogger().severe("Message body error in handleCurrentPlayer method.");
@@ -584,22 +551,26 @@ public class ClientThread implements Runnable {
     }
 
     private void handleActivePhase(Message incomingMessage) throws IOException {
-        if (incomingMessage.getMessageBody() instanceof  ActivePhase) {
+        if (incomingMessage.getMessageBody() instanceof ActivePhase) {
             ActivePhase activePhase = (ActivePhase) incomingMessage.getMessageBody();
-           /* TODO: Implement "ActivePhase"
-           * Protocol:
-           * 0 => Aufbauphase
-           * 1 => Upgradephase
-           * 2 => Programmierphase
-           * 3 => Aktivierungsphase
-           * */
+            /* Protocol:
+             * 0 => Aufbauphase
+             * 1 => Upgradephase
+             * 2 => Programmierphase
+             * 3 => Aktivierungsphase
+             * */
             clientGameState.setActivePhase(activePhase.getPhase());
 
             if (activePhase.getPhase() == 3) {
+                String slowPlayers = programmingViewModel.getSlowPlayers();
+                String[] cardsInRegister = programmingViewModel.getCardsYouGotNow();
                 Platform.runLater(() -> {
+                    PopupController popupController = new PopupController();
+                    popupController.showEndOfProgrammingPhase(slowPlayers, cardsInRegister);
                     mainViewModel.switchScenes();
                 });
             }
+
 
             logger.getLogger().info("The Active phase is " + activePhase.getPhase() + ".");
 
@@ -610,26 +581,26 @@ public class ClientThread implements Runnable {
     }
 
     private void handleStartingPointTaken(Message incomingMessage) throws IOException {
-        if (incomingMessage.getMessageBody() instanceof  StartingPointTaken) {
+        if (incomingMessage.getMessageBody() instanceof StartingPointTaken) {
             StartingPointTaken startingPointTaken = (StartingPointTaken) incomingMessage.getMessageBody();
             int playerID = startingPointTaken.getPlayerID();
             int chosenPoint = startingPointTaken.getPosition();
             Player currentPlayer = playerList.get(playerID);
 
             logger.getLogger().info(chosenPoint + " was picked by " + playerID + ".");
-            
+
             if (playerID == ID) {
+                playerMatModel.setCurrentPosition(chosenPoint);
                 Platform.runLater(() -> {
                     gameBoardViewModel.setStartingPosition(currentPlayer.getFigure(), chosenPoint);
                 });
             } else {
+                enemyList.get(playerID).setCurrentPosition(chosenPoint);
+
                 Platform.runLater(() -> {
                     gameBoardViewModel.setOtherRobotStartingPostion(currentPlayer.getFigure(), chosenPoint);
                 });
             }
-
-            //Add position info to ClientPlayerState
-            playerStateList.get(playerID).setCurrentPosition(chosenPoint);
 
         } else {
             logger.getLogger().severe("Message body error in handleStartingPointTaken method.");
@@ -638,7 +609,7 @@ public class ClientThread implements Runnable {
     }
 
     private void handleYourCards(Message incomingMessage) throws IOException {
-        if (incomingMessage.getMessageBody() instanceof  YourCards) {
+        if (incomingMessage.getMessageBody() instanceof YourCards) {
             YourCards yourCards = (YourCards) incomingMessage.getMessageBody();
             String[] cards = yourCards.getCards();
             int cardsInPile = yourCards.getCardsInPile();
@@ -654,8 +625,10 @@ public class ClientThread implements Runnable {
                 mainViewModel.switchScenes();
             });
 
-            //Add info to ClientPlayerState
-            playerStateList.get(this.ID).setDeckCount(cardsInPile);
+            //Add info to PlayerModel
+            Platform.runLater(() -> {
+                playerMatModel.setDeckCount(cardsInPile);
+            });
 
         } else {
             logger.getLogger().severe("Message body error in handleYourCards method.");
@@ -664,13 +637,11 @@ public class ClientThread implements Runnable {
     }
 
     private void handleNotYourCards(Message incomingMessage) throws IOException {
-        if (incomingMessage.getMessageBody() instanceof  NotYourCards) {
+        if (incomingMessage.getMessageBody() instanceof NotYourCards) {
             NotYourCards notYourCards = (NotYourCards) incomingMessage.getMessageBody();
+            //ToDO: Add deck count to EnemyModels
+
             logger.getLogger().info("Other players have chosen their cards.");
-
-            //Add deck count to playerstate
-            playerStateList.get(notYourCards.getPlayerID()).setDeckCount(notYourCards.getCardsInPile());
-
         } else {
             logger.getLogger().severe("Message body error in handleNotYourCards method.");
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of NotYourCards)");
@@ -678,16 +649,18 @@ public class ClientThread implements Runnable {
     }
 
     private void handleCardSelected(Message incomingMessage) throws IOException {
-        if (incomingMessage.getMessageBody() instanceof  CardSelected) {
+        if (incomingMessage.getMessageBody() instanceof CardSelected) {
             CardSelected cardSelected = (CardSelected) incomingMessage.getMessageBody();
             int playerID = cardSelected.getPlayerID();
             int register = cardSelected.getRegister();
             if (playerID == ID) {
 
-                logger.getLogger().info("Player with id " + playerID + " put a card in register " + register + ".");
                 Platform.runLater(() -> {
                     programmingViewModel.confirmRegister(register);
                 });
+
+                logger.getLogger().info("Player with id " + playerID + " put a card in register " + register + ".");
+
             } //ToDo: Here we wanted to update other PlayerMats with a card (backside)
             //      However: This message is sent if card is "null" and if card is valid
             //      --> no way to find out if the other player actually put a card in the register or removed one
@@ -699,10 +672,11 @@ public class ClientThread implements Runnable {
     }
 
     private void handleSelectionFinished(Message incomingMessage) throws IOException {
-        if (incomingMessage.getMessageBody() instanceof  SelectionFinished) {
+        if (incomingMessage.getMessageBody() instanceof SelectionFinished) {
             SelectionFinished selectionFinished = (SelectionFinished) incomingMessage.getMessageBody();
-            playerStateList.get(selectionFinished.getPlayerID()).setHasFinishedSelection(true);
-
+            if (selectionFinished.getPlayerID() == ID) {
+                playerMatModel.setFinishedSelection(true);
+            }
             logger.getLogger().info(player.getName() + " finished his cards selection.");
 
         } else {
@@ -712,10 +686,11 @@ public class ClientThread implements Runnable {
     }
 
     private void handleTimerStarted(Message incomingMessage) throws IOException {
-        if (incomingMessage.getMessageBody() instanceof  TimerStarted) {
-            TimerStarted timerStarted = (TimerStarted) incomingMessage.getMessageBody();
-            logger.getLogger().info("Timer started counting down.");
+        if (incomingMessage.getMessageBody() instanceof TimerStarted) {
+
             programmingViewModel.setTimer();
+
+            logger.getLogger().info("Timer started counting down.");
         } else {
             logger.getLogger().severe("Message body error in handleTimerStarted method.");
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of TimerStarted)");
@@ -723,15 +698,20 @@ public class ClientThread implements Runnable {
     }
 
     private void handleTimerEnded(Message incomingMessage) throws IOException {
-        if (incomingMessage.getMessageBody() instanceof  TimerEnded) {
+        if (incomingMessage.getMessageBody() instanceof TimerEnded) {
             TimerEnded timerEnded = (TimerEnded) incomingMessage.getMessageBody();
-            String slowPlayers = "";
+            StringBuilder slowPlayers = new StringBuilder();
             for (Integer id : timerEnded.getPlayerIDs()) {
-                slowPlayers += playerStateList.get(id).getUserName() + "\n";
+                if (id == ID) {
+                    String robotFigure = Robot.getRobotName(playerMatModel.getFigure());
+                    slowPlayers.append(robotFigure).append(" ");
+                } else {
+                    //ToDo: Add slow enemys to slowPlayers
+                }
             }
-            programmingViewModel.getProgrammingController().setSlowPlayers(slowPlayers);
+            programmingViewModel.setSlowPlayers(slowPlayers.toString());
 
-            Platform.runLater(()-> {
+            Platform.runLater(() -> {
                 programmingViewModel.endTimer();
             });
 
@@ -761,9 +741,6 @@ public class ClientThread implements Runnable {
             CardsYouGotNow cardsYouGotNow = (CardsYouGotNow) incomingMessage.getMessageBody();
             String[] yourCards = cardsYouGotNow.getCards();
             programmingViewModel.setCardsYouGotNow(yourCards);
-            Platform.runLater(() -> {
-                programmingViewModel.getProgrammingController().cardsYouGotNow();
-            });
 
             logger.getLogger().info(this.player.getName() + " got the cards: " + yourCards + ".");
         } else {
@@ -782,10 +759,11 @@ public class ClientThread implements Runnable {
                     Platform.runLater(() -> {
                         playerMatModel.getPlayerMatController().setTakenRegister(cards.getCard());
                     });
-                } //ToDo: Else update otherPlayerMats
+                }
+                //ToDo: Else update otherPlayerMats?
             }
 
-            
+
             logger.getLogger().info("Received Current Cards.");
         } else {
             logger.getLogger().severe("Message body error in handleCurrentCards method.");
@@ -796,14 +774,21 @@ public class ClientThread implements Runnable {
     private void handleMovement(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof Movement) {
             Movement movement = (Movement) incomingMessage.getMessageBody();
-            int robotFigure = playerStateList.get(movement.getPlayerID()).getFigure();
-            int currentPosition = playerStateList.get(movement.getPlayerID()).getCurrentPosition();
-                Platform.runLater(() -> {
-                    gameBoardViewModel.getGameBoardController().move(robotFigure, currentPosition, movement.getTo());
-                });
+            int playerID = movement.getPlayerID();
+            int destination = movement.getTo();
+            int currentPosition;
+            if (playerID == ID) {
+                currentPosition = playerMatModel.getCurrentPosition();
+                playerMatModel.setCurrentPosition(destination);
+            } else {
+                currentPosition = enemyList.get(playerID).getCurrentPosition();
+                enemyList.get(playerID).setCurrentPosition(destination);
+            }
 
-            playerStateList.get(movement.getPlayerID()).setCurrentPosition(movement.getTo());
-            
+            Platform.runLater(() -> {
+                gameBoardViewModel.getGameBoardController().move(currentPosition, destination);
+            });
+
             logger.getLogger().info("Player with id " + movement.getPlayerID() + " moved his robot to field number " + movement.getTo() + ".");
         } else {
             logger.getLogger().severe("Message body error in handleMovement method.");
@@ -814,9 +799,20 @@ public class ClientThread implements Runnable {
     private void handleDrawDamage(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof DrawDamage) {
             DrawDamage drawDamage = (DrawDamage) incomingMessage.getMessageBody();
-            clientGameState.decreaseDamageCardCount(drawDamage.getCards());
-            playerStateList.get(drawDamage.getPlayerID()).setPickedUpDamageCards(drawDamage.getCards().length);
-            //ToDo: Update GUI DrawDamage?
+            int playerID = drawDamage.getPlayerID();
+            String[] damageCards = drawDamage.getCards();
+
+            clientGameState.decreaseDamageCardCount(damageCards);
+
+            if (playerID == ID) {
+                Platform.runLater(() -> {
+                    playerMatModel.setPickedUpDamageCards(damageCards.length);
+                });
+
+            } else {
+                //ToDo: Update OtherPlayers-DamageCount
+            }
+
             logger.getLogger().info("Player wiht id " + drawDamage.getPlayerID() + " has drew the damage cards: " + drawDamage.getCards() + ".");
         } else {
             logger.getLogger().severe("Message body error in handleDrawDamage method.");
@@ -826,23 +822,28 @@ public class ClientThread implements Runnable {
 
 
     private void handlePickDamage(Message incomingMessage) throws IOException {
-      if (incomingMessage.getMessageBody() instanceof PickDamage) {
-        PickDamage pickDamage = (PickDamage) incomingMessage.getMessageBody();
-        // TODO: Bind PopUp to Server-Client-Connection
-          DamageChoiceDialog damageChoiceDialog = new DamageChoiceDialog();
-          damageChoiceDialog.show(pickDamage.getCount(), clientGameState.getAvailableDamageCards());
-        logger.getLogger().info(this.player.getName() + " has chosen " + pickDamage.getCount() + " damage cards.");
-        
-      } else {
-        logger.getLogger().severe("Message body error in handlePickDamage method.");
-        throw new IOException("Something went wrong! Invalid Message Body! (Not instance of PickDamage)");
-      }
+        if (incomingMessage.getMessageBody() instanceof PickDamage) {
+            PickDamage pickDamage = (PickDamage) incomingMessage.getMessageBody();
+            int count = pickDamage.getCount();
+            LinkedList<String> availableCards = clientGameState.getAvailableDamageCards();
+            Platform.runLater(() -> {
+                PopupController popupController = new PopupController();
+                popupController.showPickDamage(count, availableCards);
+            });
+
+            logger.getLogger().info(this.player.getName() + " has chosen " + pickDamage.getCount() + " damage cards.");
+
+        } else {
+            logger.getLogger().severe("Message body error in handlePickDamage method.");
+            throw new IOException("Something went wrong! Invalid Message Body! (Not instance of PickDamage)");
+        }
     }
 
     private void handlePlayerShooting(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof PlayerShooting) {
             PlayerShooting playerShooting = (PlayerShooting) incomingMessage.getMessageBody();
             //ToDo: Update GUI PlayerShooting
+            //      Append Chat with "Robots are shooting now"
             logger.getLogger().info("Player is shooting!");
         } else {
             logger.getLogger().severe("Message body error in handlePlayerShooting method.");
@@ -865,14 +866,20 @@ public class ClientThread implements Runnable {
         if (incomingMessage.getMessageBody() instanceof PlayerTurning) {
             PlayerTurning playerTurning = (PlayerTurning) incomingMessage.getMessageBody();
             int playerID = playerTurning.getPlayerID();
-            int currentPosition = playerStateList.get(playerID).getCurrentPosition();
             String direction = playerTurning.getDirection();
-            //ToDo: First Working Test for Self-Updating PlayerMat is bypassing ClientPlayerState
-            Platform.runLater(()-> {
+            int currentPosition;
+            if (playerID == ID) {
+                currentPosition = playerMatModel.getCurrentPosition();
+                playerMatModel.setDirection(direction);
+            } else {
+                currentPosition = enemyList.get(playerID).getCurrentPosition();
+                //todo Update Other Players direction in EnemyModel
+            }
+
+            Platform.runLater(() -> {
                 gameBoardViewModel.getGameBoardController().playerTurning(currentPosition, direction);
             });
 
-            playerStateList.get(playerID).setDirection(direction);
             logger.getLogger().info("Player with id " + playerTurning.getPlayerID() + " is turning his robot " + playerTurning.getDirection() + ".");
         } else {
             logger.getLogger().severe("Message body error in handlePlayerTurning method.");
@@ -883,14 +890,21 @@ public class ClientThread implements Runnable {
     private void handleEnergy(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof Energy) {
             Energy energy = (Energy) incomingMessage.getMessageBody();
-            //TODO: Has the player got energy or he has it already? update log according to answer.
-            logger.getLogger().info("Player with id " + energy.getPlayerID() + " has " + energy.getCount() + " energy cubes.");
-            Platform.runLater(() -> {
-                playerMatModel.setEnergyPoints(energy.getCount());
-            });
+            int playerID = energy.getPlayerID();
+            int energyCount = energy.getCount();
+            if (playerID == ID) {
+                Platform.runLater(() -> {
+                    playerMatModel.setEnergyPoints(energyCount);
+                });
+            } else {
+                //Todo: Update other players energy count
+            }
 
-            playerStateList.get(energy.getPlayerID()).setEnergyPoints(energy.getCount());
+            logger.getLogger().info("Player with id " + energy.getPlayerID() + " has " + energy.getCount() + " energy cubes.");
+
             //ToDo: Update GUI Energy - maybe switch fields from full to empty?
+
+
         } else {
             logger.getLogger().severe("Message body error in handleEnergy method.");
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of Energy)");
@@ -900,9 +914,20 @@ public class ClientThread implements Runnable {
     private void handleCheckPointReached(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof CheckpointReached) {
             CheckpointReached checkpointReached = (CheckpointReached) incomingMessage.getMessageBody();
-            //ToDo: Visualize reached Checkpoint? Currently only written to PlayerState
+            int playerID = checkpointReached.getPlayerID();
+            //todo Is this a number or a counter?
+            int checkPoint = checkpointReached.getNumber();
+            if (playerID == ID) {
+                Platform.runLater(() -> {
+                    playerMatModel.setCheckpointsreached(String.valueOf(checkPoint));
+                });
+            } else {
+                //todo update other players checkpoints
+            }
+
+            //ToDo: Visualize reached Checkpoint? Currently only written to PlayerModel
+
             logger.getLogger().info("Player with id " + checkpointReached.getPlayerID() + " has reached his " + checkpointReached.getNumber() + " checkpoint.");
-            playerStateList.get(checkpointReached.getPlayerID()).setCheckpointsreached(checkpointReached.getNumber());
         } else {
             logger.getLogger().severe("Message body error in handleCheckPointReached method.");
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of CheckpointReached)");
@@ -913,6 +938,8 @@ public class ClientThread implements Runnable {
         if (incomingMessage.getMessageBody() instanceof GameWon) {
             GameWon gameWon = (GameWon) incomingMessage.getMessageBody();
             //ToDo: Update GUI GameWon - Simple PopUp?
+
+
             logger.getLogger().info("Player with id " + gameWon.getPlayerID() + " has won the game.");
         } else {
             logger.getLogger().severe("Message body error in handleGameWon method.");
@@ -936,7 +963,7 @@ public class ClientThread implements Runnable {
 
             Message secondIncomingMessage = messageHandler.handleMessage(secondIncomingJSON);
 
-            if(secondIncomingMessage.getMessageType().equals("Welcome") && secondIncomingMessage.getMessageBody() instanceof Welcome) {
+            if (secondIncomingMessage.getMessageType().equals("Welcome") && secondIncomingMessage.getMessageBody() instanceof Welcome) {
 
                 Welcome receivedMessage = (Welcome) secondIncomingMessage.getMessageBody();
 
@@ -989,6 +1016,16 @@ public class ClientThread implements Runnable {
 
     public void sendSelectedMap(String[] userChoice) {
         String outgoingMessage = messageHandler.buildMessage("MapSelected", new MapSelected(userChoice));
+        outgoing.println(outgoingMessage);
+    }
+
+    public void sendSelectedDamage(String[] selectedDamageCards) {
+        String outgoingMessage = messageHandler.buildMessage("SelectDamage", new SelectDamage(selectedDamageCards));
+        outgoing.println(outgoingMessage);
+    }
+
+    public void sendPlayIt() {
+        String outgoingMessage = messageHandler.buildMessage("PlayIt", new PlayIt());
         outgoing.println(outgoingMessage);
     }
 

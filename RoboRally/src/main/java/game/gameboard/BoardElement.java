@@ -1,14 +1,11 @@
 package game.gameboard;
 
-import client.utilities.BoardTile;
-import client.utilities.ImageBuilder;
 import game.Game;
 import game.Robots.Robot;
 import game.gameboard.gameboardfieldobjects.*;
 import game.utilities.GameState;
 import game.utilities.Position;
 import game.utilities.PositionLookUp;
-import javafx.scene.image.ImageView;
 
 public class BoardElement {
 
@@ -42,14 +39,6 @@ public class BoardElement {
 
     public GameBoardFieldObject[] getField() {
         return field;
-    }
-
-    public BoardTile getBoardTile() {
-
-        ImageView imageView = ImageBuilder.buildImage(this);
-
-        return new BoardTile(imageView);
-
     }
 
     public Robot getRobot() {
@@ -164,7 +153,7 @@ public class BoardElement {
 
         for (GameBoardFieldObject fieldObject : field) {
 
-            if (fieldObject.getType().equals("RestartPoint")) {
+            if (fieldObject.getType().equals("Antenna")) {
 
                 return true;
 
@@ -398,35 +387,18 @@ public class BoardElement {
 
     }
 
-    public boolean isBelt() {
+    @Override
+    public String toString() {
 
-        for (GameBoardFieldObject fieldObject : field) {
+        StringBuilder returnValue = new StringBuilder();
 
-            if (fieldObject.getType().equals("Belt")) {
+        for (GameBoardFieldObject gameBoardFieldObject : field) {
 
-                    return true;
-
-            }
-
-        }
-
-        return false;
-
-    }
-
-    public boolean isRotatingBelt() {
-
-        for (GameBoardFieldObject fieldObject : field) {
-
-            if (fieldObject.getType().equals("RotatingBelt")) {
-
-                    return true;
-
-            }
+            returnValue.append(gameBoardFieldObject.getType());
 
         }
 
-        return false;
+        return returnValue.toString();
 
     }
 
@@ -448,11 +420,44 @@ public class BoardElement {
 
     public RotatingBeltFieldObject getRotatingConveyorBelt() {
 
+        for (GameBoardFieldObject gameBoardFieldObject : field) {
+
+            if (gameBoardFieldObject.getType().equals("RotatingBelt")) {
+
+                return (RotatingBeltFieldObject) gameBoardFieldObject;
+
+            }
+
+
+        }
+
+        return null;
+
+    }
+
+    public LaserFieldObject getLaser() {
+
         for (GameBoardFieldObject fieldObject : field) {
 
-            if (fieldObject.getType().equals("RotatingBelt")) {
+            if (fieldObject.getType().equals("Laser")) {
 
-                return (RotatingBeltFieldObject) fieldObject;
+                return (LaserFieldObject) fieldObject;
+
+            }
+
+        }
+
+        return null;
+
+    }
+
+    public WallFieldObject getWalls() {
+
+        for (GameBoardFieldObject fieldObject : field) {
+
+            if (fieldObject.getType().equals("Wall")) {
+
+                return (WallFieldObject) fieldObject;
 
             }
 

@@ -32,7 +32,7 @@ public class PushPanelFieldObject extends GameBoardFieldObject{
         Position position = gameState.playerMatHashMap.get(playerID).getRobot().getRobotXY();
         Position newPosition = moveHandler.getTargetPosition(position, orientation);
 
-        moveHandler.move(game, gameState, playerID, position, newPosition, orientation, false);
+        moveHandler.move(game, gameState, playerID, position, newPosition, orientation, false, true);
 
     }
 }
