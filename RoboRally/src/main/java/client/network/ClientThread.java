@@ -16,6 +16,8 @@ import game.Robots.Robot;
 import game.cards.ActiveCard;
 import game.gameboard.GameBoard;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -23,6 +25,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import game.player.Player;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import utilities.MessageHandler;
 import utilities.MyLogger;
 import utilities.messages.*;
@@ -195,6 +199,10 @@ public class ClientThread implements Runnable {
                         handleSelectMap(incomingMessage);
                         break;
 
+                    case "MapSelected":
+                        handleMapSelected(incomingMessage);
+                        break;
+
                     case "GameStarted":
                         handleGameStarted(incomingMessage);
                         break;
@@ -332,13 +340,7 @@ public class ClientThread implements Runnable {
 
                 Platform.runLater(() -> {
                     observablePlayerList.add(player.getName() + ", " + Robot.getRobotName(player.getFigure()));
-                });
-
-                Platform.runLater(() -> {
                     observablePlayerListWithDefault.add(player.getName() + ", " + Robot.getRobotName(player.getFigure()));
-                });
-
-                Platform.runLater(() -> {
                     messageMatchMap.put(player.getName() + ", " + Robot.getRobotName(player.getFigure()), player.getPlayerID());
                 });
 
@@ -354,37 +356,17 @@ public class ClientThread implements Runnable {
                 enemyList.put(receivedMessage.getPlayer().getPlayerID(), enemyMatModel);
 
                 welcomeViewModel.disableRobotButton(receivedMessage.getPlayer().getFigure());
-
-                Platform.runLater(() -> {
-                    takenRobotList.add(receivedMessage.getPlayer().getFigure());
-                });
-
                 playerList.put(receivedMessage.getPlayer().getPlayerID(), receivedMessage.getPlayer());
-
-                Platform.runLater(() -> {
-                    observablePlayerList.add(receivedMessage.getPlayer().getName() + ", " + Robot.getRobotName(receivedMessage.getPlayer().getFigure()));
-                });
-
-                Platform.runLater(() -> {
-                    observablePlayerListWithDefault.add(receivedMessage.getPlayer().getName() + ", " + Robot.getRobotName(receivedMessage.getPlayer().getFigure()));
-                });
-
-                Platform.runLater(() -> {
-                    messageMatchMap.put(receivedMessage.getPlayer().getName() + ", " + Robot.getRobotName(receivedMessage.getPlayer().getFigure()), receivedMessage.getPlayer().getPlayerID());
-                });
-
                 String notificationName = receivedMessage.getPlayer().getName() + " has joined!";
-
-                Platform.runLater(() -> {
-                    chatMessages.add(notificationName);
-
-                });
-
                 String notificationRobot = "He has Robot No. " + receivedMessage.getPlayer().getFigure();
 
                 Platform.runLater(() -> {
+                    takenRobotList.add(receivedMessage.getPlayer().getFigure());
+                    observablePlayerList.add(receivedMessage.getPlayer().getName() + ", " + Robot.getRobotName(receivedMessage.getPlayer().getFigure()));
+                    observablePlayerListWithDefault.add(receivedMessage.getPlayer().getName() + ", " + Robot.getRobotName(receivedMessage.getPlayer().getFigure()));
+                    messageMatchMap.put(receivedMessage.getPlayer().getName() + ", " + Robot.getRobotName(receivedMessage.getPlayer().getFigure()), receivedMessage.getPlayer().getPlayerID());
+                    chatMessages.add(notificationName);
                     chatMessages.add(notificationRobot);
-
                 });
 
             }
@@ -437,14 +419,28 @@ public class ClientThread implements Runnable {
         }
     }
 
+    private void handleMapSelected(Message incomingMessage) throws IOException {
+        if (incomingMessage.getMessageBody() instanceof MapSelected) {
+            MapSelected receivedMessage = (MapSelected) incomingMessage.getMessageBody();
+            String selectedMap = receivedMessage.getMap()[0];
+            clientGameState.setSelectedMap(selectedMap);
+            GameBoard gameBoard = new GameBoard(selectedMap);
+            Platform.runLater(() -> {
+                gameBoardViewModel.setGameBoard(gameBoard.getGameBoard());
+            });
+
+        } else {
+            logger.getLogger().severe("Message body error in handleMapSelected method.");
+            throw new IOException("Something went wrong! Invalid Message Body! (Not instance of MapSelected)");
+
+        }
+    }
+
     private void handleGameStarted(Message incomingMessage) throws IOException {
 
         if (incomingMessage.getMessageBody() instanceof GameStarted) {
             GameStarted receivedMessage = (GameStarted) incomingMessage.getMessageBody();
-            GameBoard gameBoard = new GameBoard(receivedMessage.getMap());
-            Platform.runLater(() -> {
-                gameBoardViewModel.setGameBoard(gameBoard.getGameBoard());
-            });
+            GameBoard gameBoard = new GameBoard(receivedMessage.getMap(), clientGameState.getSelectedMap());
 
             Scene mainScene = new Scene(mainViewModel.getMainViewController().getMainViewPane());
             Platform.runLater(() -> {
@@ -529,7 +525,10 @@ public class ClientThread implements Runnable {
                 }
 
                 if (clientGameState.getActivePhase() == 0) {
+                    String gameMessage = "[GAME] It's your turn to choose a Starting Point!";
+
                     Platform.runLater(() -> {
+                        chatMessages.add(gameMessage);
                         gameBoardViewModel.getGameBoardController().initStartingPoints();
                     });
                 }

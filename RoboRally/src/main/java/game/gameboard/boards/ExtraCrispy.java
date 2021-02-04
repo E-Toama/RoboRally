@@ -42,7 +42,7 @@ public class ExtraCrispy {
                         new BoardElement(38, new GameBoardFieldObject[]{new EmptyFieldObject()}),
                 },
                 {       new BoardElement(42, new GameBoardFieldObject[]{new EmptyFieldObject()}),
-                        new BoardElement(43, new GameBoardFieldObject[]{new RotatingBeltFieldObject(2, false, new String[]{"down", "right" })}),
+                        new BoardElement(43, new GameBoardFieldObject[]{new RotatingBeltFieldObject(2, false, new String[]{"left", "up" })}),
                         new BoardElement(44, new GameBoardFieldObject[]{new BeltFieldObject("right", 2)}),
                         new BoardElement(45, new GameBoardFieldObject[]{new PitFieldObject()}),
                         new BoardElement(46, new GameBoardFieldObject[]{new WallFieldObject(new String[]{"left"}), new LaserFieldObject("right", 1)}),

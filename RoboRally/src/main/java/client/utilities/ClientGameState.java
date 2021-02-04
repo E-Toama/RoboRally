@@ -10,7 +10,16 @@ import java.util.Map;
 public class ClientGameState {
 
     private int ActivePhase = 0;
+    private String selectedMap = "";
     private GameBoard gameBoard;
+
+    public String getSelectedMap() {
+        return selectedMap;
+    }
+
+    public void setSelectedMap(String selectedMap) {
+        this.selectedMap = selectedMap;
+    }
 
     // Initial count of DamageCards according to Rules / FAQ
     private int spamCardPile = 38;

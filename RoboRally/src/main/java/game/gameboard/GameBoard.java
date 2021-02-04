@@ -114,17 +114,27 @@ public class GameBoard {
 
     /**
      * Second Constructor for recreating a GameBoard from JSON
-     * WARNING: Hard-coded size of GameBoard-array (10 * 13)!!!
-     * (because it is impossible to guess the board-format from a one-dimensional list)
+     *      * WARNING: Hard-coded size of GameBoard-array (10 * 13)
+     *      * (because it is impossible to guess the board-format from a one-dimensional list)
+     *      * @param map
      * @param map Array of GameBoardMapObjects from JSON-Message
+     * @param selectedMap only needed for startBoard-Difference
      */
-    public GameBoard(GameBoardMapObject[] map) {
+    public GameBoard(GameBoardMapObject[] map, String selectedMap) {
         gameBoard = new BoardElement[10][13];
-        int position = 0;
+        StartBoard startBoard = new StartBoard();
+        int mapIndexOfMainBoard = 0;
+        int positionIncludingStartBoard = 0;
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 13; j++) {
-                gameBoard[i][j] = new BoardElement(position, map[position].getField());
-                position++;
+                if (j < 3) {
+                    gameBoard[i][j] = startBoard.startBoard[i][j];
+                } else {
+                    gameBoard[i][j] = new BoardElement(positionIncludingStartBoard, map[mapIndexOfMainBoard].getField());
+                    mapIndexOfMainBoard++;
+                }
+                positionIncludingStartBoard++;
+
             }
         }
     }
