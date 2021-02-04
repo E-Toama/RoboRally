@@ -32,8 +32,6 @@ public class PlayerMat {
 
     private int checkpointsReached = 0;
     private int energyCubes = 0;
-    private int deckCount = deck.size();
-    private int discardedCount = discardedCards.size();
 
     private List<Card> currentHand = new ArrayList<>();
 
@@ -105,27 +103,11 @@ public class PlayerMat {
     }
 
     public int getDeckCount() {
-        return deckCount;
-    }
-
-    public void addCardToDeck(Card card) {
-        deck.add(card);
-    }
-
-    public void setDeckCount(int deckCount) {
-        this.deckCount = deckCount;
-    }
-
-    public int getDiscardedCount() {
-        return discardedCount;
+        return deck.size();
     }
 
     public void addCardToRegister(int register, Card card) {
         this.register[register] = card;
-    }
-
-    public void resetRegister() {
-        this.register = new Card[5];
     }
 
     public void addDiscardedCard(Card discardedCard) {
