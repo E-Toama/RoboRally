@@ -12,6 +12,7 @@ import utilities.MessageHandler;
 import utilities.messages.ShuffleCoding;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PlayerMat {
@@ -141,21 +142,19 @@ public class PlayerMat {
 
     public Card drawRandomCard() {
 
-        if (deck.size() > 0) {
-
-            return deck.remove( (int) (Math.random() * (deck.size() - 1)));
-
-        } else {
+        if (deck.size() <= 0) {
 
             shuffleDeck();
-            return deck.remove( (int) (Math.random() * (deck.size() - 1)));
 
         }
 
+        return deck.remove( (int) (Math.random() * (deck.size() - 1)));
 
     }
 
     public void shuffleDeck() {
+
+        System.out.println("Shuffle Deck now");
 
         deck = discardedCards;
         discardedCards = new ArrayList<>();
@@ -185,15 +184,16 @@ public class PlayerMat {
             for (int i = 0; i < remainingCards; i++) {
 
                 returnValue[i] = deck.get(i);
+                currentHand.add(returnValue[i]);
 
             }
 
             shuffleDeck();
 
-            for (int i = remainingCards; i < 9; i++) {
+            for (int j = remainingCards; j < 9; j++) {
 
-                returnValue[i] = drawRandomCard();
-                currentHand.add(returnValue[i]);
+                returnValue[j] = drawRandomCard();
+                currentHand.add(returnValue[j]);
 
             }
 
@@ -269,15 +269,7 @@ public class PlayerMat {
 
     public void discardRegister() {
 
-        for (Card card : register) {
-
-            if (card != null) {
-
-                addDiscardedCard(card);
-
-            }
-
-        }
+        discardedCards.addAll(Arrays.asList(register));
 
         register = new Card[5];
 

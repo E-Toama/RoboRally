@@ -24,6 +24,7 @@ public abstract class Card {
 
         for (int i = 0; i < cards.length; i++) {
 
+            System.out.println(i);
             returnValue[i] = cards[i].getName();
 
         }
