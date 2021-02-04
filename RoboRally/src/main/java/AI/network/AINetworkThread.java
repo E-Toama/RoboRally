@@ -1,5 +1,8 @@
 package AI.network;
 
+import AI.logic.AIGameState;
+import AI.logic.utilities.AICardHandler;
+import game.player.Player;
 import utilities.MessageHandler;
 import utilities.messages.*;
 import utilities.messages.Error;
@@ -9,6 +12,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AINetworkThread implements Runnable {
 
@@ -16,16 +21,20 @@ public class AINetworkThread implements Runnable {
     private final BufferedReader incoming;
     private final PrintWriter outgoing;
     private final MessageHandler messageHandler = new MessageHandler();
-    private int ID;
+    private final AIGameState aiGameState;
+    private int playerID;
 
     private final double protocolVersion = 1.0;
     private final String group = "NeidischeNarwale";
 
-    public AINetworkThread(int port) throws IOException {
+    private List<Player> playerList = new ArrayList<>();
+
+    public AINetworkThread(int port, AIGameState aiGameState) throws IOException {
 
         this.socket = new Socket("localhost", port);
         this.incoming = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.outgoing = new PrintWriter(socket.getOutputStream(), true);
+        this.aiGameState = aiGameState;
 
     }
 
@@ -79,7 +88,7 @@ public class AINetworkThread implements Runnable {
             if(secondIncomingMessage.getMessageType().equals("Welcome") && secondIncomingMessage.getMessageBody() instanceof Welcome) {
 
                 Welcome receivedMessage = (Welcome) secondIncomingMessage.getMessageBody();
-                this.ID = receivedMessage.getPlayerID();
+                this.playerID = receivedMessage.getPlayerID();
 
             } else if (secondIncomingMessage.getMessageType().equals("Error") && secondIncomingMessage.getMessageBody() instanceof utilities.messages.Error) {
 
@@ -103,7 +112,14 @@ public class AINetworkThread implements Runnable {
 
     public void choosePlayerValues() throws IOException {
 
+        String name = Integer.toString(playerID);
+        int figure = 0;
 
+        for (int i = 0; i < 5; i++) {
+
+
+
+        }
 
     }
 
@@ -253,6 +269,24 @@ public class AINetworkThread implements Runnable {
     }
 
     private void handlePlayerAdded(Message incomingMessage) {
+
+        if (incomingMessage.getMessageBody() instanceof PlayerAdded) {
+
+            PlayerAdded receivedMessage = (PlayerAdded) incomingMessage.getMessageBody();
+
+            if (receivedMessage.getPlayer().getPlayerID() == this.playerID) {
+
+
+
+            } else {
+
+                playerList.add(receivedMessage.getPlayer());
+
+            }
+
+        }
+
+
     }
 
     private void handlePlayerStatus(Message incomingMessage) {
@@ -283,6 +317,17 @@ public class AINetworkThread implements Runnable {
     }
 
     private void handleYourCards(Message incomingMessage) {
+
+        if (incomingMessage.getMessageBody() instanceof YourCards) {
+
+            YourCards yourCards = (YourCards) incomingMessage.getMessageBody();
+            String[] cards = yourCards.getCards();
+
+            AICardHandler aiCardHandler = new AICardHandler(this, aiGameState);
+            aiCardHandler.handleCards(cards);
+
+        }
+
     }
 
     private void handleNotYourCards(Message incomingMessage) {
@@ -333,5 +378,8 @@ public class AINetworkThread implements Runnable {
     private void handleGameWon(Message incomingMessage) {
     }
 
+    public void sendJson(String Json) {
+        outgoing.println(Json);
+    }
 
 }
