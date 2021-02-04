@@ -63,7 +63,6 @@ public class ClientThread implements Runnable {
         }
     }
 
-    private final MyLogger logger = new MyLogger(ClientThread.class.getName());
     private final Socket socket;
     private final BufferedReader incoming;
     private final PrintWriter outgoing;
