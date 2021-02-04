@@ -22,7 +22,7 @@ public class MyLogger {
     LOGGER = Logger.getLogger("RoboRallyLogger");
     try {
       File logging = new File(
-          "../RoboRally/src/main/java/utilities/logging.properties");
+          "/home/ada/IdeaProjects/vp-neidische-narwale/RoboRally/src/main/java/utilities/logging.properties");
       InputStream fileInputStream = new FileInputStream(logging);
       LogManager.getLogManager().readConfiguration(fileInputStream);
     } catch (IOException e) {
