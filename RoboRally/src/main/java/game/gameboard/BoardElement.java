@@ -445,6 +445,38 @@ public class BoardElement {
 
     }
 
+    public LaserFieldObject getLaser() {
+
+        for (GameBoardFieldObject fieldObject : field) {
+
+            if (fieldObject.getType().equals("Laser")) {
+
+                return (LaserFieldObject) fieldObject;
+
+            }
+
+        }
+
+        return null;
+
+    }
+
+    public WallFieldObject getWalls() {
+
+        for (GameBoardFieldObject fieldObject : field) {
+
+            if (fieldObject.getType().equals("Wall")) {
+
+                return (WallFieldObject) fieldObject;
+
+            }
+
+        }
+
+        return null;
+
+    }
+
     public String[] getWallOrientations() {
 
         for (GameBoardFieldObject fieldObject : field) {

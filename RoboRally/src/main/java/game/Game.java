@@ -499,9 +499,33 @@ public class Game {
 
     }
 
-    public void activateLaser() {}
+    public void activateLaser() {
 
-    public void activateRobotLaser() {}
+        LaserHandler laserHandler = new LaserHandler();
+
+        for (BoardElement laser : gameState.gameBoard.getLasers().values()) {
+
+            laserHandler.handleBoardLaserFire(gameState, laser);
+
+        }
+
+    }
+
+    public void activateRobotLaser() {
+
+        String playerShooting = messageHandler.buildMessage("PlayerShooting", new PlayerShooting());
+        server.sendMessageToAllUsers(playerShooting);
+
+        LaserHandler laserHandler = new LaserHandler();
+        BoardElement[][] gameBoard = getGameBoard().getGameBoard();
+
+        for (PlayerMat playerMat : gameState.playerMatList) {
+
+            laserHandler.handleRobotFire(gameState, gameBoard[playerMat.getRobot().getRobotXY().getY()][playerMat.getRobot().getRobotXY().getX()]);
+
+        }
+
+    }
 
     public void activateEnergySpace() {
 
