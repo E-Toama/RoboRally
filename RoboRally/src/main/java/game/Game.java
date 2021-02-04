@@ -66,6 +66,7 @@ public class Game {
         gameState.playerMatHashMap.get(player.getPlayerID()).getRobot().setRobotPosition(position);
 
         Position position1 = PositionLookUp.positionToXY.get(position);
+        gameState.playerMatHashMap.get(player.getPlayerID()).getRobot().setStartingPosition(position1);
         gameState.gameBoard.getGameBoard()[position1.getY()][position1.getX()].setRobot(gameState.playerMatHashMap.get(player.getPlayerID()).getRobot());
 
         String startingPointTaken = messageHandler.buildMessage("StartingPointTaken", new StartingPointTaken(player.getPlayerID(), position));
@@ -500,9 +501,33 @@ public class Game {
 
     }
 
-    public void activateLaser() {}
+    public void activateLaser() {
 
-    public void activateRobotLaser() {}
+        LaserHandler laserHandler = new LaserHandler();
+
+        for (BoardElement laser : gameState.gameBoard.getLasers().values()) {
+
+            laserHandler.handleBoardLaserFire(gameState, laser);
+
+        }
+
+    }
+
+    public void activateRobotLaser() {
+
+        String playerShooting = messageHandler.buildMessage("PlayerShooting", new PlayerShooting());
+        server.sendMessageToAllUsers(playerShooting);
+
+        LaserHandler laserHandler = new LaserHandler();
+        BoardElement[][] gameBoard = getGameBoard().getGameBoard();
+
+        for (PlayerMat playerMat : gameState.playerMatList) {
+
+            laserHandler.handleRobotFire(gameState, gameBoard[playerMat.getRobot().getRobotXY().getY()][playerMat.getRobot().getRobotXY().getX()]);
+
+        }
+
+    }
 
     public void activateEnergySpace() {
 

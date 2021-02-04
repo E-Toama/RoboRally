@@ -231,8 +231,6 @@ public class PlayerMat {
                 returnValue[i] = drawRandomCard();
             }
 
-            return returnValue;
-
         } else {
 
             int remainingCards = deck.size();
@@ -251,9 +249,17 @@ public class PlayerMat {
 
             }
 
-            return returnValue;
+        }
+
+        if (returnValue[0].getName().equals("Again")) {
+
+            Card secondValue = returnValue[1];
+            returnValue[1] = returnValue[0];
+            returnValue[0] = secondValue;
 
         }
+
+        return returnValue;
 
     }
 
@@ -311,7 +317,16 @@ public class PlayerMat {
 
         MoveHandler moveHandler = new MoveHandler();
 
-        moveHandler.move(game, gameState, player.getPlayerID(), robot.getRobotXY(), gameState.gameBoard.getRestartPoint().getXY(), gameState.gameBoard.getRestartPoint().getRestartOrientation(), isPlayerAction, true);
+        if (robot.getRobotXY().getX() < 3) {
+
+            moveHandler.move(game, gameState, player.getPlayerID(), robot.getRobotXY(), robot.getStartingPosition(), "up", isPlayerAction, true);
+
+        } else {
+
+            moveHandler.move(game, gameState, player.getPlayerID(), robot.getRobotXY(), gameState.gameBoard.getRestartPoint().getXY(), gameState.gameBoard.getRestartPoint().getRestartOrientation(), isPlayerAction, true);
+
+
+        }
 
     }
 

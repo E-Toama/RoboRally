@@ -420,11 +420,44 @@ public class BoardElement {
 
     public RotatingBeltFieldObject getRotatingConveyorBelt() {
 
-        for (GameBoardFieldObject fieldObject : field) {
+        for (GameBoardFieldObject gameBoardFieldObject : field) {
 
-            if (fieldObject.getType().equals("RotatingBelt")) {
+            if (gameBoardFieldObject.getType.equals("RotatingBelt")) {
 
                 return (RotatingBeltFieldObject) fieldObject;
+
+            }
+
+
+        }
+
+        return null;
+
+    }
+
+    public LaserFieldObject getLaser() {
+
+        for (GameBoardFieldObject fieldObject : field) {
+
+            if (fieldObject.getType().equals("Laser")) {
+
+                return (LaserFieldObject) fieldObject;
+
+            }
+
+        }
+
+        return null;
+
+    }
+
+    public WallFieldObject getWalls() {
+
+        for (GameBoardFieldObject fieldObject : field) {
+
+            if (fieldObject.getType().equals("Wall")) {
+
+                return (WallFieldObject) fieldObject;
 
             }
 

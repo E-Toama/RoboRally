@@ -29,7 +29,6 @@ public class GameBoard {
     private final HashMap<Position, BoardElement> lasers = new HashMap<>();
     private final HashMap<Position, BoardElement> checkPoints = new HashMap<>();
     private final HashMap<Position, BoardElement> energySpaces = new HashMap<>();
-    private final List<HashMap<Position, BoardElement>> laserAffected = new ArrayList<>();
 
     public GameBoard(String board) {
 
@@ -84,10 +83,6 @@ public class GameBoard {
 
     public HashMap<Position, BoardElement> getEnergySpaces() {
         return energySpaces;
-    }
-
-    public List<HashMap<Position, BoardElement>> getLaserAffected() {
-        return laserAffected;
     }
 
     public GameBoardMapObject[] toMap() {
@@ -256,173 +251,8 @@ public class GameBoard {
 
         }
 
-        for (BoardElement laser : lasers.values()) {
-
-            String orientation = laser.getLaserOrientation();
-
-            //laserAffected.add(createLaserAffectedHashMap(laser, orientation));
-
-        }
 
     }
 
-    public HashMap<Position, BoardElement> createLaserAffectedHashMap(BoardElement laser, String orientation) {
-
-        HashMap<Position, BoardElement> returnValue = new HashMap<>();
-        returnValue.put(laser.getXY(), laser);
-
-        int x = laser.getXY().getX();
-        int y = laser.getXY().getY();
-
-        switch (orientation) {
-
-            case "up":
-                while (true) {
-
-                    BoardElement nextBoardElementUp = gameBoard[y - 1][x];
-
-                    if (nextBoardElementUp.isWall()) {
-
-                        List<String> wallOrientations = Arrays.asList(nextBoardElementUp.getWallOrientations());
-
-                        if (wallOrientations.contains("down")) {
-
-                            break;
-
-                        } else if (wallOrientations.contains("up")) {
-
-                            returnValue.put(nextBoardElementUp.getXY(), nextBoardElementUp);
-                            break;
-
-                        } else {
-
-                            returnValue.put(nextBoardElementUp.getXY(), nextBoardElementUp);
-                            y = y - 1;
-
-                        }
-
-                    } else {
-
-                        returnValue.put(nextBoardElementUp.getXY(), nextBoardElementUp);
-                        y = y - 1;
-
-                    }
-
-                }
-                break;
-
-            case "down":
-                while (true) {
-
-                    BoardElement nextBoardElementDown = gameBoard[y + 1][x];
-
-                    if (nextBoardElementDown.isWall()) {
-
-                        List<String> wallOrientations = Arrays.asList(nextBoardElementDown.getWallOrientations());
-
-                        if (wallOrientations.contains("up")) {
-
-                            break;
-
-                        } else if (wallOrientations.contains("down")) {
-
-                            returnValue.put(nextBoardElementDown.getXY(), nextBoardElementDown);
-                            break;
-
-                        } else {
-
-                            returnValue.put(nextBoardElementDown.getXY(), nextBoardElementDown);
-                            y = y + 1;
-
-                        }
-
-                    } else {
-
-                        returnValue.put(nextBoardElementDown.getXY(), nextBoardElementDown);
-                        y = y + 1;
-
-                    }
-
-                }
-                break;
-
-            case "left":
-                while (true) {
-
-                    BoardElement nextBoardElementLeft = gameBoard[y][x - 1];
-
-                    if (nextBoardElementLeft.isWall()) {
-
-                        List<String> wallOrientations = Arrays.asList(nextBoardElementLeft.getWallOrientations());
-
-                        if (wallOrientations.contains("right")) {
-
-                            break;
-
-                        } else if (wallOrientations.contains("left")) {
-
-                            returnValue.put(nextBoardElementLeft.getXY(), nextBoardElementLeft);
-                            break;
-
-                        } else {
-
-                            returnValue.put(nextBoardElementLeft.getXY(), nextBoardElementLeft);
-                            x = x - 1;
-
-                        }
-
-                    } else {
-
-                        returnValue.put(nextBoardElementLeft.getXY(), nextBoardElementLeft);
-                        x = x - 1;
-
-                    }
-
-                }
-                break;
-
-            case "right":
-                while (true) {
-
-                    BoardElement nextBoardElementRight = gameBoard[y][x + 1];
-
-                    if (nextBoardElementRight.isWall()) {
-
-                        List<String> wallOrientations = Arrays.asList(nextBoardElementRight.getWallOrientations());
-
-                        if (wallOrientations.contains("left")) {
-
-                            break;
-
-                        } else if (wallOrientations.contains("right")) {
-
-                            returnValue.put(nextBoardElementRight.getXY(), nextBoardElementRight);
-                            break;
-
-                        } else {
-
-                            returnValue.put(nextBoardElementRight.getXY(), nextBoardElementRight);
-                            x = x + 1;
-
-                        }
-
-                    } else {
-
-                        returnValue.put(nextBoardElementRight.getXY(), nextBoardElementRight);
-                        x = x + 1;
-
-                    }
-
-                }
-                break;
-
-            default:
-                return returnValue;
-
-        }
-
-        return returnValue;
-
-    }
 
 }
