@@ -3,8 +3,12 @@ package game.utilities;
 import game.Game;
 import game.gameboard.BoardElement;
 import game.player.PlayerMat;
+import server.network.UserThread;
 import utilities.MessageHandler;
+import utilities.MyLogger;
 import utilities.messages.Movement;
+
+import java.util.logging.Logger;
 
 public class MoveHandler {
 
@@ -94,7 +98,7 @@ public class MoveHandler {
             currentBoardElement.setRobot(null);
             destinationBoardElement.setRobot(gameState.playerMatHashMap.get(playerID).getRobot());
 
-            gameState.playerMatHashMap.get(playerID).getRobot().setXY(newPosition);
+            gameState.playerMatHashMap.get(playerID).getRobot().setXY(destinationBoardElement.getXY());
 
             String movement = messageHandler.buildMessage("Movement", new Movement(playerID, gameState.playerMatHashMap.get(playerID).getRobot().getRobotPosition()));
             gameState.server.sendMessageToAllUsers(movement);
