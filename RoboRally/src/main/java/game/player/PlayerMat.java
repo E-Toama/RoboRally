@@ -231,8 +231,6 @@ public class PlayerMat {
                 returnValue[i] = drawRandomCard();
             }
 
-            return returnValue;
-
         } else {
 
             int remainingCards = deck.size();
@@ -251,9 +249,17 @@ public class PlayerMat {
 
             }
 
-            return returnValue;
+        }
+
+        if (returnValue[0].getName().equals("Again")) {
+
+            Card secondValue = returnValue[1];
+            returnValue[1] = returnValue[0];
+            returnValue[0] = secondValue;
 
         }
+
+        return returnValue;
 
     }
 
