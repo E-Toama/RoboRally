@@ -131,7 +131,7 @@ public class Game {
 
     }
 
-    public synchronized void startTimer() {
+    private void startTimer() {
 
         String timerStarted = messageHandler.buildMessage("TimerStarted", new TimerStarted());
         server.sendMessageToAllUsers(timerStarted);
@@ -149,7 +149,6 @@ public class Game {
 
         Timer timer = new Timer();
 
-        //TODO: Reset Timer to 30
         timer.schedule(timerEndedTask, 30000);
 
     }
@@ -199,6 +198,7 @@ public class Game {
 
         }
 
+        gameState.nextRegisterList = new ArrayList<>();
         gameState.nextRegisterList.addAll(gameState.playerMatList);
 
         gameState.register = 1;
@@ -223,6 +223,7 @@ public class Game {
             activeCards[i] = new ActiveCard(gameState.registerList.get(i).getPlayer().getPlayerID(), gameState.registerList.get(i).getRegister()[registerNumber - 1].getName());
             
         }
+
 
         String currentCards = messageHandler.buildMessage("CurrentCards", new CurrentCards(activeCards));
         server.sendMessageToAllUsers(currentCards);
@@ -300,7 +301,7 @@ public class Game {
 
         activateCheckPoint();
 
-        if(gameState.register < 5) {
+        if (gameState.register < 5) {
 
             gameState.register = gameState.register + 1;
 

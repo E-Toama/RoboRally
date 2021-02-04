@@ -113,13 +113,29 @@ public class AINetworkThread implements Runnable {
     public void choosePlayerValues() throws IOException {
 
         String name = Integer.toString(playerID);
-        int figure = 0;
+        int figure = getFirstFreeRobotFigure(0);
 
-        for (int i = 0; i < 5; i++) {
+        String playerValues = messageHandler.buildMessage("PlayerValues", new PlayerValues(name, figure));
+        sendJson(playerValues);
 
+        String playerStatus = messageHandler.buildMessage("PlayerStatus", new PlayerStatus(playerID, true));
+        sendJson(playerStatus);
 
+    }
+
+    private int getFirstFreeRobotFigure(int figure) {
+
+        for (Player player : playerList) {
+
+            if (player.getFigure() == figure) {
+
+                return getFirstFreeRobotFigure(figure + 1);
+
+            }
 
         }
+
+        return figure;
 
     }
 
