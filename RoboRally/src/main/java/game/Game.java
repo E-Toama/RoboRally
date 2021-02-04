@@ -66,6 +66,7 @@ public class Game {
         gameState.playerMatHashMap.get(player.getPlayerID()).getRobot().setRobotPosition(position);
 
         Position position1 = PositionLookUp.positionToXY.get(position);
+        gameState.playerMatHashMap.get(player.getPlayerID()).getRobot().setStartingPosition(position1);
         gameState.gameBoard.getGameBoard()[position1.getY()][position1.getX()].setRobot(gameState.playerMatHashMap.get(player.getPlayerID()).getRobot());
 
         String startingPointTaken = messageHandler.buildMessage("StartingPointTaken", new StartingPointTaken(player.getPlayerID(), position));

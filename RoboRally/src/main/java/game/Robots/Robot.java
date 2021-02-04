@@ -8,8 +8,7 @@ public class Robot {
     private final int figure;
     private final int playerID;
     private Position position;
-    private int x;
-    private int y;
+    private Position startingPosition;
     private String orientation = "right";
 
     public Robot(int figure, int playerID) {
@@ -24,9 +23,15 @@ public class Robot {
     public void setRobotPosition(int position) {
 
         this.position = PositionLookUp.positionToXY.get(position);
-        this.x = this.position.getX();
-        this.y = this.position.getY();
 
+    }
+
+    public Position getStartingPosition() {
+        return startingPosition;
+    }
+
+    public void setStartingPosition(Position startingPosition) {
+        this.startingPosition = startingPosition;
     }
 
     public void setXY(Position position) {
@@ -54,30 +59,17 @@ public class Robot {
     }
 
     private static String getString(int figure) {
-        switch (figure) {
 
-            case 0:
-                return "Hammer Bot";
+        return switch (figure) {
+            case 0 -> "Hammer Bot";
+            case 1 -> "Hulk x90";
+            case 2 -> "Smash Bot";
+            case 3 -> "Spin Bot";
+            case 4 -> "Twonky";
+            case 5 -> "Zoom Bot";
+            default -> "";
+        };
 
-            case 1:
-                return "Hulk x90";
-
-            case 2:
-                return "Smash Bot";
-
-            case 3:
-                return "Spin Bot";
-
-            case 4:
-                return "Twonky";
-
-            case 5:
-                return "Zoom Bot";
-
-            default:
-                return "";
-
-        }
     }
 
     public String getRobotName() {
