@@ -279,8 +279,6 @@ public class PlayerMat {
 
         }
 
-        //discardedCards.addAll(Arrays.asList(register));
-
         register = new Card[5];
 
     }
