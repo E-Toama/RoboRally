@@ -154,8 +154,6 @@ public class PlayerMat {
 
     public void shuffleDeck() {
 
-        System.out.println("Shuffle Deck now");
-
         deck = discardedCards;
         discardedCards = new ArrayList<>();
 
@@ -269,7 +267,13 @@ public class PlayerMat {
 
     public void discardRegister() {
 
-        discardedCards.addAll(Arrays.asList(register));
+        for (Card card : register) {
+            if (card != null) {
+                discardedCards.add(card);
+            }
+        }
+
+        //discardedCards.addAll(Arrays.asList(register));
 
         register = new Card[5];
 

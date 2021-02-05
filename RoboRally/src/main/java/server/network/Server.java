@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.logging.Logger;
 
 public class Server {
 
@@ -66,7 +67,7 @@ public class Server {
 
         } catch (IOException e) {
 
-            System.out.println("Error in the server " + e.getMessage());
+            Logger.getLogger("").info("Error in the server " + e.getMessage());
 
         }
 

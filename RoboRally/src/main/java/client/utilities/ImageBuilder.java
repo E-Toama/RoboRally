@@ -72,7 +72,7 @@ public class ImageBuilder {
                 cardImage = new Image("Cards/WormImage.png");
                 return new ImageView(cardImage);
             case "TrojanHorse":
-                cardImage = new Image("Cards/Trojan_HorseImage.png");
+                cardImage = new Image("Cards/TrojanHorseImage.png");
                 return new ImageView(cardImage);
             case "Spam":
                 cardImage = new Image("Cards/SpamImage.png");

@@ -54,7 +54,7 @@ public class ClientGameState {
     public LinkedList<String> getAvailableDamageCards() {
         LinkedList<String> availableCards = new LinkedList<>();
         for (Map.Entry<String, Integer> cardPile : availableDamageCards.entrySet()) {
-            if (cardPile.getValue() > 0) {
+            if (cardPile.getValue() > 0 && !cardPile.getKey().equals("Spam")) {
                 availableCards.add(cardPile.getKey());
             }
         }
