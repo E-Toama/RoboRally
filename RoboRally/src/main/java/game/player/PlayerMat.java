@@ -9,6 +9,7 @@ import game.utilities.MoveHandler;
 import game.utilities.Position;
 import server.network.Server;
 import utilities.MessageHandler;
+import utilities.messages.PlayerTurning;
 import utilities.messages.Reboot;
 import utilities.messages.ShuffleCoding;
 
@@ -296,6 +297,24 @@ public class PlayerMat {
         gameState.nextRegisterList.remove(this);
 
         discardRegister();
+
+        List<String> turnings = new ArrayList<>();
+
+        switch (robot.getOrientation()) {
+            case "left" -> turnings.add("counterClockwise");
+            case "right" -> turnings.add("clockwise");
+            case "down" -> {
+                turnings.add("clockwise");
+                turnings.add("clockwise");
+            }
+        }
+
+        for (String turning : turnings) {
+
+            String playerTurning = messageHandler.buildMessage("PlayerTurning", new PlayerTurning(player.getPlayerID(), turning));
+            server.sendMessageToAllUsers(playerTurning);
+
+        }
 
         robot.setOrientation("up");
 
