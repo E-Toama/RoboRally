@@ -3,9 +3,12 @@ package game.cards.programmingcards;
 import game.Game;
 import game.cards.Card;
 import game.utilities.GameState;
+import utilities.MyLogger;
 import utilities.messages.Energy;
 
 public class PowerUp extends Card {
+  
+    private final MyLogger logger = new MyLogger();
 
     public PowerUp() {
 
@@ -16,6 +19,7 @@ public class PowerUp extends Card {
     @Override
     public void action(Game game, GameState gameState, int playerID) {
 
+        logger.getLogger().info("The programming card Power Up was played.");
         gameState.playerMatHashMap.get(playerID).setEnergyCubes(gameState.playerMatHashMap.get(playerID).getEnergyCubes() + 1);
 
         String energy = messageHandler.buildMessage("Energy", new Energy(playerID, 1));
