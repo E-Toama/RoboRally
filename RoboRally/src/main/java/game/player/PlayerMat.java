@@ -154,8 +154,6 @@ public class PlayerMat {
 
     public void shuffleDeck() {
 
-        System.out.println("Shuffle Deck now");
-
         deck = discardedCards;
         discardedCards = new ArrayList<>();
 

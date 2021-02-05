@@ -51,13 +51,11 @@ public class DrawDamageCardHandler {
         for (int i = 0; i < drawnDamageCardsList.size(); i++) {
 
             damageCardsStrings[i] = drawnDamageCardsList.get(i).getName();
-            System.out.println(drawnDamageCardsList.get(i).getName());
             gameState.playerMatHashMap.get(playerID).addDiscardedCard(drawnDamageCardsList.get(i));
 
         }
 
         String drawDamage = messageHandler.buildMessage("DrawDamage", new DrawDamage(playerID, damageCardsStrings));
-        System.out.println(drawDamage);
         gameState.server.sendMessageToAllUsers(drawDamage);
 
     }
@@ -106,8 +104,6 @@ public class DrawDamageCardHandler {
     }
 
     private List<Card> getDamageCardDeck(String damageCardType) {
-
-        System.out.println("get damage card array: " + damageCardType);
 
         return switch (damageCardType) {
 

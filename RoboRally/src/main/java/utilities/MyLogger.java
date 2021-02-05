@@ -21,7 +21,8 @@ public class MyLogger {
 
     LOGGER = Logger.getLogger("RoboRallyLogger");
     try {
-      File logging = new File("/Users/dh/IdeaProjects/vp-neidische-narwale/RoboRally/src/main/java/utilities/logging.properties");
+      String localDir = System.getProperty("user.dir");
+      File logging = new File(localDir + "/RoboRally/src/main/java/utilities/logging.properties");
       InputStream fileInputStream = new FileInputStream(logging);
       LogManager.getLogManager().readConfiguration(fileInputStream);
     } catch (IOException e) {

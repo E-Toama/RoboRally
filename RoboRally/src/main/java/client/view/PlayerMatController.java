@@ -4,6 +4,8 @@ package client.view;
 import client.utilities.ImageBuilder;
 import client.viewmodel.PlayerMatModel;
 import game.Robots.Robot;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -13,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
 
@@ -57,10 +60,9 @@ public class PlayerMatController {
     private Label energyCubesValue;
 
 
-    Button[] registers;
-    int registerForAnimation = 0;
-
-    int currentRegisterActiveCount = 0;
+    private StackPane[] registers;
+    private int registerForAnimation = 0;
+    private int currentRegisterActiveCount = 0;
 
 
     @FXML
@@ -74,7 +76,7 @@ public class PlayerMatController {
         energyCubesValue.textProperty().bindBidirectional(playerMatModel.getEnergyPoints());
 
         //Controller-Specific actions
-        registers = new Button[5];
+        registers = new StackPane[5];
         registerForAnimation = 0;
         createCardsSlots();
     }
@@ -86,15 +88,13 @@ public class PlayerMatController {
     public void createCardsSlots(){
 
             for (int i = 0; i < 5; i++) {
-                Button button = new Button();
                 ImageView cardBackImage =  ImageBuilder.adjustToPlayerMatView("CardBack");
-
-                button.setGraphic(cardBackImage);
+                Button button = new Button();
                 button.setDisable(true);
+                button.setVisible(false);
                 button.setOnAction(e -> sendPlayIt(button));
-
-                registers[i] = button;
-
+                registers[i] = new StackPane();
+                registers[i].getChildren().addAll(cardBackImage, button);
                 playerMatPane.add(registers[i], i+1, 0);
             }
 
@@ -106,22 +106,21 @@ public class PlayerMatController {
 
     public void setTakenRegister(String card) {
         ImageView cardToDisplay = ImageBuilder.adjustToPlayerMatView(card);
-        Button button = registers[registerForAnimation];
+        Button button = (Button) registers[registerForAnimation].getChildren().get(1);
         button.setGraphic(cardToDisplay);
-        registers[registerForAnimation] = button;
-        //playerMatPane.add(registers[registerForAnimation], registerForAnimation+1, 0);
         registerForAnimation++;
     }
 
     private void sendPlayIt(Button button) {
-            button.setDisable(true);
-            playerMatModel.sendPlayIt();
+        button.setDisable(true);
+        button.setVisible(false);
+        playerMatModel.sendPlayIt();
     }
 
     public void activateRegisterButton() {
-        Button button = registers[currentRegisterActiveCount];
+        Button button = (Button) registers[currentRegisterActiveCount].getChildren().get(1);
         button.setDisable(false);
-        registers[currentRegisterActiveCount] = button;
+        button.setVisible(true);
         currentRegisterActiveCount++;
     }
 
