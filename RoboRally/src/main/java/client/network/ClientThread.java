@@ -303,7 +303,7 @@ public class ClientThread implements Runnable {
                         handleEnergy(incomingMessage);
                         break;
 
-                    case "CheckPointReached":
+                    case "CheckpointReached":
                         handleCheckPointReached(incomingMessage);
                         break;
 
@@ -814,7 +814,7 @@ public class ClientThread implements Runnable {
                 //ToDo: Update OtherPlayers-DamageCount
             }
 
-            logger.getLogger().info("Player wiht id " + drawDamage.getPlayerID() + " has drew the damage cards: " + drawDamage.getCards() + ".");
+            logger.getLogger().info("Player wiht id " + drawDamage.getPlayerID() + " has drew the damage cards: " + drawDamage.getCards().toString() + ".");
         } else {
             logger.getLogger().severe("Message body error in handleDrawDamage method.");
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of DrawDamage)");
