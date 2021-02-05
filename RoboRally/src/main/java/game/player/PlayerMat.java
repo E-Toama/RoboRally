@@ -9,6 +9,7 @@ import game.utilities.MoveHandler;
 import game.utilities.Position;
 import server.network.Server;
 import utilities.MessageHandler;
+import utilities.messages.Reboot;
 import utilities.messages.ShuffleCoding;
 
 import java.util.ArrayList;
@@ -284,6 +285,9 @@ public class PlayerMat {
     public void reboot(Game game, GameState gameState, boolean isPlayerAction) {
 
         wasRebootedThisRound = true;
+
+        String reboot = messageHandler.buildMessage("Reboot", new Reboot(player.getPlayerID()));
+        server.sendMessageToAllUsers(reboot);
 
         String[] wantedDamageCards = {"Spam", "Spam"};
 
