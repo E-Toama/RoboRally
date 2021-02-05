@@ -114,7 +114,17 @@ public class PlayerMat {
     }
 
     public void addDiscardedCard(Card discardedCard) {
-        this.discardedCards.add(discardedCard);
+
+        if (discardedCard != null) {
+
+            this.discardedCards.add(discardedCard);
+
+        } else {
+
+            System.out.println("Tried adding an empty Card to discarded Pile @addDiscardedCard");
+
+        }
+
     }
 
     public void initializeDeck() {
@@ -253,7 +263,21 @@ public class PlayerMat {
 
         }
 
-        discardedCards.addAll(currentHand);
+        for (Card card : currentHand) {
+
+            if (card != null) {
+
+                discardedCards.add(card);
+
+            } else {
+
+                System.out.println("Tried adding an empty Card to discarded Pile @addRemainingCardsToDiscardedPile");
+
+            }
+
+        }
+
+        //discardedCards.addAll(currentHand);
 
         currentHand = new ArrayList<>();
 
@@ -261,7 +285,21 @@ public class PlayerMat {
 
     public void addCompleteHandToDiscardedPile() {
 
-        discardedCards.addAll(currentHand);
+        for (Card card : currentHand) {
+
+            if (card != null) {
+
+                discardedCards.add(card);
+
+            } else {
+
+                System.out.println("Tried adding an empty Card to discarded Pile @addCompleteHandToDiscardedPile");
+
+            }
+
+        }
+
+        //discardedCards.addAll(currentHand);
 
         currentHand = new ArrayList<>();
 
@@ -274,6 +312,10 @@ public class PlayerMat {
             if (card != null) {
 
                 discardedCards.add(card);
+
+            } else {
+
+                System.out.println("Tried adding an empty Card to discarded Pile @discardRegister");
 
             }
 

@@ -14,7 +14,6 @@ import game.gameboard.gameboardfieldobjects.WallFieldObject;
 
 public class DizzyHighway {
 
-
     public final BoardElement[][] _5B = {
             {       new BoardElement(3, new GameBoardFieldObject[]{new EmptyFieldObject()}),
                     new BoardElement(4, new GameBoardFieldObject[]{new BeltFieldObject("down", 2)}),
