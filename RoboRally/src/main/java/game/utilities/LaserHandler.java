@@ -3,12 +3,9 @@ package game.utilities;
 import game.gameboard.BoardElement;
 import game.gameboard.gameboardfieldobjects.LaserFieldObject;
 import game.gameboard.gameboardfieldobjects.WallFieldObject;
-import utilities.MyLogger;
-
 
 public class LaserHandler {
     
-
     public void handleBoardLaserFire(GameState gameState, BoardElement laser) {
 
         LaserFieldObject laserFieldObject = laser.getLaser();
