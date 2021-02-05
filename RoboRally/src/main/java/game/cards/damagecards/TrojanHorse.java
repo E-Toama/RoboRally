@@ -5,15 +5,34 @@ import game.cards.Card;
 import game.utilities.GameState;
 import utilities.MyLogger;
 
+/**
+ * This class extends the Card class and it represents the Trojan Horse damage card.
+ * 
+ * @author 
+ */
 public class TrojanHorse extends Card {
     private final MyLogger logger = new MyLogger();
 
+    /**
+     * Constructor for initialization.
+     */
     public TrojanHorse() {
 
         this.name = "TrojanHorse";
 
     }
 
+    /**
+     * This method lets the player take two spam damage cards and put the first card in his 
+     * programming deck in the same register of the Trojan Horse card.
+     * 
+     * @param game 
+     *          an object of the Game class
+     * @param gameState
+     *          an object of the GameState class
+     * @param playerID
+     *          the player id
+     */
     @Override
     public void action(Game game, GameState gameState, int playerID) {
 
