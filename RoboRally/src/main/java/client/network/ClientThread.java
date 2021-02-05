@@ -814,7 +814,7 @@ public class ClientThread implements Runnable {
                 //ToDo: Update OtherPlayers-DamageCount
             }
 
-            logger.getLogger().info("Player wiht id " + drawDamage.getPlayerID() + " has drew the damage cards: " + drawDamage.getCards().toString() + ".");
+            logger.getLogger().info("Player with id " + drawDamage.getPlayerID() + " has drew damage cards.");
         } else {
             logger.getLogger().severe("Message body error in handleDrawDamage method.");
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of DrawDamage)");
