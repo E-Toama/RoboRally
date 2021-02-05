@@ -1,6 +1,7 @@
 package AI.logic;
 
 import game.gameboard.BoardElement;
+import game.gameboard.GameBoard;
 import game.utilities.Position;
 
 public class AIGameState {
@@ -13,7 +14,11 @@ public class AIGameState {
     private String intermediateOrientation;
     private BoardElement intermediateBoardElement;
 
+    private int activePhase;
+
     private String gameBoardName;
+    private GameBoard gameBoard;
+
     private int targetCheckpoint;
 
     private int[][] orientationUpRating;
@@ -43,9 +48,24 @@ public class AIGameState {
         return intermediateOrientation;
     }
 
-
     public BoardElement getIntermediateBoardElement() {
         return intermediateBoardElement;
+    }
+
+    public String getGameBoardName() {
+        return gameBoardName;
+    }
+
+    public int getTargetCheckpoint() {
+        return targetCheckpoint;
+    }
+
+    public GameBoard getGameBoard() {
+        return gameBoard;
+    }
+
+    public int getActivePhase() {
+        return activePhase;
     }
 
     public int[][] getOrientationUpRating() {
@@ -86,6 +106,22 @@ public class AIGameState {
 
     public void setIntermediateBoardElement(BoardElement intermediateBoardElement) {
         this.intermediateBoardElement = intermediateBoardElement;
+    }
+
+    public void setGameBoardName(String gameBoardName) {
+        this.gameBoardName = gameBoardName;
+    }
+
+    public void setTargetCheckpoint(int targetCheckpoint) {
+        this.targetCheckpoint = targetCheckpoint;
+    }
+
+    public void setGameBoard(GameBoard gameBoard) {
+        this.gameBoard = gameBoard;
+    }
+
+    public void setActivePhase(int activePhase) {
+        this.activePhase = activePhase;
     }
 
     public void setRatingMaps(String gameBoardName, int targetCheckPoint) {
