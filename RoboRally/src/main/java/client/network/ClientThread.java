@@ -542,7 +542,7 @@ public class ClientThread implements Runnable {
             }
 
 
-            logger.getLogger().info("Current player id " + currentPlayer.getPlayerID() + ".");
+            logger.getLogger().info("Current player id is " + currentPlayer.getPlayerID() + ".");
 
         } else {
             logger.getLogger().severe("Message body error in handleCurrentPlayer method.");
@@ -588,7 +588,7 @@ public class ClientThread implements Runnable {
             int chosenPoint = startingPointTaken.getPosition();
             Player currentPlayer = playerList.get(playerID);
 
-            logger.getLogger().info(chosenPoint + " was picked by " + playerID + ".");
+            logger.getLogger().info("position " + chosenPoint + " was picked by " + playerID + ".");
 
             if (playerID == ID) {
                 playerMatModel.setCurrentPosition(chosenPoint);
@@ -642,7 +642,7 @@ public class ClientThread implements Runnable {
             NotYourCards notYourCards = (NotYourCards) incomingMessage.getMessageBody();
             //ToDO: Add deck count to EnemyModels
 
-            logger.getLogger().info("Other players have chosen their cards.");
+            
         } else {
             logger.getLogger().severe("Message body error in handleNotYourCards method.");
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of NotYourCards)");
