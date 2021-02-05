@@ -562,10 +562,10 @@ public class ClientThread implements Runnable {
             clientGameState.setActivePhase(activePhase.getPhase());
 
             if (activePhase.getPhase() == 3) {
+                playerMatModel.getPlayerMatController().resetRegisterCounts();
                 String slowPlayers = programmingViewModel.getSlowPlayers();
                 String[] cardsInRegister = programmingViewModel.getCardsYouGotNow();
                 Platform.runLater(() -> {
-                    playerMatModel.getPlayerMatController().resetRegisterCounts();
                     PopupController popupController = new PopupController();
                     popupController.showEndOfProgrammingPhase(slowPlayers, cardsInRegister);
                     mainViewModel.switchScenes();
