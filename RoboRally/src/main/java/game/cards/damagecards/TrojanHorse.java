@@ -14,7 +14,7 @@ public class TrojanHorse extends Card {
     private final MyLogger logger = new MyLogger();
 
     /**
-     * Constructor for initialization.
+     * Constructor for name initialization.
      */
     public TrojanHorse() {
 
