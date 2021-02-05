@@ -268,12 +268,14 @@ public class PlayerMat {
     public void discardRegister() {
 
         for (Card card : register) {
-            if (card != null) {
-                discardedCards.add(card);
-            }
-        }
 
-        //discardedCards.addAll(Arrays.asList(register));
+            if (card != null) {
+
+                discardedCards.add(card);
+
+            }
+
+        }
 
         register = new Card[5];
 
