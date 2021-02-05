@@ -3,8 +3,11 @@ package game.utilities;
 import game.gameboard.BoardElement;
 import game.gameboard.gameboardfieldobjects.LaserFieldObject;
 import game.gameboard.gameboardfieldobjects.WallFieldObject;
+import utilities.MyLogger;
+
 
 public class LaserHandler {
+    private final MyLogger logger = new MyLogger();
 
     public void handleBoardLaserFire(GameState gameState, BoardElement laser) {
 
@@ -13,7 +16,7 @@ public class LaserHandler {
         String direction = laserFieldObject.getOrientation();
 
         handleLaserFire(gameState, laser, count, direction);
-
+        logger.getLogger().info("Gameboard lasers are shooting");
     }
 
     public void handleRobotFire(GameState gameState, BoardElement robotBoardElement) {
