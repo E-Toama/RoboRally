@@ -11,6 +11,7 @@ public class ImageBuilder {
     private static final int TILE_WIDTH = 50;
     private static final int PROGRAMMING_CARD_WIDTH = 80;
     private static final int PLAYERMAT_CARD_HEIGHT = 180;
+    private static final int ENEMYPLAYERMAT_CARD_HEIGHT = 78;
 
 
     private static ImageView adjustToBoard(Image image) {
@@ -30,6 +31,13 @@ public class ImageBuilder {
     public static ImageView adjustToPlayerMatView(String cardString) {
         ImageView imageView = createCardImageView(cardString);
         imageView.setFitHeight(PLAYERMAT_CARD_HEIGHT);
+        imageView.setPreserveRatio(true);
+        return imageView;
+    }
+
+    public static ImageView adjustToEnemyMatView(String cardString) {
+        ImageView imageView = createCardImageView(cardString);
+        imageView.setFitHeight(ENEMYPLAYERMAT_CARD_HEIGHT);
         imageView.setPreserveRatio(true);
         return imageView;
     }
