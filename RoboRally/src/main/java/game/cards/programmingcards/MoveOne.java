@@ -5,7 +5,7 @@ import game.utilities.GameState;
 import utilities.MyLogger;
 
 /**
- * This class represents the MoveI programming card with its effect.#
+ * This class represents the MoveI programming card with its effect.
  * 
  * @author 
  */
