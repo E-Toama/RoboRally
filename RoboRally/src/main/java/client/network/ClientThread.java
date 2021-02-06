@@ -13,6 +13,7 @@ import client.viewmodel.MainViewModel;
 import client.viewmodel.PlayerMatModel;
 import client.viewmodel.ProgrammingViewModel;
 import client.viewmodel.WelcomeViewModel;
+import game.Game;
 import game.Robots.Robot;
 import game.cards.ActiveCard;
 import game.gameboard.GameBoard;
@@ -422,7 +423,7 @@ public class ClientThread implements Runnable {
             clientGameState.setSelectedMap(selectedMap);
             GameBoard gameBoard = new GameBoard(selectedMap);
             Platform.runLater(() -> {
-                gameBoardViewModel.setGameBoard(gameBoard.getGameBoard());
+                gameBoardViewModel.setGameBoard(gameBoard);
             });
 
         } else {
@@ -436,9 +437,15 @@ public class ClientThread implements Runnable {
 
         if (incomingMessage.getMessageBody() instanceof GameStarted) {
             GameStarted receivedMessage = (GameStarted) incomingMessage.getMessageBody();
-            GameBoard gameBoard = new GameBoard(receivedMessage.getMap(), clientGameState.getSelectedMap());
 
-            //Create all EnemyMats here, because this is the first moment of the game where the final player count is known
+            //Fallback-Construction of GameBoard if MapSelection failed
+            if (clientGameState.getSelectedMap().isEmpty()) {
+                GameBoard gameBoard = new GameBoard(receivedMessage.getMap());
+                gameBoardViewModel.setGameBoard(gameBoard);
+            }
+
+            //Create all EnemyMats here, because this is the first moment in the game
+            // when the final number of players is known
             buildEnemyViews();
 
             Scene mainScene = new Scene(mainViewModel.getMainViewController().getMainViewPane());
@@ -1026,32 +1033,57 @@ public class ClientThread implements Runnable {
         outgoing.println(outgoingMessage);
     }
 
+    /**
+     * Sends the chosen startingposition
+     * @param position integer value (linear count of protocol positions) of chosen starting position
+     */
     public void sendStartingPosition(int position) {
         String outgoingMessage = messageHandler.buildMessage("SetStartingPoint", new SetStartingPoint(position));
         outgoing.println(outgoingMessage);
     }
 
+    /**
+     * Sends each card that is put into a register during programming phase.
+     * @param selectedCard the card put in the register (is "null" if register is undone)
+     * @param register the respective register of the cardchoice
+     */
     public void sendSelectedCard(String selectedCard, int register) {
         String outgoingMessage = messageHandler.buildMessage("SelectCard", new SelectCard(selectedCard, register));
         outgoing.println(outgoingMessage);
     }
 
+    /**
+     * Sends the user's chosen map to the server
+     * @param userChoice String-Array (accoring to protocol) with length 1 containing the chosen map
+     */
     public void sendSelectedMap(String[] userChoice) {
         String outgoingMessage = messageHandler.buildMessage("MapSelected", new MapSelected(userChoice));
         outgoing.println(outgoingMessage);
     }
 
+    /**
+     * Sends the user's choice of available damage cards (Worm, Virus or Trojan) to the server.
+     * @param selectedDamageCards String-Array including the user's card choice(s)
+     */
     public void sendSelectedDamage(String[] selectedDamageCards) {
         String outgoingMessage = messageHandler.buildMessage("SelectDamage", new SelectDamage(selectedDamageCards));
         outgoing.println(outgoingMessage);
     }
 
+    /**
+     * Transmits a "PlayIt"-message every time the user presses a register button during Activationphase
+     * Called from PlayerMatController
+     */
     public void sendPlayIt() {
         String outgoingMessage = messageHandler.buildMessage("PlayIt", new PlayIt());
         outgoing.println(outgoingMessage);
     }
 
-
+    /**
+     * Builds a GridPane for stats and cards of all other players and adds it to the MainView
+     * Is called in handleGameStarted()-method since only then the final number of players is known.
+     * @throws IOException if the FXML-File for the EnemyMat-View is not found
+     */
     public void buildEnemyViews() throws IOException {
         GridPane enemyContainer = new GridPane();
         enemyContainer.setVgap(10);
@@ -1075,6 +1107,13 @@ public class ClientThread implements Runnable {
         mainViewModel.getMainViewController().setEnemyPane(enemyContainer);
     }
 
+    /**
+     * Prepares and initializes the Main View of the Game
+     * Loads the outer container as well as the ViewModels for the subviews
+     * Does not initialize EnemyMats, since final number of players is not known yet
+     *      -> Initialization of EnemyMats is performed in handleGameStarted()-method
+     * @throws IOException if one of the used FXML-Files is not found
+     */
     public void initializeEmptyMainView() throws IOException {
         //Init MainView-Container
         FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/MainView.fxml"));
@@ -1091,11 +1130,6 @@ public class ClientThread implements Runnable {
         Parent playerMatPane = playerMatLoader.load();
         playerMatModel = playerMatLoader.<PlayerMatController>getController().getPlayerMatModel();
         mainViewModel.getMainViewController().setPlayerMatPane(playerMatPane);
-
-/*        //Load One Single OtherPlayers-FXML for Preview
-        FXMLLoader enemyMatLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/EnemyMat.fxml"));
-        GridPane enemyMatPane = enemyMatLoader.load();
-        mainViewModel.getMainViewController().setEnemyPane(enemyMatPane);*/
 
         //Load ProgrammingView (non-FXML-based)
         programmingViewModel = new ProgrammingViewModel();
