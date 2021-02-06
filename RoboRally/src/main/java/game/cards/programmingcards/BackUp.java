@@ -6,16 +6,34 @@ import game.utilities.MoveHandler;
 import game.utilities.Position;
 import utilities.MyLogger;
 
+/**
+ * This class represents the Back up programming card and its effect.
+ * 
+ * @author 
+ */
 public class BackUp extends Move {
 
     private final MyLogger logger = new MyLogger();
   
+    /**
+     * Constructor for card name initialization.
+     */
     public BackUp() {
 
         this.name = "BackUp";
 
     }
 
+    /**
+     * This method makes the robot of the player goes one step back without changing the direction its facing.
+     * 
+     * @param game 
+     *          an object of the Game class
+     * @param gameState
+     *          an object of the GameState class
+     * @param playerID
+     *          the player id
+     */
     @Override
     public void action(Game game, GameState gameState, int playerID) {
 
