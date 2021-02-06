@@ -34,12 +34,12 @@ public class ClientLaserHandler {
 
         BoardElement nextBordElement = getNextBoardElementByMovingDirection(inputGameBoard, boardElement.getXY(), direction);
 
-        if (nextBordElement.isLaser()) {
+        //Base case for recursive function: If no neighboring tile exists or element itself is already a laser
+        if (nextBordElement == null || nextBordElement.isLaser()) {
             return;
         }
 
         if (nextBordElement.isWall() && !nextBordElement.isLaser()) {
-
             Position xy = nextBordElement.getXY();
             BoardElement updatedElement = new BoardElement(nextBordElement.getPosition(), new GameBoardFieldObject[]{new LaserFieldObject(direction, count), nextBordElement.getWalls()});
             updatedGameBoard[xy.getY()][xy.getX()] = updatedElement;
