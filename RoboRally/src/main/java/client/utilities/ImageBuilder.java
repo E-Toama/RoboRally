@@ -251,9 +251,10 @@ public class ImageBuilder {
             // If there are two elements to display (e.g. "Wall and Laser")
         } else if (fields.length == 2) {
             /*
-            *   Wall, Laser
+            *   Wall, Laser = LaserEnd mit Böbbl
             *   Wall, EnergyCube
                 Belt, Laser
+                Laser, Wall = LaserEnd ohne Böbbl
             * */
             if (fields[0] instanceof WallFieldObject) {
                 if (fields[1] instanceof EnergySpaceFieldObject) {
@@ -315,7 +316,29 @@ public class ImageBuilder {
                 }
 
 
-            } else {
+            } else if (fields[0] instanceof LaserFieldObject) {
+                //Default image: Belt upwards
+                Image laserEnd = new Image("Tiles/LaserEnd_1.png");
+                ImageView laserEndTile = adjustToBoard(laserEnd);
+                switch (((WallFieldObject) fields[1]).getOrientations()[0]) {
+                    case "up":
+                        laserEndTile.setRotate(180);
+                        return laserEndTile;
+                    case "right":
+                        laserEndTile.setRotate(270);
+                        return laserEndTile;
+                    case "left":
+                        laserEndTile.setRotate(90);
+                        return laserEndTile;
+                    default:
+                        return laserEndTile;
+                }
+
+
+            }
+
+
+            else {
                 //field[0] has wrong field type
             }
 

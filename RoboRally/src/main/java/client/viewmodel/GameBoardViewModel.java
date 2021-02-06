@@ -1,6 +1,7 @@
 package client.viewmodel;
 
 import client.network.ClientThread;
+import client.utilities.ClientLaserHandler;
 import client.view.GameBoardController;
 import game.gameboard.BoardElement;
 import game.gameboard.GameBoard;
@@ -39,11 +40,14 @@ public class GameBoardViewModel {
 
     public void setGameBoard(GameBoard gameBoard) {
 
+        ClientLaserHandler clientLaserHandler = new ClientLaserHandler();
 
-        //ToDo: Update Board Lasers
+        for (BoardElement laser : gameBoard.getLasers().values()) {
+            clientLaserHandler.handleBoardLasers(gameBoard.getGameBoard(), laser);
+        }
 
+        this.gameBoard = clientLaserHandler.getUpdatedGameBoard();
 
-        this.gameBoard = gameBoard.getGameBoard();
         gameBoardController.initBoard();
     }
 
