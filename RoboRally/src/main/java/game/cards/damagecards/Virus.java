@@ -17,7 +17,7 @@ public class Virus extends Card {
     private final MyLogger logger = new MyLogger();
     
     /**
-     * Constructor for name initialization.
+     * Constructor for card name initialization.
      */
     public Virus() {
 

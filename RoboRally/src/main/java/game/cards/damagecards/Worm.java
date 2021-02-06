@@ -15,7 +15,7 @@ public class Worm extends Card {
     private final MyLogger logger = new MyLogger();
   
     /**
-     * Constructor for name initialization.
+     * Constructor for card name initialization.
      */
     public Worm() {
 
