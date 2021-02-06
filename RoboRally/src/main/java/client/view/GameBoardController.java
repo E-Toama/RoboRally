@@ -6,10 +6,7 @@ import client.viewmodel.GameBoardViewModel;
 import game.gameboard.BoardElement;
 import game.utilities.Position;
 import game.utilities.PositionLookUp;
-import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -107,7 +104,7 @@ public class GameBoardController {
         gameBoardViewModel.getStartingPositions().removeIf(b -> b == position);
     }
 
-    public void move(int robotFigure, int currentPosition, int newPosition) {
+    public void move(int currentPosition, int newPosition) {
         Position current = PositionLookUp.positionToXY.get(currentPosition);
         Position newPos = PositionLookUp.positionToXY.get(newPosition);
         gameTileArray[newPos.getY()][newPos.getX()].getChildren().add(deleteRobot(current.getY(), current.getX()));
@@ -117,9 +114,9 @@ public class GameBoardController {
         Position current = PositionLookUp.positionToXY.get(currentPosition);
         ImageView robotImage = deleteRobot(current.getY(), current.getX());
         if (direction.equals("clockwise")) {
-            robotImage.setRotate(90);
+           robotImage.setRotate(robotImage.getRotate() + 90);
         } else {
-            robotImage.setRotate(270);
+            robotImage.setRotate(robotImage.getRotate() - 90);
         }
         gameTileArray[current.getY()][current.getX()].getChildren().add(robotImage);
 

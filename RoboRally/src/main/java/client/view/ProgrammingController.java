@@ -7,208 +7,189 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 public class ProgrammingController {
 
-    private final Integer startTime = 30;
-    ProgrammingViewModel programmingViewModel;
-    GridPane gridPane;
-    ProgrammingButton[] buttonList = new ProgrammingButton[9];
-    VBox timerBox;
-    Label timerHeading;
-    Label timerText;
-    Label timerLabel;
-    private Integer seconds = startTime;
-    private boolean[] filledRegisters;
-    private boolean isTimerEnded = false;
-    private String slowPlayers;
+  private final Integer startTime = 30;
+  ProgrammingViewModel programmingViewModel;
+  GridPane gridPane;
+  ProgrammingButton[] buttonList = new ProgrammingButton[9];
+  VBox timerBox;
+  Label timerHeading;
+  Label timerText;
+  Label timerLabel;
+  private Integer seconds = startTime;
+  private boolean[] filledRegisters;
+  private boolean isTimerEnded = false;
+  private String slowPlayers;
 
+  public ProgrammingController() {
+    filledRegisters = new boolean[5];
 
-    public ProgrammingController() {
-        filledRegisters = new boolean[5];
-        //Build ProgrammingPane
-        gridPane = new GridPane();
-        gridPane.setMinHeight(190);
-        gridPane.setMaxHeight(190);
-        gridPane.setMinWidth(975);
-        gridPane.setMaxWidth(975);
+    // Build ProgrammingPane
+    gridPane = new GridPane();
 
-        //Build Timer display
-        timerBox = new VBox();
-        timerBox.setVisible(false);
-        timerHeading = new Label("Timer");
-        timerText = new Label("running:");
-        timerLabel = new Label("LEER");
-        timerBox.getChildren().addAll(timerHeading, timerText, timerLabel);
-        gridPane.addColumn(9, timerBox);
+    // Build Timer display
+    timerBox = new VBox();
+    timerBox.setVisible(false);
+    timerHeading = new Label("Timer");
+    timerText = new Label("running:");
+    timerLabel = new Label("");
+    timerBox.getChildren().addAll(timerHeading, timerText, timerLabel);
+
+    //ID's for stylesheet.css
+    gridPane.getStylesheets().add("FXMLFiles/stylesheet.css");
+    gridPane.setId("programmingGridPane");
+    timerBox.setId("timerbox");
+    timerLabel.setId("timerlabel");
+    timerHeading.setId("timerheading");
+
+    gridPane.addColumn(9, timerBox);
+  }
+
+  public void initialize() {
+    timerLabel.textProperty().bindBidirectional(programmingViewModel.getTimerLabelProperty());
+  }
+
+  // Getters and Setters
+
+  public GridPane getGridPane() {
+    return gridPane;
+  }
+
+  public void setProgrammingModel(ProgrammingViewModel programmingViewModel) {
+    this.programmingViewModel = programmingViewModel;
+  }
+
+  public void setSlowPlayers(String slowPlayers) {
+    this.slowPlayers = slowPlayers;
+  }
+
+  public void createCards() {
+    createCardButtons(programmingViewModel.getCards());
+  }
+
+  public void createCardButtons(String[] cards) {
+
+    for (int i = 0; i < 9; i++) {
+      ProgrammingButton cardButton = new ProgrammingButton(i, cards[i]);
+      Label label = new Label();
+      label.setId(String.valueOf(i));
+      label.setPrefWidth(91);
+      label.setAlignment(Pos.CENTER);
+      cardButton.setOnAction(e -> selectCard(cardButton));
+      cardButton.setLabel(label);
+      gridPane.add(cardButton, i, 0);
+      gridPane.add(cardButton.getLabel(), i, 1);
+      cardButton.getLabel().getStyleClass().add("cartButtonLabel");
+
+      // Add Buttons and labels to way too many lists
+      buttonList[i] = cardButton;
     }
+  }
 
-    public void initialize() {
-        timerLabel.textProperty().bindBidirectional(programmingViewModel.getTimerLabelProperty());
+  private void selectCard(ProgrammingButton button) {
+    if (button.isChosen()) {
+      button.setChosen(false);
+      int concerningRegister = button.getRegister();
+      filledRegisters[concerningRegister] = false;
+      programmingViewModel.selectCard("null", (concerningRegister + 1));
+    } else {
+      int firstFreeRegisterIndex = findFirstFreeRegisterIndex();
+
+      // Again-Card cannot be placed in first register
+      if (firstFreeRegisterIndex == 0 && "Again".equals(button.getCardString())) {
+        return;
+      }
+      button.setChosen(true);
+      filledRegisters[firstFreeRegisterIndex] = true;
+      button.setRegister(firstFreeRegisterIndex);
+      programmingViewModel.selectCard(button.getCardString(), firstFreeRegisterIndex + 1);
     }
+  }
 
-    //Getters and Setters
-
-    public GridPane getGridPane() {
-        return gridPane;
+  private int findFirstFreeRegisterIndex() {
+    int firstFreeRegister = 0;
+    for (int i = 0; i < filledRegisters.length; i++) {
+      if (!filledRegisters[i]) {
+        firstFreeRegister = i;
+        break;
+      }
     }
+    return firstFreeRegister;
+  }
 
-    public void setProgrammingModel(ProgrammingViewModel programmingViewModel) {
-        this.programmingViewModel = programmingViewModel;
-    }
-
-    public void setSlowPlayers(String slowPlayers) {
-        this.slowPlayers = slowPlayers;
-    }
-
-    public void createCards() {
-        createCardButtons(programmingViewModel.getCards());
-    }
-
-    public void createCardButtons(String[] cards) {
-
-        for (int i = 0; i < 9; i++) {
-            ProgrammingButton cardButton = new ProgrammingButton(i, cards[i]);
-            Label label = new Label();
-            label.setId(String.valueOf(i));
-            label.setPrefWidth(91);
-            label.setAlignment(Pos.CENTER);
-            cardButton.setOnAction(e -> selectCard(cardButton));
-            cardButton.setLabel(label);
-            gridPane.add(cardButton, i, 0);
-            gridPane.add(cardButton.getLabel(), i, 1);
-
-            //Add Buttons and labels to way too many lists
-            buttonList[i] = cardButton;
-        }
-    }
-
-    private void selectCard(ProgrammingButton button) {
-        if (button.isChosen()) {
-            button.setChosen(false);
-            int concerningRegister = button.getRegister();
-            filledRegisters[concerningRegister] = false;
-            programmingViewModel.selectCard("null", (concerningRegister+1));
+  public void setRegisterActive(int register) {
+    for (ProgrammingButton button : buttonList) {
+      if (register == button.getRegister() + 1) {
+        if (!button.isChosen()) {
+          button.setRegister(-1);
+          button.setStyle("-fx-background-color: #CED0CE");
+          button.getLabel().setText("");
         } else {
-            button.setChosen(true);
-            int firstFreeRegisterIndex = findFirstFreeRegisterIndex();
-            filledRegisters[firstFreeRegisterIndex] = true;
-            button.setRegister(firstFreeRegisterIndex);
-            programmingViewModel.selectCard(button.getCardString(), firstFreeRegisterIndex + 1);
+          button.setStyle("-fx-background-color: PURPLE");
+          button.getLabel().setText("Register: " + (button.getRegister() + 1));
+          allRegistersChosen();
         }
+      }
     }
+  }
 
-    private int findFirstFreeRegisterIndex() {
-        int firstFreeRegister = 0;
-        for (int i = 0; i < filledRegisters.length; i++) {
-            if (!filledRegisters[i]) {
-               firstFreeRegister = i;
-               break;
-            }
-        }
-        return firstFreeRegister;
+  public void discardHand() {
+    for (ProgrammingButton btn : buttonList) {
+
+      if (!btn.isChosen()) btn.setDisable(true);
+      btn.setStyle("-fx-background-color: #3e0202");
+      btn.setGraphic(ImageBuilder.adjustToProgrammingView("default"));
     }
+  }
 
-    public void setRegisterActive(int register) {
-        for (ProgrammingButton button : buttonList) {
-            if (register == button.getRegister() + 1) {
-                if (!button.isChosen()) {
-                    button.setRegister(-1);
-                    button.setStyle("-fx-background-color: #CED0CE");
-                    button.getLabel().setText("");
-                } else {
-                    button.setStyle("-fx-background-color: PURPLE");
-                    button.getLabel().setText("Register: " + (button.getRegister()+1));
-                    allRegistersChosen();
-                }
-
-            }
-        }
+  private void allRegistersChosen() {
+    boolean allChosen = true;
+    for (boolean b : filledRegisters) {
+      allChosen = allChosen && b;
     }
-
-    public void discardHand() {
-        for (ProgrammingButton btn : buttonList) {
-
-            if (!btn.isChosen())
-            btn.setDisable(true);
-            btn.setStyle("-fx-background-color: #3e0202");
-            btn.setGraphic(ImageBuilder.adjustToProgrammingView("default"));
-        }
+    if (allChosen) {
+      for (ProgrammingButton button : buttonList) {
+        button.setDisable(true);
+      }
     }
+  }
 
-    public void cardsYouGotNow() {
-        Alert cardAlert = new Alert(Alert.AlertType.INFORMATION);
-        cardAlert.setHeaderText("Cards you got now:");
-        StringBuilder cardsYouGotNow = new StringBuilder();
-        for (String s : programmingViewModel.getCardsYouGotNow()) {
-            cardsYouGotNow.append(s).append("\n");
-        }
-        cardAlert.setContentText(cardsYouGotNow.toString());
-        cardAlert.show();
+  public void setTimerEnded() {
+    isTimerEnded = true;
+  }
+
+  /** Starts timer of 30 seconds in programmingView */
+  public void initiateTimer() {
+    timerBox.setVisible(true);
+
+    Timeline time = new Timeline();
+    time.setCycleCount(Timeline.INDEFINITE);
+    if (time != null) {
+      time.stop();
     }
-
-    private void allRegistersChosen() {
-        boolean allChosen = true;
-        for (boolean b : filledRegisters)
-        {
-            allChosen = allChosen && b;
-        }
-        if (allChosen) {
-            for (ProgrammingButton button : buttonList) {
-                button.setDisable(true);
-            }
-        }
-    }
-
-    public void setTimerEnded() {
-        isTimerEnded = true;
-        showTimerEndedAlert();
-    }
-
-    private void showTimerEndedAlert() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText("Timer ran out!");
-        if (!slowPlayers.isEmpty()) {
-            alert.setContentText("Way too slow:\n" + slowPlayers);
-        }
-        alert.show();
-    }
-
-    /**
-     * Starts timer of 30 seconds in programmingView
-     */
-    public void initiateTimer() {
-        timerBox.setVisible(true);
-
-        Timeline time = new Timeline();
-        time.setCycleCount(Timeline.INDEFINITE);
-        if (time != null) {
-            time.stop();
-        }
-        KeyFrame frame = new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
+    KeyFrame frame =
+        new KeyFrame(
+            Duration.seconds(1),
+            new EventHandler<ActionEvent>() {
+              @Override
+              public void handle(ActionEvent event) {
 
                 seconds--;
                 timerLabel.setText(seconds.toString());
-                timerLabel.setTextFill(Color.RED);
 
                 if (seconds <= 0) {
-                    time.stop();
-                    timerLabel.setText("Over!");
+                  time.stop();
+                  timerLabel.setText("Over!");
                 }
-            }
-        });
-        time.getKeyFrames().add(frame);
-        time.playFromStart();
-
-    }
-
-
+              }
+            });
+    time.getKeyFrames().add(frame);
+    time.playFromStart();
+  }
 }

@@ -21,6 +21,7 @@ public class MainViewController {
     private GridPane gameBoardPane;
     private boolean isPlayerMatActive = true;
 
+
     public MainViewModel getMainViewModel() {
         return mainViewModel;
     }
@@ -28,23 +29,6 @@ public class MainViewController {
     public void setMainViewModel(MainViewModel mainViewModel) {
         this.mainViewModel = mainViewModel;
 
-    }
-
-    public void initializeMainView(int playerCount) throws IOException {
-        /*FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/MainView.fxml"));
-        mainViewPane = mainLoader.load();*/
-
-       /* FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/GameViewChat.fxml"));
-        Parent chatPane = chatLoader.load();
-        mainViewPane.add(chatPane, 0, 0);
-*/
-       /* otherPlayers = new VBox();
-        for (int i = 0; i < playerCount; i++) {
-            FXMLLoader enemyMatLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/EnemyMat.fxml"));
-            GridPane enemyMatPane = enemyMatLoader.load();
-            otherPlayers.getChildren().add(enemyMatPane);
-        }
-        mainViewPane.add(otherPlayers, 2, 0);*/
     }
 
     public void setChatPane(Parent chatPane) {
@@ -84,6 +68,6 @@ public class MainViewController {
     }
 
     public void setEnemyPane(GridPane enemyMatPane) {
-        mainViewPane.add(enemyMatPane, 2, 0);
+        mainViewPane.add(enemyMatPane, 2, 0, 2, 1);
     }
 }

@@ -11,6 +11,7 @@ public class ImageBuilder {
     private static final int TILE_WIDTH = 50;
     private static final int PROGRAMMING_CARD_WIDTH = 80;
     private static final int PLAYERMAT_CARD_HEIGHT = 180;
+    private static final int ENEMYPLAYERMAT_CARD_HEIGHT = 78;
 
 
     private static ImageView adjustToBoard(Image image) {
@@ -30,6 +31,13 @@ public class ImageBuilder {
     public static ImageView adjustToPlayerMatView(String cardString) {
         ImageView imageView = createCardImageView(cardString);
         imageView.setFitHeight(PLAYERMAT_CARD_HEIGHT);
+        imageView.setPreserveRatio(true);
+        return imageView;
+    }
+
+    public static ImageView adjustToEnemyMatView(String cardString) {
+        ImageView imageView = createCardImageView(cardString);
+        imageView.setFitHeight(ENEMYPLAYERMAT_CARD_HEIGHT);
         imageView.setPreserveRatio(true);
         return imageView;
     }
@@ -72,7 +80,7 @@ public class ImageBuilder {
                 cardImage = new Image("Cards/WormImage.png");
                 return new ImageView(cardImage);
             case "TrojanHorse":
-                cardImage = new Image("Cards/Trojan_HorseImage.png");
+                cardImage = new Image("Cards/TrojanHorseImage.png");
                 return new ImageView(cardImage);
             case "Spam":
                 cardImage = new Image("Cards/SpamImage.png");
@@ -103,7 +111,7 @@ public class ImageBuilder {
                     LaserFieldObject laser = (LaserFieldObject) gameBoardFieldObject;
                     int count = laser.getCount();
                     String orientation = laser.getOrientation();
-                    Image laserImage = new Image("Tiles/Laser_"+count+".png");
+                    Image laserImage = new Image("Tiles/Laser_" + count + ".png");
                     ImageView laserTile = adjustToBoard(laserImage);
                     if (orientation.equals("left") || orientation.equals("right")) {
                         laserTile.setRotate(90);
@@ -113,9 +121,9 @@ public class ImageBuilder {
                 case "Belt":
                     BeltFieldObject belt = (BeltFieldObject) gameBoardFieldObject;
                     String beltOrientation = belt.getOrientation();
-                    Image belts = new Image("Tiles/Conveyor_"+ belt.getSpeed()+".png");
+                    Image belts = new Image("Tiles/Conveyor_" + belt.getSpeed() + ".png");
                     ImageView beltImage = adjustToBoard(belts);
-                    switch  (belt.getOrientation()) {
+                    switch (belt.getOrientation()) {
                         case "down":
                             beltImage.setRotate(90);
                             return beltImage;
@@ -131,20 +139,42 @@ public class ImageBuilder {
 
                 case "RotatingBelt":
                     RotatingBeltFieldObject rotatingBelt = (RotatingBeltFieldObject) gameBoardFieldObject;
-                    Image RotatingBeltTile = new Image("Tiles/ConveyorRotating_"+rotatingBelt.getSpeed()+ "_" +rotatingBelt.getOrientations()[1]+"_"+rotatingBelt.isCrossing()+".png");
-                    ImageView RotatingBeltImage = adjustToBoard(RotatingBeltTile);
-                    switch (rotatingBelt.getOrientations()[0]){
+                    ImageView leftTurn = adjustToBoard(new Image("Tiles/ConveyorRotating_" + rotatingBelt.getSpeed() + "_left_" + rotatingBelt.isCrossing() + ".png"));
+                    ImageView rightTurn = adjustToBoard(new Image("Tiles/ConveyorRotating_" + rotatingBelt.getSpeed() + "_right_" + rotatingBelt.isCrossing() + ".png"));
+
+                    switch (rotatingBelt.getOrientations()[0]) {
                         case "right":
-                            RotatingBeltImage.setRotate(90);
-                            return RotatingBeltImage;
+                            if ("down".equals(rotatingBelt.getOrientations()[1])) {
+                                rightTurn.setRotate(180);
+                                return rightTurn;
+                            } else {
+                                return leftTurn;
+                            }
                         case "down":
-                            RotatingBeltImage.setRotate(180);
-                            return RotatingBeltImage;
+                            if ("left".equals(rotatingBelt.getOrientations()[1])) {
+                                rightTurn.setRotate(270);
+                                return rightTurn;
+                            } else {
+                                leftTurn.setRotate(90);
+                                return leftTurn;
+                            }
                         case "left":
-                            RotatingBeltImage.setRotate(270);
-                            return RotatingBeltImage;
+                            if ("down".equals(rotatingBelt.getOrientations()[1])) {
+                                leftTurn.setRotate(180);
+                                return leftTurn;
+                            } else {
+                                return rightTurn;
+                            }
+                        case "up":
+                            if ("left".equals(rotatingBelt.getOrientations()[1])) {
+                                leftTurn.setRotate(270);
+                                return leftTurn;
+                            } else {
+                                rightTurn.setRotate(90);
+                                return rightTurn;
+                            }
                         default:
-                            return RotatingBeltImage;
+                            return adjustToBoard(new Image("Tiles/Laser_3.png"));
                     }
                 case "EnergySpace": //TODO: create EnergySpaceImage with EnergyTokens and adjust name
                     EnergySpaceFieldObject energySpace = (EnergySpaceFieldObject) gameBoardFieldObject;
@@ -154,12 +184,12 @@ public class ImageBuilder {
 
                 case "StartPoint":
                     Image StartingPointTile = new Image("Tiles/StartingPoint.png");
-                    return  adjustToBoard(StartingPointTile);
+                    return adjustToBoard(StartingPointTile);
 
                 case "Wall":
                     Image WallTile = new Image("Tiles/Wall.png");
                     ImageView WallImage = adjustToBoard(WallTile);
-                    switch (((WallFieldObject) fields[0]).getOrientations()[0]){
+                    switch (((WallFieldObject) fields[0]).getOrientations()[0]) {
                         case "right":
                             WallImage.setRotate(90);
                             return WallImage;
@@ -170,7 +200,7 @@ public class ImageBuilder {
                             WallImage.setRotate(270);
                             return WallImage;
                         default:
-                            return  WallImage;
+                            return WallImage;
                     }
 
                 case "ControlPoint":
@@ -201,7 +231,7 @@ public class ImageBuilder {
 
                 case "Pit":
                     Image pitImage = new Image("Tiles/Pit.png");
-                    return  adjustToBoard(pitImage);
+                    return adjustToBoard(pitImage);
 
                 case "Gear":
                     GearFieldObject gearFieldObject = (GearFieldObject) gameBoardFieldObject;
@@ -210,13 +240,10 @@ public class ImageBuilder {
                     if (gearOrientation.equals("clockwise")) {
                         Image gearImageClockwise = new Image("Tiles/Gear_clockwise.png");
                         return adjustToBoard(gearImageClockwise);
-                    }
-                    else if (gearOrientation.equals("counterclockwise")) {
+                    } else if (gearOrientation.equals("counterclockwise")) {
                         Image gearImageCounterClockwise = new Image("Tiles/Gear_counterclockwise.png");
                         return adjustToBoard(gearImageCounterClockwise);
-                    }
-
-                    else { //evtl Fehlerbehebung?
+                    } else { //evtl Fehlerbehebung?
 
                     }
             }
@@ -224,11 +251,12 @@ public class ImageBuilder {
             // If there are two elements to display (e.g. "Wall and Laser")
         } else if (fields.length == 2) {
             /*
-            *   Wall, Laser
+            *   Wall, Laser = LaserEnd mit Böbbl
             *   Wall, EnergyCube
                 Belt, Laser
+                Laser, Wall = LaserEnd ohne Böbbl
             * */
-            if(fields[0] instanceof WallFieldObject) {
+            if (fields[0] instanceof WallFieldObject) {
                 if (fields[1] instanceof EnergySpaceFieldObject) {
                     //Default image has wall at bottom
                     Image wallWithEnergy = new Image("Tiles/Energy_withWall1.png");
@@ -288,10 +316,31 @@ public class ImageBuilder {
                 }
 
 
-            } else {
-                //field[0] has wrong field type
+            } else if (fields[0] instanceof LaserFieldObject) {
+                //Default image: Belt upwards
+                Image laserEnd = new Image("Tiles/LaserEnd_1.png");
+                ImageView laserEndTile = adjustToBoard(laserEnd);
+                switch (((WallFieldObject) fields[1]).getOrientations()[0]) {
+                    case "up":
+                        laserEndTile.setRotate(180);
+                        return laserEndTile;
+                    case "right":
+                        laserEndTile.setRotate(270);
+                        return laserEndTile;
+                    case "left":
+                        laserEndTile.setRotate(90);
+                        return laserEndTile;
+                    default:
+                        return laserEndTile;
+                }
+
+
             }
 
+
+            else {
+                //field[0] has wrong field type
+            }
 
 
             // If there are three elements to display (e.g. Wall+Laser+Checkpoint)
@@ -301,9 +350,7 @@ public class ImageBuilder {
                 WallFieldObject wallFieldObject = (WallFieldObject) fields[0];
                 LaserFieldObject laserFieldObject = (LaserFieldObject) fields[1];
                 ControlPointFieldObject controlPointFieldObject = (ControlPointFieldObject) fields[2];
-                //TODO: Create Laser-Wall-Checkpoint-images (GIMP / Photoshop) customized to ExtraCrispy
-                //TODO: Laser-Wall-image-file should be named like laserwallcheck_1, laserwallcheck_2, laserwallcheck_3, laserwallcheck_4
-                Image wallWithLaserAndCheckPoint = new Image("Tiles/Checkpoint_"+controlPointFieldObject.getCount()+".png");
+                Image wallWithLaserAndCheckPoint = new Image("Tiles/WallLaser_CheckPoint" + controlPointFieldObject.getCount() + ".png");
                 return adjustToBoard(wallWithLaserAndCheckPoint);
 
 
@@ -312,15 +359,12 @@ public class ImageBuilder {
             }
 
 
-
-
         } else {
             //Handle wrong length
         }
 
 
-        Image laser3 = new Image("Tiles/Laser_3.png");
-        return adjustToBoard(laser3);
+        return adjustToBoard(new Image("Tiles/Laser_3.png"));
 
     }
 }

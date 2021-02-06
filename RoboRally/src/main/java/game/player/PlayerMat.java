@@ -9,9 +9,12 @@ import game.utilities.MoveHandler;
 import game.utilities.Position;
 import server.network.Server;
 import utilities.MessageHandler;
+import utilities.messages.PlayerTurning;
+import utilities.messages.Reboot;
 import utilities.messages.ShuffleCoding;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PlayerMat {
@@ -32,8 +35,6 @@ public class PlayerMat {
 
     private int checkpointsReached = 0;
     private int energyCubes = 0;
-    private int deckCount = deck.size();
-    private int discardedCount = discardedCards.size();
 
     private List<Card> currentHand = new ArrayList<>();
 
@@ -105,31 +106,25 @@ public class PlayerMat {
     }
 
     public int getDeckCount() {
-        return deckCount;
-    }
-
-    public void addCardToDeck(Card card) {
-        deck.add(card);
-    }
-
-    public void setDeckCount(int deckCount) {
-        this.deckCount = deckCount;
-    }
-
-    public int getDiscardedCount() {
-        return discardedCount;
+        return deck.size();
     }
 
     public void addCardToRegister(int register, Card card) {
         this.register[register] = card;
     }
 
-    public void resetRegister() {
-        this.register = new Card[5];
-    }
-
     public void addDiscardedCard(Card discardedCard) {
-        this.discardedCards.add(discardedCard);
+
+        if (discardedCard != null) {
+
+            this.discardedCards.add(discardedCard);
+
+        } else {
+
+            System.out.println("Tried adding an empty Card to discarded Pile @addDiscardedCard");
+
+        }
+
     }
 
     public void initializeDeck() {
@@ -159,17 +154,13 @@ public class PlayerMat {
 
     public Card drawRandomCard() {
 
-        if (deck.size() > 0) {
-
-            return deck.remove( (int) (Math.random() * (deck.size() - 1)));
-
-        } else {
+        if (deck.size() <= 0) {
 
             shuffleDeck();
-            return deck.remove( (int) (Math.random() * (deck.size() - 1)));
 
         }
 
+        return deck.remove( (int) (Math.random() * (deck.size() - 1)));
 
     }
 
@@ -203,15 +194,16 @@ public class PlayerMat {
             for (int i = 0; i < remainingCards; i++) {
 
                 returnValue[i] = deck.get(i);
+                currentHand.add(returnValue[i]);
 
             }
 
             shuffleDeck();
 
-            for (int i = remainingCards; i < 9; i++) {
+            for (int j = remainingCards; j < 9; j++) {
 
-                returnValue[i] = drawRandomCard();
-                currentHand.add(returnValue[i]);
+                returnValue[j] = drawRandomCard();
+                currentHand.add(returnValue[j]);
 
             }
 
@@ -231,8 +223,6 @@ public class PlayerMat {
                 returnValue[i] = drawRandomCard();
             }
 
-            return returnValue;
-
         } else {
 
             int remainingCards = deck.size();
@@ -251,9 +241,17 @@ public class PlayerMat {
 
             }
 
-            return returnValue;
+        }
+
+        if (returnValue[0].getName().equals("Again")) {
+
+            Card secondValue = returnValue[1];
+            returnValue[1] = returnValue[0];
+            returnValue[0] = secondValue;
 
         }
+
+        return returnValue;
 
     }
 
@@ -265,7 +263,21 @@ public class PlayerMat {
 
         }
 
-        discardedCards.addAll(currentHand);
+        for (Card card : currentHand) {
+
+            if (card != null) {
+
+                discardedCards.add(card);
+
+            } else {
+
+                System.out.println("Tried adding an empty Card to discarded Pile @addRemainingCardsToDiscardedPile");
+
+            }
+
+        }
+
+        //discardedCards.addAll(currentHand);
 
         currentHand = new ArrayList<>();
 
@@ -273,7 +285,21 @@ public class PlayerMat {
 
     public void addCompleteHandToDiscardedPile() {
 
-        discardedCards.addAll(currentHand);
+        for (Card card : currentHand) {
+
+            if (card != null) {
+
+                discardedCards.add(card);
+
+            } else {
+
+                System.out.println("Tried adding an empty Card to discarded Pile @addCompleteHandToDiscardedPile");
+
+            }
+
+        }
+
+        //discardedCards.addAll(currentHand);
 
         currentHand = new ArrayList<>();
 
@@ -285,7 +311,11 @@ public class PlayerMat {
 
             if (card != null) {
 
-                addDiscardedCard(card);
+                discardedCards.add(card);
+
+            } else {
+
+                System.out.println("Tried adding an empty Card to discarded Pile @discardRegister");
 
             }
 
@@ -299,6 +329,9 @@ public class PlayerMat {
 
         wasRebootedThisRound = true;
 
+        String reboot = messageHandler.buildMessage("Reboot", new Reboot(player.getPlayerID()));
+        server.sendMessageToAllUsers(reboot);
+
         String[] wantedDamageCards = {"Spam", "Spam"};
 
         gameState.drawDamageCardHandler.drawDamageCards(player.getPlayerID(), wantedDamageCards);
@@ -307,11 +340,38 @@ public class PlayerMat {
 
         discardRegister();
 
+        List<String> turnings = new ArrayList<>();
+
+        switch (robot.getOrientation()) {
+            case "left" -> turnings.add("counterClockwise");
+            case "right" -> turnings.add("clockwise");
+            case "down" -> {
+                turnings.add("clockwise");
+                turnings.add("clockwise");
+            }
+        }
+
+        for (String turning : turnings) {
+
+            String playerTurning = messageHandler.buildMessage("PlayerTurning", new PlayerTurning(player.getPlayerID(), turning));
+            server.sendMessageToAllUsers(playerTurning);
+
+        }
+
         robot.setOrientation("up");
 
         MoveHandler moveHandler = new MoveHandler();
 
-        moveHandler.move(game, gameState, player.getPlayerID(), robot.getRobotXY(), gameState.gameBoard.getRestartPoint().getXY(), gameState.gameBoard.getRestartPoint().getRestartOrientation(), isPlayerAction, true);
+        if (robot.getRobotXY().getX() < 3) {
+
+            moveHandler.move(game, gameState, player.getPlayerID(), robot.getRobotXY(), robot.getStartingPosition(), "up", isPlayerAction, true);
+
+        } else {
+
+            moveHandler.move(game, gameState, player.getPlayerID(), robot.getRobotXY(), gameState.gameBoard.getRestartPoint().getXY(), gameState.gameBoard.getRestartPoint().getRestartOrientation(), isPlayerAction, true);
+
+
+        }
 
     }
 

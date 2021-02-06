@@ -1,5 +1,10 @@
 package AI.network;
 
+import AI.logic.AIGameState;
+import AI.logic.utilities.AICardHandler;
+import game.gameboard.BoardElement;
+import game.gameboard.GameBoard;
+import game.player.Player;
 import utilities.MessageHandler;
 import utilities.messages.*;
 import utilities.messages.Error;
@@ -9,6 +14,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class AINetworkThread implements Runnable {
 
@@ -16,16 +24,22 @@ public class AINetworkThread implements Runnable {
     private final BufferedReader incoming;
     private final PrintWriter outgoing;
     private final MessageHandler messageHandler = new MessageHandler();
-    private int ID;
+    private final AIGameState aiGameState;
+    private int playerID;
 
     private final double protocolVersion = 1.0;
     private final String group = "NeidischeNarwale";
 
-    public AINetworkThread(int port) throws IOException {
+    private HashMap<Integer, Player> playerList = new HashMap();
+    private AICardHandler aiCardHandler;
+
+    public AINetworkThread(int port, AIGameState aiGameState) throws IOException {
 
         this.socket = new Socket("localhost", port);
         this.incoming = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.outgoing = new PrintWriter(socket.getOutputStream(), true);
+        this.aiGameState = aiGameState;
+        this.aiCardHandler = new AICardHandler(this, aiGameState);
 
     }
 
@@ -79,7 +93,7 @@ public class AINetworkThread implements Runnable {
             if(secondIncomingMessage.getMessageType().equals("Welcome") && secondIncomingMessage.getMessageBody() instanceof Welcome) {
 
                 Welcome receivedMessage = (Welcome) secondIncomingMessage.getMessageBody();
-                this.ID = receivedMessage.getPlayerID();
+                this.playerID = receivedMessage.getPlayerID();
 
             } else if (secondIncomingMessage.getMessageType().equals("Error") && secondIncomingMessage.getMessageBody() instanceof utilities.messages.Error) {
 
@@ -103,7 +117,30 @@ public class AINetworkThread implements Runnable {
 
     public void choosePlayerValues() throws IOException {
 
+        String name = Integer.toString(playerID);
+        int figure = getFirstFreeRobotFigure(0);
 
+        String playerValues = messageHandler.buildMessage("PlayerValues", new PlayerValues(name, figure));
+        sendJson(playerValues);
+
+        String playerStatus = messageHandler.buildMessage("PlayerStatus", new PlayerStatus(playerID, true));
+        sendJson(playerStatus);
+
+    }
+
+    private int getFirstFreeRobotFigure(int figure) {
+
+        for (Player player : playerList.values()) {
+
+            if (player.getFigure() == figure) {
+
+                return getFirstFreeRobotFigure(figure + 1);
+
+            }
+
+        }
+
+        return figure;
 
     }
 
@@ -132,6 +169,13 @@ public class AINetworkThread implements Runnable {
                     case "PlayerStatus":
                         handlePlayerStatus(incomingMessage);
                         break;
+
+                    case "SelectMap":
+                        handleSelectMap(incomingMessage);
+                        break;
+
+                    case "MapSelected":
+                        handleMapSelected(incomingMessage);
 
                     case "GameStarted":
                         handleGameStarted(incomingMessage);
@@ -253,12 +297,54 @@ public class AINetworkThread implements Runnable {
     }
 
     private void handlePlayerAdded(Message incomingMessage) {
+
+        if (incomingMessage.getMessageBody() instanceof PlayerAdded) {
+
+            PlayerAdded receivedMessage = (PlayerAdded) incomingMessage.getMessageBody();
+
+            playerList.put(receivedMessage.getPlayer().getPlayerID(), receivedMessage.getPlayer());
+
+        }
+
+
     }
 
     private void handlePlayerStatus(Message incomingMessage) {
     }
 
     private void handleGameStarted(Message incomingMessage) {
+    }
+
+    private void handleSelectMap(Message incomingMessage) {
+
+        if (incomingMessage.getMessageBody() instanceof SelectMap) {
+
+            SelectMap receivedMessage = (SelectMap) incomingMessage.getMessageBody();
+            String[] availableMaps = receivedMessage.getAvailableMaps();
+
+            String[] selectedMap = {availableMaps[0]};
+
+            String mapSelected = messageHandler.buildMessage("MapSelected", new MapSelected(selectedMap));
+            sendJson(mapSelected);
+
+        }
+
+    }
+
+    private void handleMapSelected(Message incomingMessage) {
+
+        if (incomingMessage.getMessageBody() instanceof MapSelected) {
+
+            MapSelected receivedMessage = (MapSelected) incomingMessage.getMessageBody();
+
+            aiGameState.setGameBoardName(receivedMessage.getMap()[0]);
+
+            aiGameState.setTargetCheckpoint(1);
+
+            aiGameState.setGameBoard(new GameBoard(receivedMessage.getMap()[0]));
+
+        }
+
     }
 
     private void handleReceivedChat(Message incomingMessage) {
@@ -277,12 +363,32 @@ public class AINetworkThread implements Runnable {
     }
 
     private void handleActivePhase(Message incomingMessage) {
+
+        if (incomingMessage.getMessageBody() instanceof ActivePhase) {
+
+            ActivePhase receivedMessage = (ActivePhase) incomingMessage.getMessageBody();
+
+            aiGameState.setActivePhase(receivedMessage.getPhase());
+
+        }
+
     }
 
     private void handleStartingPointTaken(Message incomingMessage) {
     }
 
     private void handleYourCards(Message incomingMessage) {
+
+        if (incomingMessage.getMessageBody() instanceof YourCards) {
+
+            YourCards yourCards = (YourCards) incomingMessage.getMessageBody();
+            String[] cards = yourCards.getCards();
+
+
+            aiCardHandler.handleCards(cards);
+
+        }
+
     }
 
     private void handleNotYourCards(Message incomingMessage) {
@@ -328,10 +434,22 @@ public class AINetworkThread implements Runnable {
     }
 
     private void handleCheckPointReached(Message incomingMessage) {
+
+        if (incomingMessage.getMessageBody() instanceof CheckpointReached) {
+
+            CheckpointReached receivedMessage = (CheckpointReached) incomingMessage.getMessageBody();
+
+            aiGameState.setTargetCheckpoint(receivedMessage.getNumber() + 1);
+
+        }
+
     }
 
     private void handleGameWon(Message incomingMessage) {
     }
 
+    public void sendJson(String Json) {
+        outgoing.println(Json);
+    }
 
 }

@@ -1,19 +1,25 @@
 package client.utilities;
 
-import client.network.ClientThread;
 import game.cards.ActiveCard;
 import game.gameboard.GameBoard;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 public class ClientGameState {
 
     private int ActivePhase = 0;
+    private String selectedMap = "";
     private GameBoard gameBoard;
-    private List<ClientPlayerState> playerStateList = new LinkedList<>();
+
+    public String getSelectedMap() {
+        return selectedMap;
+    }
+
+    public void setSelectedMap(String selectedMap) {
+        this.selectedMap = selectedMap;
+    }
 
     // Initial count of DamageCards according to Rules / FAQ
     private int spamCardPile = 38;
@@ -33,7 +39,7 @@ public class ClientGameState {
         availableDamageCards = new HashMap<>();
         availableDamageCards.put("Spam", spamCardPile);
         availableDamageCards.put("Virus", virusCardPile);
-        availableDamageCards.put("Trojan", trojanCardPile);
+        availableDamageCards.put("TrojanHorse", trojanCardPile);
         availableDamageCards.put("Worm", wormCardPile);
     }
 
@@ -48,7 +54,7 @@ public class ClientGameState {
     public LinkedList<String> getAvailableDamageCards() {
         LinkedList<String> availableCards = new LinkedList<>();
         for (Map.Entry<String, Integer> cardPile : availableDamageCards.entrySet()) {
-            if (cardPile.getValue() > 0) {
+            if (cardPile.getValue() > 0 && !cardPile.getKey().equals("Spam")) {
                 availableCards.add(cardPile.getKey());
             }
         }
@@ -71,11 +77,11 @@ public class ClientGameState {
                     }
                     availableDamageCards.replace("Virus", virusCardPile);
                     break;
-                case "Trojan":
+                case "TrojanHorse":
                     if (trojanCardPile > 0) {
                         trojanCardPile--;
                     }
-                    availableDamageCards.replace("Trojan", trojanCardPile);
+                    availableDamageCards.replace("TrojanHorse", trojanCardPile);
                     break;
                 case "Worm":
                     if (wormCardPile > 0) {
@@ -100,9 +106,9 @@ public class ClientGameState {
                     virusCardPile++;
                     availableDamageCards.replace("Virus", virusCardPile);
                     break;
-                case "Trojan":
+                case "TrojanHorse":
                     trojanCardPile++;
-                    availableDamageCards.replace("Trojan", trojanCardPile);
+                    availableDamageCards.replace("TrojanHorse", trojanCardPile);
                     break;
                 case "Worm":
                     wormCardPile++;

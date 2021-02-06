@@ -103,7 +103,7 @@ public class DrawDamageCardHandler {
 
     }
 
-    public List<Card> getDamageCardDeck(String damageCardType) {
+    private List<Card> getDamageCardDeck(String damageCardType) {
 
         return switch (damageCardType) {
 

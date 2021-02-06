@@ -47,6 +47,7 @@ public abstract class Card {
             case "TrojanHorse" -> new TrojanHorse();
             case "Virus" -> new Virus();
             case "Worm" -> new Worm();
+            case "U-Turn" -> new UTurn();
             default -> null;
         };
 

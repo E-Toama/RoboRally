@@ -1,37 +1,42 @@
 package utilities;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.logging.FileHandler;
-import java.util.logging.Level;
+import java.io.InputStream;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
+
 /**
  * Logger Class to log the project.
- *
  */
 public class MyLogger {
-  private static FileHandler fileTxt;
-  private static SimpleFormatter formatterTxt;
-  private Logger logger = Logger.getLogger("");
-   
 
-  public MyLogger(String loggerName) {
+  private static Logger LOGGER;
+
+  /**
+   * Constructor to initialize the logger.
+   */
+  public MyLogger() {
+
+    LOGGER = Logger.getLogger("RoboRallyLogger");
     try {
-      fileTxt = new FileHandler(loggerName + ".log");
-    } catch (SecurityException | IOException e) {
+      String localDir = System.getProperty("user.dir");
+      File logging = new File(localDir + "/RoboRally/src/main/java/utilities/logging.properties");
+      InputStream fileInputStream = new FileInputStream(logging);
+      LogManager.getLogManager().readConfiguration(fileInputStream);
+    } catch (IOException e) {
       e.printStackTrace();
     }
-    logger.setLevel(Level.INFO);
-    formatterTxt = new SimpleFormatter();
-    fileTxt.setFormatter(formatterTxt);
-
-    logger.addHandler(fileTxt);
-    
   }
-  
+
+  /**
+   * The Method returns the logger.
+   * 
+   * @return the logger
+   */
   public Logger getLogger() {
-    return logger;
+    return LOGGER;
   }
 
 }

@@ -136,8 +136,6 @@ public class WelcomeViewModel {
 
                 } catch (IOException e) {
 
-                    System.out.println("Fehler hier");
-
                     e.printStackTrace();
 
                 }

@@ -2,17 +2,33 @@ package utilities.messages;
 
 import game.player.Player;
 
+/**
+ * The Class PlayerAdded is for the confirmation that a new player was added.
+ * 
+ * @author
+ */
 public class PlayerAdded extends MessageBody {
 
-    private final Player player;
+  private final Player player;
 
-    public PlayerAdded(Player player) {
+  /**
+   * A Constructor for initializing the new player.
+   * 
+   * @param player
+   *          is the player with his id, name and his robot figure selection
+   */
+  public PlayerAdded(Player player) {
 
-        this.player = player;
+    this.player = player;
 
-    }
+  }
 
-    public Player getPlayer() {
-        return player;
-    }
+  /**
+   * The method returns the player.
+   * 
+   * @return the player
+   */
+  public Player getPlayer() {
+    return player;
+  }
 }
