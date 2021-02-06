@@ -70,8 +70,6 @@ public class EnemyMatModel {
     }
 
     //Basic Getters and Setters
-
-
     public int getPlayerID() {
         return playerID;
     }

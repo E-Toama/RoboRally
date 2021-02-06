@@ -52,9 +52,6 @@ public class EnemyMatController {
     private int registerForAnimation = 0;
 
 
-
-    public void setEnemyMatModel(EnemyMatModel enemyMatModel) {this.enemyMatModel = enemyMatModel;}
-
     @FXML
     public void initialize() {
         userNameValue.textProperty().bindBidirectional(enemyMatModel.getUserName());
@@ -73,7 +70,6 @@ public class EnemyMatController {
     public void createCardsSlots(){
 
         for(int i = 0; i < 5; i++){
-
             StackPane cardSlot = new StackPane();
             ImageView card =  ImageBuilder.adjustToEnemyMatView("CardBack");
             cardSlot.getChildren().add(card);
@@ -99,7 +95,7 @@ public class EnemyMatController {
     public void resetRegisterCounts() {
         registerForAnimation = 0;
         for (int i = 0; i < 5; i++) {
-            if (registers[i].getChildren().size() > 0) {
+            if (registers[i].getChildren().size() > 1) {
                 registers[i].getChildren().remove(1);
             }
         }
