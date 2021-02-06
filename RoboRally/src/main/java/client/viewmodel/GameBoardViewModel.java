@@ -3,6 +3,7 @@ package client.viewmodel;
 import client.network.ClientThread;
 import client.view.GameBoardController;
 import game.gameboard.BoardElement;
+import game.gameboard.GameBoard;
 
 import java.util.HashSet;
 
@@ -36,8 +37,13 @@ public class GameBoardViewModel {
         startingPositions.add(105);
     }
 
-    public void setGameBoard(BoardElement[][] gameBoard) {
-        this.gameBoard = gameBoard;
+    public void setGameBoard(GameBoard gameBoard) {
+
+
+        //ToDo: Update Board Lasers
+
+
+        this.gameBoard = gameBoard.getGameBoard();
         gameBoardController.initBoard();
     }
 
