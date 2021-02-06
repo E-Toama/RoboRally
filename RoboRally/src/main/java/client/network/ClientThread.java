@@ -580,6 +580,11 @@ public class ClientThread implements Runnable {
 
             clientGameState.setActivePhase(activePhase.getPhase());
 
+            if (activePhase.getPhase() == 2) {
+                Platform.runLater(() -> {
+                    playerMatModel.updateDiscardedCount();
+                });
+            }
             if (activePhase.getPhase() == 3) {
                 playerMatModel.getPlayerMatController().resetRegisterCounts();
                 for (Map.Entry<Integer, EnemyMatModel> entry : enemyList.entrySet()) {

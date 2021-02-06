@@ -89,6 +89,11 @@ public class PlayerMatModel {
         this.discardedCount.set(discardedCount);
     }
 
+    public void updateDiscardedCount() {
+        int discarded = Integer.parseInt(this.discardedCount.getValue()) + 9;
+        this.discardedCount.set(String.valueOf(discarded));
+    }
+
 
     //Getters for Bindings
     public StringProperty getUserName() {
