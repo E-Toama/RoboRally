@@ -4,6 +4,11 @@ package game.gameboard.boards;
 import game.gameboard.BoardElement;
 import game.gameboard.gameboardfieldobjects.*;
 
+/**
+ * This class represents the Extra Crispy course map without its starting board.
+ * @author Elias
+ *
+ */
 public class ExtraCrispy {
 
         public final BoardElement[][] _5B = {
