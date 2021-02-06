@@ -11,14 +11,23 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * This class is the launcher class for the client.
+ * 
+ * @author 
+ */
 public class RoboRallyClient extends Application {
 
-
-
+    /**
+     * Main method to launch the application.
+     */
     public static void main(String[] args) {
         launch(args);
     }
 
+    /**
+     * Overridden method for starting the user interface.
+     */
     @Override
     public void start(Stage primaryStage) {
 
