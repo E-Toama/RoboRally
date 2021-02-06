@@ -676,7 +676,9 @@ public class ClientThread implements Runnable {
             ShuffleCoding shuffleCoding = (ShuffleCoding) incomingMessage.getMessageBody();
             int playerID = shuffleCoding.getPlayerID();
             if (playerID == ID) {
-                playerMatModel.setDiscardedCount("0");
+                Platform.runLater(() -> {
+                    playerMatModel.setDiscardedCount("0");
+                });
             }
             logger.getLogger().info("Player shuffled deck, ID: " + playerID);
         } else {
