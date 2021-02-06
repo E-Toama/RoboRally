@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<GridPane fx:id = "gameOverPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1315.0" style="-fx-background-color: black;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="client.view.GameOverController">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints maxHeight="228.9410400390625" minHeight="10.0" prefHeight="140.4094696044922" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="326.5905303955078" minHeight="10.0" prefHeight="106.93582153320312" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="443.7425842285156" minHeight="10.0" prefHeight="364.0641784667969" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <Text fx:id = "gameOverText" fill="#00e8c9" strokeType="OUTSIDE" strokeWidth="0.0" text="GAME OVER" textAlignment="CENTER" wrappingWidth="1312.915340423584">
+         <font>
+            <Font name="Arial Bold" size="70.0" />
+         </font>
+      </Text>
+      <Label fx:id = "winnerLabel" alignment="CENTER" prefHeight="17.0" prefWidth="1315.0" textAlignment="CENTER" textFill="WHITE" GridPane.rowIndex="1">
+         <font>
+            <Font size="50.0" />
+         </font>
+         <GridPane.margin>
+            <Insets bottom="70.0" />
+         </GridPane.margin>
+      </Label>
+   </children>
+</GridPane>
