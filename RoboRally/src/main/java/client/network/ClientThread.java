@@ -20,6 +20,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import game.player.Player;
@@ -721,6 +722,7 @@ public class ClientThread implements Runnable {
                     slowPlayers.append(robotFigure).append(" ");
                 } else {
                     String robotFigure = Robot.getRobotName(enemyList.get(id).getFigure());
+                    slowPlayers.append(robotFigure).append(" ");
                 }
             }
             programmingViewModel.setSlowPlayers(slowPlayers.toString());
@@ -1052,6 +1054,8 @@ public class ClientThread implements Runnable {
 
     public void buildEnemyViews() throws IOException {
         GridPane enemyContainer = new GridPane();
+        enemyContainer.setVgap(10);
+        enemyContainer.setPadding(new Insets(10));
         int enemyCount = enemyIDList.size();
 
         for (int i = 0; i < enemyCount; i++) {
@@ -1060,7 +1064,7 @@ public class ClientThread implements Runnable {
             GridPane enemyMatPane = enemyMatLoader.load();
             int playerID = enemyIDList.get(i);
 
-            EnemyMatModel enemyMatModel = new EnemyMatModel(enemyMatLoader.<EnemyMatController>getController());
+            EnemyMatModel enemyMatModel = enemyMatLoader.<EnemyMatController>getController().getEnemyMatModel();
             Player enemy = playerList.get(playerID);
             enemyMatModel.setPlayerValues(enemy);
 

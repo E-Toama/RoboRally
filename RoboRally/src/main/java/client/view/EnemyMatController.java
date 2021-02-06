@@ -99,7 +99,9 @@ public class EnemyMatController {
     public void resetRegisterCounts() {
         registerForAnimation = 0;
         for (int i = 0; i < 5; i++) {
-            registers[i].getChildren().remove(1);
+            if (registers[i].getChildren().size() > 0) {
+                registers[i].getChildren().remove(1);
+            }
         }
     }
 
