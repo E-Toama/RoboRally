@@ -141,9 +141,15 @@ public class PopupController {
         stage.setScene(scene);
         stage.show();
 
+    }
 
 
-
+    public void showErrorMessage(String errorMessage) {
+        titleLabel.setText("An Error occurred...");
+        contentLabel.setText(errorMessage);
+        Scene scene = new Scene(popupContainer);
+        stage.setScene(scene);
+        stage.show();
     }
 
 
