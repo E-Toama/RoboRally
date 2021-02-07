@@ -382,13 +382,6 @@ public class UserThread implements Runnable {
                 this.group = receivedMessage.getGroup();
                 this.userIsAI = receivedMessage.getAI();
 
-                String welcome = messageHandler.buildMessage("Welcome", new Welcome(this.playerID));
-                outgoing.println(welcome);
-
-                server.addPrintWriter(this.playerID, outgoing);
-
-                server.sendStatusToNewPlayer(this.playerID);
-
                 if (server.getGame() != null) {
 
                     String error = messageHandler.buildMessage("Error", new Error("Game has already started!"));
@@ -398,6 +391,13 @@ public class UserThread implements Runnable {
                     throw new IOException("Couldn't establish connection! Game has already started!");
 
                 } else {
+
+                    String welcome = messageHandler.buildMessage("Welcome", new Welcome(this.playerID));
+                    outgoing.println(welcome);
+
+                    server.addPrintWriter(this.playerID, outgoing);
+
+                    server.sendStatusToNewPlayer(this.playerID);
 
                     logger.getLogger().info("Connection established succesfully with the Client.");
 
