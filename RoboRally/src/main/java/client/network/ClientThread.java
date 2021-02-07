@@ -583,6 +583,10 @@ public class ClientThread implements Runnable {
             if (activePhase.getPhase() == 2) {
                 Platform.runLater(() -> {
                     playerMatModel.updateDiscardedCount();
+                    chatMessages.add("[Game] \n" +
+                            "the programming phase has started. \n"+
+                            "select the cards on the register to program your robot."
+                    );
                 });
             }
             if (activePhase.getPhase() == 3) {
@@ -598,6 +602,10 @@ public class ClientThread implements Runnable {
                     PopupController popupController = new PopupController();
                     popupController.showEndOfProgrammingPhase(slowPlayers, cardsInRegister);
                     mainViewModel.switchScenes();
+                    chatMessages.add("[GAME \n"
+                        + "the activation phase has started. \n"
+                            + "click on the cards on the regsiter to move your robot.");
+
                 });
             }
 
@@ -801,6 +809,9 @@ public class ClientThread implements Runnable {
                 if (cards.getPlayerID() == ID) {
                     Platform.runLater(() -> {
                         playerMatModel.getPlayerMatController().setTakenRegister(cards.getCard());
+                        chatMessages.add("[GAME] \n" +
+                                "Click on the cards on your register to \n" +
+                                "command your robot!");
                     });
                 } else {
                     Platform.runLater(() -> {
@@ -889,6 +900,9 @@ public class ClientThread implements Runnable {
         if (incomingMessage.getMessageBody() instanceof PlayerShooting) {
             PlayerShooting playerShooting = (PlayerShooting) incomingMessage.getMessageBody();
             //ToDo: Update GUI PlayerShooting
+            Platform.runLater(() -> {
+                chatMessages.add("Robots are shooting!");
+            });
             //      Append Chat with "Robots are shooting now"
             logger.getLogger().info("Player is shooting!");
         } else {
@@ -1017,6 +1031,8 @@ public class ClientThread implements Runnable {
                 Welcome receivedMessage = (Welcome) secondIncomingMessage.getMessageBody();
 
                 this.ID = receivedMessage.getPlayerID();
+                chatMessages.add("Welcome to RoboRally! \n" +
+                        "press the \"Iam ready\"-Button to start the game.");
 
             } else if (secondIncomingMessage.getMessageType().equals("Error") && secondIncomingMessage.getMessageBody() instanceof Error) {
 
