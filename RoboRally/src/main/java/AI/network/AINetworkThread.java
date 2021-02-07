@@ -152,8 +152,6 @@ public class AINetworkThread implements Runnable {
 
                 String incomingJSON = incoming.readLine();
 
-                System.out.println(incomingJSON);
-
                 if (incomingJSON == null) {
 
                     return;
@@ -307,11 +305,7 @@ public class AINetworkThread implements Runnable {
 
             PlayerAdded receivedMessage = (PlayerAdded) incomingMessage.getMessageBody();
 
-            System.out.println("hallo");
-
             if (receivedMessage.getPlayer().getPlayerID() == playerID) {
-
-                System.out.println("hallo2");
 
                 String setStatus = messageHandler.buildMessage("SetStatus", new SetStatus(true));
                 sendJson(setStatus);

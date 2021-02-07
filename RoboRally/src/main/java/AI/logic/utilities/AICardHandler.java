@@ -25,9 +25,11 @@ public class AICardHandler {
 
     public void handleCards(String[] cards) {
 
+        System.out.println(Arrays.toString(cards));
+
         List<String[]> possibleRegisters = getPossibleRegisters(cards);
 
-        int currentBestRating = 100;
+        int currentBestRating = Integer.MAX_VALUE;
         String[] currentBestPossibleRegister = new String[0];
 
         for (String[] possibleRegister : possibleRegisters) {
@@ -104,7 +106,7 @@ public class AICardHandler {
 
         if (possibleRegisters[0].equals("Again")) {
 
-            return 100;
+            return Integer.MAX_VALUE;
 
         }
 
@@ -151,7 +153,7 @@ public class AICardHandler {
                 }
 
                 if (aiGameState.getIntermediateBoardElement().isControlPoint() > 0) {
-                    simpleCheckPointHandler.simulateCheckPointReached();
+                    return 0;
                 }
 
                 currentRegisterNumber++;
@@ -166,7 +168,7 @@ public class AICardHandler {
             case "left" -> aiGameState.getIntermediateOrientationLeftRating()[aiGameState.getIntermediatePosition().getY()][aiGameState.getIntermediatePosition().getX()];
             case "down" -> aiGameState.getIntermediateOrientationDownRating()[aiGameState.getIntermediatePosition().getY()][aiGameState.getIntermediatePosition().getX()];
             case "right" -> aiGameState.getIntermediateOrientationRightRating()[aiGameState.getIntermediatePosition().getY()][aiGameState.getIntermediatePosition().getX()];
-            default -> 100;
+            default -> Integer.MAX_VALUE;
 
         };
 
