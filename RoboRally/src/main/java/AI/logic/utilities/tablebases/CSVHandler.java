@@ -1,4 +1,4 @@
-package tablebases;
+package AI.logic.utilities.tablebases;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

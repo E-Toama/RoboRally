@@ -1,6 +1,7 @@
 package AI;
 
 import AI.logic.AIGameState;
+import AI.logic.utilities.tablebases.CSVHandler;
 import AI.network.AINetworkThread;
 import game.utilities.PositionLookUp;
 
