@@ -188,4 +188,9 @@ public class GameBoardController {
     public void setGameBoardViewModel(GameBoardViewModel gameBoardViewModel) {
         this.gameBoardViewModel = gameBoardViewModel;
     }
+
+    public void removeRobot(int position) {
+        Position xy = PositionLookUp.positionToXY.get(position);
+        gameTileArray[xy.getY()][xy.getX()].getChildren().remove(1);
+    }
 }

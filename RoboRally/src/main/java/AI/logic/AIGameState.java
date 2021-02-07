@@ -189,11 +189,11 @@ public class AIGameState {
         switch (gameBoardName) {
 
             case "DizzyHighway" -> {
-
-                this.orientationUpRating = CSVHandler.convertCSVtoArray("/Users/dh/IdeaProjects/vp-neidische-narwale/RoboRally/src/main/java/AI/logic/utilities/tablebases/DizzySimple.csv");
-                this.orientationLeftRating = CSVHandler.convertCSVtoArray("/Users/dh/IdeaProjects/vp-neidische-narwale/RoboRally/src/main/java/AI/logic/utilities/tablebases/DizzySimple.csv");
-                this.orientationDownRating = CSVHandler.convertCSVtoArray("/Users/dh/IdeaProjects/vp-neidische-narwale/RoboRally/src/main/java/AI/logic/utilities/tablebases/DizzySimple.csv");
-                this.orientationRightRating = CSVHandler.convertCSVtoArray("/Users/dh/IdeaProjects/vp-neidische-narwale/RoboRally/src/main/java/AI/logic/utilities/tablebases/DizzySimple.csv");
+                String localDir = System.getProperty("user.dir");
+                this.orientationUpRating = CSVHandler.convertCSVtoArray(localDir + "/RoboRally/src/main/java/AI/logic/utilities/tablebases/DizzySpiral.csv");
+                this.orientationLeftRating = CSVHandler.convertCSVtoArray(localDir + "/RoboRally/src/main/java/AI/logic/utilities/tablebases/DizzySpiral.csv");
+                this.orientationDownRating = CSVHandler.convertCSVtoArray(localDir + "/RoboRally/src/main/java/AI/logic/utilities/tablebases/DizzySpiral.csv");
+                this.orientationRightRating = CSVHandler.convertCSVtoArray(localDir + "/RoboRally/src/main/java/AI/logic/utilities/tablebases/DizzySpiral.csv");
 
             }
 

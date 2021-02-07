@@ -514,9 +514,18 @@ public class ClientThread implements Runnable {
     private void handleConnectionUpdate(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof ConnectionUpdate) {
             ConnectionUpdate connectionUpdate = (ConnectionUpdate) incomingMessage.getMessageBody();
-            String robotName = Robot.getRobotName(playerList.get(connectionUpdate.getPlayerID()).getFigure());
+            int playerID = connectionUpdate.getPlayerID();
+            String robotName = Robot.getRobotName(playerList.get(playerID).getFigure());
+            String userName = playerList.get(playerID).getName();
+            int positionToRemove = enemyList.get(playerID).getCurrentPosition();
+
+            enemyList.remove(playerID);
+            playerList.remove(playerID);
+            observablePlayerList.remove(playerID);
+
             Platform.runLater(() -> {
                 chatMessages.add(robotName + " has lost connection and left the game");
+                gameBoardViewModel.getGameBoardController().removeRobot(positionToRemove);
             });
 
             logger.getLogger().info(connectionUpdate.getPlayerID() + " got disconnected.");
