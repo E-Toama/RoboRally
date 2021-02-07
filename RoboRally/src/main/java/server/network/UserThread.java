@@ -58,6 +58,32 @@ public class UserThread implements Runnable {
 
             try{
 
+                if (server.getGame().getGameState().playerList.size() <= 2) {
+
+                    int otherPlayerID = 0;
+
+                    for (Player player : server.getGame().getGameState().playerList) {
+
+                        if (player.getPlayerID() != playerID) {
+
+                            otherPlayerID = player.getPlayerID();
+
+                        }
+
+                    }
+
+                    String gameWon = messageHandler.buildMessage("GameWon", new GameWon(otherPlayerID));
+                    server.sendMessageToAllUsers(gameWon);
+
+                } else {
+
+                    server.removePlayer(playerID);
+
+                }
+
+                String connectionUpdate = messageHandler.buildMessage("ConnectionUpdate", new ConnectionUpdate(playerID, false, "remove"));
+                server.sendMessageToAllUsers(connectionUpdate);
+
                 socket.close();
 
             } catch (IOException e) {

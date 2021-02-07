@@ -241,4 +241,14 @@ public class Server {
         this.game = null;
     }
 
+    public void removePlayer(int playerID) {
+
+        game.getGameState().removePlayerFromGame(playerID);
+
+        printWriterMap.remove(playerID);
+        Player player = playerMap.remove(playerID);
+        playerList.remove(player);
+
+    }
+
 }
