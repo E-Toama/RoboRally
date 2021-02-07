@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import java.net.URL?>
 
 <GridPane fx:id="miniChatGridPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="315.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.InGameChatController">
     <columnConstraints>
@@ -21,11 +22,7 @@
         <RowConstraints maxHeight="246.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-        <ScrollPane fx:id="miniChatListScrollPane" prefHeight="429.0" prefWidth="285.0" GridPane.rowIndex="1">
-            <content>
-                <ListView fx:id="miniChatListView" prefHeight="500.0" prefWidth="285.0" />
-            </content>
-        </ScrollPane>
+        <ListView fx:id="miniChatListView" prefHeight="450.0" prefWidth="315.0" GridPane.rowIndex="1" />
         <HBox fx:id="miniChatHbox" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
             <children>
                 <TextField fx:id="miniChatTextField" prefHeight="27.0" prefWidth="254.0">
@@ -46,4 +43,7 @@
             </GridPane.margin>
         </ComboBox>
     </children>
+    <stylesheets>
+        <URL value="@stylesheet.css" />
+    </stylesheets>
 </GridPane>
