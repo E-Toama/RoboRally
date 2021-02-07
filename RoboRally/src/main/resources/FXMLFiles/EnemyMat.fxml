@@ -3,13 +3,14 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<GridPane fx:id="enemyMatPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="116.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.EnemyMatController">
+<GridPane fx:id="enemyMatPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.EnemyMatController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="22.0" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" prefHeight="18.0" vgrow="SOMETIMES" />
    </rowConstraints>
@@ -36,20 +37,29 @@
          <children>
             <HBox prefHeight="17.0" prefWidth="66.0">
                <children>
-                  <Label maxWidth="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="79.0" text="CheckPoints:" textFill="#400b0d" />
+                  <Label maxWidth="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="79.0" text="CheckPoints:" textFill="#400b0d">
+                     <font>
+                        <Font size="11.0" />
+                     </font></Label>
                   <Label fx:id="checkPointValue" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="19.0" prefWidth="10.0" text="1" />
                   <Label maxWidth="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="53.0" text="Energy:">
                      <padding>
                         <Insets left="10.0" />
                      </padding>
+                     <font>
+                        <Font size="11.0" />
+                     </font>
                   </Label>
                   <Label fx:id="energyCubeValue" prefWidth="10.0" text="2" />
-                  <Label prefHeight="17.0" prefWidth="95.0" text="DmgCards:">
+                  <Label prefHeight="18.0" prefWidth="210.0" text="DmgCards:">
                      <HBox.margin>
                         <Insets left="20.0" />
                      </HBox.margin>
+                     <font>
+                        <Font size="11.0" />
+                     </font>
                   </Label>
-                  <Label fx:id="damageCardValue" prefHeight="17.0" prefWidth="46.0" text="1">
+                  <Label fx:id="damageCardValue" prefHeight="18.0" prefWidth="22.0" text="1">
                      <padding>
                         <Insets left="26.0" />
                      </padding>
