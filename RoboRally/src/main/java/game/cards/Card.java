@@ -20,9 +20,9 @@ public abstract class Card {
     protected final MessageHandler messageHandler = new MessageHandler();
 
     /**
-     * The method returns the player name.
+     * The method returns the card name.
      * 
-     * @return the player name
+     * @return the card name
      */
     public String getName() {
         return this.name;
