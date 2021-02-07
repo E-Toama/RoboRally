@@ -27,7 +27,7 @@ public class ControlPointFieldObject extends GameBoardFieldObject {
 
             gameState.playerMatHashMap.get(playerID).setCheckpointsReached();
 
-            String checkpointReached = messageHandler.buildMessage("CheckPointReached", new CheckpointReached(playerID, count));
+            String checkpointReached = messageHandler.buildMessage("CheckpointReached", new CheckpointReached(playerID, count));
             gameState.server.sendMessageToAllUsers(checkpointReached);
 
             if (count == gameState.checkPointsNeededToWin) {
