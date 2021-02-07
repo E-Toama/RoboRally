@@ -12,6 +12,11 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+/**
+ * This class represents the thread of the server for each client connected.
+ * 
+ * @author 
+ */
 public class UserThread implements Runnable {
 
     private final Socket socket;
@@ -28,6 +33,18 @@ public class UserThread implements Runnable {
     private String group;
     private Boolean userIsAI;
 
+    /**
+     * Constructor for initializing and establishing a connection between the server and the clients.
+     * 
+     * @param socket
+     *          the socket
+     * @param server
+     *          the server
+     * @param ID
+     *          The unique player id
+     * @throws IOException 
+     *          exception if something went wrong with the connection
+     */
     public UserThread(Socket socket, Server server, int ID) throws IOException {
 
         this.socket = socket;
@@ -40,6 +57,9 @@ public class UserThread implements Runnable {
 
     }
 
+    /**
+     * This method starts the connection between the server and the client so that they can communicate.
+     */
     public void run() {
 
         try{
