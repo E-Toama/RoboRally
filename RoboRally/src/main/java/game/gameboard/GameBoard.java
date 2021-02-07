@@ -15,6 +15,8 @@ import java.util.List;
 
 public class GameBoard {
 
+    private String boardName;
+
     private BoardElement[][] gameBoard;
 
     private Position antennaPosition;
@@ -29,8 +31,11 @@ public class GameBoard {
     private final HashMap<Position, BoardElement> lasers = new HashMap<>();
     private final HashMap<Position, BoardElement> checkPoints = new HashMap<>();
     private final HashMap<Position, BoardElement> energySpaces = new HashMap<>();
+    private final HashMap<Position, BoardElement> startingPoints = new HashMap<>();
 
     public GameBoard(String board) {
+
+        this.boardName = board;
 
         switch (board) {
             case "DizzyHighway" -> this.gameBoard = createDizzyHighway();
@@ -39,6 +44,10 @@ public class GameBoard {
 
         initializeMaps();
 
+    }
+
+    public String getBoardName() {
+        return boardName;
     }
 
     public Position getAntennaPosition() {
@@ -85,6 +94,10 @@ public class GameBoard {
         return energySpaces;
     }
 
+    public HashMap<Position, BoardElement> getStartingPoints() {
+        return startingPoints;
+    }
+
     public GameBoardMapObject[] toMap() {
 
         int length = gameBoard.length * gameBoard[0].length;
@@ -109,15 +122,22 @@ public class GameBoard {
 
     /**
      * Second Constructor for recreating a GameBoard from JSON
+     * Only used as fallback solution if MapSelected-Message fails
      *      * WARNING: Hard-coded size of GameBoard-array (10 * 13)
      *      * (because it is impossible to guess the board-format from a one-dimensional list)
      *      * @param map
      * @param map Array of GameBoardMapObjects from JSON-Message
-     * @param selectedMap only needed for startBoard-Difference
      */
-    public GameBoard(GameBoardMapObject[] map, String selectedMap) {
+    public GameBoard(GameBoardMapObject[] map) {
         gameBoard = new BoardElement[10][13];
         StartBoard startBoard = new StartBoard();
+
+        //Check if transmitted map is ExtraCrispy and Startboard needs to be modified
+        //ExtraCrispy-Positon 3 is Empty and therefore different from DizzyHighway
+        if ("Empty".equals(map[3].getField()[0].getType())) {
+            startBoard.startBoard[0][0] = new BoardElement(4, new GameBoardFieldObject[]{new RestartPointFieldObject("right")});
+        }
+
         int mapIndexOfMainBoard = 0;
         int positionIncludingStartBoard = 0;
         for (int i = 0; i < 10; i++) {
@@ -244,6 +264,12 @@ public class GameBoard {
                 if (boardElement.isEnergySpace()) {
 
                     energySpaces.put(position, boardElement);
+
+                }
+
+                if (boardElement.isStartingPoint()) {
+
+                    startingPoints.put(position, boardElement);
 
                 }
 

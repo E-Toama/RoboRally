@@ -36,12 +36,6 @@ public class Worm extends Card {
     @Override
     public void action(Game game, GameState gameState, int playerID) {
 
-        logger.getLogger().info("The damage card Worm was played.");
-        
-        String[] wantedDamageCards = {"Spam", "Spam"};
-
-        gameState.drawDamageCardHandler.drawDamageCards(playerID, wantedDamageCards);
-
         gameState.wormCards.add(this);
 
         gameState.playerMatHashMap.get(playerID).reboot(game, gameState, true);

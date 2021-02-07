@@ -328,8 +328,8 @@ public class PlayerMat {
         List<String> turnings = new ArrayList<>();
 
         switch (robot.getOrientation()) {
-            case "left" -> turnings.add("counterClockwise");
-            case "right" -> turnings.add("clockwise");
+            case "left" -> turnings.add("clockwise");
+            case "right" -> turnings.add("counterClockwise");
             case "down" -> {
                 turnings.add("clockwise");
                 turnings.add("clockwise");

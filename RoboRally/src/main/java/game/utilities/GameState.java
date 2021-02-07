@@ -58,6 +58,13 @@ public class GameState {
 
         }
 
+        switch (gameBoard.getBoardName()) {
+
+            case "DizzyHighway" -> checkPointsNeededToWin = 1;
+            case "ExtraCrispy" -> checkPointsNeededToWin = 4;
+
+        }
+
     }
 
     public int[] getNotFinishedPlayer() {
@@ -112,6 +119,16 @@ public class GameState {
             wormCards.add(new Worm());
 
         }
+
+    }
+
+    public void removePlayerFromGame(int playerID) {
+
+        PlayerMat playerMat = playerMatHashMap.remove(playerID);
+        playerMatList.remove(playerMat);
+        registerList.remove(playerMat);
+        nextRegisterList.remove(playerID);
+        playerList.remove(playerMat.getPlayer());
 
     }
 

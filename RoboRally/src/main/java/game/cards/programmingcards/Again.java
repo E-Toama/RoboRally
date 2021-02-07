@@ -37,7 +37,15 @@ public class Again extends Card {
     public void action(Game game, GameState gameState, int playerID) {
         logger.getLogger().info("The programming card Again was played.");
 
-        gameState.playerMatHashMap.get(playerID).getRegister()[gameState.register - 2].action(game, gameState, playerID);
+        if (gameState.playerMatHashMap.get(playerID).getRegister()[gameState.register - 2].getName().equals("Again")) {
+
+            gameState.playerMatHashMap.get(playerID).getRegister()[gameState.register - 3].action(game, gameState, playerID);
+
+        } else {
+
+            gameState.playerMatHashMap.get(playerID).getRegister()[gameState.register - 2].action(game, gameState, playerID);
+
+        }
 
     }
 

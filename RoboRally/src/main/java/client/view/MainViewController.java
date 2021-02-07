@@ -10,6 +10,10 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
+/**
+ *Controller class of the complete mainView / game window
+ * @author
+ */
 public class MainViewController {
 
     private MainViewModel mainViewModel = new MainViewModel(this);
@@ -22,6 +26,10 @@ public class MainViewController {
     private boolean isPlayerMatActive = true;
 
 
+    /**
+     * gets the mainViewModel
+     * @return MainViewModel mainViewModel
+     */
     public MainViewModel getMainViewModel() {
         return mainViewModel;
     }
@@ -31,46 +39,52 @@ public class MainViewController {
 
     }
 
-    public void initializeMainView(int playerCount) throws IOException {
-        /*FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/MainView.fxml"));
-        mainViewPane = mainLoader.load();*/
-
-       /* FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/GameViewChat.fxml"));
-        Parent chatPane = chatLoader.load();
-        mainViewPane.add(chatPane, 0, 0);
-*/
-       /* otherPlayers = new VBox();
-        for (int i = 0; i < playerCount; i++) {
-            FXMLLoader enemyMatLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/EnemyMat.fxml"));
-            GridPane enemyMatPane = enemyMatLoader.load();
-            otherPlayers.getChildren().add(enemyMatPane);
-        }
-        mainViewPane.add(otherPlayers, 2, 0);*/
-    }
-
+    /**
+     * sets the pane for the ingame chat on the top left
+     * @param chatPane
+     */
     public void setChatPane(Parent chatPane) {
         mainViewPane.add(chatPane, 0, 0);
     }
 
+    /**
+     * sets the pane for the programming mat
+     * @param programmingPane
+     */
     public void setProgrammingPane(GridPane programmingPane) {
         this.programmingPane = programmingPane;
     }
 
+    /**
+     * sets the pane for the gameBoard in the middle
+     * @param gameBoardPane
+     */
     public void setGameBoardPane(GridPane gameBoardPane) {
         this.gameBoardPane = gameBoardPane;
         mainViewPane.add(gameBoardPane, 1, 0);
     }
 
+    /**
+     * sets the pane for the player mat
+     * @param playerMatPane
+     */
     public void setPlayerMatPane(Parent playerMatPane) {
         this.playerMatPane = playerMatPane;
         mainViewPane.add(this.playerMatPane, 0, 1, 1, 2);
 
     }
 
+    /**
+     * @return GridPane mainViewPane
+     */
     public GridPane getMainViewPane() {
         return mainViewPane;
     }
 
+    /**
+     * switches from player mat to programming mat in the programming phase
+     *
+     */
     public void switchScenes() {
         if (isPlayerMatActive) {
             isPlayerMatActive = false;
@@ -84,7 +98,11 @@ public class MainViewController {
 
     }
 
+    /**
+     * sets the pane for the enemy player mats on the right side
+     * @param enemyMatPane
+     */
     public void setEnemyPane(GridPane enemyMatPane) {
-        mainViewPane.add(enemyMatPane, 2, 0);
+        mainViewPane.add(enemyMatPane, 2, 0, 2, 1);
     }
 }

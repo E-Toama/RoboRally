@@ -1,95 +1,125 @@
 package client.view;
 
 
+import client.utilities.ImageBuilder;
 import client.viewmodel.EnemyMatModel;
+import client.viewmodel.PlayerMatModel;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import client.viewmodel.EnemyMatModel;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.StrokeType;
 
 import java.io.IOException;
 
+/**
+ * Controller class for the other playermats
+ * @author
+ */
 public class EnemyMatController {
 
-    EnemyMatModel enemyMatModel;
+
+    private EnemyMatModel enemyMatModel = new EnemyMatModel(this);
 
     @FXML
-    GridPane enemyMat = new GridPane();
+    private GridPane enemyMatPane;
 
-    int priority = 1;
-    int checkPointCount = 0;
-    int deckCardCount;
-    String name = "Twonky";
-    String userName = "Anton";
-    String card1 = "Cards/Again.png";
-    String card2 = "Cards/Again.png";
-    String card3 = "Cards/Again.png";
-    String card4 = "Cards/Again.png";
-    String card5 = "Cards/Again.png";
+    @FXML
+    private GridPane enemyMat;
 
-    public EnemyMatController() {
-        initialize();
-    }
+    //Dynamic text values
+    @FXML
+    private Label userNameValue;
+    @FXML
+    private Label checkPointValue;
 
-    public void setEnemyMatModel(EnemyMatModel enemyMatModel) {
-        this.enemyMatModel = enemyMatModel;
-    }
+    @FXML
+    private Label damageCardValue;
+
+    @FXML
+    private Label energyCubeValue;
 
 
+    private StackPane[] registers;
+    private int registerForAnimation = 0;
+
+
+    /**
+     * binds FXML attributes to the enemyMatModel properties
+     */
     @FXML
     public void initialize() {
-        enemyMat.setBorder(new Border(new BorderStroke(Color.valueOf("AQUAMARINE"), BorderStrokeStyle.SOLID, new CornerRadii(5), new BorderWidths(5))));
+        userNameValue.textProperty().bindBidirectional(enemyMatModel.getUserName());
+        checkPointValue.textProperty().bindBidirectional(enemyMatModel.getCheckpointsreached());
+        damageCardValue.textProperty().bindBidirectional(enemyMatModel.getPickedUpDamageCards());
+        energyCubeValue.textProperty().bindBidirectional(enemyMatModel.getEnergyPoints());
+
+
+        //Controller-Specific actions
+        registers = new StackPane[5];
+        registerForAnimation = 0;
         createCardsSlots();
-        Label priorityOrder = new Label("Priority: "+ priority) ;
-        Label checkPoints= new Label("Checkpoints "+ checkPointCount);
-        Label deckSize = new Label("Cards left: "+ deckCardCount);
-        Label discardSize = new Label("Discarded Cards: "+ deckCardCount);
-        Label RobotName = new Label(name);
-        Label PlayerName = new Label(userName);
-        enemyMat.add(setLabelMargin(checkPoints), 2, 1);
-        //  PlayerMat.add(RobotName, 0, 1);
-        enemyMat.add(setLabelMargin(PlayerName), 0, 1);
-        enemyMat.add(setLabelMargin(deckSize), 3, 1);
-        enemyMat.add(setLabelMargin(discardSize), 4, 1);
+
     }
 
-
-
-
-
-
-
+    /**
+     * initializes playerMat with five inverted cards
+     */
     public void createCardsSlots(){
-        for(int i = 0; i < 5; i++){
 
-            Image cards = new Image(card1);
-            ImageView card = new ImageView(cards);
-            card.setFitHeight(83);
-            card.setPreserveRatio(true);
-            enemyMat.add(card, i, 0, 1, 1);
+        for(int i = 0; i < 5; i++){
+            StackPane cardSlot = new StackPane();
+            ImageView card =  ImageBuilder.adjustToEnemyMatView("CardBack");
+            cardSlot.getChildren().add(card);
+            registers[i] = cardSlot;
+            enemyMat.add(registers[i], i, 0);
         }
     }
 
-    private static Label setLabelMargin(Label label) {
-        label.setPrefHeight(40);
-        return label;
+    /**
+     * gets current enemyMatModel
+     * @return EnemyMatModel enemyMatModel
+     */
+    public EnemyMatModel getEnemyMatModel() {
+        return enemyMatModel;
     }
 
-
-
-
     public GridPane getEnemyMat(){
-        return enemyMat;
+        return enemyMatPane;
+    }
+
+    /**
+     * sets a register of a playerMat with the chosen card from the programmphase
+     * @param card
+     */
+    public void setTakenRegister(String card) {
+        ImageView cardToDisplay = ImageBuilder.adjustToEnemyMatView(card);
+        registers[registerForAnimation].getChildren().add(cardToDisplay);
+        registerForAnimation++;
+    }
+
+    /**
+     * clears the registers
+     */
+    public void resetRegisterCounts() {
+        registerForAnimation = 0;
+        for (int i = 0; i < 5; i++) {
+            if (registers[i].getChildren().size() > 1) {
+                registers[i].getChildren().remove(1);
+            }
+        }
     }
 
 

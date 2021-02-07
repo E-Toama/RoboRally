@@ -48,10 +48,14 @@ public class EnergySpaceFieldObject extends GameBoardFieldObject {
 
         if (count == 0) {
 
-            gameState.playerMatHashMap.get(playerID).setEnergyCubes(gameState.playerMatHashMap.get(playerID).getEnergyCubes() + 1);
+            if (gameState.register == 5) {
 
-            String energy = messageHandler.buildMessage("Energy", new Energy(playerID, 1));
-            gameState.server.sendMessageToAllUsers(energy);
+                gameState.playerMatHashMap.get(playerID).setEnergyCubes(gameState.playerMatHashMap.get(playerID).getEnergyCubes() + 1);
+
+                String energy = messageHandler.buildMessage("Energy", new Energy(playerID, 1));
+                gameState.server.sendMessageToAllUsers(energy);
+
+            }
 
         } else {
 

@@ -4,6 +4,12 @@ import client.viewmodel.ChatViewModel;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+/**
+ *  Controller Class for the Lobby Chat
+ *  is binded to ChatViewModel
+ * @author
+ *
+ */
 public class ChatController {
 
     private final ChatViewModel chatViewModel = new ChatViewModel();
@@ -23,6 +29,12 @@ public class ChatController {
     @FXML
     private ComboBox dropDown2;
 
+
+    /**
+     *
+     * binds FXML attributes to the chatViewModel properties
+     * initializes dropdown menu with players for private messaging
+     */
     @FXML
     void initialize() {
 
@@ -34,18 +46,27 @@ public class ChatController {
 
     }
 
+    /**
+     * calls sendChat() in the chatViewModel
+     */
     public void sendChat() {
 
         chatViewModel.sendChat();
 
     }
 
+    /**
+     * calls setReady() in the chatViewModel
+     */
     public void setReady() {
 
         chatViewModel.setReady();
 
     }
 
+    /**
+     * calls changeDestination in the chatViewModel with the chosen player in from the dropdown menu
+     */
     public void changeDestination() {
 
         chatViewModel.changeDestination(chatViewModel.getClientThread().messageMatchMap.get(dropDown2.getValue()));

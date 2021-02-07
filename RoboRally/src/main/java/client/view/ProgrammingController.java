@@ -12,6 +12,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
+/**
+ * Controller class of the programming mat
+ * @author
+ */
 public class ProgrammingController {
 
   private final Integer startTime = 30;
@@ -27,13 +31,16 @@ public class ProgrammingController {
   private boolean isTimerEnded = false;
   private String slowPlayers;
 
+  /**
+   * constructor for ProgrammingController
+   * initializes filled registers and builds timer
+   */
   public ProgrammingController() {
     filledRegisters = new boolean[5];
 
     // Build ProgrammingPane
     gridPane = new GridPane();
 
-    // Build Timer display
     timerBox = new VBox();
     timerBox.setVisible(false);
     timerHeading = new Label("Timer");
@@ -51,16 +58,25 @@ public class ProgrammingController {
     gridPane.addColumn(9, timerBox);
   }
 
+  /**
+   * bindz timerLabel to the programmingViewModel property
+   */
   public void initialize() {
     timerLabel.textProperty().bindBidirectional(programmingViewModel.getTimerLabelProperty());
   }
 
-  // Getters and Setters
 
+  /**
+   * @return GridPane gridPane of the programming mat
+   */
   public GridPane getGridPane() {
     return gridPane;
   }
 
+  /**
+   * sets programming viewmodel
+   * @param programmingViewModel
+   */
   public void setProgrammingModel(ProgrammingViewModel programmingViewModel) {
     this.programmingViewModel = programmingViewModel;
   }
@@ -69,10 +85,17 @@ public class ProgrammingController {
     this.slowPlayers = slowPlayers;
   }
 
+  /**
+   * creates cards buttons with  programming cards
+   */
   public void createCards() {
     createCardButtons(programmingViewModel.getCards());
   }
 
+  /**
+   * creates nine buttons with one label each for the programming cards
+   * @param cards
+   */
   public void createCardButtons(String[] cards) {
 
     for (int i = 0; i < 9; i++) {
@@ -92,6 +115,10 @@ public class ProgrammingController {
     }
   }
 
+  /**
+   * puts a programming card into a register
+   * @param button
+   */
   private void selectCard(ProgrammingButton button) {
     if (button.isChosen()) {
       button.setChosen(false);
@@ -112,6 +139,10 @@ public class ProgrammingController {
     }
   }
 
+  /**
+   * responsible for finding the first available register
+   * @return the first free register index
+   */
   private int findFirstFreeRegisterIndex() {
     int firstFreeRegister = 0;
     for (int i = 0; i < filledRegisters.length; i++) {
@@ -123,6 +154,10 @@ public class ProgrammingController {
     return firstFreeRegister;
   }
 
+  /**
+   * sets the programming cards buttons in a register as active
+   * @param register the chosen register
+   */
   public void setRegisterActive(int register) {
     for (ProgrammingButton button : buttonList) {
       if (register == button.getRegister() + 1) {
@@ -139,6 +174,9 @@ public class ProgrammingController {
     }
   }
 
+  /**
+   * discards the players cards
+   */
   public void discardHand() {
     for (ProgrammingButton btn : buttonList) {
 
@@ -148,6 +186,9 @@ public class ProgrammingController {
     }
   }
 
+  /**
+   * checks if all five registers are filled with programming cards
+   */
   private void allRegistersChosen() {
     boolean allChosen = true;
     for (boolean b : filledRegisters) {
@@ -160,11 +201,16 @@ public class ProgrammingController {
     }
   }
 
+  /**
+   * sets isTimerEnded true
+   */
   public void setTimerEnded() {
     isTimerEnded = true;
   }
 
-  /** Starts timer of 30 seconds in programmingView */
+  /**
+   * Starts a timer of 30 seconds in programmingView
+   */
   public void initiateTimer() {
     timerBox.setVisible(true);
 

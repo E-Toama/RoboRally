@@ -1,18 +1,26 @@
 package AI.logic;
 
+import AI.logic.simplecards.CardS;
+import AI.logic.utilities.tablebases.CSVHandler;
 import game.gameboard.BoardElement;
 import game.gameboard.GameBoard;
 import game.utilities.Position;
 
 public class AIGameState {
 
+    private Position startPosition;
+    private BoardElement startBoardElement;
+
     private Position currentPosition;
-    private String currentOrientation;
+    private String currentOrientation = "right";
     private BoardElement currentBoardElement;
 
     private Position intermediatePosition;
     private String intermediateOrientation;
     private BoardElement intermediateBoardElement;
+    private CardS[] intermediateRegister;
+
+    private boolean wasRebooted = false;
 
     private int activePhase;
 
@@ -26,7 +34,20 @@ public class AIGameState {
     private int[][] orientationDownRating;
     private int[][] orientationRightRating;
 
+    private int[][] intermediateOrientationUpRating;
+    private int[][] intermediateOrientationLeftRating;
+    private int[][] intermediateOrientationDownRating;
+    private int[][] intermediateOrientationRightRating;
+
     public AIGameState() {}
+
+    public Position getStartPosition() {
+        return startPosition;
+    }
+
+    public BoardElement getStartBoardElement() {
+        return startBoardElement;
+    }
 
     public Position getCurrentPosition() {
         return currentPosition;
@@ -68,6 +89,14 @@ public class AIGameState {
         return activePhase;
     }
 
+    public boolean getWasRebooted() {
+        return wasRebooted;
+    }
+
+    public CardS[] getIntermediateRegister() {
+        return intermediateRegister;
+    }
+
     public int[][] getOrientationUpRating() {
         return orientationUpRating;
     }
@@ -82,6 +111,30 @@ public class AIGameState {
 
     public int[][] getOrientationRightRating() {
         return orientationRightRating;
+    }
+
+    public int[][] getIntermediateOrientationDownRating() {
+        return intermediateOrientationDownRating;
+    }
+
+    public int[][] getIntermediateOrientationLeftRating() {
+        return intermediateOrientationLeftRating;
+    }
+
+    public int[][] getIntermediateOrientationRightRating() {
+        return intermediateOrientationRightRating;
+    }
+
+    public int[][] getIntermediateOrientationUpRating() {
+        return intermediateOrientationUpRating;
+    }
+
+    public void setStartPosition(Position startPosition) {
+        this.startPosition = startPosition;
+    }
+
+    public void setStartBoardElement(BoardElement startBoardElement) {
+        this.startBoardElement = startBoardElement;
     }
 
     public void setCurrentPosition(Position currentPosition) {
@@ -108,6 +161,10 @@ public class AIGameState {
         this.intermediateBoardElement = intermediateBoardElement;
     }
 
+    public void setIntermediateRegister(CardS[] intermediateRegister) {
+        this.intermediateRegister = intermediateRegister;
+    }
+
     public void setGameBoardName(String gameBoardName) {
         this.gameBoardName = gameBoardName;
     }
@@ -132,11 +189,11 @@ public class AIGameState {
         switch (gameBoardName) {
 
             case "DizzyHighway" -> {
-
-                this.orientationUpRating = null;
-                this.orientationLeftRating = null;
-                this.orientationDownRating = null;
-                this.orientationRightRating = null;
+                String localDir = System.getProperty("user.dir");
+                this.orientationUpRating = CSVHandler.convertCSVtoArray(localDir + "/RoboRally/src/main/java/AI/logic/utilities/tablebases/DizzySpiral.csv");
+                this.orientationLeftRating = CSVHandler.convertCSVtoArray(localDir + "/RoboRally/src/main/java/AI/logic/utilities/tablebases/DizzySpiral.csv");
+                this.orientationDownRating = CSVHandler.convertCSVtoArray(localDir + "/RoboRally/src/main/java/AI/logic/utilities/tablebases/DizzySpiral.csv");
+                this.orientationRightRating = CSVHandler.convertCSVtoArray(localDir + "/RoboRally/src/main/java/AI/logic/utilities/tablebases/DizzySpiral.csv");
 
             }
 
@@ -188,6 +245,90 @@ public class AIGameState {
 
     }
 
+    public void setIntermediateOrientationUpRating(int[][] intermediateOrientationUpRating) {
+        this.intermediateOrientationUpRating = intermediateOrientationUpRating;
+    }
+
+    public void setIntermediateOrientationLeftRating(int[][] intermediateOrientationLeftRating) {
+        this.intermediateOrientationLeftRating = intermediateOrientationLeftRating;
+    }
+
+    public void setIntermediateOrientationDownRating(int[][] intermediateOrientationDownRating) {
+        this.intermediateOrientationDownRating = intermediateOrientationDownRating;
+    }
+
+    public void setIntermediateOrientationRightRating(int[][] intermediateOrientationRightRating) {
+        this.intermediateOrientationRightRating = intermediateOrientationRightRating;
+    }
+
+    public void setIntermediateRatingMaps(String gameBoardName, int targetCheckPoint) {
+
+        this.gameBoardName = gameBoardName;
+        this.targetCheckpoint = targetCheckPoint;
+
+        switch (gameBoardName) {
+
+            case "DizzyHighway" -> {
+
+                this.intermediateOrientationUpRating = null;
+                this.intermediateOrientationLeftRating = null;
+                this.intermediateOrientationDownRating = null;
+                this.intermediateOrientationRightRating = null;
+
+            }
+
+            case "ExtraCrispy" -> {
+
+                switch (targetCheckPoint) {
+
+                    case 1 -> {
+
+                        this.intermediateOrientationUpRating = null;
+                        this.intermediateOrientationLeftRating = null;
+                        this.intermediateOrientationDownRating = null;
+                        this.intermediateOrientationRightRating = null;
+
+                    }
+
+                    case 2 -> {
+
+                        this.intermediateOrientationUpRating = null;
+                        this.intermediateOrientationLeftRating = null;
+                        this.intermediateOrientationDownRating = null;
+                        this.intermediateOrientationRightRating = null;
+
+                    }
+
+                    case 3 -> {
+
+                        this.intermediateOrientationUpRating = null;
+                        this.intermediateOrientationLeftRating = null;
+                        this.intermediateOrientationDownRating = null;
+                        this.intermediateOrientationRightRating = null;
+
+                    }
+
+                    case 4 -> {
+
+                        this.intermediateOrientationUpRating = null;
+                        this.intermediateOrientationLeftRating = null;
+                        this.intermediateOrientationDownRating = null;
+                        this.intermediateOrientationRightRating = null;
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+    public void setWasRebooted(boolean wasRebooted) {
+        this.wasRebooted = wasRebooted;
+    }
+
     public void turningClockwise() {
 
         switch (currentOrientation) {
@@ -206,6 +347,28 @@ public class AIGameState {
             case "right" -> currentOrientation = "down";
             case "down" -> currentOrientation = "left";
             case "left" -> currentOrientation = "up";
+        }
+
+    }
+
+    public void turningClockwiseIntermediate() {
+
+        switch (intermediateOrientation) {
+            case "up" -> intermediateOrientation = "left";
+            case "left" -> intermediateOrientation = "down";
+            case "down" -> intermediateOrientation = "right";
+            case "right" -> intermediateOrientation = "up";
+        }
+
+    }
+
+    public void turningCounterClockwiseIntermediate() {
+
+        switch (intermediateOrientation) {
+            case "up" -> intermediateOrientation = "right";
+            case "right" -> intermediateOrientation = "down";
+            case "down" -> intermediateOrientation = "left";
+            case "left" -> intermediateOrientation = "up";
         }
 
     }
