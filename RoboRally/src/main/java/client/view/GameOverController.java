@@ -29,7 +29,9 @@ public class GameOverController {
 
     }
 
-
+    public GameOverModel getGameOverModel() {
+        return gameOverModel;
+    }
 }
 
 

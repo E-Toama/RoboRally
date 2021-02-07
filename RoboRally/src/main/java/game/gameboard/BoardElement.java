@@ -335,6 +335,22 @@ public class BoardElement {
 
     }
 
+    public boolean isStartingPoint() {
+
+        for (GameBoardFieldObject fieldObject : field) {
+
+            if (fieldObject.getType().equals("StartPoint")) {
+
+                return true;
+
+            }
+
+        }
+
+        return false;
+
+    }
+
     public String getLaserOrientation() {
 
         for (GameBoardFieldObject fieldObject : field) {
@@ -458,6 +474,22 @@ public class BoardElement {
             if (fieldObject.getType().equals("Wall")) {
 
                 return (WallFieldObject) fieldObject;
+
+            }
+
+        }
+
+        return null;
+
+    }
+
+    public GearFieldObject getGear() {
+
+        for (GameBoardFieldObject fieldObject : field) {
+
+            if (fieldObject.getType().equals("Gear")) {
+
+                return (GearFieldObject) fieldObject;
 
             }
 

@@ -2,6 +2,7 @@ package client.network;
 
 import client.utilities.ClientGameState;
 import client.view.EnemyMatController;
+import client.view.GameOverController;
 import client.view.MainViewController;
 import client.view.PlayerMatController;
 import client.view.PopupController;
@@ -9,6 +10,7 @@ import client.view.ViewController;
 import client.viewmodel.ChatViewModel;
 import client.viewmodel.EnemyMatModel;
 import client.viewmodel.GameBoardViewModel;
+import client.viewmodel.GameOverModel;
 import client.viewmodel.MainViewModel;
 import client.viewmodel.PlayerMatModel;
 import client.viewmodel.ProgrammingViewModel;
@@ -986,8 +988,16 @@ public class ClientThread implements Runnable {
     private void handleGameWon(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof GameWon) {
             GameWon gameWon = (GameWon) incomingMessage.getMessageBody();
-            //ToDo: Update GUI GameWon - Simple PopUp?
+            String winnerName = playerList.get(gameWon.getPlayerID()).getName();
+            //ToDo: Test and improve GameWon-Screen
+            FXMLLoader gameOverLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/GameOverScreen.fxml"));
+            GridPane gameOverPane = gameOverLoader.load();
+            GameOverModel gameOverModel = gameOverLoader.<GameOverController>getController().getGameOverModel();
 
+            Platform.runLater(() -> {
+                gameOverModel.setWinnerName(winnerName);
+                ViewController.getViewController().setScene(new Scene(gameOverPane));
+            });
 
             logger.getLogger().info("Player with id " + gameWon.getPlayerID() + " has won the game.");
         } else {

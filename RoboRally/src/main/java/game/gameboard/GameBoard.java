@@ -15,6 +15,8 @@ import java.util.List;
 
 public class GameBoard {
 
+    private String boardName;
+
     private BoardElement[][] gameBoard;
 
     private Position antennaPosition;
@@ -29,8 +31,11 @@ public class GameBoard {
     private final HashMap<Position, BoardElement> lasers = new HashMap<>();
     private final HashMap<Position, BoardElement> checkPoints = new HashMap<>();
     private final HashMap<Position, BoardElement> energySpaces = new HashMap<>();
+    private final HashMap<Position, BoardElement> startingPoints = new HashMap<>();
 
     public GameBoard(String board) {
+
+        this.boardName = board;
 
         switch (board) {
             case "DizzyHighway" -> this.gameBoard = createDizzyHighway();
@@ -39,6 +44,10 @@ public class GameBoard {
 
         initializeMaps();
 
+    }
+
+    public String getBoardName() {
+        return boardName;
     }
 
     public Position getAntennaPosition() {
@@ -83,6 +92,10 @@ public class GameBoard {
 
     public HashMap<Position, BoardElement> getEnergySpaces() {
         return energySpaces;
+    }
+
+    public HashMap<Position, BoardElement> getStartingPoints() {
+        return startingPoints;
     }
 
     public GameBoardMapObject[] toMap() {
@@ -251,6 +264,12 @@ public class GameBoard {
                 if (boardElement.isEnergySpace()) {
 
                     energySpaces.put(position, boardElement);
+
+                }
+
+                if (boardElement.isStartingPoint()) {
+
+                    startingPoints.put(position, boardElement);
 
                 }
 
