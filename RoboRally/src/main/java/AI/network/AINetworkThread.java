@@ -18,6 +18,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class AINetworkThread implements Runnable {
 
@@ -26,11 +27,9 @@ public class AINetworkThread implements Runnable {
     private final PrintWriter outgoing;
     private final MessageHandler messageHandler = new MessageHandler();
     private final AIGameState aiGameState;
-    private int playerID;
-
     private final double protocolVersion = 1.0;
     private final String group = "NeidischeNarwale";
-
+    private int playerID;
     private HashMap<Integer, Player> playerList = new HashMap();
     private AICardHandler aiCardHandler;
 
@@ -47,7 +46,7 @@ public class AINetworkThread implements Runnable {
     @Override
     public void run() {
 
-        try{
+        try {
 
             establishConnection();
 
@@ -57,11 +56,9 @@ public class AINetworkThread implements Runnable {
 
             e.printStackTrace();
 
-        }
+        } finally {
 
-        finally{
-
-            try{
+            try {
 
                 socket.close();
 
@@ -91,7 +88,7 @@ public class AINetworkThread implements Runnable {
 
             Message secondIncomingMessage = messageHandler.handleMessage(secondIncomingJSON);
 
-            if(secondIncomingMessage.getMessageType().equals("Welcome") && secondIncomingMessage.getMessageBody() instanceof Welcome) {
+            if (secondIncomingMessage.getMessageType().equals("Welcome") && secondIncomingMessage.getMessageBody() instanceof Welcome) {
 
                 Welcome receivedMessage = (Welcome) secondIncomingMessage.getMessageBody();
                 this.playerID = receivedMessage.getPlayerID();
@@ -213,10 +210,6 @@ public class AINetworkThread implements Runnable {
 
                     case "NotYourCards":
                         handleNotYourCards(incomingMessage);
-                        break;
-
-                    case "ShuffleCoding":
-                        //TODO: IS this case going to be handled by the client? If so, implement the handlerMethod here
                         break;
 
                     case "CardSelected":
@@ -570,10 +563,24 @@ public class AINetworkThread implements Runnable {
         if (incomingMessage.getMessageBody() instanceof PickDamage) {
 
             PickDamage receivedMessage = (PickDamage) incomingMessage.getMessageBody();
+            int count = receivedMessage.getCount();
+
+            String[] damageCardsToChooseFrom = {"Virus", "Worm", "TrojanHorse"};
+            String[] chosenDamageCards = new String[count];
+            Random random = new Random();
+
+            for (int i = 0; i < count; i++) {
+                chosenDamageCards[i] = damageCardsToChooseFrom[random.nextInt(3)];
+            }
+
+
+            String chosenCardsMessage = messageHandler.buildMessage("SelectDamage", new SelectDamage(chosenDamageCards));
+            sendJson(chosenCardsMessage);
 
         }
 
     }
+
 
     public void sendJson(String Json) {
         outgoing.println(Json);
