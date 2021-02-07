@@ -149,31 +149,41 @@ public class UserThread implements Runnable {
 
             PlayerValues receivedMessage = (PlayerValues) incomingMessage.getMessageBody();
 
-            if (server.checkIfRobotIsFree(receivedMessage.getFigure())) {
+            if (server.getGame() == null) {
 
-                Player player = new Player(this.playerID, receivedMessage.getName(), receivedMessage.getFigure());
+                if (server.checkIfRobotIsFree(receivedMessage.getFigure())) {
 
-                this.player = player;
+                    Player player = new Player(this.playerID, receivedMessage.getName(), receivedMessage.getFigure());
 
-                server.addPlayer(this.playerID, player);
+                    this.player = player;
 
-                server.notifyPlayersAboutNewPlayer(this.player);
+                    server.addPlayer(this.playerID, player);
 
-                //server.(this.player.getId());
+                    server.notifyPlayersAboutNewPlayer(this.player);
 
-                logger.getLogger().info("Player name: " + receivedMessage.getName() + ", Player figure: " + receivedMessage.getFigure() + ".");
+                    logger.getLogger().info("Player name: " + receivedMessage.getName() + ", Player figure: " + receivedMessage.getFigure() + ".");
+
+                } else {
+
+                    String error = messageHandler.buildMessage("Error", new Error("Figure already taken!"));
+
+                    outgoing.println(error);
+
+                    logger.getLogger().warning("Error: '" + error + "' happend.");
+
+                }
 
             } else {
 
-                String error = messageHandler.buildMessage("Error", new Error("Figure already taken!"));
-
+                String error = messageHandler.buildMessage("Error", new Error("Game has already started!"));
                 outgoing.println(error);
 
-                logger.getLogger().warning("Error: '" + error + "' happend.");
+                throw new IOException("Game has already started!");
 
             }
 
         } else {
+
             logger.getLogger().severe("Message body error in handlePlayerValues method.");
 
             throw new IOException("Something went wrong! Invalid Message Body! (not instance of PlayerValues)");
@@ -363,7 +373,9 @@ public class UserThread implements Runnable {
 
         Message incomingMessage = messageHandler.handleMessage(incomingJSON);
 
-        if (incomingMessage.getMessageType().equals("HelloServer") && incomingMessage.getMessageBody() instanceof HelloServer) {
+        if (server.getGame() == null) {
+
+            if (incomingMessage.getMessageType().equals("HelloServer") && incomingMessage.getMessageBody() instanceof HelloServer) {
 
                 HelloServer receivedMessage = (HelloServer) incomingMessage.getMessageBody();
 
@@ -391,10 +403,20 @@ public class UserThread implements Runnable {
 
                 logger.getLogger().info("Connection established succesfully with the Client.");
 
+            } else {
+
+                logger.getLogger().severe("Message body error in establishConnection method.");
+                throw new IOException("Couldn't establish connection!");
+
+            }
+
         } else {
 
-            logger.getLogger().severe("Message body error in establishConnection method.");
-            throw new IOException("Couldn't establish connection!");
+            String error = messageHandler.buildMessage("Error", new Error("Game has already started!"));
+            outgoing.println(error);
+
+            logger.getLogger().severe("Couldn't establish connection! Game has already started!");
+            throw new IOException("Couldn't establish connection! Game has already started!");
 
         }
 

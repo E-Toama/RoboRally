@@ -6,6 +6,8 @@ import AI.network.AINetworkThread;
 import game.utilities.PositionLookUp;
 
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -31,6 +33,29 @@ public class AIClient {
 
             aiClient.startNetworkThread();
 
+            TimerTask timerEndedTask = new TimerTask() {
+
+                @Override
+                public void run() {
+
+                    try {
+
+                        aiClient.choosePlayerValues();
+
+                    } catch (IOException e) {
+
+                        e.printStackTrace();
+
+                    }
+
+                }
+
+            };
+
+            Timer timer = new Timer();
+
+            timer.schedule(timerEndedTask, 1000);
+
 
         } catch (IOException e) {
 
@@ -46,6 +71,12 @@ public class AIClient {
 
         Thread thread = new Thread(aiNetworkThread);
         thread.start();
+
+    }
+
+    public void choosePlayerValues() throws IOException {
+
+        aiNetworkThread.choosePlayerValues();
 
     }
 

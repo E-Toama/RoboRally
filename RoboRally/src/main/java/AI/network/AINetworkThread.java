@@ -51,8 +51,6 @@ public class AINetworkThread implements Runnable {
 
             establishConnection();
 
-            choosePlayerValues();
-
             handleIncomingMessages();
 
         } catch (IOException e) {
