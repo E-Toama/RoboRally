@@ -523,12 +523,10 @@ public class ClientThread implements Runnable {
             ConnectionUpdate connectionUpdate = (ConnectionUpdate) incomingMessage.getMessageBody();
             int playerID = connectionUpdate.getPlayerID();
             String robotName = Robot.getRobotName(playerList.get(playerID).getFigure());
-            String userName = playerList.get(playerID).getName();
             int positionToRemove = enemyList.get(playerID).getCurrentPosition();
 
             enemyList.remove(playerID);
             playerList.remove(playerID);
-            observablePlayerList.remove(playerID);
 
             Platform.runLater(() -> {
                 chatMessages.add(robotName + " has lost connection and left the game");

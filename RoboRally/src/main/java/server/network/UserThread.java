@@ -58,7 +58,7 @@ public class UserThread implements Runnable {
 
             try{
 
-                if (server.getGame().getGameState().playerList.size() <= 2) {
+                if (server.getGame().getGameState().playerList.size() < 2) {
 
                     int otherPlayerID = 0;
 
