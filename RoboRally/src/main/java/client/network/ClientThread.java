@@ -355,8 +355,8 @@ public class ClientThread implements Runnable {
 
                 enemyIDList.add(receivedMessage.getPlayer().getPlayerID());
                 welcomeViewModel.disableRobotButton(receivedMessage.getPlayer().getFigure());
-                String notificationName = receivedMessage.getPlayer().getName() + " has joined!";
-                String notificationRobot = "He has Robot No. " + receivedMessage.getPlayer().getFigure();
+                String notificationName = "Player " + receivedMessage.getPlayer().getName() + " has joined!";
+                String notificationRobot = "He chose Robot No. " + receivedMessage.getPlayer().getFigure();
 
                 Platform.runLater(() -> {
                     takenRobotList.add(receivedMessage.getPlayer().getFigure());
@@ -452,6 +452,8 @@ public class ClientThread implements Runnable {
             Scene mainScene = new Scene(mainViewModel.getMainViewController().getMainViewPane());
             Platform.runLater(() -> {
                 ViewController.getViewController().setScene(mainScene);
+                chatMessages.add("[GAME] \n" +
+                        "The game has started!");
             });
             logger.getLogger().info("Game started.");
 
@@ -553,7 +555,7 @@ public class ClientThread implements Runnable {
 
                 if (clientGameState.getActivePhase() == 0) {
                     String robotName = playerMatModel.getRobotName().getValue();
-                    String gameMessage = "[GAME] \n" + robotName + ": choose a starting point!";
+                    String gameMessage = "[GAME] \n" +"It´s" + robotName + "´s turn to choose a starting point!";
 
                     Platform.runLater(() -> {
                         chatMessages.add(gameMessage);
@@ -585,6 +587,11 @@ public class ClientThread implements Runnable {
             if (activePhase.getPhase() == 2) {
                 Platform.runLater(() -> {
                     playerMatModel.updateDiscardedCount();
+                    chatMessages.add("[Game] \n" +
+                            "The programming phase has started. \n"+
+                            "select the cards on your register to program \n" +
+                            "your robot."
+                    );
                 });
             }
             if (activePhase.getPhase() == 3) {
@@ -600,6 +607,11 @@ public class ClientThread implements Runnable {
                     PopupController popupController = new PopupController();
                     popupController.showEndOfProgrammingPhase(slowPlayers, cardsInRegister);
                     mainViewModel.switchScenes();
+                    chatMessages.add("[GAME \n"
+                        + "The activation phase has started. \n"
+                            + "click on the cards on your register to move \n " +
+                              "your robot.");
+
                 });
             }
 
@@ -803,6 +815,9 @@ public class ClientThread implements Runnable {
                 if (cards.getPlayerID() == ID) {
                     Platform.runLater(() -> {
                         playerMatModel.getPlayerMatController().setTakenRegister(cards.getCard());
+                        chatMessages.add("[GAME] \n" +
+                                "Click on the cards on your register to \n" +
+                                "command your robot!");
                     });
                 } else {
                     Platform.runLater(() -> {
@@ -891,6 +906,9 @@ public class ClientThread implements Runnable {
         if (incomingMessage.getMessageBody() instanceof PlayerShooting) {
             PlayerShooting playerShooting = (PlayerShooting) incomingMessage.getMessageBody();
             //ToDo: Update GUI PlayerShooting
+            Platform.runLater(() -> {
+                chatMessages.add("Robots are shooting!");
+            });
             //      Append Chat with "Robots are shooting now"
             logger.getLogger().info("Player is shooting!");
         } else {
@@ -1027,6 +1045,8 @@ public class ClientThread implements Runnable {
                 Welcome receivedMessage = (Welcome) secondIncomingMessage.getMessageBody();
 
                 this.ID = receivedMessage.getPlayerID();
+                chatMessages.add("Welcome to RoboRally by NeidischeNarwale! \n" +
+                        "press the \"Iam ready\"-Button to start the game.");
 
             } else if (secondIncomingMessage.getMessageType().equals("Error") && secondIncomingMessage.getMessageBody() instanceof Error) {
 
