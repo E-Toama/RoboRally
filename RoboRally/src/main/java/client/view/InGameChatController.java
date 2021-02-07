@@ -5,9 +5,13 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
+
+/**
+ * Controller class of the ingame chat
+ * @author
+ */
 public class InGameChatController  {
 
-   // private final InGameChatModel inGameChatModel = new InGameChatModel();
     private final ChatViewModel inGameChatModel = new ChatViewModel();
 
   @FXML private GridPane miniChatGridPane;
@@ -24,6 +28,10 @@ public class InGameChatController  {
 
   @FXML private ComboBox dropDown3;
 
+
+    /**
+     * binds the FXML attributes to the inGameChatModel properties and initializes the dropdown menu with players
+     */
    @FXML
    void initialize() {
 
@@ -34,13 +42,18 @@ public class InGameChatController  {
 
   }
 
-
+    /**
+     *  calls sendChat() in the inGameChatModel
+     */
   public void sendChat() {
 
     inGameChatModel.sendChat();
 
   }
 
+    /**
+     *  calls changeDestination in the inGameChatModel with the chosen value in from the dropdown menu
+     */
   public void changeDestination() {
 
     inGameChatModel.changeDestination(inGameChatModel.getClientThread().messageMatchMap.get(dropDown3.getValue()));

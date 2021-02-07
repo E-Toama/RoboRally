@@ -6,11 +6,19 @@ import game.player.Player;
 
 import java.util.HashMap;
 
+/**
+ * ViewModel of the complete game window /mainView
+ * @author
+ */
 public class MainViewModel {
 
     private final ClientThread clientThread;
     private MainViewController mainViewController;
 
+    /**
+     * Constructor of the mainViewModel with client thread
+     * @param mainViewController the controller class of the mainView
+     */
     public MainViewModel(MainViewController mainViewController) {
         //Client <-> Model
         this.clientThread = ClientThread.getInstance();
@@ -20,15 +28,20 @@ public class MainViewModel {
 
     }
 
+    /**
+     * gets the mainViewController
+     * @return mainViewController
+     */
     public MainViewController getMainViewController() {
         return mainViewController;
     }
 
+    /**
+     * calls switchScenes() in the mainViewController
+     */
     public void switchScenes() {
         mainViewController.switchScenes();
     }
-
-
 
 
 

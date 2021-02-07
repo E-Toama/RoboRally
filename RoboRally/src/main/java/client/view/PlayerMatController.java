@@ -19,6 +19,10 @@ import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
 
+/**
+ * Controller class for the player mats
+ * @author
+ */
 public class PlayerMatController {
 
     private PlayerMatModel playerMatModel = new PlayerMatModel(this);
@@ -65,6 +69,10 @@ public class PlayerMatController {
     private int currentRegisterActiveCount = 0;
 
 
+    /**
+     * binds the FXML attributes to the playerMatModel properties
+     * initializes checkpoint, cards and energy point counters
+     */
     @FXML
     public void initialize() {
         userNameValue.textProperty().bindBidirectional(playerMatModel.getUserName());
@@ -81,10 +89,16 @@ public class PlayerMatController {
         createCardsSlots();
     }
 
+    /**
+     * @return PlayerMatModel playerMatModel
+     */
     public PlayerMatModel getPlayerMatModel() {
         return playerMatModel;
     }
 
+    /**
+     *  initializes player mat with five inverted cards
+     */
     public void createCardsSlots(){
 
             for (int i = 0; i < 5; i++) {
@@ -100,10 +114,18 @@ public class PlayerMatController {
 
     }
 
+    /**
+     *
+     * @return GridPane playerMatPane
+     */
     public GridPane getPlayerMat(){
         return playerMatPane;
     }
 
+    /**
+     * sets the chosen programming cards into the player mat
+     * @param card
+     */
     public void setTakenRegister(String card) {
         ImageView cardToDisplay = ImageBuilder.adjustToPlayerMatView(card);
         Button button = (Button) registers[registerForAnimation].getChildren().get(1);
@@ -111,12 +133,19 @@ public class PlayerMatController {
         registerForAnimation++;
     }
 
+    /**
+     * disables button and sends PlayIt after the card button was chosen
+     * @param button
+     */
     private void sendPlayIt(Button button) {
         button.setDisable(true);
         button.setVisible(false);
         playerMatModel.sendPlayIt();
     }
 
+    /**
+     * activates the programming card buttons of the player mat in the activation phase
+     */
     public void activateRegisterButton() {
         Button button = (Button) registers[currentRegisterActiveCount].getChildren().get(1);
         button.setDisable(false);
@@ -124,6 +153,9 @@ public class PlayerMatController {
         currentRegisterActiveCount++;
     }
 
+    /**
+     * resets the registers
+     */
     public void resetRegisterCounts() {
         currentRegisterActiveCount = 0;
         registerForAnimation = 0;

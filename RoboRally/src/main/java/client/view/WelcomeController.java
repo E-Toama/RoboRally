@@ -6,6 +6,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
+/**
+ * Controller class for the WelcomeView
+ * @author
+ */
 public class WelcomeController {
 
     private final WelcomeViewModel welcomeViewModel = new WelcomeViewModel();
@@ -31,6 +35,9 @@ public class WelcomeController {
     @FXML
     private Button zoomBotButton;
 
+    /**
+     * binds FXML attributes to welcomeViewModel properties
+     */
     @FXML
     void initialize() {
         userTextField.textProperty().bindBidirectional(welcomeViewModel.userNameTextFieldProperty());
@@ -42,42 +49,64 @@ public class WelcomeController {
         zoomBotButton.disableProperty().bindBidirectional(welcomeViewModel.zoomBotTakenProperty());
     }
 
+    /**
+     * calls submitPlayer() in welcomeViewModel
+     */
     public void submitPlayer() {
 
         welcomeViewModel.submitPlayer();
 
     }
 
+
+    /**
+     * calls setSmashBot() in welcomeViewModel
+     */
     public void setSmashBot() {
 
         welcomeViewModel.setSmashBot();
 
     }
 
+    /**
+     * calls setHulk() in welcomeViewModel
+     */
     public void setHulk() {
 
         welcomeViewModel.setHulk();
 
     }
 
+    /**
+     * calls setSpinBot() in welcomeViewModel
+     */
     public void setSpinBot() {
 
         welcomeViewModel.setSpinBot();
 
     }
 
+    /**
+     * calls hammerBot() in welcomeViewModel
+     */
     public void setHammerBot() {
 
         welcomeViewModel.setHammerBot();
 
     }
 
+    /**
+     * calls setTwonky() in welcomeViewModel
+     */
     public void setTwonky() {
 
         welcomeViewModel.setTwonky();
 
     }
 
+    /**
+     * calls setZoomBot() in welcomeViewModel
+     */
     public void setZoomBot() {
 
         welcomeViewModel.setZoomBot();

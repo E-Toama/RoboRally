@@ -15,6 +15,10 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+/**
+ * Controller class for the chooseTrack, timerEnded and pickDamage popups
+ * @author
+ */
 public class PopupController {
 
     private ClientThread clientThread;
@@ -34,20 +38,22 @@ public class PopupController {
     private int count;
     private int cardsLeftToPick;
 
+    /**
+     * Constructor for PopupController with client thread
+     * initializes empty stage and outer container of the popups
+     * initializes popup attributes
+     *
+     */
     public PopupController() {
         clientThread = ClientThread.getInstance();
 
-        //Init empty stage
         stage = new Stage();
         //stage.initModality(Modality.APPLICATION_MODAL);
 
-        //Init outer container
         popupContainer = new VBox();
-        //popupContainer.setPrefWidth(600);
-        //popupContainer.setAlignment(Pos.CENTER);
 
 
-        //init title label
+
         titleLabel = new Label();
         contentLabel = new Label();
         contentContainer = new GridPane();
@@ -61,6 +67,10 @@ public class PopupController {
         contentContainer.setId("contentContainer");
     }
 
+    /**
+     * shows chooseTrack / mapChoice popup
+     * @param availableMaps are Dizzy Highway and Extra Crsipy
+     */
     public void showMapChoice(String[] availableMaps) {
 
         titleLabel.setText("Choose Track");
@@ -90,6 +100,11 @@ public class PopupController {
 
     }
 
+    /**
+     * shows pickDamage popups
+     * @param count is the amount of damage cards which has to be chosen
+     * @param availableDamageCards are the shown damage cards
+     */
     public void showPickDamage(int count, LinkedList<String> availableDamageCards) {
 
         this.count = count;
@@ -124,6 +139,11 @@ public class PopupController {
 
     }
 
+    /**
+     * shows timerEnd popup
+     * @param slowPlayers are the players who didn't finish before the timer ended
+     * @param yourCards are the programming cards
+     */
     public void showEndOfProgrammingPhase(String slowPlayers, String[] yourCards) {
 
         titleLabel.setText("Timer ran out!");
@@ -143,7 +163,10 @@ public class PopupController {
 
     }
 
-
+    /**
+     * shows errorMesssage pop up
+     * @param errorMessage is an  error
+     */
     public void showErrorMessage(String errorMessage) {
         titleLabel.setText("An Error occurred...");
         contentLabel.setText(errorMessage);
@@ -154,8 +177,8 @@ public class PopupController {
 
 
     /**
-     * Submit Track in MapChoice-Popup
-     * @param button
+     * submits Track in MapChoice-Popup
+     * @param button is a track button
      */
     private void submitTrack(Button button) {
         stage.close();
@@ -165,8 +188,8 @@ public class PopupController {
     }
 
     /**
-     * Submit Chosen DamageCard
-     * @param button
+     * submits Chosen DamageCard
+     * @param button is a card button
      */
     private void submitCard(Button button) {
         button.setDisable(true);

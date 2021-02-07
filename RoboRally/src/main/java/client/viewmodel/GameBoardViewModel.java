@@ -8,6 +8,10 @@ import game.gameboard.GameBoard;
 
 import java.util.HashSet;
 
+/**
+ * ViewModel class for the GameBoard
+ * @author
+ */
 public class GameBoardViewModel {
 
     ClientThread clientThread;
@@ -16,6 +20,9 @@ public class GameBoardViewModel {
     BoardElement[][] gameBoard;
     HashSet<Integer> startingPositions;
 
+    /**
+     * Constructor for a GameBoardViewModel with client thread and gameBoardController
+     */
     public GameBoardViewModel() {
         //Client <-> Model
         this.clientThread = ClientThread.getInstance();
@@ -28,6 +35,9 @@ public class GameBoardViewModel {
         initStartingPositions();
     }
 
+    /**
+     * initializes starting point positions
+     */
     private void initStartingPositions() {
         startingPositions = new HashSet<>();
         startingPositions.add(14);
@@ -38,6 +48,10 @@ public class GameBoardViewModel {
         startingPositions.add(105);
     }
 
+    /**
+     * sets GameBoard with the right laser values
+     * @param gameBoard
+     */
     public void setGameBoard(GameBoard gameBoard) {
 
         ClientLaserHandler clientLaserHandler = new ClientLaserHandler();
@@ -51,28 +65,54 @@ public class GameBoardViewModel {
         gameBoardController.initBoard();
     }
 
+    /**
+     * gets a gameBoard
+     * @return gameBoard
+     */
     public BoardElement[][] getGameBoard() {
         return gameBoard;
     }
 
 
+    /**
+     *
+     * @return GameBoardController gameBoardController
+     */
     public GameBoardController getGameBoardController() {
         return gameBoardController;
     }
 
+    /**
+     *
+     * @return HashSet<Integer> startingPostions
+     */
     public HashSet<Integer> getStartingPositions() {
         return startingPositions;
     }
 
+    /**
+     * passes the chosen starting position
+     * @param position
+     */
     public void transmitStartingPosition(int position) {
         clientThread.sendStartingPosition(position);
     }
 
+    /**
+     * sets the robot figure on the chosen starting position
+     * @param robotFigure ist he robot of the player
+     * @param position the chosen starting position of the player
+     */
     public void setStartingPosition(int robotFigure, int position) {
         startingPositions.remove(position);
         gameBoardController.setStartingPosition(robotFigure, position);
     }
 
+    /**
+     * sets the robot figure of the other players on the chosen starting position
+     * @param robotFigure is a robot of the other players
+     * @param position is the chosen starting position of the oter players
+     */
     public void setOtherRobotStartingPostion(int robotFigure, int position) {
         startingPositions.remove(position);
         gameBoardController.setOtherRobotStartingPosition(robotFigure, position);

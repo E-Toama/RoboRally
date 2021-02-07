@@ -10,6 +10,10 @@ import javafx.fxml.FXMLLoader;
 
 import java.io.IOException;
 
+/**
+ * ViewModel class for the enemy player mats
+ * @author
+ */
 public class EnemyMatModel {
 
     private ClientThread clientThread;
@@ -29,6 +33,11 @@ public class EnemyMatModel {
     private StringProperty energyPoints = new SimpleStringProperty();
     private StringProperty pickedUpDamageCards = new SimpleStringProperty();
 
+    /**
+     * Constructor for the EnemyMatModel
+     * Initializes default values for the player identification  and roboter values on the enemy playermat
+     * @param enemyMatController is the controller class of the enemy playdrmats
+     */
     public EnemyMatModel(EnemyMatController enemyMatController) {
         //Client <-> Model
         clientThread = ClientThread.getInstance();
@@ -36,7 +45,6 @@ public class EnemyMatModel {
         //Model <-> Controller
         this.enemyMatController = enemyMatController;
 
-        // Initialize defaults
         this.playerID = 0;
         this.currentPosition = -1;
         this.isCurrentPlayer = false;
@@ -53,7 +61,10 @@ public class EnemyMatModel {
 
     }
 
-    //Setter for player identification values
+    /**
+     *
+     *Setter for player identification values
+     */
     public void setPlayerValues(Player player) {
         this.playerID = player.getPlayerID();
         this.userName.set(player.getName());
@@ -65,62 +76,119 @@ public class EnemyMatModel {
         return isCurrentPlayer;
     }
 
+    /**
+     * Setter for the current player
+     * @param currentPlayer is true if its the players turn
+     */
     public void setCurrentPlayer(boolean currentPlayer) {
         isCurrentPlayer = currentPlayer;
     }
 
-    //Basic Getters and Setters
+
+    /**
+     * gets the playerID of a player
+     * @return playerID of a player
+     */
     public int getPlayerID() {
         return playerID;
     }
 
+    /**
+     * sets the playerID  of a player
+     * @param playerID is going to be the playerID of a player
+     */
     public void setPlayerID(int playerID) {
         this.playerID = playerID;
     }
 
+    /**
+     * gets the current players position
+     * @return currentPosition
+     */
     public int getCurrentPosition() {
         return currentPosition;
     }
 
+    /**
+     * sets the current position
+     * @param currentPosition
+     */
     public void setCurrentPosition(int currentPosition) {
         this.currentPosition = currentPosition;
     }
 
-    //Setters for Bindings
+
+    /**
+     * sets the energy point count of the player mat
+     * @param energyPoints
+     */
     public void setEnergyPoints(int energyPoints) {
         int energyPointSum = energyPoints + Integer.parseInt(this.energyPoints.getValue());
         this.energyPoints.set(String.valueOf(energyPointSum));
     }
 
+    /**
+     * sets the checkpoint count of the player mat
+     * @param checkpointsreached
+     */
     public void setCheckpointsreached(String checkpointsreached) {
         this.checkpointsreached.set(checkpointsreached);
     }
 
+    /**
+     * sets the picked damage card count of the player mat
+     * @param pickedUpDamageCards
+     */
     public void setPickedUpDamageCards(int pickedUpDamageCards) {
         int damageCardSum = pickedUpDamageCards + Integer.parseInt(this.pickedUpDamageCards.getValue());
         this.pickedUpDamageCards.set(String.valueOf(damageCardSum));
     }
 
 
+    /**
+     * gets the controller class of the enemy mat
+     * @return
+     */
     public EnemyMatController getEnemyMatController() {
         return enemyMatController;
     }
 
-    //Getters for Bindings
+
+    /**
+     *
+     * @return StringProperty userName for bindings
+     */
     public StringProperty getUserName() {
         return userName;
     }
+
+    /**
+     *
+     * @return StringProperty checkpointsreached for bindings
+     */
     public StringProperty getCheckpointsreached() {
         return checkpointsreached;
     }
+
+    /**
+
+     * @return StringProperty energyPoints for bindings
+     */
     public StringProperty getEnergyPoints() {
         return energyPoints;
     }
+
+    /**
+     * @return StringProperty pickedDamageCards for bindings
+     */
     public StringProperty getPickedUpDamageCards() {
         return pickedUpDamageCards;
     }
 
-
+    /**
+     * gets the robot figure number
+     * @return int figure
+     */
     public int getFigure() {
         return this.figure;
     }
