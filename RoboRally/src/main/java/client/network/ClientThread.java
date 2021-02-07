@@ -1050,6 +1050,7 @@ public class ClientThread implements Runnable {
 
             } else if (secondIncomingMessage.getMessageType().equals("Error") && secondIncomingMessage.getMessageBody() instanceof Error) {
 
+                handleError(secondIncomingMessage);
                 Error receivedMessage = (Error) secondIncomingMessage.getMessageBody();
                 logger.getLogger().warning("Error with second incoming message happend.");
                 throw new IOException(receivedMessage.getError());
