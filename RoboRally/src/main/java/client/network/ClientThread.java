@@ -1045,8 +1045,11 @@ public class ClientThread implements Runnable {
                 Welcome receivedMessage = (Welcome) secondIncomingMessage.getMessageBody();
 
                 this.ID = receivedMessage.getPlayerID();
-                chatMessages.add("Welcome to RoboRally by NeidischeNarwale! \n" +
-                        "press the \"Iam ready\"-Button to start the game.");
+                Platform.runLater(() -> {
+                    chatMessages.add("Welcome to RoboRally by NeidischeNarwale! \n" +
+                            "press the \"Iam ready\"-Button to start the game.");
+                });
+
 
             } else if (secondIncomingMessage.getMessageType().equals("Error") && secondIncomingMessage.getMessageBody() instanceof Error) {
 
