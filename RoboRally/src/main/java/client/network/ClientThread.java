@@ -305,8 +305,8 @@ public class ClientThread implements Runnable {
                         handleEnergy(incomingMessage);
                         break;
 
-                    case "CheckPointReached":
-                        handleCheckPointReached(incomingMessage);
+                    case "CheckpointReached":
+                        handleCheckpointReached(incomingMessage);
                         break;
 
                     case "GameWon":
@@ -960,7 +960,7 @@ public class ClientThread implements Runnable {
         }
     }
 
-    private void handleCheckPointReached(Message incomingMessage) throws IOException {
+    private void handleCheckpointReached(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof CheckpointReached) {
             CheckpointReached checkpointReached = (CheckpointReached) incomingMessage.getMessageBody();
             int playerID = checkpointReached.getPlayerID();

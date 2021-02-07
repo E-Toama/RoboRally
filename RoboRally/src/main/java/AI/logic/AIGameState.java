@@ -1,6 +1,7 @@
 package AI.logic;
 
 import AI.logic.simplecards.CardS;
+import AI.logic.utilities.tablebases.CSVHandler;
 import game.gameboard.BoardElement;
 import game.gameboard.GameBoard;
 import game.utilities.Position;
@@ -189,10 +190,10 @@ public class AIGameState {
 
             case "DizzyHighway" -> {
 
-                this.orientationUpRating = null;
-                this.orientationLeftRating = null;
-                this.orientationDownRating = null;
-                this.orientationRightRating = null;
+                this.orientationUpRating = CSVHandler.convertCSVtoArray("DizzyHighWayRight.csv");
+                this.orientationLeftRating = CSVHandler.convertCSVtoArray("DizzyHighWayRight.csv");
+                this.orientationDownRating = CSVHandler.convertCSVtoArray("DizzyHighWayRight.csv");
+                this.orientationRightRating = CSVHandler.convertCSVtoArray("DizzyHighWayRight.csv");
 
             }
 
