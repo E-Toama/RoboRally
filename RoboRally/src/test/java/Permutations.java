@@ -1,4 +1,5 @@
 import server.network.TestMessages;
+import tablebases.CSVHandler;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,7 +9,10 @@ public class Permutations {
 
         ArrayList<String[]> possibleCombinations = new ArrayList<>();
         String[] arr = TestMessages.testCardsForProgrammingView;
-        combinations(arr, 5, 0, new String[5]);
+        //combinations(arr, 5, 0, new String[5]);
+
+        int[][] array = CSVHandler.convertCSVtoArray("/home/ada/IdeaProjects/vp-neidische-narwale/RoboRally/src/test/java/tablebases/TestTable.csv");
+        System.out.println(Arrays.deepToString(array));
     }
 
     static void combinations(String[] arr, int len, int startPosition, String[] result) {
