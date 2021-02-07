@@ -5,6 +5,8 @@ import AI.logic.utilities.AICardHandler;
 import game.gameboard.BoardElement;
 import game.gameboard.GameBoard;
 import game.player.Player;
+import game.utilities.Position;
+import game.utilities.PositionLookUp;
 import utilities.MessageHandler;
 import utilities.messages.*;
 import utilities.messages.Error;
@@ -17,6 +19,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AINetworkThread implements Runnable {
 
@@ -281,6 +284,9 @@ public class AINetworkThread implements Runnable {
                         handleGameWon(incomingMessage);
                         break;
 
+                    case "PickDamage":
+                        handlePickDamage(incomingMessage);
+
                     default:
                         break;
 
@@ -360,6 +366,35 @@ public class AINetworkThread implements Runnable {
     }
 
     private void handleCurrentPlayer(Message incomingMessage) {
+
+        if (incomingMessage.getMessageBody() instanceof CurrentPlayer) {
+
+            CurrentPlayer receivedMessage = (CurrentPlayer) incomingMessage.getMessageBody();
+
+            if (receivedMessage.getPlayerID() == playerID) {
+
+                if (aiGameState.getActivePhase() == 0) {
+
+                    Map.Entry<Position, BoardElement> entry = aiGameState.getGameBoard().getStartingPoints().entrySet().iterator().next();
+
+                    Position startingPosition = entry.getKey();
+
+                    int startingPositionAsInt = PositionLookUp.XYToPosition.get(startingPosition);
+
+                    String setStartingPoint = messageHandler.buildMessage("SetStartingPoint", new SetStartingPoint(startingPositionAsInt));
+                    sendJson(setStartingPoint);
+
+                } else if (aiGameState.getActivePhase() == 3) {
+
+                    String playIt = messageHandler.buildMessage("PlayIt", new PlayIt());
+                    sendJson(playIt);
+
+                }
+
+            }
+
+        }
+
     }
 
     private void handleActivePhase(Message incomingMessage) {
@@ -375,6 +410,32 @@ public class AINetworkThread implements Runnable {
     }
 
     private void handleStartingPointTaken(Message incomingMessage) {
+
+        if (incomingMessage.getMessageBody() instanceof StartingPointTaken) {
+
+            StartingPointTaken receivedMessage = (StartingPointTaken) incomingMessage.getMessageBody();
+
+            if (receivedMessage.getPlayerID() != playerID) {
+
+                Position takenPosition = PositionLookUp.positionToXY.get(receivedMessage.getPosition());
+
+                aiGameState.getGameBoard().getStartingPoints().remove(takenPosition);
+
+            } else {
+
+                Position startPosition = PositionLookUp.positionToXY.get(receivedMessage.getPosition());
+                BoardElement startBoardElement = aiGameState.getGameBoard().getGameBoard()[startPosition.getY()][startPosition.getX()];
+
+                aiGameState.setStartPosition(startPosition);
+                aiGameState.setStartBoardElement(startBoardElement);
+
+                aiGameState.setCurrentPosition(startPosition);
+                aiGameState.setCurrentBoardElement(startBoardElement);
+
+            }
+
+        }
+
     }
 
     private void handleYourCards(Message incomingMessage) {
@@ -416,6 +477,21 @@ public class AINetworkThread implements Runnable {
     }
 
     private void handleMovement(Message incomingMessage) {
+
+        if (incomingMessage.getMessageBody() instanceof Movement) {
+
+            Movement receivedMessage = (Movement) incomingMessage.getMessageBody();
+
+            if (receivedMessage.getPlayerID() == playerID) {
+
+                Position position = PositionLookUp.positionToXY.get(receivedMessage.getTo());
+
+                aiGameState.setCurrentPosition(position);
+
+            }
+
+        }
+
     }
 
     private void handleDrawDamage(Message incomingMessage) {
@@ -428,6 +504,24 @@ public class AINetworkThread implements Runnable {
     }
 
     private void handlePlayerTurning(Message incomingMessage) {
+
+        if (incomingMessage.getMessageBody() instanceof PlayerTurning) {
+
+            PlayerTurning receivedMessage = (PlayerTurning) incomingMessage.getMessageBody();
+
+            if (receivedMessage.getPlayerID() == playerID) {
+
+                switch (receivedMessage.getDirection()) {
+
+                    case "clockwise" -> aiGameState.turningClockwise();
+                    case "counterClockwise" -> aiGameState.turningCounterClockwise();
+
+                }
+
+            }
+
+        }
+
     }
 
     private void handleEnergy(Message incomingMessage) {
@@ -441,11 +535,40 @@ public class AINetworkThread implements Runnable {
 
             aiGameState.setTargetCheckpoint(receivedMessage.getNumber() + 1);
 
+            aiGameState.setRatingMaps(aiGameState.getGameBoardName(), aiGameState.getTargetCheckpoint());
+
         }
 
     }
 
     private void handleGameWon(Message incomingMessage) {
+
+        if (incomingMessage.getMessageBody() instanceof GameWon) {
+
+            GameWon receivedMessage = (GameWon) incomingMessage.getMessageBody();
+
+            if (receivedMessage.getPlayerID() == playerID) {
+
+                System.out.println("Won the Game!");
+
+            } else {
+
+                System.out.println("Lost the Game!");
+
+            }
+
+        }
+
+    }
+
+    public void handlePickDamage(Message incomingMessage) {
+
+        if (incomingMessage.getMessageBody() instanceof PickDamage) {
+
+            PickDamage receivedMessage = (PickDamage) incomingMessage.getMessageBody();
+
+        }
+
     }
 
     public void sendJson(String Json) {

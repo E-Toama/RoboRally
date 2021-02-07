@@ -29,6 +29,7 @@ public class GameBoard {
     private final HashMap<Position, BoardElement> lasers = new HashMap<>();
     private final HashMap<Position, BoardElement> checkPoints = new HashMap<>();
     private final HashMap<Position, BoardElement> energySpaces = new HashMap<>();
+    private final HashMap<Position, BoardElement> startingPoints = new HashMap<>();
 
     public GameBoard(String board) {
 
@@ -83,6 +84,10 @@ public class GameBoard {
 
     public HashMap<Position, BoardElement> getEnergySpaces() {
         return energySpaces;
+    }
+
+    public HashMap<Position, BoardElement> getStartingPoints() {
+        return startingPoints;
     }
 
     public GameBoardMapObject[] toMap() {
@@ -244,6 +249,12 @@ public class GameBoard {
                 if (boardElement.isEnergySpace()) {
 
                     energySpaces.put(position, boardElement);
+
+                }
+
+                if (boardElement.isStartingPoint()) {
+
+                    startingPoints.put(position, boardElement);
 
                 }
 

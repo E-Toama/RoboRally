@@ -1,6 +1,7 @@
 package AI.logic.utilities;
 
 import AI.logic.AIGameState;
+import AI.logic.simplecards.CardS;
 import AI.network.AINetworkThread;
 import utilities.MessageHandler;
 import utilities.messages.SelectCard;
@@ -11,9 +12,9 @@ import java.util.List;
 
 public class AICardHandler {
 
-    private AINetworkThread aiNetworkThread;
-    private AIGameState aiGameState;
-    private MessageHandler messageHandler = new MessageHandler();
+    private final AINetworkThread aiNetworkThread;
+    private final AIGameState aiGameState;
+    private final MessageHandler messageHandler = new MessageHandler();
 
     public AICardHandler(AINetworkThread aiNetworkThread, AIGameState aiGameState) {
 
@@ -26,7 +27,7 @@ public class AICardHandler {
 
         List<String[]> possibleRegisters = getPossibleRegisters(cards);
 
-        int currentBestRating = 0;
+        int currentBestRating = 100;
         String[] currentBestPossibleRegister = new String[0];
 
         for (String[] possibleRegister : possibleRegisters) {
@@ -99,9 +100,75 @@ public class AICardHandler {
 
     }
 
-    private int calculateDestinationRating(String[] possibleRegister) {
+    private int calculateDestinationRating(String[] possibleRegisters) {
 
-        return 0;
+        if (possibleRegisters[0].equals("Again")) {
+
+            return 100;
+
+        }
+
+        SimpleBeltHandler simpleBeltHandler = new SimpleBeltHandler(aiGameState);
+        SimpleGearsHandler simpleGearsHandler = new SimpleGearsHandler(aiGameState);
+        SimpleCheckPointHandler simpleCheckPointHandler = new SimpleCheckPointHandler(aiGameState);
+
+        aiGameState.setIntermediatePosition(aiGameState.getCurrentPosition());
+        aiGameState.setIntermediateBoardElement(aiGameState.getCurrentBoardElement());
+        aiGameState.setIntermediateOrientation(aiGameState.getCurrentOrientation());
+        aiGameState.setIntermediateOrientationUpRating(aiGameState.getOrientationUpRating());
+        aiGameState.setIntermediateOrientationLeftRating(aiGameState.getOrientationLeftRating());
+        aiGameState.setIntermediateOrientationDownRating(aiGameState.getOrientationDownRating());
+        aiGameState.setIntermediateOrientationRightRating(aiGameState.getOrientationRightRating());
+
+        CardS[] register = new CardS[possibleRegisters.length];
+
+        for (int i = 0; i < possibleRegisters.length; i++) {
+
+            register[i] = CardS.getCardByString(possibleRegisters[i]);
+
+        }
+
+        aiGameState.setIntermediateRegister(register);
+
+        int currentRegisterNumber = 1;
+
+        for (CardS card : register) {
+
+            if (!aiGameState.getWasRebooted()) {
+
+                card.action(aiGameState, currentRegisterNumber);
+
+                if (aiGameState.getIntermediateBoardElement().isBlueConveyorBelt() || aiGameState.getIntermediateBoardElement().isBlueRotatingConveyorBelt()) {
+                    simpleBeltHandler.simulateBlueConveyorBelts();
+                }
+
+                if (aiGameState.getIntermediateBoardElement().isGreenConveyorBelt() || aiGameState.getIntermediateBoardElement().isGreenRotatingConveyorBelt()) {
+                    simpleBeltHandler.simulateGreenConveyorBelts();
+                }
+
+                if (aiGameState.getIntermediateBoardElement().isGear()) {
+                    simpleGearsHandler.simulateGears();
+                }
+
+                if (aiGameState.getIntermediateBoardElement().isControlPoint() > 0) {
+                    simpleCheckPointHandler.simulateCheckPointReached();
+                }
+
+                currentRegisterNumber++;
+
+            }
+
+        }
+
+        return switch (aiGameState.getIntermediateOrientation()) {
+
+            case "up" -> aiGameState.getIntermediateOrientationUpRating()[aiGameState.getIntermediatePosition().getY()][aiGameState.getIntermediatePosition().getX()];
+            case "left" -> aiGameState.getIntermediateOrientationLeftRating()[aiGameState.getIntermediatePosition().getY()][aiGameState.getIntermediatePosition().getX()];
+            case "down" -> aiGameState.getIntermediateOrientationDownRating()[aiGameState.getIntermediatePosition().getY()][aiGameState.getIntermediatePosition().getX()];
+            case "right" -> aiGameState.getIntermediateOrientationRightRating()[aiGameState.getIntermediatePosition().getY()][aiGameState.getIntermediatePosition().getX()];
+            default -> 100;
+
+        };
 
     }
 
