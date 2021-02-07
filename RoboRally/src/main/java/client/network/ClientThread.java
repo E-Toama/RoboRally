@@ -774,10 +774,10 @@ public class ClientThread implements Runnable {
             for (Integer id : timerEnded.getPlayerIDs()) {
                 if (id == ID) {
                     String robotFigure = Robot.getRobotName(playerMatModel.getFigure());
-                    slowPlayers.append(robotFigure).append(" ");
+                    slowPlayers.append(robotFigure).append("\n");
                 } else {
                     String robotFigure = Robot.getRobotName(enemyList.get(id).getFigure());
-                    slowPlayers.append(robotFigure).append(" ");
+                    slowPlayers.append(robotFigure).append("\n");
                 }
             }
             programmingViewModel.setSlowPlayers(slowPlayers.toString());
@@ -1061,7 +1061,7 @@ public class ClientThread implements Runnable {
                 this.ID = receivedMessage.getPlayerID();
                 Platform.runLater(() -> {
                     chatMessages.add("Welcome to RoboRally by NeidischeNarwale! \n" +
-                            "press the \"Iam ready\"-Button to start the game.");
+                            "press the \"I am ready\"-Button to join the game.");
                 });
 
 

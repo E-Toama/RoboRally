@@ -146,8 +146,13 @@ public class PopupController {
      */
     public void showEndOfProgrammingPhase(String slowPlayers, String[] yourCards) {
 
-        titleLabel.setText("Timer ran out!");
-        contentLabel.setText(slowPlayers);
+        titleLabel.setText("Timer ended!");
+        if (!slowPlayers.isEmpty()) {
+            contentLabel.setText("Way too slow:\n" + slowPlayers + "\nThese are your cards: ");
+        } else {
+            contentLabel.setText("These are your cards: ");
+        }
+
 
         int columnCounter = 0;
 
