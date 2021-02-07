@@ -15,6 +15,8 @@ import java.util.List;
 
 public class GameBoard {
 
+    private String boardName;
+
     private BoardElement[][] gameBoard;
 
     private Position antennaPosition;
@@ -33,6 +35,8 @@ public class GameBoard {
 
     public GameBoard(String board) {
 
+        this.boardName = board;
+
         switch (board) {
             case "DizzyHighway" -> this.gameBoard = createDizzyHighway();
             case "ExtraCrispy" -> this.gameBoard = createExtraCrispy();
@@ -40,6 +44,10 @@ public class GameBoard {
 
         initializeMaps();
 
+    }
+
+    public String getBoardName() {
+        return boardName;
     }
 
     public Position getAntennaPosition() {

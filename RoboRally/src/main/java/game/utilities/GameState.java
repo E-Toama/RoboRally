@@ -58,6 +58,13 @@ public class GameState {
 
         }
 
+        switch (gameBoard.getBoardName()) {
+
+            case "DizzyHighway" -> checkPointsNeededToWin = 1;
+            case "ExtraCrispy" -> checkPointsNeededToWin = 4;
+
+        }
+
     }
 
     public int[] getNotFinishedPlayer() {
