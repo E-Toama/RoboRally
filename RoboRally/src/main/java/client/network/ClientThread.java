@@ -989,6 +989,7 @@ public class ClientThread implements Runnable {
             //ToDo: Update GUI GameWon - Simple PopUp?
 
 
+
             logger.getLogger().info("Player with id " + gameWon.getPlayerID() + " has won the game.");
         } else {
             logger.getLogger().severe("Message body error in handleGameWon method.");
