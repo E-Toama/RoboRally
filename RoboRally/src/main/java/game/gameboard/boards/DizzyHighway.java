@@ -12,6 +12,11 @@ import game.gameboard.gameboardfieldobjects.RestartPointFieldObject;
 import game.gameboard.gameboardfieldobjects.RotatingBeltFieldObject;
 import game.gameboard.gameboardfieldobjects.WallFieldObject;
 
+/**
+ * This class represents the Dizzy Highway course map without its starting board.
+ * 
+ * @author 
+ */
 public class DizzyHighway {
 
     public final BoardElement[][] _5B = {

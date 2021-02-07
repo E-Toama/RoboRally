@@ -584,7 +584,9 @@ public class ClientThread implements Runnable {
                 enemyList.get(playerID).setCurrentPlayer(true);
                 playerMatModel.setCurrentPlayer(false);
             }
-            logger.getLogger().info("Current player id " + currentPlayer.getPlayerID() + ".");
+
+
+            logger.getLogger().info("Current player id is " + currentPlayer.getPlayerID() + ".");
 
         } else {
             logger.getLogger().severe("Message body error in handleCurrentPlayer method.");
@@ -645,7 +647,7 @@ public class ClientThread implements Runnable {
             int chosenPoint = startingPointTaken.getPosition();
             Player currentPlayer = playerList.get(playerID);
 
-            logger.getLogger().info(chosenPoint + " was picked by " + playerID + ".");
+            logger.getLogger().info("position " + chosenPoint + " was picked by " + playerID + ".");
 
             if (playerID == ID) {
                 playerMatModel.setCurrentPosition(chosenPoint);
@@ -890,7 +892,7 @@ public class ClientThread implements Runnable {
                 });
             }
 
-            logger.getLogger().info("Player wiht id " + drawDamage.getPlayerID() + " has drew the damage cards: " + drawDamage.getCards() + ".");
+            logger.getLogger().info("Player with id " + drawDamage.getPlayerID() + " has drew damage cards.");
         } else {
             logger.getLogger().severe("Message body error in handleDrawDamage method.");
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of DrawDamage)");

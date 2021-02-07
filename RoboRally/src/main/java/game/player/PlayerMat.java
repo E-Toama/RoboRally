@@ -269,15 +269,10 @@ public class PlayerMat {
 
                 discardedCards.add(card);
 
-            } else {
-
-                System.out.println("Tried adding an empty Card to discarded Pile @addRemainingCardsToDiscardedPile");
-
             }
 
         }
 
-        //discardedCards.addAll(currentHand);
 
         currentHand = new ArrayList<>();
 
@@ -291,15 +286,9 @@ public class PlayerMat {
 
                 discardedCards.add(card);
 
-            } else {
-
-                System.out.println("Tried adding an empty Card to discarded Pile @addCompleteHandToDiscardedPile");
-
             }
 
         }
-
-        //discardedCards.addAll(currentHand);
 
         currentHand = new ArrayList<>();
 
@@ -312,10 +301,6 @@ public class PlayerMat {
             if (card != null) {
 
                 discardedCards.add(card);
-
-            } else {
-
-                System.out.println("Tried adding an empty Card to discarded Pile @discardRegister");
 
             }
 

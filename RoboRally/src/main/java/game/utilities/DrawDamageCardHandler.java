@@ -8,11 +8,22 @@ import utilities.messages.PickDamage;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class is represents the draw damage cards process.
+ * 
+ * @author 
+ */
 public class DrawDamageCardHandler {
 
     private MessageHandler messageHandler = new MessageHandler();
     private GameState gameState;
 
+    /**
+     * Constructor for initializing the current game state.
+     * 
+     * @param gameState
+     *          the current game state
+     */
     public DrawDamageCardHandler(GameState gameState) {
         this.gameState = gameState;
     }
@@ -20,6 +31,15 @@ public class DrawDamageCardHandler {
     private List<Card> drawnDamageCardsList;
     private int notPossibleCount;
 
+    /**
+     * This method is for drawing the damage cards that should be drawn if damage is received.
+     * 
+     * @param playerID
+     *          the player id
+     *          
+     * @param wantedDamageCards
+     *          the damage cards that should be drawn
+     */
     public synchronized void drawDamageCards(int playerID, String[] wantedDamageCards) {
 
         drawnDamageCardsList = new ArrayList<>();
@@ -81,6 +101,14 @@ public class DrawDamageCardHandler {
 
     }
 
+    /**
+     * This method is for handling the players choosing of the damage cards.
+     * 
+     * @param playerID 
+     *          the player id
+     * @param selectedDamageCards
+     *          the list of the selected damage cards
+     */
     public synchronized void selectDamage(int playerID, String[] selectedDamageCards) {
 
         notPossibleCount = 0;
@@ -103,6 +131,14 @@ public class DrawDamageCardHandler {
 
     }
 
+    /**
+     * This method returns a list of the damage cards deck.
+     * 
+     * @param damageCardType 
+     *              the name of the damage card
+     *              
+     * @return damage cards deck
+     */
     private List<Card> getDamageCardDeck(String damageCardType) {
 
         return switch (damageCardType) {
