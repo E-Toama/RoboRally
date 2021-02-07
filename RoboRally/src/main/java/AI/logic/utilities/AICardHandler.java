@@ -38,6 +38,9 @@ public class AICardHandler {
 
             if (registerRating < currentBestRating) {
 
+                System.out.println(registerRating);
+                System.out.println(Arrays.toString(possibleRegister));
+
                 currentBestRating = registerRating;
                 currentBestPossibleRegister = possibleRegister;
 
@@ -114,13 +117,7 @@ public class AICardHandler {
         SimpleGearsHandler simpleGearsHandler = new SimpleGearsHandler(aiGameState);
         SimpleCheckPointHandler simpleCheckPointHandler = new SimpleCheckPointHandler(aiGameState);
 
-        aiGameState.setIntermediatePosition(aiGameState.getCurrentPosition());
-        aiGameState.setIntermediateBoardElement(aiGameState.getCurrentBoardElement());
-        aiGameState.setIntermediateOrientation(aiGameState.getCurrentOrientation());
-        aiGameState.setIntermediateOrientationUpRating(aiGameState.getOrientationUpRating());
-        aiGameState.setIntermediateOrientationLeftRating(aiGameState.getOrientationLeftRating());
-        aiGameState.setIntermediateOrientationDownRating(aiGameState.getOrientationDownRating());
-        aiGameState.setIntermediateOrientationRightRating(aiGameState.getOrientationRightRating());
+        initializeIntermediateVariables();
 
         CardS[] register = new CardS[possibleRegisters.length];
 
@@ -171,6 +168,19 @@ public class AICardHandler {
             default -> Integer.MAX_VALUE;
 
         };
+
+    }
+
+    private void initializeIntermediateVariables() {
+
+        aiGameState.setIntermediatePosition(aiGameState.getCurrentPosition());
+        aiGameState.setIntermediateBoardElement(aiGameState.getCurrentBoardElement());
+        aiGameState.setIntermediateOrientation(aiGameState.getCurrentOrientation());
+        aiGameState.setIntermediateOrientationUpRating(aiGameState.getOrientationUpRating());
+        aiGameState.setIntermediateOrientationLeftRating(aiGameState.getOrientationLeftRating());
+        aiGameState.setIntermediateOrientationDownRating(aiGameState.getOrientationDownRating());
+        aiGameState.setIntermediateOrientationRightRating(aiGameState.getOrientationRightRating());
+        aiGameState.setWasRebooted(false);
 
     }
 
