@@ -122,4 +122,14 @@ public class GameState {
 
     }
 
+    public void removePlayerFromGame(int playerID) {
+
+        PlayerMat playerMat = playerMatHashMap.remove(playerID);
+        playerMatList.remove(playerMat);
+        registerList.remove(playerMat);
+        nextRegisterList.remove(playerID);
+        playerList.remove(playerMat.getPlayer());
+
+    }
+
 }

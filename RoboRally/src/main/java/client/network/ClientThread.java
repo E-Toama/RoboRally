@@ -305,8 +305,8 @@ public class ClientThread implements Runnable {
                         handleEnergy(incomingMessage);
                         break;
 
-                    case "CheckPointReached":
-                        handleCheckPointReached(incomingMessage);
+                    case "CheckpointReached":
+                        handleCheckpointReached(incomingMessage);
                         break;
 
                     case "GameWon":
@@ -355,8 +355,8 @@ public class ClientThread implements Runnable {
 
                 enemyIDList.add(receivedMessage.getPlayer().getPlayerID());
                 welcomeViewModel.disableRobotButton(receivedMessage.getPlayer().getFigure());
-                String notificationName = receivedMessage.getPlayer().getName() + " has joined!";
-                String notificationRobot = "He has Robot No. " + receivedMessage.getPlayer().getFigure();
+                String notificationName = "Player " + receivedMessage.getPlayer().getName() + " has joined!";
+                String notificationRobot = "He chose Robot No. " + receivedMessage.getPlayer().getFigure();
 
                 Platform.runLater(() -> {
                     takenRobotList.add(receivedMessage.getPlayer().getFigure());
@@ -452,6 +452,8 @@ public class ClientThread implements Runnable {
             Scene mainScene = new Scene(mainViewModel.getMainViewController().getMainViewPane());
             Platform.runLater(() -> {
                 ViewController.getViewController().setScene(mainScene);
+                chatMessages.add("[GAME] \n" +
+                        "The game has started!");
             });
             logger.getLogger().info("Game started.");
 
@@ -509,12 +511,26 @@ public class ClientThread implements Runnable {
 
     }
 
+    /**
+     * Removes the playerID mentioned in the message from all playerlists and
+     * removes the figure from the Board
+     *
+     * @param incomingMessage contains playerID, status and action
+     * @throws IOException if messageType is incorrect
+     */
     private void handleConnectionUpdate(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof ConnectionUpdate) {
             ConnectionUpdate connectionUpdate = (ConnectionUpdate) incomingMessage.getMessageBody();
-            String robotName = Robot.getRobotName(playerList.get(connectionUpdate.getPlayerID()).getFigure());
+            int playerID = connectionUpdate.getPlayerID();
+            String robotName = Robot.getRobotName(playerList.get(playerID).getFigure());
+            int positionToRemove = enemyList.get(playerID).getCurrentPosition();
+
+            enemyList.remove(playerID);
+            playerList.remove(playerID);
+
             Platform.runLater(() -> {
                 chatMessages.add(robotName + " has lost connection and left the game");
+                gameBoardViewModel.getGameBoardController().removeRobot(positionToRemove);
             });
 
             logger.getLogger().info(connectionUpdate.getPlayerID() + " got disconnected.");
@@ -553,7 +569,7 @@ public class ClientThread implements Runnable {
 
                 if (clientGameState.getActivePhase() == 0) {
                     String robotName = playerMatModel.getRobotName().getValue();
-                    String gameMessage = "[GAME] \n" + robotName + ": choose a starting point!";
+                    String gameMessage = "[GAME] \n" +"It´s" + robotName + "´s turn to choose a starting point!";
 
                     Platform.runLater(() -> {
                         chatMessages.add(gameMessage);
@@ -585,6 +601,11 @@ public class ClientThread implements Runnable {
             if (activePhase.getPhase() == 2) {
                 Platform.runLater(() -> {
                     playerMatModel.updateDiscardedCount();
+                    chatMessages.add("[Game] \n" +
+                            "The programming phase has started. \n"+
+                            "select the cards on your register to program \n" +
+                            "your robot."
+                    );
                 });
             }
             if (activePhase.getPhase() == 3) {
@@ -600,6 +621,11 @@ public class ClientThread implements Runnable {
                     PopupController popupController = new PopupController();
                     popupController.showEndOfProgrammingPhase(slowPlayers, cardsInRegister);
                     mainViewModel.switchScenes();
+                    chatMessages.add("[GAME \n"
+                        + "The activation phase has started. \n"
+                            + "click on the cards on your register to move \n " +
+                              "your robot.");
+
                 });
             }
 
@@ -803,6 +829,9 @@ public class ClientThread implements Runnable {
                 if (cards.getPlayerID() == ID) {
                     Platform.runLater(() -> {
                         playerMatModel.getPlayerMatController().setTakenRegister(cards.getCard());
+                        chatMessages.add("[GAME] \n" +
+                                "Click on the cards on your register to \n" +
+                                "command your robot!");
                     });
                 } else {
                     Platform.runLater(() -> {
@@ -891,6 +920,9 @@ public class ClientThread implements Runnable {
         if (incomingMessage.getMessageBody() instanceof PlayerShooting) {
             PlayerShooting playerShooting = (PlayerShooting) incomingMessage.getMessageBody();
             //ToDo: Update GUI PlayerShooting
+            Platform.runLater(() -> {
+                chatMessages.add("Robots are shooting!");
+            });
             //      Append Chat with "Robots are shooting now"
             logger.getLogger().info("Player is shooting!");
         } else {
@@ -960,7 +992,7 @@ public class ClientThread implements Runnable {
         }
     }
 
-    private void handleCheckPointReached(Message incomingMessage) throws IOException {
+    private void handleCheckpointReached(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof CheckpointReached) {
             CheckpointReached checkpointReached = (CheckpointReached) incomingMessage.getMessageBody();
             int playerID = checkpointReached.getPlayerID();
@@ -1027,9 +1059,15 @@ public class ClientThread implements Runnable {
                 Welcome receivedMessage = (Welcome) secondIncomingMessage.getMessageBody();
 
                 this.ID = receivedMessage.getPlayerID();
+                Platform.runLater(() -> {
+                    chatMessages.add("Welcome to RoboRally by NeidischeNarwale! \n" +
+                            "press the \"Iam ready\"-Button to start the game.");
+                });
+
 
             } else if (secondIncomingMessage.getMessageType().equals("Error") && secondIncomingMessage.getMessageBody() instanceof Error) {
 
+                handleError(secondIncomingMessage);
                 Error receivedMessage = (Error) secondIncomingMessage.getMessageBody();
                 logger.getLogger().warning("Error with second incoming message happend.");
                 throw new IOException(receivedMessage.getError());

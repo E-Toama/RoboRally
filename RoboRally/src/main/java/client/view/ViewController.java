@@ -1,5 +1,6 @@
 package client.view;
 
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -19,6 +20,10 @@ public class ViewController {
      */
     private ViewController(Stage primaryStage) {
         this.primaryStage = primaryStage;
+        this.primaryStage.setOnCloseRequest(e -> {
+            Platform.exit();
+            System.exit(0);
+        });
     }
 
     /**
@@ -43,6 +48,10 @@ public class ViewController {
     public void setScene(Scene scene) {
         primaryStage.setScene(scene);
         primaryStage.show();
+        primaryStage.setOnCloseRequest(e -> {
+            Platform.exit();
+            System.exit(0);
+        });
     }
 
     /**

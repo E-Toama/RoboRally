@@ -8,7 +8,7 @@ public class Test {
 
     public static void main(String[] args) {
 
-        String[] cards = {"MoveOne", "MoveOne", "MoveOne", "MoveTwo", "RightTurn", "RightTurn", "LeftTurn", "LeftTurn", "MoveThree"};
+        /*String[] cards = {"MoveOne", "MoveOne", "MoveOne", "MoveTwo", "RightTurn", "RightTurn", "LeftTurn", "LeftTurn", "MoveThree"};
 
         List<String[]> test = getPossibleRegisters(cards);
 
@@ -24,7 +24,9 @@ public class Test {
 
             }
 
-        }
+        }*/
+
+
 
     }
 

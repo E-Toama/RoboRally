@@ -1,6 +1,7 @@
 package AI.logic;
 
 import AI.logic.simplecards.CardS;
+import AI.logic.utilities.tablebases.CSVHandler;
 import game.gameboard.BoardElement;
 import game.gameboard.GameBoard;
 import game.utilities.Position;
@@ -11,7 +12,7 @@ public class AIGameState {
     private BoardElement startBoardElement;
 
     private Position currentPosition;
-    private String currentOrientation;
+    private String currentOrientation = "right";
     private BoardElement currentBoardElement;
 
     private Position intermediatePosition;
@@ -188,11 +189,11 @@ public class AIGameState {
         switch (gameBoardName) {
 
             case "DizzyHighway" -> {
-
-                this.orientationUpRating = null;
-                this.orientationLeftRating = null;
-                this.orientationDownRating = null;
-                this.orientationRightRating = null;
+                String localDir = System.getProperty("user.dir");
+                this.orientationUpRating = CSVHandler.convertCSVtoArray(localDir + "/RoboRally/src/main/java/AI/logic/utilities/tablebases/DizzySpiral.csv");
+                this.orientationLeftRating = CSVHandler.convertCSVtoArray(localDir + "/RoboRally/src/main/java/AI/logic/utilities/tablebases/DizzySpiral.csv");
+                this.orientationDownRating = CSVHandler.convertCSVtoArray(localDir + "/RoboRally/src/main/java/AI/logic/utilities/tablebases/DizzySpiral.csv");
+                this.orientationRightRating = CSVHandler.convertCSVtoArray(localDir + "/RoboRally/src/main/java/AI/logic/utilities/tablebases/DizzySpiral.csv");
 
             }
 

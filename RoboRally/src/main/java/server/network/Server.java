@@ -174,6 +174,15 @@ public class Server {
 
         }
 
+        if (selectedGameBoard != null) {
+
+            String[] selectedMap = {selectedGameBoard};
+
+            String mapSelected = messageHandler.buildMessage("MapSelected", new MapSelected(selectedMap));
+            outgoing.println(mapSelected);
+
+        }
+
     }
 
     public synchronized void checkIfGameCanStart() {
@@ -230,6 +239,16 @@ public class Server {
 
     public void endGame() {
         this.game = null;
+    }
+
+    public void removePlayer(int playerID) {
+
+        game.getGameState().removePlayerFromGame(playerID);
+
+        printWriterMap.remove(playerID);
+        Player player = playerMap.remove(playerID);
+        playerList.remove(player);
+
     }
 
 }

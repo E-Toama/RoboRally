@@ -6,6 +6,8 @@ import AI.network.AINetworkThread;
 import game.utilities.PositionLookUp;
 
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -13,7 +15,7 @@ public class AIClient {
 
     private int port;
     private AIGameState aiGameState = new AIGameState();
-    private AINetworkThread aiNetworkThread = new AINetworkThread(port, aiGameState);
+    private AINetworkThread aiNetworkThread;
 
     public AIClient(int port) throws IOException {
 
@@ -30,7 +32,30 @@ public class AIClient {
             AIClient aiClient = new AIClient(9090);
 
             aiClient.startNetworkThread();
-            aiClient.choosePlayerValues();
+
+            TimerTask timerEndedTask = new TimerTask() {
+
+                @Override
+                public void run() {
+
+                    try {
+
+                        aiClient.choosePlayerValues();
+
+                    } catch (IOException e) {
+
+                        e.printStackTrace();
+
+                    }
+
+                }
+
+            };
+
+            Timer timer = new Timer();
+
+            timer.schedule(timerEndedTask, 1000);
+
 
         } catch (IOException e) {
 
@@ -40,13 +65,19 @@ public class AIClient {
 
     }
 
-    public void startNetworkThread() {
-        Executor pool = Executors.newCachedThreadPool();
-        pool.execute(aiNetworkThread);
+    public void startNetworkThread() throws IOException {
+
+        aiNetworkThread = new AINetworkThread(port, aiGameState);
+
+        Thread thread = new Thread(aiNetworkThread);
+        thread.start();
+
     }
 
     public void choosePlayerValues() throws IOException {
-        this.aiNetworkThread.choosePlayerValues();
+
+        aiNetworkThread.choosePlayerValues();
+
     }
 
 }

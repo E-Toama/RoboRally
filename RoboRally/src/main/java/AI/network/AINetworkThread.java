@@ -16,10 +16,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class AINetworkThread implements Runnable {
 
@@ -28,11 +27,9 @@ public class AINetworkThread implements Runnable {
     private final PrintWriter outgoing;
     private final MessageHandler messageHandler = new MessageHandler();
     private final AIGameState aiGameState;
-    private int playerID;
-
     private final double protocolVersion = 1.0;
     private final String group = "NeidischeNarwale";
-
+    private int playerID;
     private HashMap<Integer, Player> playerList = new HashMap();
     private AICardHandler aiCardHandler;
 
@@ -49,7 +46,7 @@ public class AINetworkThread implements Runnable {
     @Override
     public void run() {
 
-        try{
+        try {
 
             establishConnection();
 
@@ -59,11 +56,9 @@ public class AINetworkThread implements Runnable {
 
             e.printStackTrace();
 
-        }
+        } finally {
 
-        finally{
-
-            try{
+            try {
 
                 socket.close();
 
@@ -93,7 +88,7 @@ public class AINetworkThread implements Runnable {
 
             Message secondIncomingMessage = messageHandler.handleMessage(secondIncomingJSON);
 
-            if(secondIncomingMessage.getMessageType().equals("Welcome") && secondIncomingMessage.getMessageBody() instanceof Welcome) {
+            if (secondIncomingMessage.getMessageType().equals("Welcome") && secondIncomingMessage.getMessageBody() instanceof Welcome) {
 
                 Welcome receivedMessage = (Welcome) secondIncomingMessage.getMessageBody();
                 this.playerID = receivedMessage.getPlayerID();
@@ -125,9 +120,6 @@ public class AINetworkThread implements Runnable {
 
         String playerValues = messageHandler.buildMessage("PlayerValues", new PlayerValues(name, figure));
         sendJson(playerValues);
-
-        String playerStatus = messageHandler.buildMessage("PlayerStatus", new PlayerStatus(playerID, true));
-        sendJson(playerStatus);
 
     }
 
@@ -220,10 +212,6 @@ public class AINetworkThread implements Runnable {
                         handleNotYourCards(incomingMessage);
                         break;
 
-                    case "ShuffleCoding":
-                        //TODO: IS this case going to be handled by the client? If so, implement the handlerMethod here
-                        break;
-
                     case "CardSelected":
                         handleCardSelected(incomingMessage);
                         break;
@@ -308,6 +296,13 @@ public class AINetworkThread implements Runnable {
 
             PlayerAdded receivedMessage = (PlayerAdded) incomingMessage.getMessageBody();
 
+            if (receivedMessage.getPlayer().getPlayerID() == playerID) {
+
+                String setStatus = messageHandler.buildMessage("SetStatus", new SetStatus(true));
+                sendJson(setStatus);
+
+            }
+
             playerList.put(receivedMessage.getPlayer().getPlayerID(), receivedMessage.getPlayer());
 
         }
@@ -348,6 +343,8 @@ public class AINetworkThread implements Runnable {
             aiGameState.setTargetCheckpoint(1);
 
             aiGameState.setGameBoard(new GameBoard(receivedMessage.getMap()[0]));
+
+            aiGameState.setRatingMaps(receivedMessage.getMap()[0], 1);
 
         }
 
@@ -566,10 +563,24 @@ public class AINetworkThread implements Runnable {
         if (incomingMessage.getMessageBody() instanceof PickDamage) {
 
             PickDamage receivedMessage = (PickDamage) incomingMessage.getMessageBody();
+            int count = receivedMessage.getCount();
+
+            String[] damageCardsToChooseFrom = {"Virus", "Worm", "TrojanHorse"};
+            String[] chosenDamageCards = new String[count];
+            Random random = new Random();
+
+            for (int i = 0; i < count; i++) {
+                chosenDamageCards[i] = damageCardsToChooseFrom[random.nextInt(3)];
+            }
+
+
+            String chosenCardsMessage = messageHandler.buildMessage("SelectDamage", new SelectDamage(chosenDamageCards));
+            sendJson(chosenCardsMessage);
 
         }
 
     }
+
 
     public void sendJson(String Json) {
         outgoing.println(Json);
