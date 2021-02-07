@@ -51,8 +51,6 @@ public class AINetworkThread implements Runnable {
 
             establishConnection();
 
-            choosePlayerValues();
-
             handleIncomingMessages();
 
         } catch (IOException e) {
@@ -151,8 +149,6 @@ public class AINetworkThread implements Runnable {
             try {
 
                 String incomingJSON = incoming.readLine();
-
-                System.out.println(incomingJSON);
 
                 if (incomingJSON == null) {
 
@@ -307,11 +303,7 @@ public class AINetworkThread implements Runnable {
 
             PlayerAdded receivedMessage = (PlayerAdded) incomingMessage.getMessageBody();
 
-            System.out.println("hallo");
-
             if (receivedMessage.getPlayer().getPlayerID() == playerID) {
-
-                System.out.println("hallo2");
 
                 String setStatus = messageHandler.buildMessage("SetStatus", new SetStatus(true));
                 sendJson(setStatus);

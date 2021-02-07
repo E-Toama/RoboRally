@@ -174,6 +174,15 @@ public class Server {
 
         }
 
+        if (selectedGameBoard != null) {
+
+            String[] selectedMap = {selectedGameBoard};
+
+            String mapSelected = messageHandler.buildMessage("MapSelected", new MapSelected(selectedMap));
+            outgoing.println(mapSelected);
+
+        }
+
     }
 
     public synchronized void checkIfGameCanStart() {
