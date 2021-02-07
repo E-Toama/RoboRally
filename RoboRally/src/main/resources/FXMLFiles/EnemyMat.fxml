@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
 <GridPane fx:id="enemyMatPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.view.EnemyMatController">
    <columnConstraints>
@@ -26,6 +30,9 @@
          <rowConstraints>
             <RowConstraints maxHeight="91.66668701171875" minHeight="10.0" prefHeight="78.0" vgrow="SOMETIMES" />
          </rowConstraints>
+         <GridPane.margin>
+            <Insets left="5.0" />
+         </GridPane.margin>
       </GridPane>
       <GridPane GridPane.rowIndex="2">
         <columnConstraints>
@@ -37,12 +44,18 @@
          <children>
             <HBox prefHeight="17.0" prefWidth="66.0">
                <children>
-                  <Label maxWidth="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="79.0" text="CheckPoints:" textFill="#400b0d">
+                  <Label maxWidth="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="65.0" text="CheckPoints:" textFill="#dd8d03">
                      <font>
                         <Font size="11.0" />
-                     </font></Label>
-                  <Label fx:id="checkPointValue" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="19.0" prefWidth="10.0" text="1" />
-                  <Label maxWidth="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="53.0" text="Energy:">
+                     </font>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin></Label>
+                  <Label fx:id="checkPointValue" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="18.0" prefWidth="11.0" text="1">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin></Label>
+                  <Label maxWidth="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="49.0" text="Energy:" textFill="green">
                      <padding>
                         <Insets left="10.0" />
                      </padding>
@@ -50,19 +63,22 @@
                         <Font size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="energyCubeValue" prefWidth="10.0" text="2" />
-                  <Label prefHeight="18.0" prefWidth="210.0" text="DmgCards:">
+                  <Label fx:id="energyCubeValue" alignment="CENTER" contentDisplay="CENTER" prefWidth="15.0" text="2">
                      <HBox.margin>
-                        <Insets left="20.0" />
+                        <Insets left="5.0" />
+                     </HBox.margin></Label>
+                  <Label prefHeight="18.0" prefWidth="56.0" text="DmgCards:" textFill="darkred">
+                     <HBox.margin>
+                        <Insets left="15.0" />
                      </HBox.margin>
                      <font>
                         <Font size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="damageCardValue" prefHeight="18.0" prefWidth="22.0" text="1">
-                     <padding>
-                        <Insets left="26.0" />
-                     </padding>
+                  <Label fx:id="damageCardValue" alignment="CENTER" contentDisplay="CENTER" prefWidth="10.0" text="1">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
                   </Label>
                </children>
             </HBox>
@@ -70,9 +86,18 @@
       </GridPane>
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="80.0" text="Username:" />
-            <Label fx:id="userNameValue" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="185.0" />
+            <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="80.0" text="Username:">
+               <HBox.margin>
+                  <Insets left="5.0" top="3.0" />
+               </HBox.margin></Label>
+            <Label fx:id="userNameValue" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="185.0">
+               <HBox.margin>
+                  <Insets right="5.0" top="3.0" />
+               </HBox.margin></Label>
          </children>
       </HBox>
    </children>
+   <stylesheets>
+      <URL value="@stylesheet.css" />
+   </stylesheets>
 </GridPane>
