@@ -190,10 +190,10 @@ public class AIGameState {
 
             case "DizzyHighway" -> {
 
-                this.orientationUpRating = CSVHandler.convertCSVtoArray("DizzyHighWayRight.csv");
-                this.orientationLeftRating = CSVHandler.convertCSVtoArray("DizzyHighWayRight.csv");
-                this.orientationDownRating = CSVHandler.convertCSVtoArray("DizzyHighWayRight.csv");
-                this.orientationRightRating = CSVHandler.convertCSVtoArray("DizzyHighWayRight.csv");
+                this.orientationUpRating = CSVHandler.convertCSVtoArray("AI/logic/utilities/tablebases/DizzyHighWayRight.csv");
+                this.orientationLeftRating = CSVHandler.convertCSVtoArray("AI/logic/utilities/tablebases/DizzyHighWayRight.csv");
+                this.orientationDownRating = CSVHandler.convertCSVtoArray("AI/logic/utilities/tablebases/DizzyHighWayRight.csv");
+                this.orientationRightRating = CSVHandler.convertCSVtoArray("AI/logic/utilities/tablebases/DizzyHighWayRight.csv");
 
             }
 
