@@ -16,8 +16,8 @@ public class GameOverModel {
         return winnerName;
     }
 
-    public void setWinnerName() {
-
+    public void setWinnerName(String winnerName) {
+        this.winnerName.set(winnerName);
 
     }
 
