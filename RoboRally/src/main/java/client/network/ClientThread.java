@@ -13,7 +13,6 @@ import client.viewmodel.MainViewModel;
 import client.viewmodel.PlayerMatModel;
 import client.viewmodel.ProgrammingViewModel;
 import client.viewmodel.WelcomeViewModel;
-import game.Game;
 import game.Robots.Robot;
 import game.cards.ActiveCard;
 import game.gameboard.GameBoard;
@@ -245,7 +244,7 @@ public class ClientThread implements Runnable {
                         break;
 
                     case "ShuffleCoding":
-                        //TODO: What are we doing with this information?
+                        handleShuffleCoding(incomingMessage);
                         break;
 
                     case "CardSelected":
@@ -581,6 +580,11 @@ public class ClientThread implements Runnable {
 
             clientGameState.setActivePhase(activePhase.getPhase());
 
+            if (activePhase.getPhase() == 2) {
+                Platform.runLater(() -> {
+                    playerMatModel.updateDiscardedCount();
+                });
+            }
             if (activePhase.getPhase() == 3) {
                 playerMatModel.getPlayerMatController().resetRegisterCounts();
                 for (Map.Entry<Integer, EnemyMatModel> entry : enemyList.entrySet()) {
@@ -665,13 +669,29 @@ public class ClientThread implements Runnable {
     private void handleNotYourCards(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof NotYourCards) {
             NotYourCards notYourCards = (NotYourCards) incomingMessage.getMessageBody();
-
             logger.getLogger().info("Other players have chosen their cards.");
         } else {
             logger.getLogger().severe("Message body error in handleNotYourCards method.");
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of NotYourCards)");
         }
     }
+
+    private void handleShuffleCoding(Message incomingMessage) throws IOException {
+        if (incomingMessage.getMessageBody() instanceof ShuffleCoding) {
+            ShuffleCoding shuffleCoding = (ShuffleCoding) incomingMessage.getMessageBody();
+            int playerID = shuffleCoding.getPlayerID();
+            if (playerID == ID) {
+                Platform.runLater(() -> {
+                    playerMatModel.setDiscardedCount("0");
+                });
+            }
+            logger.getLogger().info("Player shuffled deck, ID: " + playerID);
+        } else {
+            logger.getLogger().severe("Message body error in shuffleCoding method.");
+            throw new IOException("Something went wrong! Invalid Message Body! (Not instance of ShuffleCoding)");
+        }
+    }
+
 
     private void handleCardSelected(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof CardSelected) {

@@ -24,6 +24,10 @@ import javafx.scene.shape.StrokeType;
 
 import java.io.IOException;
 
+/**
+ * Controller class for the other playermats
+ * @author
+ */
 public class EnemyMatController {
 
 
@@ -52,6 +56,9 @@ public class EnemyMatController {
     private int registerForAnimation = 0;
 
 
+    /**
+     * binds FXML attributes to the enemyMatModel properties
+     */
     @FXML
     public void initialize() {
         userNameValue.textProperty().bindBidirectional(enemyMatModel.getUserName());
@@ -67,6 +74,9 @@ public class EnemyMatController {
 
     }
 
+    /**
+     * initializes playerMat with five inverted cards
+     */
     public void createCardsSlots(){
 
         for(int i = 0; i < 5; i++){
@@ -78,6 +88,10 @@ public class EnemyMatController {
         }
     }
 
+    /**
+     * gets current enemyMatModel
+     * @return EnemyMatModel enemyMatModel
+     */
     public EnemyMatModel getEnemyMatModel() {
         return enemyMatModel;
     }
@@ -86,12 +100,19 @@ public class EnemyMatController {
         return enemyMatPane;
     }
 
+    /**
+     * sets a register of a playerMat with the chosen card from the programmphase
+     * @param card
+     */
     public void setTakenRegister(String card) {
         ImageView cardToDisplay = ImageBuilder.adjustToEnemyMatView(card);
         registers[registerForAnimation].getChildren().add(cardToDisplay);
         registerForAnimation++;
     }
 
+    /**
+     * clears the registers
+     */
     public void resetRegisterCounts() {
         registerForAnimation = 0;
         for (int i = 0; i < 5; i++) {

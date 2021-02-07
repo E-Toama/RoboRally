@@ -13,6 +13,10 @@ import javafx.scene.Scene;
 
 import java.io.IOException;
 
+/**
+ * ViewModel for the WelcomeView
+ * @author
+ */
 public class WelcomeViewModel {
 
     private final ClientThread clientThread;
@@ -25,6 +29,9 @@ public class WelcomeViewModel {
     private final BooleanProperty zoomBotTaken = new SimpleBooleanProperty();
     private int selectedRobot;
 
+    /**
+     * constructor for WelcomeViewModel with client thread
+     */
     public WelcomeViewModel() {
 
         this.clientThread = ClientThread.getInstance();
@@ -32,50 +39,79 @@ public class WelcomeViewModel {
 
     }
 
+
     public boolean isHammerBotTaken() {
         return hammerBotTaken.get();
-    }
-
-    public BooleanProperty hammerBotTakenProperty() {
-        return hammerBotTaken;
     }
 
     public boolean isHulkTaken() {
         return hulkTaken.get();
     }
 
-    public BooleanProperty hulkTakenProperty() {
-        return hulkTaken;
-    }
-
     public boolean isSmashBotTaken() {
         return smashBotTaken.get();
-    }
-
-    public BooleanProperty smashBotTakenProperty() {
-        return smashBotTaken;
-    }
-
-    public boolean isSpinBotTaken() {
-        return spinBotTaken.get();
-    }
-
-    public BooleanProperty spinBotTakenProperty() {
-        return spinBotTaken;
-    }
-
-    public boolean isTownkyTaken() {
-        return townkyTaken.get();
-    }
-
-    public BooleanProperty townkyTakenProperty() {
-        return townkyTaken;
     }
 
     public boolean isZoomBotTaken() {
         return zoomBotTaken.get();
     }
 
+    public boolean isSpinBotTaken() {
+        return spinBotTaken.get();
+    }
+
+    public boolean isTownkyTaken() {
+        return townkyTaken.get();
+    }
+
+    /**
+     *
+     * @return BooleanProperty hammerBotTaken
+     */
+    public BooleanProperty hammerBotTakenProperty() {
+        return hammerBotTaken;
+    }
+
+
+
+
+    /**
+     * @return BooleanProperty hulkTaken
+     */
+    public BooleanProperty hulkTakenProperty() {
+        return hulkTaken;
+    }
+
+
+
+    /**
+     * @return BoooleanProperty smashBotTaken
+     */
+    public BooleanProperty smashBotTakenProperty() {
+        return smashBotTaken;
+    }
+
+
+
+    /**
+     * @return BooleanProperty spinBotTaken
+     */
+    public BooleanProperty spinBotTakenProperty() {
+        return spinBotTaken;
+    }
+
+
+    /**
+     * @return BooleanProperty twonkyTaken
+     */
+    public BooleanProperty townkyTakenProperty() {
+        return townkyTaken;
+    }
+
+
+    /**
+     * @return BooleanProperty zoomBotTaken
+     */
     public BooleanProperty zoomBotTakenProperty() {
         return zoomBotTaken;
     }
@@ -84,42 +120,74 @@ public class WelcomeViewModel {
         return userNameTextField.get();
     }
 
+    /**
+     * @return StringProperty userNameTextField
+     */
     public StringProperty userNameTextFieldProperty() {
         return userNameTextField;
     }
 
+    /**
+     * gets client thread
+     */
     public ClientThread getClientThread() {
         return clientThread;
     }
 
+    /**
+     * sets Smash Bot with index 2
+     */
     public void setSmashBot() {
         this.selectedRobot = 2;
     }
 
+    /**
+     * sets Hulk x90 with index 1
+     */
     public void setHulk() {
         this.selectedRobot = 1;
     }
 
+    /**
+     * sets Spin Bot with index 3
+     */
     public void setSpinBot() {
         this.selectedRobot = 3;
     }
 
+    /**
+     * sets Hammer Bot with index 0
+     */
     public void setHammerBot() {
         this.selectedRobot = 0;
     }
 
+    /**
+     * sets Twonky with index 4
+     */
     public void setTwonky() {
         this.selectedRobot = 4;
     }
 
+    /**
+     * sets Zoom Bot with index 5
+     */
     public void setZoomBot() {
         this.selectedRobot = 5;
     }
 
+
+
+    /**
+     * submits new player with username and selected robot
+     */
     public void submitPlayer() {
         clientThread.submitPlayer(getUserNameTextField(), selectedRobot);
     }
 
+    /**
+     * proceeds to Lobby after player is added
+     */
     public void playerSuccesfullyAdded() {
 
         Platform.runLater(new Runnable() {
@@ -147,6 +215,10 @@ public class WelcomeViewModel {
 
     public void playerNotAdded() {}
 
+    /**
+     * disables robot button if it's already taken by another player
+     * @param figure is the index of the robot figure
+     */
     public void disableRobotButton(int figure) {
 
         switch (figure) {
