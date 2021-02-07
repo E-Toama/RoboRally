@@ -26,11 +26,11 @@ public class CSVHandler {
         }
 
         columns = lines.size();
-        rows = lines.get(0).split(",").length;
+        rows = lines.get(0).split(";").length;
         result = new int[columns][rows];
 
         for (int i = 0; i < columns; i++) {
-            String[] cells = lines.get(i).split(",");
+            String[] cells = lines.get(i).split(";");
             for (int j = 0; j < rows; j++) {
                 result[i][j] = Integer.parseInt(cells[j]);
             }
