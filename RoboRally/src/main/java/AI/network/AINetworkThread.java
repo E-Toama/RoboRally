@@ -359,6 +359,8 @@ public class AINetworkThread implements Runnable {
 
             aiGameState.setGameBoard(new GameBoard(receivedMessage.getMap()[0]));
 
+            aiGameState.setRatingMaps(receivedMessage.getMap()[0], 1);
+
         }
 
     }
