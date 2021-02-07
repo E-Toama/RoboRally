@@ -511,6 +511,13 @@ public class ClientThread implements Runnable {
 
     }
 
+    /**
+     * Removes the playerID mentioned in the message from all playerlists and
+     * removes the figure from the Board
+     *
+     * @param incomingMessage contains playerID, status and action
+     * @throws IOException if messageType is incorrect
+     */
     private void handleConnectionUpdate(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof ConnectionUpdate) {
             ConnectionUpdate connectionUpdate = (ConnectionUpdate) incomingMessage.getMessageBody();
