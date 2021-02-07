@@ -13,8 +13,6 @@ import java.io.IOException;
 
 public class RoboRallyClient extends Application {
 
-
-
     public static void main(String[] args) {
         launch(args);
     }
@@ -32,8 +30,6 @@ public class RoboRallyClient extends Application {
 
             Scene lobbyScene = new Scene(lobby);
             primaryStage.setScene(lobbyScene);
-
-
 
             primaryStage.show();
             primaryStage.setOnCloseRequest(e -> Platform.exit());

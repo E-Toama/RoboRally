@@ -16,9 +16,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class AINetworkThread implements Runnable {
@@ -52,6 +50,8 @@ public class AINetworkThread implements Runnable {
         try{
 
             establishConnection();
+
+            choosePlayerValues();
 
             handleIncomingMessages();
 
@@ -126,9 +126,6 @@ public class AINetworkThread implements Runnable {
         String playerValues = messageHandler.buildMessage("PlayerValues", new PlayerValues(name, figure));
         sendJson(playerValues);
 
-        String playerStatus = messageHandler.buildMessage("PlayerStatus", new PlayerStatus(playerID, true));
-        sendJson(playerStatus);
-
     }
 
     private int getFirstFreeRobotFigure(int figure) {
@@ -154,6 +151,8 @@ public class AINetworkThread implements Runnable {
             try {
 
                 String incomingJSON = incoming.readLine();
+
+                System.out.println(incomingJSON);
 
                 if (incomingJSON == null) {
 
@@ -307,6 +306,17 @@ public class AINetworkThread implements Runnable {
         if (incomingMessage.getMessageBody() instanceof PlayerAdded) {
 
             PlayerAdded receivedMessage = (PlayerAdded) incomingMessage.getMessageBody();
+
+            System.out.println("hallo");
+
+            if (receivedMessage.getPlayer().getPlayerID() == playerID) {
+
+                System.out.println("hallo2");
+
+                String setStatus = messageHandler.buildMessage("SetStatus", new SetStatus(true));
+                sendJson(setStatus);
+
+            }
 
             playerList.put(receivedMessage.getPlayer().getPlayerID(), receivedMessage.getPlayer());
 

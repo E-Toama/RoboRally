@@ -12,7 +12,7 @@ public class AIGameState {
     private BoardElement startBoardElement;
 
     private Position currentPosition;
-    private String currentOrientation;
+    private String currentOrientation = "right";
     private BoardElement currentBoardElement;
 
     private Position intermediatePosition;

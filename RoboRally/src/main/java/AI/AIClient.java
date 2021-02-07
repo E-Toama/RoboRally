@@ -13,7 +13,7 @@ public class AIClient {
 
     private int port;
     private AIGameState aiGameState = new AIGameState();
-    private AINetworkThread aiNetworkThread = new AINetworkThread(port, aiGameState);
+    private AINetworkThread aiNetworkThread;
 
     public AIClient(int port) throws IOException {
 
@@ -30,7 +30,7 @@ public class AIClient {
             AIClient aiClient = new AIClient(9090);
 
             aiClient.startNetworkThread();
-            aiClient.choosePlayerValues();
+
 
         } catch (IOException e) {
 
@@ -40,13 +40,13 @@ public class AIClient {
 
     }
 
-    public void startNetworkThread() {
-        Executor pool = Executors.newCachedThreadPool();
-        pool.execute(aiNetworkThread);
-    }
+    public void startNetworkThread() throws IOException {
 
-    public void choosePlayerValues() throws IOException {
-        this.aiNetworkThread.choosePlayerValues();
+        aiNetworkThread = new AINetworkThread(port, aiGameState);
+
+        Thread thread = new Thread(aiNetworkThread);
+        thread.start();
+
     }
 
 }

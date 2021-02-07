@@ -388,9 +388,11 @@ public class UserThread implements Runnable {
                     throw new IOException("Client protocol version is not supported!");
 
                 }
+
                 logger.getLogger().info("Connection established succesfully with the Client.");
 
         } else {
+
             logger.getLogger().severe("Message body error in establishConnection method.");
             throw new IOException("Couldn't establish connection!");
 
