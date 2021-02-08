@@ -45,7 +45,7 @@ Um die Applikation zu beenden, bieten sich mehrere Möglichkeiten:
 
 
 
-# Anwendung starten
+# Vorprojekt: Loveletter - Anwendung starten
 
 Die ausführbare JAR-Datei **vpNeidischeNarwale.jar** findet sich im Projekt unter `otherStuff/vpNeidischeNarwale.jar`.
 Laden Sie sich diese Datei herunter und navigieren Sie im Terminal zum Verzeichnis, in dem Sie die Datei abgelegt haben.
