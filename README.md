@@ -26,6 +26,12 @@ Weiterführende Informationen zum Ablauf finden Sie in der Dokumentation unter [
 ## Weitere Clients starten
 Öffnen Sie für jeden neuen Client ein neues Terminalfenster und gehen analog zu Schritt 2 vor.
 
+## AI starten
+Mit dem Befehl
+`java -cp RoboRally.jar AI.AIClient`
+starten Sie einen Bot. 
+**ACHTUNG**: Die KI funktioniert derzeit nur mit DizzyHighway, nicht mit ExtraCrispy! Das Starten einer KI, wenn ExtraCrispy als Map gewählt wurde, führt zu unerwünschten Fehlern.
+
 ## Anwendungen schließen
 Um den Server zu beenden, schließen sie das Terminalfenster, in dem Sie den Server gestartet haben.
 
