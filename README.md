@@ -30,7 +30,11 @@ Weiterführende Informationen zum Ablauf finden Sie in der Dokumentation unter [
 Mit dem Befehl
 `java -cp RoboRally.jar AI.AIClient`
 starten Sie einen Bot. 
+
 **ACHTUNG**: Die KI funktioniert derzeit nur mit DizzyHighway, nicht mit ExtraCrispy! Das Starten einer KI, wenn ExtraCrispy als Map gewählt wurde, führt zu unerwünschten Fehlern.
+
+**UPDATE**: Liebe Tester, aufgrund kurzfristiger Schwierigkeiten beim Import der Tablebases für die KI wählt die KI in der euch zur Verfügung gestellten Version leider nicht immer die errechnete, beste Kombination von Programmierkarten, sondern meist die erstbesten fünf Karten. Ihr habt also de facto eine Random-KI auf DizzyHighway. Wir bedauern das sehr und hätten euch gerne einen würdigeren Gegner zur Verfügung gestellt. 
+In kurz: Bitte hängt euch beim Verfassen der Testberichte nicht am Verhalten der KI auf, sie macht wirklich nur zufällige Züge und ist keine genauere Analyse wert.
 
 ## Anwendungen schließen
 Um den Server zu beenden, schließen sie das Terminalfenster, in dem Sie den Server gestartet haben.
