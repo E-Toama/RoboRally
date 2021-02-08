@@ -6,8 +6,9 @@ import game.gameboard.BoardElement;
 import game.gameboard.GameBoard;
 import game.utilities.Position;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 public class AIGameState {
 
@@ -41,6 +42,8 @@ public class AIGameState {
     private int[][] intermediateOrientationLeftRating;
     private int[][] intermediateOrientationDownRating;
     private int[][] intermediateOrientationRightRating;
+
+    private  int[][] dizzySpiral = {{13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 3, 3, 3}, {13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 2, 2}, {13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 1}, {13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0}, {13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 1}, {13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 2, 2}, {13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 3, 3, 3}, {13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 4, 4, 4, 4}, {13, 12, 11, 10, 9, 8, 7, 6, 5, 5, 5, 5, 5, 5}, {13, 12, 11, 10, 9, 8, 7, 6, 6, 6, 6, 6, 6, 6}};
 
     public AIGameState() {}
 
@@ -193,14 +196,10 @@ public class AIGameState {
 
             case "DizzyHighway" -> {
 
-                String localDir = System.getProperty("user.dir");
-
-                InputStream fileInputStream = getClass().getResourceAsStream("/tablebases/DizzySpiral.csv");
-
-                this.orientationUpRating = CSVHandler.convertCSVtoArray(fileInputStream);
-                this.orientationLeftRating = CSVHandler.convertCSVtoArray(fileInputStream);
-                this.orientationDownRating = CSVHandler.convertCSVtoArray(fileInputStream);
-                this.orientationRightRating = CSVHandler.convertCSVtoArray(fileInputStream);
+                this.orientationUpRating = dizzySpiral;
+                this.orientationRightRating = dizzySpiral;
+                this.orientationDownRating = dizzySpiral;
+                this.orientationLeftRating = dizzySpiral;
 
             }
 
