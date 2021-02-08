@@ -1,4 +1,4 @@
-package game.Robots;
+package game.robots;
 
 import game.utilities.Position;
 import game.utilities.PositionLookUp;
@@ -140,12 +140,6 @@ public class Robot {
             case 5 -> "Zoom Bot";
             default -> "";
         };
-
-    }
-
-    public String getRobotName() {
-
-        return getString(figure);
 
     }
 

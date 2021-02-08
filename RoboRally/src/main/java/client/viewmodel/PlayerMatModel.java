@@ -2,7 +2,7 @@ package client.viewmodel;
 
 import client.network.ClientThread;
 import client.view.PlayerMatController;
-import game.Robots.Robot;
+import game.robots.Robot;
 import game.player.Player;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;

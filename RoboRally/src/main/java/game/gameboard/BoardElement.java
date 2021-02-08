@@ -1,7 +1,7 @@
 package game.gameboard;
 
 import game.Game;
-import game.Robots.Robot;
+import game.robots.Robot;
 import game.gameboard.gameboardfieldobjects.*;
 import game.utilities.GameState;
 import game.utilities.Position;

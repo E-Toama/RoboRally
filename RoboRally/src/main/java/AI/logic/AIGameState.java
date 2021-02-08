@@ -6,6 +6,9 @@ import game.gameboard.BoardElement;
 import game.gameboard.GameBoard;
 import game.utilities.Position;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
+
 public class AIGameState {
 
     private Position startPosition;
@@ -189,11 +192,15 @@ public class AIGameState {
         switch (gameBoardName) {
 
             case "DizzyHighway" -> {
+
                 String localDir = System.getProperty("user.dir");
-                this.orientationUpRating = CSVHandler.convertCSVtoArray(localDir + "/RoboRally/src/main/java/AI/logic/utilities/tablebases/DizzySpiral.csv");
-                this.orientationLeftRating = CSVHandler.convertCSVtoArray(localDir + "/RoboRally/src/main/java/AI/logic/utilities/tablebases/DizzySpiral.csv");
-                this.orientationDownRating = CSVHandler.convertCSVtoArray(localDir + "/RoboRally/src/main/java/AI/logic/utilities/tablebases/DizzySpiral.csv");
-                this.orientationRightRating = CSVHandler.convertCSVtoArray(localDir + "/RoboRally/src/main/java/AI/logic/utilities/tablebases/DizzySpiral.csv");
+
+                InputStream fileInputStream = getClass().getResourceAsStream("/tablebases/DizzySpiral.csv");
+
+                this.orientationUpRating = CSVHandler.convertCSVtoArray(fileInputStream);
+                this.orientationLeftRating = CSVHandler.convertCSVtoArray(fileInputStream);
+                this.orientationDownRating = CSVHandler.convertCSVtoArray(fileInputStream);
+                this.orientationRightRating = CSVHandler.convertCSVtoArray(fileInputStream);
 
             }
 

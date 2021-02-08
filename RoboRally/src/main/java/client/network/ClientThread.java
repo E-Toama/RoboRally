@@ -15,7 +15,7 @@ import client.viewmodel.MainViewModel;
 import client.viewmodel.PlayerMatModel;
 import client.viewmodel.ProgrammingViewModel;
 import client.viewmodel.WelcomeViewModel;
-import game.Robots.Robot;
+import game.robots.Robot;
 import game.cards.ActiveCard;
 import game.gameboard.GameBoard;
 import javafx.application.Platform;

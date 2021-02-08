@@ -2,13 +2,10 @@ package client.viewmodel;
 
 import client.network.ClientThread;
 import client.view.EnemyMatController;
-import game.Robots.Robot;
+import game.robots.Robot;
 import game.player.Player;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.fxml.FXMLLoader;
-
-import java.io.IOException;
 
 /**
  * ViewModel class for the enemy player mats

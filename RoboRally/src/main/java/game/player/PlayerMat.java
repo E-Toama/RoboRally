@@ -1,7 +1,7 @@
 package game.player;
 
 import game.Game;
-import game.Robots.Robot;
+import game.robots.Robot;
 import game.cards.Card;
 import game.cards.programmingcards.*;
 import game.utilities.GameState;
@@ -14,7 +14,6 @@ import utilities.messages.Reboot;
 import utilities.messages.ShuffleCoding;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class PlayerMat {
