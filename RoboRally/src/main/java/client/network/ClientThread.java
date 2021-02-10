@@ -681,6 +681,7 @@ public class ClientThread implements Runnable {
             //Initialize ProgrammingView with new cards
             programmingViewModel = new ProgrammingViewModel();
             programmingViewModel.setCards(cards);
+            programmingViewModel.getProgrammingController().setPlayerValues(playerMatModel.getUserName().getValue(),player.getFigure());
 
             //Update MainView and switch scenes (PlayerMat -> ProgrammingView)
             mainViewModel.getMainViewController().setProgrammingPane(programmingViewModel.getProgrammingController().getGridPane());
