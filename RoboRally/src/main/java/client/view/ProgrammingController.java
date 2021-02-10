@@ -130,6 +130,7 @@ public class ProgrammingController {
 
       // Again-Card cannot be placed in first register
       if (firstFreeRegisterIndex == 0 && "Again".equals(button.getCardString())) {
+        button.getLabel().setText("Not in Reg. 1!");
         return;
       }
       button.setChosen(true);

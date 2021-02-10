@@ -31,7 +31,7 @@ public class ExtraCrispy {
                         new BoardElement(21, new GameBoardFieldObject[]{new EmptyFieldObject()}),
                         new BoardElement(22, new GameBoardFieldObject[]{new EmptyFieldObject()}),
                         new BoardElement(23, new GameBoardFieldObject[]{new EmptyFieldObject()}),
-                        new BoardElement(24, new GameBoardFieldObject[]{new BeltFieldObject("down", 1)}),
+                        new BoardElement(24, new GameBoardFieldObject[]{new BeltFieldObject("down", 2)}),
                         new BoardElement(25, new GameBoardFieldObject[]{new EmptyFieldObject()}),
                 },
                 {       new BoardElement(29, new GameBoardFieldObject[]{new EmptyFieldObject()}),

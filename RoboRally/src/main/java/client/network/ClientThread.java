@@ -578,6 +578,9 @@ public class ClientThread implements Runnable {
                 }
                 if (clientGameState.getActivePhase() == 3) {
                     playerMatModel.getPlayerMatController().activateRegisterButton();
+                    chatMessages.add("[GAME] \n" +
+                            "Click on the cards on your register to \n" +
+                            "command your robot!");
                 }
             } else {
                 //Update CurrentPlayer-Status
@@ -831,9 +834,9 @@ public class ClientThread implements Runnable {
                 if (cards.getPlayerID() == ID) {
                     Platform.runLater(() -> {
                         playerMatModel.getPlayerMatController().setTakenRegister(cards.getCard());
-                        chatMessages.add("[GAME] \n" +
-                                "Click on the cards on your register to \n" +
-                                "command your robot!");
+                        if (cards.getCard().equals("Spam") || cards.getCard().equals("Virus") || cards.getCard().equals("Worm") || cards.getCard().equals("TrojanHorse")) {
+                            playerMatModel.decreaseDiscardedCount();
+                        }
                     });
                 } else {
                     Platform.runLater(() -> {

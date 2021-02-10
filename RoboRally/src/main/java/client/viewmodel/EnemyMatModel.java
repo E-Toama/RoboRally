@@ -53,7 +53,7 @@ public class EnemyMatModel {
         this.userName.set("");
         this.robotName.set("");
         this.pickedUpDamageCards.set("0");
-        this.energyPoints.set("0");
+        this.energyPoints.set("5");
         this.robotName.set("");
 
     }

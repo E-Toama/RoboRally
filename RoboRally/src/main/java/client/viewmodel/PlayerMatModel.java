@@ -58,7 +58,7 @@ public class PlayerMatModel {
         this.userName.set("");
         this.robotName.set("");
         this.pickedUpDamageCards.set("0");
-        this.energyPoints.set("0");
+        this.energyPoints.set("5");
         this.deckCount.set("20");
         this.robotName.set("");
         this.discardedCount.set("0");
@@ -121,6 +121,11 @@ public class PlayerMatModel {
 
     public void updateDiscardedCount() {
         int discarded = Integer.parseInt(this.discardedCount.getValue()) + 9;
+        this.discardedCount.set(String.valueOf(discarded));
+    }
+
+    public void decreaseDiscardedCount() {
+        int discarded = Integer.parseInt(this.discardedCount.getValue()) - 1;
         this.discardedCount.set(String.valueOf(discarded));
     }
 
