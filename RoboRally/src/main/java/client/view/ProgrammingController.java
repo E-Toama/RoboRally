@@ -250,12 +250,11 @@ public class ProgrammingController {
   public void setPlayerValues(String userName, int robotFigure) {
 
     Label name = new Label(userName);
-    name.setStyle("-fx-font-weight: BOLD");
-    name.setPadding(new Insets(0, 0, 0, 10));
+    name.setId("programmingName");
 
     Text bot = new Text(Robot.getRobotName(robotFigure));
     bot.setFill(RobotImageBuilder.getRobotColor(robotFigure));
-    bot.setStyle("-fx-font-weight: BOLD");
+    bot.setId("programmingBot");
 
     gridPane.add(name, 0, 2, 3, 1);
     gridPane.add(bot, 8, 2, 2, 1);

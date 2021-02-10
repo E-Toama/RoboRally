@@ -37,10 +37,7 @@ public class ChatViewModel {
         return chatText.get();
     }
 
-    /**
-     *
-     * @return StringProperty chatText
-     */
+
     public StringProperty chatTextProperty() {
         return chatText;
     }

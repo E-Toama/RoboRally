@@ -130,57 +130,29 @@ public class PlayerMatModel {
     }
 
 
-    /**
-     *
-     * @return StringProperty userName
-     */
+
     public StringProperty getUserName() {
         return userName;
     }
 
-    /**
-     *
-     * @return StringProperty robotName
-     */
-    public StringProperty getRobotName() {return robotName;
-    }
+    public StringProperty getRobotName() {return robotName; }
 
-    /**
-     *
-     * @return StringProperty checkpointreached
-     */
     public StringProperty getCheckpointsreached() {
         return checkpointsreached;
     }
 
-    /**
-     *
-     * @return StringProperty energyPoints
-     */
     public StringProperty getEnergyPoints() {
         return energyPoints;
     }
 
-    /**
-     *
-     * @return StringProperty pickedUpDamageCards
-     */
     public StringProperty getPickedUpDamageCards() {
         return pickedUpDamageCards;
     }
 
-    /**
-     *
-     * @return StringProperty deckCount
-     */
     public StringProperty getDeckCount() {
         return deckCount;
     }
 
-    /**
-     *
-     * @return StringProperty discardedCount
-     */
     public StringProperty getDiscardedCount() {
         return discardedCount;
     }

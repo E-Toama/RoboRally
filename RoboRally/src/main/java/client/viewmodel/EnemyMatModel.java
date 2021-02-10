@@ -142,42 +142,23 @@ public class EnemyMatModel {
     }
 
 
-    /**
-     * gets the controller class of the enemy mat
-     * @return
-     */
+
     public EnemyMatController getEnemyMatController() {
         return enemyMatController;
     }
 
-
-    /**
-     *
-     * @return StringProperty userName for bindings
-     */
     public StringProperty getUserName() {
         return userName;
     }
 
-    /**
-     *
-     * @return StringProperty checkpointsreached for bindings
-     */
     public StringProperty getCheckpointsreached() {
         return checkpointsreached;
     }
 
-    /**
-
-     * @return StringProperty energyPoints for bindings
-     */
     public StringProperty getEnergyPoints() {
         return energyPoints;
     }
 
-    /**
-     * @return StringProperty pickedDamageCards for bindings
-     */
     public StringProperty getPickedUpDamageCards() {
         return pickedUpDamageCards;
     }

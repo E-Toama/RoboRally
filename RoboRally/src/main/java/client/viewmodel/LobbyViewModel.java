@@ -26,10 +26,7 @@ public class LobbyViewModel {
 
     }
 
-    /**
-     *
-     * @return current ClientThread clientThread
-     */
+
     public ClientThread getClientThread() {
         return clientThread;
     }
@@ -42,38 +39,25 @@ public class LobbyViewModel {
         return chatText.get();
     }
 
-    /**
-     *
-     * @return StringProperty chatText
-     */
+
     public StringProperty chatTextProperty() {
         return chatText;
     }
 
-    /**
-     * gets the typed username
-     * @return
-     */
     public String getUserNameTextField() {
         return userNameTextField.get();
     }
 
-    /**
-     *
-     * @return StringProperty userNameTextField
-     */
     public StringProperty userNameTextFieldProperty() {
         return userNameTextField;
     }
 
     /**
      * responsible for sending the chat messages and clearing the textfield afterwards
-     *
      */
     public void sendMessage() {
 
         String currentMessage = getChatText();
-        //ToDo: send message to single (chosen) game.player
         clientThread.sendMessage(currentMessage, -1);
 
         chatText.set("");
@@ -110,14 +94,8 @@ public class LobbyViewModel {
      */
     public void setZoomBot() {}
 
-    /**
-     *
-     */
     public void submitUserNameAndRobot() {}
 
-    /**
-     *
-     */
     public void setReady() {}
 
 
