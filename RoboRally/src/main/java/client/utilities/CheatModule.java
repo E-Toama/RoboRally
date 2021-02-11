@@ -52,7 +52,7 @@ public class CheatModule {
                     playerMatModel.setEnergyPoints(1);
                     break;
                 case "cocaine":
-                    playerMatModel.setEnergyPoints(5);
+                    playerMatModel.setEnergyPoints(6);
                     break;
                 case "tarnkappe":
                     tarnkappe();
