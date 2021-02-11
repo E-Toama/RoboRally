@@ -1,6 +1,6 @@
 package game.utilities;
 
-import game.Robots.Robot;
+import game.robots.Robot;
 import game.cards.Card;
 import game.cards.damagecards.Spam;
 import game.cards.damagecards.TrojanHorse;
@@ -127,7 +127,7 @@ public class GameState {
         PlayerMat playerMat = playerMatHashMap.remove(playerID);
         playerMatList.remove(playerMat);
         registerList.remove(playerMat);
-        nextRegisterList.remove(playerID);
+        nextRegisterList.remove(playerMat);
         playerList.remove(playerMat.getPlayer());
 
     }

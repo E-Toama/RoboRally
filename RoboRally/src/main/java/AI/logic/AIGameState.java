@@ -2,9 +2,14 @@ package AI.logic;
 
 import AI.logic.simplecards.CardS;
 import AI.logic.utilities.tablebases.CSVHandler;
+import AI.logic.utilities.tablebases.MapArrays;
 import game.gameboard.BoardElement;
 import game.gameboard.GameBoard;
 import game.utilities.Position;
+
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 public class AIGameState {
 
@@ -38,6 +43,7 @@ public class AIGameState {
     private int[][] intermediateOrientationLeftRating;
     private int[][] intermediateOrientationDownRating;
     private int[][] intermediateOrientationRightRating;
+
 
     public AIGameState() {}
 
@@ -189,11 +195,11 @@ public class AIGameState {
         switch (gameBoardName) {
 
             case "DizzyHighway" -> {
-                String localDir = System.getProperty("user.dir");
-                this.orientationUpRating = CSVHandler.convertCSVtoArray(localDir + "/RoboRally/src/main/java/AI/logic/utilities/tablebases/DizzySpiral.csv");
-                this.orientationLeftRating = CSVHandler.convertCSVtoArray(localDir + "/RoboRally/src/main/java/AI/logic/utilities/tablebases/DizzySpiral.csv");
-                this.orientationDownRating = CSVHandler.convertCSVtoArray(localDir + "/RoboRally/src/main/java/AI/logic/utilities/tablebases/DizzySpiral.csv");
-                this.orientationRightRating = CSVHandler.convertCSVtoArray(localDir + "/RoboRally/src/main/java/AI/logic/utilities/tablebases/DizzySpiral.csv");
+
+                this.orientationUpRating = MapArrays.dizzyRight;
+                this.orientationRightRating = MapArrays.dizzyRight;
+                this.orientationDownRating = MapArrays.dizzyRight;
+                this.orientationLeftRating = MapArrays.dizzyRight;
 
             }
 

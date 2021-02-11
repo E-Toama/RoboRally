@@ -1,6 +1,7 @@
 package client.viewmodel;
 
 import client.network.ClientThread;
+import client.utilities.CheatModule;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -37,10 +38,7 @@ public class ChatViewModel {
         return chatText.get();
     }
 
-    /**
-     *
-     * @return StringProperty chatText
-     */
+
     public StringProperty chatTextProperty() {
         return chatText;
     }
@@ -59,8 +57,14 @@ public class ChatViewModel {
      *
      */
     public void sendChat() {
+        String text = getChatText();
 
-        clientThread.sendMessage(getChatText(), destination);
+        if (clientThread.getActivePhase() == 2) {
+            CheatModule cheatModule = new CheatModule();
+            cheatModule.parseCheats(text);
+        }
+
+        clientThread.sendMessage(text, destination);
         chatText.set("");
     }
 

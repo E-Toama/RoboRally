@@ -12,7 +12,11 @@ import utilities.MessageHandler;
 import utilities.messages.*;
 
 import java.util.*;
-
+/**
+ * This class represents the roborally game itself and its process.
+ * 
+ * @author Dennis Hermann
+ */
 public class Game {
 
     public Server server;
@@ -20,6 +24,16 @@ public class Game {
 
     private final GameState gameState;
 
+    /**
+     * Constructor for initializing the server and the players that are playing and the game board of the game.
+     * 
+     * @param server
+     *          the server that the game is opertating on
+     * @param playerList
+     *          the players that are playing
+     * @param gameBoard
+     *          the game board 
+     */
     public Game(Server server, List<Player> playerList, GameBoard gameBoard) {
 
         this.server = server;
@@ -27,14 +41,27 @@ public class Game {
 
     }
 
+    /**
+     * This method returns the game board.
+     * 
+     * @return the game board
+     */
     public GameBoard getGameBoard() {
         return gameState.gameBoard;
     }
 
+    /**
+     * This method returns the actual game state.
+     * 
+     * @return the game state
+     */
     public GameState getGameState() {
         return gameState;
     }
 
+    /**
+     * This method starts the first phase of the game and initializes the game state.
+     */
     public void startGame() {
 
         setActivePhase(0);
@@ -45,6 +72,12 @@ public class Game {
 
     }
 
+    /**
+     * This method sets the currently active phase.
+     * 
+     * @param newActivePhase 
+     *          the currently active phase
+     */
     public void setActivePhase(int newActivePhase) {
 
         gameState.activePhase = newActivePhase;
@@ -54,6 +87,9 @@ public class Game {
 
     }
 
+    /**
+     * This method lets the first player know that its his turn to choose a starting point on the game board.
+     */
     public void startStaringPointSelection() {
 
         String currentPlayerMessage = messageHandler.buildMessage("CurrentPlayer", new CurrentPlayer(server.getPlayerList().get(0).getPlayerID()));
@@ -61,6 +97,14 @@ public class Game {
 
     }
 
+    /**
+     * This method sets the player on his starting point that he selected.
+     * 
+     * @param player
+     *          the player
+     * @param position
+     *          the position the player chooses
+     */
     public void continueStartingPointSelection(Player player, int position) {
 
         gameState.playerMatHashMap.get(player.getPlayerID()).getRobot().setRobotPosition(position);
@@ -86,6 +130,9 @@ public class Game {
 
     }
 
+    /**
+     * This method sets the phase to programming phase.
+     */
     public void programmingPhase() {
 
         setActivePhase(2);
@@ -99,6 +146,16 @@ public class Game {
 
     }
 
+    /**
+     * This method lets the player choose a card on a specific register.
+     *  
+     * @param card
+     *          the card that the player chose
+     * @param register
+     *          the register that the player chose
+     * @param playerID
+     *          the player id
+     */
     public synchronized void selectCard(String card, int register, int playerID) {
 
         Card selectedCard = Card.getCardByString(card);
@@ -131,6 +188,9 @@ public class Game {
 
     }
 
+    /**
+     * This method starts the timer.
+     */
     private void startTimer() {
 
         String timerStarted = messageHandler.buildMessage("TimerStarted", new TimerStarted());
@@ -153,6 +213,9 @@ public class Game {
 
     }
 
+    /**
+     * This method ends the timer which results in ending the programming phase and starting the activation phase.
+     */
     public synchronized void timerEnded() {
 
         if (gameState.playersFinishedSelectionList.size() == gameState.playerList.size()) {
@@ -188,6 +251,9 @@ public class Game {
 
     }
 
+    /**
+     * This method starts the activation phase.
+     */
     public void startActivationPhase() {
 
         setActivePhase(3);
@@ -207,6 +273,9 @@ public class Game {
 
     }
 
+    /**
+     * 
+     */
     public void nextRegister() {
 
         int registerNumber = gameState.register;
@@ -232,6 +301,9 @@ public class Game {
 
     }
 
+    /**
+     * This method determines which player should play his card next.
+     */
     public void determinePriority() {
 
         for (PlayerMat playerMat : gameState.registerList) {
@@ -262,6 +334,9 @@ public class Game {
 
     }
 
+    /**
+     * The method checks if all players are done playing their fifth register so that the activation of the board elements can start.
+     */
     public void nextPlayersTurn() {
 
         if (gameState.registerList.size() > 0) {
@@ -277,12 +352,18 @@ public class Game {
 
     }
 
+    /**
+     * This method is responsible for the action of each card played.
+     */
     public synchronized void continuePlayersTurn() {
 
         gameState.registerList.get(0).getRegister()[gameState.register - 1].action(this, gameState, gameState.registerList.get(0).getPlayer().getPlayerID());
 
     }
 
+    /**
+     * This method activate all the board element in the same order they should be activated.
+     */
     public void activateBoardElements() {
 
         activateBlueConveyorBelts();
@@ -315,6 +396,9 @@ public class Game {
 
     }
 
+    /**
+     * This method is responsible for activating the blue conveyor belts on the game board.
+     */
     public void activateBlueConveyorBelts() {
 
         List<PlayerMat> playerOnBlueConveyorBelt = new ArrayList<>();
@@ -346,10 +430,17 @@ public class Game {
 
         }
 
-        completeConveyorBeltActivationV2(conveyorBeltTargets);
+        if (conveyorBeltTargets.size() > 0) {
+
+            completeConveyorBeltActivationV2(conveyorBeltTargets);
+
+        }
 
     }
 
+    /**
+     * This method is responsible for activating the green conveyor belts on the game board.
+     */
     public void activateGreenConveyorBelts() {
 
         List<PlayerMat> playerOnGreenConveyorBelt = new ArrayList<>();
@@ -364,7 +455,7 @@ public class Game {
 
             }
 
-            if (gameState.gameBoard.getBlueRotatingConveyorBelts().containsKey(position)) {
+            if (gameState.gameBoard.getGreenRotatingConveyorBelts().containsKey(position)) {
 
                 playerOnGreenConveyorBelt.add(playerMat);
 
@@ -381,10 +472,21 @@ public class Game {
 
         }
 
-        completeConveyorBeltActivationV2(conveyorBeltTargets);
+        if (conveyorBeltTargets.size() > 0) {
+
+            completeConveyorBeltActivationV2(conveyorBeltTargets);
+
+        }
 
     }
 
+    /**
+     * This method implements the logic of the different types of the conveyor belts and the destination 
+     * position the robot should land on.
+     * 
+     * @param conveyorBeltTargets 
+     *              the list of conveyor belt targets
+     */
     private void completeConveyorBeltActivationV2(List<ConveyorBeltTarget> conveyorBeltTargets) {
 
         for (ConveyorBeltTarget targetOne : conveyorBeltTargets) {
@@ -449,6 +551,9 @@ public class Game {
 
     }
 
+    /**
+     * This method activates the push panels board elements.
+     */
     public void activatePushPanels() {
 
         for (PlayerMat playerMat : gameState.playerMatList) {
@@ -469,6 +574,9 @@ public class Game {
 
     }
 
+    /**
+     * This method activates the rotating gears board elements.
+     */
     public void activateGears() {
 
         for (PlayerMat playerMat : gameState.playerMatList) {
@@ -485,6 +593,16 @@ public class Game {
 
     }
 
+    /**
+     * This method checks if an array has a value in it.
+     * 
+     * @param array
+     *          the array
+     * @param c
+     *          the value that is being checked
+     *          
+     * @return true if the array contains the value.
+     */
     private boolean contains(int[] array, int c) {
 
         boolean returnValue = false;
@@ -504,6 +622,9 @@ public class Game {
 
     }
 
+    /**
+     * This method fires the lasers fields.
+     */
     public void activateLaser() {
 
         LaserHandler laserHandler = new LaserHandler();
@@ -516,6 +637,9 @@ public class Game {
 
     }
 
+    /**
+     * This method activates the lasers of each robot.
+     */
     public void activateRobotLaser() {
 
         String playerShooting = messageHandler.buildMessage("PlayerShooting", new PlayerShooting());
@@ -532,6 +656,9 @@ public class Game {
 
     }
 
+    /**
+     * This method activates the energy spaces board elements.
+     */
     public void activateEnergySpace() {
 
         for (PlayerMat playerMat : gameState.playerMatList) {
@@ -548,6 +675,9 @@ public class Game {
 
     }
 
+    /**
+     * This method activates the the control points fields.
+     */
     public void activateCheckPoint() {
 
         for (PlayerMat playerMat : gameState.playerMatList) {

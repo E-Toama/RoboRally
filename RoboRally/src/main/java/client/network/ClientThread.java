@@ -15,7 +15,7 @@ import client.viewmodel.MainViewModel;
 import client.viewmodel.PlayerMatModel;
 import client.viewmodel.ProgrammingViewModel;
 import client.viewmodel.WelcomeViewModel;
-import game.Robots.Robot;
+import game.robots.Robot;
 import game.cards.ActiveCard;
 import game.gameboard.GameBoard;
 import javafx.application.Platform;
@@ -114,6 +114,18 @@ public class ClientThread implements Runnable {
 
     public MainViewModel getMainViewModel() {
         return mainViewModel;
+    }
+
+    public GameBoardViewModel getGameBoardViewModel() {
+        return gameBoardViewModel;
+    }
+
+    public PlayerMatModel getPlayerMatModel() {
+        return playerMatModel;
+    }
+
+    public int getActivePhase() {
+        return clientGameState.getActivePhase();
     }
 
     public void setMainViewModel(MainViewModel mainViewModel) {
@@ -578,13 +590,20 @@ public class ClientThread implements Runnable {
                 }
                 if (clientGameState.getActivePhase() == 3) {
                     playerMatModel.getPlayerMatController().activateRegisterButton();
+                    Platform.runLater(() -> {
+                        chatMessages.add("[GAME] \n" +
+                                "Click on the cards on your register to \n" +
+                                "command your robot!");
+                    });
                 }
             } else {
                 //Update CurrentPlayer-Status
                 enemyList.get(playerID).setCurrentPlayer(true);
                 playerMatModel.setCurrentPlayer(false);
             }
-            logger.getLogger().info("Current player id " + currentPlayer.getPlayerID() + ".");
+
+
+            logger.getLogger().info("Current player id is " + currentPlayer.getPlayerID() + ".");
 
         } else {
             logger.getLogger().severe("Message body error in handleCurrentPlayer method.");
@@ -645,7 +664,7 @@ public class ClientThread implements Runnable {
             int chosenPoint = startingPointTaken.getPosition();
             Player currentPlayer = playerList.get(playerID);
 
-            logger.getLogger().info(chosenPoint + " was picked by " + playerID + ".");
+            logger.getLogger().info("position " + chosenPoint + " was picked by " + playerID + ".");
 
             if (playerID == ID) {
                 playerMatModel.setCurrentPosition(chosenPoint);
@@ -676,6 +695,7 @@ public class ClientThread implements Runnable {
             //Initialize ProgrammingView with new cards
             programmingViewModel = new ProgrammingViewModel();
             programmingViewModel.setCards(cards);
+            programmingViewModel.getProgrammingController().setPlayerValues(playerMatModel.getUserName().getValue(),player.getFigure());
 
             //Update MainView and switch scenes (PlayerMat -> ProgrammingView)
             mainViewModel.getMainViewController().setProgrammingPane(programmingViewModel.getProgrammingController().getGridPane());
@@ -829,9 +849,9 @@ public class ClientThread implements Runnable {
                 if (cards.getPlayerID() == ID) {
                     Platform.runLater(() -> {
                         playerMatModel.getPlayerMatController().setTakenRegister(cards.getCard());
-                        chatMessages.add("[GAME] \n" +
-                                "Click on the cards on your register to \n" +
-                                "command your robot!");
+                        if (cards.getCard().equals("Spam") || cards.getCard().equals("Virus") || cards.getCard().equals("Worm") || cards.getCard().equals("TrojanHorse")) {
+                            playerMatModel.decreaseDiscardedCount();
+                        }
                     });
                 } else {
                     Platform.runLater(() -> {
@@ -890,7 +910,7 @@ public class ClientThread implements Runnable {
                 });
             }
 
-            logger.getLogger().info("Player wiht id " + drawDamage.getPlayerID() + " has drew the damage cards: " + drawDamage.getCards() + ".");
+            logger.getLogger().info("Player with id " + drawDamage.getPlayerID() + " has drew damage cards.");
         } else {
             logger.getLogger().severe("Message body error in handleDrawDamage method.");
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of DrawDamage)");
@@ -1017,6 +1037,11 @@ public class ClientThread implements Runnable {
         }
     }
 
+    /**
+     * If a player has won the game, a final GameOverScreen with the winner's username is shown and the Game terminates
+     * @param incomingMessage contains winner's player ID
+     * @throws IOException if messageType is incorrect
+     */
     private void handleGameWon(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof GameWon) {
             GameWon gameWon = (GameWon) incomingMessage.getMessageBody();

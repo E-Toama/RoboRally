@@ -10,10 +10,37 @@ import utilities.messages.Movement;
 
 import java.util.logging.Logger;
 
+/**
+ * This method represents the movement of the robots on the game board.
+ * 
+ * @author 
+ */
 public class MoveHandler {
 
     protected final MessageHandler messageHandler = new MessageHandler();
 
+    /**
+     * The method checks if the move is possible to make, if not its the next players turn.
+     * 
+     * @param game
+     *          an object of the Game class
+     * @param gameState
+     *          the current game state
+     * @param playerID
+     *          the player id
+     * @param oldPosition
+     *          the current position
+     * @param newPosition
+     *          the target position
+     * @param movingOrientation
+     *          the direction the robot is facing
+     * @param isPlayerAction
+     *          if its the player who initiated the move
+     * @param isLastMovePart
+     *          if its the last moving part
+     *          
+     * @return true if the move is possible 
+     */
     public boolean move(Game game, GameState gameState, int playerID, Position oldPosition, Position newPosition, String movingOrientation, boolean isPlayerAction, boolean isLastMovePart) {
 
         if (newPosition.getX() == 13 || newPosition.getY() == 10 || newPosition.getX() == -1 || newPosition.getY() == -1) {
@@ -121,6 +148,16 @@ public class MoveHandler {
         return true;
     }
 
+    /**
+     * This method returns the position that the robot will end on.
+     * 
+     * @param position
+     *          the current position of the robot
+     * @param movingDirection
+     *          the moving direction of the robot
+     *          
+     * @return the target position of the robot
+     */
     public Position getTargetPosition(Position position, String movingDirection) {
 
         return switch (movingDirection) {

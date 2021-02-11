@@ -9,15 +9,32 @@ import game.cards.programmingcards.*;
 import game.utilities.GameState;
 import utilities.MessageHandler;
 
+/**
+ * The abstract class Card is a parent class for all the different kinds of cards classes.
+ * 
+ * @author 
+ */
 public abstract class Card {
 
     protected String name;
     protected final MessageHandler messageHandler = new MessageHandler();
 
+    /**
+     * The method returns the card name.
+     * 
+     * @return the card name
+     */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * The method returns a list of cards names as string.
+     * @param cards 
+     *          the list of type Card
+     *          
+     * @return a list of cards names.
+     */
     public static String[] toStringArray(Card[] cards) {
 
         String[] returnValue = new String[cards.length];
@@ -32,6 +49,14 @@ public abstract class Card {
 
     }
 
+    /**
+     * This method returns a new card object from the card string.
+     * 
+     * @param card 
+     *          the name of the card
+     * 
+     * @return an object of type card
+     */
     public static Card getCardByString(String card) {
 
         return switch (card) {
@@ -53,6 +78,16 @@ public abstract class Card {
 
     }
 
+    /**
+     * An abstract method for defining the action of the different existing cards.
+     * 
+     * @param game 
+     *          is an object of game class
+     * @param gameState
+     *          is an object of GameState class
+     * @param PlayerID
+     *          is the player id
+     */
     public abstract void action(Game game, GameState gameState, int PlayerID);
 
 }

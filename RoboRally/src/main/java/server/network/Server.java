@@ -6,6 +6,7 @@ import game.gameboard.GameBoard;
 import game.player.Player;
 import game.utilities.PositionLookUp;
 import utilities.MessageHandler;
+import utilities.MyLogger;
 import utilities.messages.*;
 
 import java.io.IOException;
@@ -19,6 +20,8 @@ import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 public class Server {
+  
+  private final MyLogger logger = new MyLogger();
 
     private final HashMap<Integer, PrintWriter> printWriterMap = new HashMap<>();
     private final HashMap<Integer, Player> playerMap = new HashMap<>();
@@ -50,8 +53,8 @@ public class Server {
     }
 
     private void start(int portNumber) {
-
-        System.out.println("Server is running on port: " + portNumber);
+        
+        logger.getLogger().info("Server is running on port: " + portNumber);
 
         PositionLookUp.createMaps();
 

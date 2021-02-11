@@ -44,18 +44,18 @@
          <children>
             <HBox prefHeight="17.0" prefWidth="66.0">
                <children>
-                  <Label maxWidth="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="65.0" text="CheckPoints:" textFill="#dd8d03">
+                  <Label graphicTextGap="0.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="30.0" text="Flags:" textFill="#dd8d03">
                      <font>
                         <Font size="11.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="10.0" />
+                        <Insets left="40.0" />
                      </HBox.margin></Label>
                   <Label fx:id="checkPointValue" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="18.0" prefWidth="11.0" text="1">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin></Label>
-                  <Label maxWidth="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="49.0" text="Energy:" textFill="green">
+                  <Label maxWidth="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="47.0" text="Energy:" textFill="green">
                      <padding>
                         <Insets left="10.0" />
                      </padding>
@@ -63,7 +63,7 @@
                         <Font size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="energyCubeValue" alignment="CENTER" contentDisplay="CENTER" prefWidth="15.0" text="2">
+                  <Label fx:id="energyCubeValue" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="11.0" text="2">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin></Label>

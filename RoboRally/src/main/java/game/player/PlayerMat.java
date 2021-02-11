@@ -1,7 +1,7 @@
 package game.player;
 
 import game.Game;
-import game.Robots.Robot;
+import game.robots.Robot;
 import game.cards.Card;
 import game.cards.programmingcards.*;
 import game.utilities.GameState;
@@ -14,7 +14,6 @@ import utilities.messages.Reboot;
 import utilities.messages.ShuffleCoding;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class PlayerMat {
@@ -34,7 +33,7 @@ public class PlayerMat {
     private boolean wasRebootedThisRound = false;
 
     private int checkpointsReached = 0;
-    private int energyCubes = 0;
+    private int energyCubes = 5;
 
     private List<Card> currentHand = new ArrayList<>();
 
@@ -269,15 +268,10 @@ public class PlayerMat {
 
                 discardedCards.add(card);
 
-            } else {
-
-                System.out.println("Tried adding an empty Card to discarded Pile @addRemainingCardsToDiscardedPile");
-
             }
 
         }
 
-        //discardedCards.addAll(currentHand);
 
         currentHand = new ArrayList<>();
 
@@ -291,15 +285,9 @@ public class PlayerMat {
 
                 discardedCards.add(card);
 
-            } else {
-
-                System.out.println("Tried adding an empty Card to discarded Pile @addCompleteHandToDiscardedPile");
-
             }
 
         }
-
-        //discardedCards.addAll(currentHand);
 
         currentHand = new ArrayList<>();
 
@@ -312,10 +300,6 @@ public class PlayerMat {
             if (card != null) {
 
                 discardedCards.add(card);
-
-            } else {
-
-                System.out.println("Tried adding an empty Card to discarded Pile @discardRegister");
 
             }
 

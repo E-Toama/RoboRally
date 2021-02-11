@@ -2,6 +2,7 @@ package client.utilities;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 
 public class RobotImageBuilder {
 
@@ -39,6 +40,24 @@ public class RobotImageBuilder {
         } else {
             ImageView transparent = adjustToBoard(new Image("Tiles/Transparent_Tile.png"));
             return transparent;
+        }
+    }
+
+    public static Color getRobotColor(int robotFigure) {
+        if (robotFigure == 0) {
+            return Color.web("#68369B");
+        } else if (robotFigure == 1) {
+            return Color.web("#B02318");
+        } else if (robotFigure == 2) {
+            return Color.web("#DD8F03");
+        } else if (robotFigure == 3) {
+            return Color.web("#324B84");
+        }else if (robotFigure == 4) {
+            return Color.web("#DA8043");
+        }else if (robotFigure == 5) {
+            return Color.web("#3F562A");
+        } else {
+            return Color.BLACK;
         }
     }
 }

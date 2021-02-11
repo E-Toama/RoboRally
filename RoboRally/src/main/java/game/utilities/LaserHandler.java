@@ -4,8 +4,21 @@ import game.gameboard.BoardElement;
 import game.gameboard.gameboardfieldobjects.LaserFieldObject;
 import game.gameboard.gameboardfieldobjects.WallFieldObject;
 
+/**
+ * This class represents the different types of lasers and handles its shooting.
+ *  
+ * @author 
+ */
 public class LaserHandler {
-
+    
+  /**
+   * This method represents the board lasers elements and it handles its shooting.
+   * 
+   * @param gameState
+   *            the current game state
+   * @param laser
+   *            the laser board element
+   */
     public void handleBoardLaserFire(GameState gameState, BoardElement laser) {
 
         LaserFieldObject laserFieldObject = laser.getLaser();
@@ -13,9 +26,17 @@ public class LaserHandler {
         String direction = laserFieldObject.getOrientation();
 
         handleLaserFire(gameState, laser, count, direction);
-
+        
     }
 
+    /**
+     * This method represents the robot lasers and it handles its shooting.
+     * 
+     * @param gameState
+     *              the current game state
+     * @param robotBoardElement
+     *              the laser board element of the robot
+     */
     public void handleRobotFire(GameState gameState, BoardElement robotBoardElement) {
 
         int count = 1;

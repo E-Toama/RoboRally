@@ -2,12 +2,20 @@ package game.utilities;
 
 import java.util.HashMap;
 
+/**
+ * This class represents a lookup table from an x, y coordinates to a number.
+ * 
+ * @author 
+ */
 public class PositionLookUp {
 
     public static HashMap<Integer, Position> positionToXY = new HashMap<>();
 
     public static HashMap<Position, Integer> XYToPosition = new HashMap<>();
 
+    /**
+     * The method creates a map of the game board.
+     */
     public static void createMaps() {
 
         int position = 0;
