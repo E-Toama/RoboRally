@@ -10,7 +10,7 @@ public class Test {
 
     public static void main(String[] args) {
 
-       int[][] array =  CSVHandler.convertCSVtoArray("/home/ada/IdeaProjects/vp-neidische-narwale/RoboRally/src/main/java/AI/logic/utilities/tablebases/DizzyHighWayRight.csv");
+       int[][] array =  CSVHandler.convertCSVtoArray("C:\\Users\\yasha\\Desktop\\Neuer Ordner (3)\\vp-neidische-narwale\\RoboRally\\src\\main\\java\\AI\\logic\\utilities\\tablebases\\DizzyHighWayDown.csv");
         System.out.println(Arrays.deepToString(array));
 
     }

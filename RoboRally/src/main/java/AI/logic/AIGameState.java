@@ -196,10 +196,10 @@ public class AIGameState {
 
             case "DizzyHighway" -> {
 
-                this.orientationUpRating = MapArrays.dizzyRight;
+                this.orientationUpRating = MapArrays.dizzyUp;
                 this.orientationRightRating = MapArrays.dizzyRight;
-                this.orientationDownRating = MapArrays.dizzyRight;
-                this.orientationLeftRating = MapArrays.dizzyRight;
+                this.orientationDownRating = MapArrays.dizzyDown;
+                this.orientationLeftRating = MapArrays.dizzyLeft;
 
             }
 

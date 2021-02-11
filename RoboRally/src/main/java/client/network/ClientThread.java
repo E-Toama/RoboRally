@@ -581,7 +581,7 @@ public class ClientThread implements Runnable {
 
                 if (clientGameState.getActivePhase() == 0) {
                     String robotName = playerMatModel.getRobotName().getValue();
-                    String gameMessage = "[GAME] \n" +"It´s" + robotName + "´s turn to choose a starting point!";
+                    String gameMessage = "[GAME] \n" +"It´s " + robotName + "´s turn to choose a starting point!";
 
                     Platform.runLater(() -> {
                         chatMessages.add(gameMessage);
