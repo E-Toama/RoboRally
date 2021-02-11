@@ -55,7 +55,7 @@ public class Virus extends Card {
 
         }
 
-        Card newProgrammingCard = gameState.playerMatHashMap.get(playerID).drawRandomCard();
+        Card newProgrammingCard = gameState.playerMatHashMap.get(playerID).drawRandomCardForDamageCardAction(gameState.register);
 
         gameState.playerMatHashMap.get(playerID).getRegister()[gameState.register - 1] = newProgrammingCard;
 

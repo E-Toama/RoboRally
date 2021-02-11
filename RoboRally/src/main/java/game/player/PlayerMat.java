@@ -163,6 +163,40 @@ public class PlayerMat {
 
     }
 
+    public Card drawRandomCardForDamageCardAction(int currentRegisterNumber) {
+
+        Card drawnCard;
+
+        if (deck.size() <= 0) {
+
+            shuffleDeck();
+
+        }
+
+        drawnCard = deck.remove( (int) (Math.random() * (deck.size() - 1)));
+
+        if (drawnCard.getName().equals("Again") && currentRegisterNumber == 1) {
+
+            Card tmpCard;
+
+            if (deck.size() <= 0) {
+
+                shuffleDeck();
+
+            }
+
+            tmpCard = deck.remove( (int) (Math.random() * (deck.size() - 1)));
+
+            deck.add(drawnCard);
+
+            drawnCard = tmpCard;
+
+        }
+
+        return drawnCard;
+
+    }
+
     public void shuffleDeck() {
 
         deck = discardedCards;

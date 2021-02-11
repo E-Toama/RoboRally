@@ -184,9 +184,21 @@ public class Game {
             String selectionFinished = messageHandler.buildMessage("SelectionFinished", new SelectionFinished(playerID));
             server.sendMessageToAllUsers(selectionFinished);
 
+            if (gameState.playersFinishedSelectionList.size() == gameState.playerList.size()) {
+
+                timerEndedTask.cancel();
+                timer.cancel();
+
+                timerEnded();
+
+            }
+
         }
 
     }
+
+    private Timer timer;
+    private TimerTask timerEndedTask;
 
     /**
      * This method starts the timer.
@@ -196,7 +208,9 @@ public class Game {
         String timerStarted = messageHandler.buildMessage("TimerStarted", new TimerStarted());
         server.sendMessageToAllUsers(timerStarted);
 
-        TimerTask timerEndedTask = new TimerTask() {
+        timer = new Timer();
+
+        timerEndedTask = new TimerTask() {
 
             @Override
             public void run() {
@@ -206,8 +220,6 @@ public class Game {
             }
 
         };
-
-        Timer timer = new Timer();
 
         timer.schedule(timerEndedTask, 30000);
 

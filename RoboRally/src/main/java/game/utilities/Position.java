@@ -54,7 +54,7 @@ public class Position {
      */
     public static int calculateDistance(Position position1, Position position2) {
 
-        return Math.abs(position1.getX() - position1.x) + Math.abs(position1.getY() - position2.y);
+        return Math.abs(position1.getX() - position2.getX()) + Math.abs(position1.getY() - position2.getY());
 
     }
 
