@@ -43,6 +43,33 @@ public class RobotImageBuilder {
         }
     }
 
+    public static Image buildWinnerImage(int robotFigure) {
+
+        if (robotFigure == 0) {
+            Image botImage = new Image("Images/Purple.png");
+            return botImage;
+        } else if (robotFigure == 1) {
+            Image botImage = new Image("Images/Red.png");
+            return botImage;
+        } else if (robotFigure == 2) {
+            Image botImage = new Image("Images/Yellow.png");
+            return botImage;
+        } else if (robotFigure == 3) {
+            Image botImage = new Image("Images/Blue.png");
+            return botImage;
+        }else if (robotFigure == 4) {
+            Image botImage = new Image("Images/Orange.png");
+            return botImage;
+        }else if (robotFigure == 5) {
+            Image botImage = new Image("Images/Green.png");
+            return botImage;
+        } else {
+            Image transparent = new Image("Tiles/Transparent_Tile.png");
+            return transparent;
+
+        }
+    }
+
     public static Color getRobotColor(int robotFigure) {
         if (robotFigure == 0) {
             return Color.web("#68369B");
