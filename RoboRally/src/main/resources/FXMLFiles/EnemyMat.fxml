@@ -51,7 +51,7 @@
                      <HBox.margin>
                         <Insets left="40.0" />
                      </HBox.margin></Label>
-                  <Label fx:id="checkPointValue" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="18.0" prefWidth="11.0" text="1">
+                  <Label fx:id="checkPointValue" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="18.0" prefWidth="22.0" text="1">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin></Label>
@@ -63,19 +63,19 @@
                         <Font size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="energyCubeValue" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="11.0" text="2">
+                  <Label fx:id="energyCubeValue" contentDisplay="CENTER" prefHeight="17.0" prefWidth="23.0" text="2">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin></Label>
                   <Label prefHeight="18.0" prefWidth="56.0" text="DmgCards:" textFill="darkred">
                      <HBox.margin>
-                        <Insets left="15.0" />
+                        <Insets left="10.0" />
                      </HBox.margin>
                      <font>
                         <Font size="11.0" />
                      </font>
                   </Label>
-                  <Label fx:id="damageCardValue" alignment="CENTER" contentDisplay="CENTER" prefWidth="10.0" text="1">
+                  <Label fx:id="damageCardValue" contentDisplay="CENTER" prefHeight="17.0" prefWidth="22.0" text="1">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin>

@@ -1045,7 +1045,8 @@ public class ClientThread implements Runnable {
     private void handleGameWon(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof GameWon) {
             GameWon gameWon = (GameWon) incomingMessage.getMessageBody();
-            String winnerName = playerList.get(gameWon.getPlayerID()).getName();
+            String winnerName = "The winner is: " + playerList.get(gameWon.getPlayerID()).getName();
+            int winnerRobot  = playerList.get(gameWon.getPlayerID()).getFigure();
             //ToDo: Test and improve GameWon-Screen
             FXMLLoader gameOverLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/GameOverScreen.fxml"));
             GridPane gameOverPane = gameOverLoader.load();
@@ -1053,6 +1054,7 @@ public class ClientThread implements Runnable {
 
             Platform.runLater(() -> {
                 gameOverModel.setWinnerName(winnerName);
+                gameOverModel.setWinnerRobot(winnerRobot);
                 ViewController.getViewController().setScene(new Scene(gameOverPane));
             });
 
