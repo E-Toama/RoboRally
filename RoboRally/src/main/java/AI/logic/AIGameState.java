@@ -2,6 +2,7 @@ package AI.logic;
 
 import AI.logic.simplecards.CardS;
 import AI.logic.utilities.tablebases.CSVHandler;
+import AI.logic.utilities.tablebases.MapArrays;
 import game.gameboard.BoardElement;
 import game.gameboard.GameBoard;
 import game.utilities.Position;
@@ -43,7 +44,6 @@ public class AIGameState {
     private int[][] intermediateOrientationDownRating;
     private int[][] intermediateOrientationRightRating;
 
-    private  int[][] dizzySpiral = {{13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 3, 3, 3}, {13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 2, 2}, {13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 1}, {13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0}, {13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 1}, {13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 2, 2}, {13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 3, 3, 3}, {13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 4, 4, 4, 4}, {13, 12, 11, 10, 9, 8, 7, 6, 5, 5, 5, 5, 5, 5}, {13, 12, 11, 10, 9, 8, 7, 6, 6, 6, 6, 6, 6, 6}};
 
     public AIGameState() {}
 
@@ -196,10 +196,10 @@ public class AIGameState {
 
             case "DizzyHighway" -> {
 
-                this.orientationUpRating = dizzySpiral;
-                this.orientationRightRating = dizzySpiral;
-                this.orientationDownRating = dizzySpiral;
-                this.orientationLeftRating = dizzySpiral;
+                this.orientationUpRating = MapArrays.dizzyRight;
+                this.orientationRightRating = MapArrays.dizzyRight;
+                this.orientationDownRating = MapArrays.dizzyRight;
+                this.orientationLeftRating = MapArrays.dizzyRight;
 
             }
 

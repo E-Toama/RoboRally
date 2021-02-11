@@ -1,5 +1,7 @@
 package AI.logic.utilities;
 
+import AI.logic.utilities.tablebases.CSVHandler;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -8,25 +10,8 @@ public class Test {
 
     public static void main(String[] args) {
 
-        /*String[] cards = {"MoveOne", "MoveOne", "MoveOne", "MoveTwo", "RightTurn", "RightTurn", "LeftTurn", "LeftTurn", "MoveThree"};
-
-        List<String[]> test = getPossibleRegisters(cards);
-
-        System.out.println(test.size());
-
-        for (String[] possibleRegister : test) {
-
-            System.out.println("Next Register: ");
-
-            for (String card : possibleRegister) {
-
-                System.out.println(card);
-
-            }
-
-        }*/
-
-
+       int[][] array =  CSVHandler.convertCSVtoArray("/home/ada/IdeaProjects/vp-neidische-narwale/RoboRally/src/main/java/AI/logic/utilities/tablebases/DizzyHighWayRight.csv");
+        System.out.println(Arrays.deepToString(array));
 
     }
 
