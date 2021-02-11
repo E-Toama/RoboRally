@@ -91,16 +91,16 @@ public class ConveyorBeltsHelperV2 {
         if (currentBoardElement.isBlueConveyorBelt()) {
 
             BeltFieldObject beltFieldObject = currentBoardElement.getConveyorBelt();
-            targetBoardElement = getNextBoardElementByMovingDirection(gameState, currentBoardElement.getXY(), beltFieldObject.getOrientation());
             movingDirection = beltFieldObject.getOrientation();
+            targetBoardElement = getNextBoardElementByMovingDirection(gameState, currentBoardElement.getXY(), movingDirection);
 
             if (targetBoardElement.isBlueConveyorBelt()) {
 
                 BeltFieldObject beltFieldObjectTwo = targetBoardElement.getConveyorBelt();
-                targetBoardElement = getNextBoardElementByMovingDirection(gameState, targetBoardElement.getXY(), beltFieldObject.getOrientation());
                 movingDirection = beltFieldObjectTwo.getOrientation();
+                targetBoardElement = getNextBoardElementByMovingDirection(gameState, targetBoardElement.getXY(), movingDirection);
 
-                if (targetBoardElement.isBlueRotatingConveyorBelt()) {
+                if (targetBoardElement.isBlueConveyorBelt()) {
 
                     targetIsBelt = true;
 
@@ -118,6 +118,7 @@ public class ConveyorBeltsHelperV2 {
                     }
 
                 }
+
 
             } else if (targetBoardElement.isBlueRotatingConveyorBelt()) {
 

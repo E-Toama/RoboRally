@@ -33,7 +33,7 @@ public class PlayerMat {
     private boolean wasRebootedThisRound = false;
 
     private int checkpointsReached = 0;
-    private int energyCubes = 0;
+    private int energyCubes = 5;
 
     private List<Card> currentHand = new ArrayList<>();
 
