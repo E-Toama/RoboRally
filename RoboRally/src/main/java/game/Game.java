@@ -15,7 +15,7 @@ import java.util.*;
 /**
  * This class represents the roborally game itself and its process.
  * 
- * @author 
+ * @author Dennis Hermann
  */
 public class Game {
 
@@ -430,7 +430,11 @@ public class Game {
 
         }
 
-        completeConveyorBeltActivationV2(conveyorBeltTargets);
+        if (conveyorBeltTargets.size() > 0) {
+
+            completeConveyorBeltActivationV2(conveyorBeltTargets);
+
+        }
 
     }
 
@@ -451,7 +455,7 @@ public class Game {
 
             }
 
-            if (gameState.gameBoard.getBlueRotatingConveyorBelts().containsKey(position)) {
+            if (gameState.gameBoard.getGreenRotatingConveyorBelts().containsKey(position)) {
 
                 playerOnGreenConveyorBelt.add(playerMat);
 
@@ -468,7 +472,11 @@ public class Game {
 
         }
 
-        completeConveyorBeltActivationV2(conveyorBeltTargets);
+        if (conveyorBeltTargets.size() > 0) {
+
+            completeConveyorBeltActivationV2(conveyorBeltTargets);
+
+        }
 
     }
 
