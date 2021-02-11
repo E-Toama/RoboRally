@@ -14,6 +14,7 @@ import utilities.messages.Reboot;
 import utilities.messages.ShuffleCoding;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PlayerMat {
@@ -43,10 +44,6 @@ public class PlayerMat {
         this.robot = robot;
         this.server = server;
 
-    }
-
-    public List<Card> getCurrentHand() {
-        return currentHand;
     }
 
     public void setWasRebootedThisRound(boolean wasRebootedThisRound) {
@@ -117,10 +114,6 @@ public class PlayerMat {
         if (discardedCard != null) {
 
             this.discardedCards.add(discardedCard);
-
-        } else {
-
-            System.out.println("Tried adding an empty Card to discarded Pile @addDiscardedCard");
 
         }
 
@@ -215,9 +208,9 @@ public class PlayerMat {
 
             for (int i = 0; i < 9; i++) {
                 returnValue[i] = drawRandomCard();
-                currentHand.add(returnValue[i]);
             }
 
+            currentHand.addAll(Arrays.asList(returnValue));
             return returnValue;
 
         } else {
@@ -226,8 +219,7 @@ public class PlayerMat {
 
             for (int i = 0; i < remainingCards; i++) {
 
-                returnValue[i] = deck.get(i);
-                currentHand.add(returnValue[i]);
+                returnValue[i] = deck.remove(0);
 
             }
 
@@ -236,10 +228,10 @@ public class PlayerMat {
             for (int j = remainingCards; j < 9; j++) {
 
                 returnValue[j] = drawRandomCard();
-                currentHand.add(returnValue[j]);
 
             }
 
+            currentHand.addAll(Arrays.asList(returnValue));
             return returnValue;
 
         }
@@ -262,7 +254,7 @@ public class PlayerMat {
 
             for (int i = 0; i < remainingCards; i++) {
 
-                returnValue[i] = deck.get(i);
+                returnValue[i] = deck.remove(0);
 
             }
 
@@ -305,7 +297,6 @@ public class PlayerMat {
             }
 
         }
-
 
         currentHand = new ArrayList<>();
 
