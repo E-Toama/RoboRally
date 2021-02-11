@@ -1,9 +1,18 @@
 package client.utilities;
 
 import client.network.ClientThread;
+import client.view.GameOverController;
+import client.view.ViewController;
 import client.viewmodel.GameBoardViewModel;
+import client.viewmodel.GameOverModel;
 import client.viewmodel.PlayerMatModel;
 import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
+import utilities.MyLogger;
+
+import java.io.IOException;
 
 /**
  * This class provides some simple, string-based cheats for GUI-Manipulation.
@@ -31,6 +40,7 @@ public class CheatModule {
 
     /**
      * Simple Sring-Check for special characters signaling cheats
+     *
      * @param message The message the user wants to send via chat
      */
     public void parseCheats(String message) {
@@ -56,6 +66,8 @@ public class CheatModule {
                 case "skyisthelimit":
                     skyIsTheLimit();
                     break;
+                case "pieceofcake":
+                    pieceOfCake();
                 default:
                     break;
             }
@@ -86,6 +98,23 @@ public class CheatModule {
         Platform.runLater(() -> {
             gameBoardViewModel.getGameBoardController().reappear(playerMatModel.getCurrentPosition());
         });
+    }
+
+    private void pieceOfCake() {
+
+        try {
+            FXMLLoader gameOverLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/GameOverScreen.fxml"));
+            GridPane gameOverPane = gameOverLoader.load();
+            GameOverModel gameOverModel = gameOverLoader.<GameOverController>getController().getGameOverModel();
+
+            Platform.runLater(() -> {
+                gameOverModel.setWinnerName("Winner by old-fashioned cheating: " + playerMatModel.getUserName().getValue());
+                ViewController.getViewController().setScene(new Scene(gameOverPane));
+            });
+        } catch (IOException e) {
+            MyLogger logger = new MyLogger();
+            logger.getLogger().severe(e.getMessage());
+        }
     }
 
 }
