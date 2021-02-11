@@ -6,10 +6,18 @@ import client.viewmodel.GameBoardViewModel;
 import game.gameboard.BoardElement;
 import game.utilities.Position;
 import game.utilities.PositionLookUp;
+import javafx.animation.FadeTransition;
+import javafx.animation.Interpolator;
+import javafx.animation.PathTransition;
+import javafx.animation.RotateTransition;
+import javafx.animation.TranslateTransition;
 import javafx.scene.control.Button;
+import javafx.scene.effect.MotionBlur;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 import utilities.MyLogger;
 
 import java.util.HashSet;
@@ -189,8 +197,80 @@ public class GameBoardController {
         this.gameBoardViewModel = gameBoardViewModel;
     }
 
+
+    /**
+     * Removes the Robot from the board in case of Disconnect / Abort
+     * @param position of the robot to be removed
+     */
     public void removeRobot(int position) {
         Position xy = PositionLookUp.positionToXY.get(position);
         gameTileArray[xy.getY()][xy.getX()].getChildren().remove(1);
     }
+
+
+    //Methods only used for cheat-codes
+
+    /**
+     * Spins the robot in place for about 3 Seconds
+     * @param position of the robot to be spun
+     */
+    public void whirlwind(int position) {
+        Position xy = PositionLookUp.positionToXY.get(position);
+        ImageView robotImage = (ImageView) gameTileArray[xy.getY()][xy.getX()].getChildren().get(1);
+        robotImage.setEffect(new MotionBlur());
+        RotateTransition rotateTransition = new RotateTransition(Duration.millis(100), robotImage);
+        rotateTransition.setByAngle(360);
+        rotateTransition.setCycleCount(12);
+        rotateTransition.play();
+        rotateTransition.setOnFinished(e -> {
+            robotImage.setEffect(null);
+        });
+    }
+
+
+    /**
+     * Generates a quick movement from the current position to the "ceiling" (i.e. top row of the gameboard)
+     *
+     * @param position of the robot the transition is applied to
+     */
+    public void skyIsTheLimit(int position) {
+        Position xy = PositionLookUp.positionToXY.get(position);
+        ImageView robotImage = (ImageView) gameTileArray[xy.getY()][xy.getX()].getChildren().get(1);
+        robotImage.setEffect(new MotionBlur());
+        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(80), robotImage);
+        translateTransition.setToY(-50 * xy.getY());
+        translateTransition.setCycleCount(10);
+        translateTransition.setAutoReverse(true);
+        translateTransition.setInterpolator(Interpolator.EASE_BOTH);
+        translateTransition.play();
+        translateTransition.setOnFinished(e -> {
+            robotImage.setEffect(null);
+
+        });
+    }
+
+    /**
+     * Fades out the robot by setting the opacity to 0
+     * @param position of the robot to be faded out
+     */
+    public void invisible(int position) {
+        Position xy = PositionLookUp.positionToXY.get(position);
+        ImageView robotImage = (ImageView) gameTileArray[xy.getY()][xy.getX()].getChildren().get(1);
+        FadeTransition fadeTransition = new FadeTransition(Duration.millis(500), robotImage);
+        fadeTransition.setToValue(0);
+        fadeTransition.play();
+    }
+
+    /**
+     * Fades in the robot by setting the ImageView's opacity back to 100 %
+     * @param position of the robot to be faded in
+     */
+    public void reappear(int position) {
+        Position xy = PositionLookUp.positionToXY.get(position);
+        ImageView robotImage = (ImageView) gameTileArray[xy.getY()][xy.getX()].getChildren().get(1);
+        FadeTransition fadeTransition = new FadeTransition(Duration.millis(500), robotImage);
+        fadeTransition.setToValue(100);
+        fadeTransition.play();
+    }
+
 }

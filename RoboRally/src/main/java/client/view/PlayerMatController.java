@@ -2,6 +2,7 @@ package client.view;
 
 
 import client.utilities.ImageBuilder;
+import client.utilities.RobotImageBuilder;
 import client.viewmodel.PlayerMatModel;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

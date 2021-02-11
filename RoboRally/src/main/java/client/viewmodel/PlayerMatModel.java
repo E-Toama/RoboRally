@@ -58,7 +58,7 @@ public class PlayerMatModel {
         this.userName.set("");
         this.robotName.set("");
         this.pickedUpDamageCards.set("0");
-        this.energyPoints.set("0");
+        this.energyPoints.set("5");
         this.deckCount.set("20");
         this.robotName.set("");
         this.discardedCount.set("0");
@@ -124,58 +124,35 @@ public class PlayerMatModel {
         this.discardedCount.set(String.valueOf(discarded));
     }
 
+    public void decreaseDiscardedCount() {
+        int discarded = Integer.parseInt(this.discardedCount.getValue()) - 1;
+        this.discardedCount.set(String.valueOf(discarded));
+    }
 
-    /**
-     *
-     * @return StringProperty userName
-     */
+
+
     public StringProperty getUserName() {
         return userName;
     }
 
-    /**
-     *
-     * @return StringProperty robotName
-     */
-    public StringProperty getRobotName() {return robotName;
-    }
+    public StringProperty getRobotName() {return robotName; }
 
-    /**
-     *
-     * @return StringProperty checkpointreached
-     */
     public StringProperty getCheckpointsreached() {
         return checkpointsreached;
     }
 
-    /**
-     *
-     * @return StringProperty energyPoints
-     */
     public StringProperty getEnergyPoints() {
         return energyPoints;
     }
 
-    /**
-     *
-     * @return StringProperty pickedUpDamageCards
-     */
     public StringProperty getPickedUpDamageCards() {
         return pickedUpDamageCards;
     }
 
-    /**
-     *
-     * @return StringProperty deckCount
-     */
     public StringProperty getDeckCount() {
         return deckCount;
     }
 
-    /**
-     *
-     * @return StringProperty discardedCount
-     */
     public StringProperty getDiscardedCount() {
         return discardedCount;
     }

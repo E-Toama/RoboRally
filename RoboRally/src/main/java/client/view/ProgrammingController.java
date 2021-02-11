@@ -1,15 +1,22 @@
 package client.view;
 
 import client.utilities.ImageBuilder;
+import client.utilities.RobotImageBuilder;
 import client.viewmodel.ProgrammingViewModel;
+import game.robots.Robot;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 /**
@@ -130,6 +137,7 @@ public class ProgrammingController {
 
       // Again-Card cannot be placed in first register
       if (firstFreeRegisterIndex == 0 && "Again".equals(button.getCardString())) {
+        button.getLabel().setText("Not in Reg. 1!");
         return;
       }
       button.setChosen(true);
@@ -237,5 +245,18 @@ public class ProgrammingController {
             });
     time.getKeyFrames().add(frame);
     time.playFromStart();
+  }
+
+  public void setPlayerValues(String userName, int robotFigure) {
+
+    Label name = new Label(userName);
+    name.setId("programmingName");
+
+    Text bot = new Text(Robot.getRobotName(robotFigure));
+    bot.setFill(RobotImageBuilder.getRobotColor(robotFigure));
+    bot.setId("programmingBot");
+
+    gridPane.add(name, 0, 2, 3, 1);
+    gridPane.add(bot, 8, 2, 2, 1);
   }
 }

@@ -49,6 +49,21 @@
 -fx-max-height: 190;
 -fx-min-width: 975;
 -fx-max-width: 975;
+-fx-font-family : Arial;
+
+}
+
+#programmingName {
+
+
+-fx-font-weight: bold;
+-fx-padding: 0 0 0 15
+}
+
+#programmingBot {
+
+
+-fx-font-weight: bold;
 
 }
 
@@ -56,7 +71,7 @@
 
 -fx-background-color: #E0E0F8;
 -fx-padding: 22;
--fx-font-family: Arial;
+
 -fx-width: 120;
 }
 
@@ -79,7 +94,7 @@
 
 -fx-text-fill: #323232;
 -fx-padding: 4;
--fx-font-family: Arial;
+
 
 }
 

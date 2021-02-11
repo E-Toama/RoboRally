@@ -74,18 +74,10 @@ public class GameBoardViewModel {
     }
 
 
-    /**
-     *
-     * @return GameBoardController gameBoardController
-     */
     public GameBoardController getGameBoardController() {
         return gameBoardController;
     }
 
-    /**
-     *
-     * @return HashSet<Integer> startingPostions
-     */
     public HashSet<Integer> getStartingPositions() {
         return startingPositions;
     }
