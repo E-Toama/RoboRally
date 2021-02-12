@@ -131,7 +131,8 @@ public class PlayerMatController {
      */
     private void sendPlayIt(Button button) {
         button.setDisable(true);
-        button.setVisible(false);
+        button.setOpacity(1);
+        //button.setVisible(false);
         playerMatModel.sendPlayIt();
     }
 
@@ -151,5 +152,8 @@ public class PlayerMatController {
     public void resetRegisterCounts() {
         currentRegisterActiveCount = 0;
         registerForAnimation = 0;
+        for (StackPane registerPane : registers) {
+            registerPane.getChildren().get(1).setVisible(false);
+        }
     }
 }
