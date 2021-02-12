@@ -84,7 +84,11 @@ public class DrawDamageCardHandler {
 
         if (cards.size() > 0) {
 
-            drawnDamageCardsList.add(cards.remove(0));
+            if (cards.get(0) != null) {
+
+                drawnDamageCardsList.add(cards.remove(0));
+
+            }
 
         } else {
 

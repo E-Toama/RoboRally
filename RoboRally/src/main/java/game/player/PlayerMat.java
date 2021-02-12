@@ -14,6 +14,7 @@ import utilities.messages.Reboot;
 import utilities.messages.ShuffleCoding;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PlayerMat {
@@ -43,10 +44,6 @@ public class PlayerMat {
         this.robot = robot;
         this.server = server;
 
-    }
-
-    public List<Card> getCurrentHand() {
-        return currentHand;
     }
 
     public void setWasRebootedThisRound(boolean wasRebootedThisRound) {
@@ -118,10 +115,6 @@ public class PlayerMat {
 
             this.discardedCards.add(discardedCard);
 
-        } else {
-
-            System.out.println("Tried adding an empty Card to discarded Pile @addDiscardedCard");
-
         }
 
     }
@@ -153,7 +146,7 @@ public class PlayerMat {
 
     public Card drawRandomCard() {
 
-        if (deck.size() <= 0) {
+        if (deck.size() == 0) {
 
             shuffleDeck();
 
@@ -165,27 +158,11 @@ public class PlayerMat {
 
     public Card drawRandomCardForDamageCardAction(int currentRegisterNumber) {
 
-        Card drawnCard;
-
-        if (deck.size() <= 0) {
-
-            shuffleDeck();
-
-        }
-
-        drawnCard = deck.remove( (int) (Math.random() * (deck.size() - 1)));
+        Card drawnCard = drawRandomCard();
 
         if (drawnCard.getName().equals("Again") && currentRegisterNumber == 1) {
 
-            Card tmpCard;
-
-            if (deck.size() <= 0) {
-
-                shuffleDeck();
-
-            }
-
-            tmpCard = deck.remove( (int) (Math.random() * (deck.size() - 1)));
+            Card tmpCard = drawRandomCard();
 
             deck.add(drawnCard);
 
@@ -199,7 +176,7 @@ public class PlayerMat {
 
     public void shuffleDeck() {
 
-        deck = discardedCards;
+        deck.addAll(discardedCards);
         discardedCards = new ArrayList<>();
 
         String shuffleCoding = messageHandler.buildMessage("ShuffleCoding", new ShuffleCoding(player.getPlayerID()));
@@ -211,38 +188,12 @@ public class PlayerMat {
 
         Card[] returnValue = new Card[9];
 
-        if (deck.size() >= 9) {
-
-            for (int i = 0; i < 9; i++) {
-                returnValue[i] = drawRandomCard();
-                currentHand.add(returnValue[i]);
-            }
-
-            return returnValue;
-
-        } else {
-
-            int remainingCards = deck.size();
-
-            for (int i = 0; i < remainingCards; i++) {
-
-                returnValue[i] = deck.get(i);
-                currentHand.add(returnValue[i]);
-
-            }
-
-            shuffleDeck();
-
-            for (int j = remainingCards; j < 9; j++) {
-
-                returnValue[j] = drawRandomCard();
-                currentHand.add(returnValue[j]);
-
-            }
-
-            return returnValue;
-
+        for (int i = 0; i < 9; i++) {
+            returnValue[i] = drawRandomCard();
         }
+
+        currentHand.addAll(Arrays.asList(returnValue));
+        return returnValue;
 
     }
 
@@ -250,30 +201,8 @@ public class PlayerMat {
 
         Card[] returnValue = new Card[5];
 
-        if (deck.size() >= 5) {
-
-            for (int i = 0; i < 5; i++) {
-                returnValue[i] = drawRandomCard();
-            }
-
-        } else {
-
-            int remainingCards = deck.size();
-
-            for (int i = 0; i < remainingCards; i++) {
-
-                returnValue[i] = deck.get(i);
-
-            }
-
-            shuffleDeck();
-
-            for (int i = remainingCards; i < 5; i++) {
-
-                returnValue[i] = drawRandomCard();
-
-            }
-
+        for (int i = 0; i < 5; i++) {
+            returnValue[i] = drawRandomCard();
         }
 
         if (returnValue[0].getName().equals("Again")) {
@@ -290,9 +219,16 @@ public class PlayerMat {
 
     public void addRemainingCardsToDiscardedPile() {
 
-        for (Card card : register) {
+        for (Card registerCard : register) {
 
-            currentHand.remove(card);
+            for (Card card : currentHand) {
+
+                if(registerCard.getName().equals(card.getName())) {
+                    currentHand.remove(card);
+                    break;
+                }
+
+            }
 
         }
 
@@ -305,7 +241,6 @@ public class PlayerMat {
             }
 
         }
-
 
         currentHand = new ArrayList<>();
 

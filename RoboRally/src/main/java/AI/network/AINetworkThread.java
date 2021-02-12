@@ -270,7 +270,7 @@ public class AINetworkThread implements Runnable {
 
                     case "GameWon":
                         handleGameWon(incomingMessage);
-                        break;
+                        return;
 
                     case "PickDamage":
                         handlePickDamage(incomingMessage);

@@ -14,13 +14,13 @@ public class AgainS extends CardS {
     @Override
     public void action(AIGameState aiGameState, int currentRegisterNumber) {
 
-        if (aiGameState.getIntermediateRegister()[currentRegisterNumber - 2].getName().equals("Again")) {
+        if (aiGameState.getIntermediateRegister()[currentRegisterNumber - 1].getName().equals("Again")) {
 
-            aiGameState.getIntermediateRegister()[currentRegisterNumber - 3].action(aiGameState, currentRegisterNumber);
+            aiGameState.getIntermediateRegister()[currentRegisterNumber - 2].action(aiGameState, currentRegisterNumber);
 
         } else {
 
-            aiGameState.getIntermediateRegister()[currentRegisterNumber - 2].action(aiGameState, currentRegisterNumber);
+            aiGameState.getIntermediateRegister()[currentRegisterNumber - 1].action(aiGameState, currentRegisterNumber);
 
         }
 

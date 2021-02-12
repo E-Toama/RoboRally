@@ -59,6 +59,8 @@ public class ControlPointFieldObject extends GameBoardFieldObject {
 
             if (count == gameState.checkPointsNeededToWin) {
 
+                System.out.println("Player " + playerID + " won the game!");
+
                 String gameWon = messageHandler.buildMessage("GameWon", new GameWon(playerID));
                 gameState.server.sendMessageToAllUsers(gameWon);
                 gameState.server.endGame();

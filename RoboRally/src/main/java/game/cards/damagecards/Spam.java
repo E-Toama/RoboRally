@@ -39,7 +39,7 @@ public class Spam extends Card {
 
         Card newProgrammingCard = gameState.playerMatHashMap.get(playerID).drawRandomCardForDamageCardAction(gameState.register);
 
-        gameState.playerMatHashMap.get(playerID).getRegister()[gameState.register - 1] = newProgrammingCard;
+        gameState.playerMatHashMap.get(playerID).addCardToRegister(gameState.register - 1, newProgrammingCard);
 
         gameState.spamCards.add(this);
 

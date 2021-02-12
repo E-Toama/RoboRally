@@ -118,7 +118,7 @@ public class Game {
 
         if (server.getPlayerList().get(server.getPlayerList().size() - 1).getPlayerID() == player.getPlayerID()) {
 
-            programmingPhase();
+            programmingPhase(true);
 
         } else {
 
@@ -133,15 +133,23 @@ public class Game {
     /**
      * This method sets the phase to programming phase.
      */
-    public void programmingPhase() {
+    public void programmingPhase(boolean firstProgrammingPhase) {
 
         setActivePhase(2);
 
         gameState.playersFinishedSelectionList = new ArrayList<>();
 
         for (PlayerMat playerMat : gameState.playerMatList) {
-            playerMat.discardRegister();
-            server.handOutCards(playerMat.getPlayer().getPlayerID(), playerMat.drawNineCards(), playerMat.getDeckCount());
+
+            if (!firstProgrammingPhase) {
+                playerMat.discardRegister();
+            }
+
+            Card[] drawnCards = playerMat.drawNineCards();
+            int deckCount = playerMat.getDeckCount();
+
+            server.handOutCards(playerMat.getPlayer().getPlayerID(), drawnCards, deckCount);
+
         }
 
     }
@@ -402,7 +410,7 @@ public class Game {
 
         } else {
 
-            programmingPhase();
+            programmingPhase(false);
 
         }
 
