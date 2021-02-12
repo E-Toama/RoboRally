@@ -15,7 +15,7 @@ import java.io.IOException;
 
 /**
  * ViewModel for the WelcomeView
- * @author
+ * 
  */
 public class WelcomeViewModel {
 

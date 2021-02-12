@@ -1,14 +1,9 @@
 package utilities.messages;
 
-import game.cards.Card;
-
 /**
  * The YourCards class represents the nine cards of each player.
- * 
- * @author
  */
 public class YourCards extends MessageBody {
-  // TODO programming cards only
   private final String[] cards;
   private final int cardsInPile;
 

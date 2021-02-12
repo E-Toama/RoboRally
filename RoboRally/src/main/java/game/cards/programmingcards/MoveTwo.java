@@ -7,7 +7,6 @@ import utilities.MyLogger;
 /**
  * This class represents the MoveII programming card with its effect.
  * 
- * @author 
  */
 public class MoveTwo extends Move {
   

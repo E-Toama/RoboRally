@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 /**
  * ViewModel of the complete game window /mainView
- * @author
+ * 
  */
 public class MainViewModel {
 

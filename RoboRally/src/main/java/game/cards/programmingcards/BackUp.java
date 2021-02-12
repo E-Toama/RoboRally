@@ -9,7 +9,6 @@ import utilities.MyLogger;
 /**
  * This class represents the Back up programming card and its effect.
  * 
- * @author 
  */
 public class BackUp extends Move {
 

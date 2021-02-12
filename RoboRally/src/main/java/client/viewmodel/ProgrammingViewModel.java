@@ -21,7 +21,7 @@ import java.util.TimerTask;
 
 /**
  * ViewModel class for the programming mat
- * @author
+ * 
  */
 public class ProgrammingViewModel {
 

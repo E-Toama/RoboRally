@@ -3,7 +3,6 @@ package utilities.messages;
 /**
  * This class is for setting the starting position of the player.
  * 
- * @author
  */
 public class SetStartingPoint extends MessageBody {
   private final int position;

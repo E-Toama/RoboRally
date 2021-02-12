@@ -6,8 +6,6 @@ import game.utilities.GameState;
 /**
  * This class represents the wall board element.
  * 
- * @author 
- *
  */
 public class WallFieldObject extends GameBoardFieldObject {
 

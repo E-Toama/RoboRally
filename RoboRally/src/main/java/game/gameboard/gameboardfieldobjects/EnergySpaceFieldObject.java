@@ -7,7 +7,6 @@ import utilities.messages.Energy;
 /**
  * This class represents the Energy Space board element and its effect once stepped on.
  * 
- * @author 
  */
 public class EnergySpaceFieldObject extends GameBoardFieldObject {
 

@@ -7,7 +7,6 @@ import game.gameboard.gameboardfieldobjects.WallFieldObject;
 /**
  * This class represents the different types of lasers and handles its shooting.
  *  
- * @author 
  */
 public class LaserHandler {
     

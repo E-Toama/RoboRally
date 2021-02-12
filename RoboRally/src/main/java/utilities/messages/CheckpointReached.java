@@ -3,7 +3,6 @@ package utilities.messages;
 /**
  * This class represents for each player the number of checkpoints he reached.
  * 
- * @author
  */
 public class CheckpointReached extends MessageBody {
   private final int playerID;

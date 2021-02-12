@@ -6,7 +6,6 @@ import game.utilities.GameState;
 /**
  * This class represents the pit board element.
  * 
- * @author 
  */
 public class PitFieldObject extends GameBoardFieldObject {
     

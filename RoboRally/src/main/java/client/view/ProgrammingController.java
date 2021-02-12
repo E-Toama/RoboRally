@@ -21,7 +21,7 @@ import javafx.util.Duration;
 
 /**
  * Controller class of the programming mat
- * @author
+ * 
  */
 public class ProgrammingController {
 

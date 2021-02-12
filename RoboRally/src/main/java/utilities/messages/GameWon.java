@@ -4,7 +4,6 @@ package utilities.messages;
  * This class is responsible for saving the player who reached all of the
  * checkpoints in the game, meaning he won it.
  * 
- * @author
  */
 public class GameWon extends MessageBody {
   private final int playerID;

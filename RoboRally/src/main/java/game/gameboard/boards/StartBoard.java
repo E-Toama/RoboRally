@@ -6,7 +6,6 @@ import game.gameboard.gameboardfieldobjects.*;
 /**
  * This class represents the starting board for the different types of courses of the game.
  * 
- * @author 
  */
 public class StartBoard {
 

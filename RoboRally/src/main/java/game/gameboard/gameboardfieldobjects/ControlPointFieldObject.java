@@ -8,7 +8,6 @@ import utilities.messages.GameWon;
 /**
  * This class represents the Checkpoint board element with its effect once stepped on.
  * 
- * @author 
  */
 public class ControlPointFieldObject extends GameBoardFieldObject {
 

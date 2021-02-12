@@ -3,7 +3,6 @@ package utilities.messages;
 /**
  * This class represents the player choice of the specific register.
  * 
- * @author
  */
 public class CardSelected extends MessageBody {
   private final int playerID;

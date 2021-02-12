@@ -3,7 +3,6 @@ package game.utilities;
 /**
  * This class represents the position of anything on the game board and it can calculate the distances between fields.
  * 
- * @author 
  */
 public class Position {
 

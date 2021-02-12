@@ -3,7 +3,6 @@ package utilities.messages;
 /**
  * This class represents the card that should be played.
  * 
- * @author
  */
 public class PlayCard extends MessageBody {
 

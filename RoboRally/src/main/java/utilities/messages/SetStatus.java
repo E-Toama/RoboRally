@@ -4,7 +4,6 @@ package utilities.messages;
  * The Class SetStatus represents the status of the player, if he is ready to
  * play or not.
  * 
- * @author
  */
 public class SetStatus extends MessageBody {
 

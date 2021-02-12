@@ -6,7 +6,6 @@ import game.utilities.GameState;
 /**
  * This class represents the laser board element and its effect on the robots once activated.
  * 
- * @author 
  */
 public class LaserFieldObject extends GameBoardFieldObject {
 

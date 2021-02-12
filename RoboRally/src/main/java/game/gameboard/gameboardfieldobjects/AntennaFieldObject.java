@@ -6,7 +6,6 @@ import game.utilities.GameState;
 /**
  * This class represents the Antenna board element in the game.
  * 
- * @author 
  */
 public class AntennaFieldObject extends GameBoardFieldObject {
 

@@ -6,7 +6,6 @@ import game.utilities.GameState;
 /**
  * This class represents the rotating belt board element.
  * 
- * @author 
  */
 public class RotatingBeltFieldObject extends GameBoardFieldObject {
 

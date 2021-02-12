@@ -3,7 +3,6 @@ package utilities.messages;
 /**
  * This class is responsible for saving different errors.
  * 
- * @author
  *
  */
 public class Error extends MessageBody {

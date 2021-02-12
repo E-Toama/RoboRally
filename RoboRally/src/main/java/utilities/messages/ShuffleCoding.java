@@ -3,7 +3,6 @@ package utilities.messages;
 /**
  * This class represents that the player id should shuffle his deck.
  * 
- * @author
  */
 public class ShuffleCoding extends MessageBody {
   private final int playerID;

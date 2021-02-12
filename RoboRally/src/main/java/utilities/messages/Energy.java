@@ -3,7 +3,6 @@ package utilities.messages;
 /**
  * This class represents the energy cubes each player has.
  * 
- * @author
  */
 public class Energy extends MessageBody {
   private final int playerID;

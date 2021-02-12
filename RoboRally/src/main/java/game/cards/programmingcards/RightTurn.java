@@ -9,7 +9,6 @@ import utilities.messages.PlayerTurning;
 /**
  * This class represents the Right Turn programming card with its implementation.
  * 
- * @author 
  */
 public class RightTurn extends Card {
 

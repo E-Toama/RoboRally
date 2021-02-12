@@ -15,7 +15,6 @@ import game.gameboard.gameboardfieldobjects.WallFieldObject;
 /**
  * This class represents the Dizzy Highway course map without its starting board.
  * 
- * @author 
  */
 public class DizzyHighway {
 

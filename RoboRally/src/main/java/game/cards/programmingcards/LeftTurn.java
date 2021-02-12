@@ -9,7 +9,6 @@ import utilities.messages.PlayerTurning;
 /**
  * This class represents the Left Turn programming card and its effect on the robot.
  * 
- * @author 
  */
 public class LeftTurn extends Card {
   

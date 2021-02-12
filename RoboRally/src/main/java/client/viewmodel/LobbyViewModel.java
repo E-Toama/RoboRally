@@ -9,7 +9,7 @@ import javafx.scene.control.MenuItem;
 
 /**
  * ViewModel class for the Lobby
- * @author
+ * 
  */
 public class LobbyViewModel {
 

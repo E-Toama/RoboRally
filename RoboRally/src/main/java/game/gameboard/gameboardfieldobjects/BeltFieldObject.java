@@ -6,7 +6,6 @@ import game.utilities.GameState;
 /**
  * This class represents the different types of belts board elements with its speed and orientation.
  * 
- * @author 
  */
 public class BeltFieldObject extends GameBoardFieldObject {
 

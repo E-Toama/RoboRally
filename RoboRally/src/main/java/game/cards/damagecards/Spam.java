@@ -8,7 +8,6 @@ import utilities.MyLogger;
 /**
  * This class extends the Card class and it represents the spam damage card.
  * 
- * @author 
  */
 public class Spam extends Card {
 

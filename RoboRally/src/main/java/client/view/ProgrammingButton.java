@@ -7,7 +7,7 @@ import javafx.scene.control.Label;
 
 /**
  *  Controller class for the programming card buttons
- * @author
+ *
  */
 public class ProgrammingButton extends Button {
     private String cardString;

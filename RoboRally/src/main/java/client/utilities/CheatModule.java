@@ -22,7 +22,7 @@ import java.util.HashMap;
  * This class provides some simple, string-based cheats for GUI-Manipulation.
  * It is used directly in the ChatController and only active during the ProgrammingPhase (Phase 2)
  * Whenever a user sends a message, the CheatModule parses the message for cheat commands and handles the cheat request.
- * @author Josef
+ * 
  */
 public class CheatModule {
 

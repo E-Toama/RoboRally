@@ -3,7 +3,6 @@ package utilities.messages;
 /**
  * This class is for representing the cards of the other players.
  * 
- * @author
  */
 public class NotYourCards extends MessageBody {
   private final int playerID;

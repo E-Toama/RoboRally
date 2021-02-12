@@ -4,7 +4,6 @@ package utilities.messages;
  * The Class PlayerValues is for saving the player name and the figure that he
  * chose.
  * 
- * @author
  */
 public class PlayerValues extends MessageBody {
 

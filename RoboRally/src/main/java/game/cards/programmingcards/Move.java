@@ -9,7 +9,6 @@ import game.utilities.Position;
 /**
  * The abstract class Move extends the Card class and its a parent class for all the different types of move cards.
  * 
- * @author 
  */
 public abstract class Move extends Card {
     

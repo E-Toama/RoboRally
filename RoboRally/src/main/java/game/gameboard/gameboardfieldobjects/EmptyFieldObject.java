@@ -4,8 +4,7 @@ import game.Game;
 import game.utilities.GameState;
 /**
  * This class represents the empty board element.
- * 
- * @author 
+ *  
  */
 public class EmptyFieldObject extends GameBoardFieldObject {
 

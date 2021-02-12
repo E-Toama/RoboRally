@@ -3,7 +3,6 @@ package utilities.messages;
 /**
  * This class is for saving each player a starting position that he picked.
  * 
- * @author
  */
 public class StartingPointTaken extends MessageBody {
   private final int playerID;

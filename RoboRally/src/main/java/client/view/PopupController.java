@@ -17,7 +17,7 @@ import java.util.LinkedList;
 
 /**
  * Controller class for the chooseTrack, timerEnded and pickDamage popups
- * @author
+ * 
  */
 public class PopupController {
 

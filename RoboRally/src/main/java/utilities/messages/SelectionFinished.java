@@ -4,7 +4,6 @@ package utilities.messages;
  * The class SelectionFinished represents that the player put five cards on the
  * five registers and he is finished.
  * 
- * @author
  */
 public class SelectionFinished extends MessageBody {
   private final int playerID;

@@ -10,7 +10,6 @@ import utilities.MyLogger;
 /**
  * This class represents the Virus damage card with its effect.
  * 
- * @author 
  */
 public class Virus extends Card {
 

@@ -8,7 +8,6 @@ import utilities.MyLogger;
 /**
  * This class represents the Again programming card and its effect.
  *  
- * @author 
  */
 public class Again extends Card {
   

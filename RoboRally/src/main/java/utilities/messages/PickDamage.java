@@ -4,7 +4,6 @@ package utilities.messages;
  * This class represents the pickdamage message that the server sends to the
  * client.
  * 
- * @author
  */
 public class PickDamage extends MessageBody {
   private final int count;

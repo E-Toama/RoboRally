@@ -6,7 +6,6 @@ import game.utilities.GameState;
 /**
  * This class represents the Starting point board element.
  * 
- * @author 
  */
 public class StartPointFieldObject extends GameBoardFieldObject {
 

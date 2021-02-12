@@ -6,11 +6,9 @@ import game.utilities.GameState;
 /**
  * This class represents the Reboot token board element.
  * 
- * @author 
  */
 public class RestartPointFieldObject extends GameBoardFieldObject {
 
-    //ToDo: does RestartPoint has an orientation?
     private String orientation;
 
     /**

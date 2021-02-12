@@ -10,7 +10,7 @@ import java.util.HashSet;
 
 /**
  * ViewModel class for the GameBoard
- * @author
+ * 
  */
 public class GameBoardViewModel {
 

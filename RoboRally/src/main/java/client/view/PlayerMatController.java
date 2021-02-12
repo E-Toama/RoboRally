@@ -16,7 +16,7 @@ import javafx.scene.paint.Color;
 
 /**
  * Controller class for the player mats
- * @author
+ * 
  */
 public class PlayerMatController {
 

@@ -1,15 +1,11 @@
 package utilities.messages;
 
-import game.cards.Card;
-
 /**
  * This class is responsible for saving the cards that the player has already
  * chosen.
  * 
- * @author
  */
 public class CardsYouGotNow extends MessageBody {
-  // TODO add cards list (register cards only)
   private final String[] cards;
 
   /**

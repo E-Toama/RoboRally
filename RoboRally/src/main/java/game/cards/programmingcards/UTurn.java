@@ -9,7 +9,6 @@ import utilities.messages.PlayerTurning;
 /**
  * This class represents the U-Turn programming card and its effect when played.
  * 
- * @author 
  */
 public class UTurn extends Card {
 

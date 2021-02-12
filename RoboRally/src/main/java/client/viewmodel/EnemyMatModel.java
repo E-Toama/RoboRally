@@ -9,7 +9,7 @@ import javafx.beans.property.StringProperty;
 
 /**
  * ViewModel class for the enemy player mats
- * @author
+ * 
  */
 public class EnemyMatModel {
 

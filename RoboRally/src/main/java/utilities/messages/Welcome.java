@@ -4,7 +4,6 @@ package utilities.messages;
  * The Welcome class represents that the Connection was successful between the
  * server and the client and saves a player ID.
  * 
- * @author
  */
 public class Welcome extends MessageBody {
 

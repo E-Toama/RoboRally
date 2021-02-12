@@ -3,7 +3,6 @@ package utilities.messages;
 /**
  * This class represents the player selection of the card that he want to play.
  * 
- * @author
  */
 public class SelectCard extends MessageBody {
   private final String card;

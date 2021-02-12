@@ -4,7 +4,6 @@ package utilities.messages;
  * This class is responsible for the movement of each player robot. The movement
  * happens between the fields of the game board without rotation.
  * 
- * @author
  */
 public class Movement extends MessageBody {
   private final int playerID;

@@ -13,7 +13,6 @@ import java.util.logging.Logger;
 /**
  * This method represents the movement of the robots on the game board.
  * 
- * @author 
  */
 public class MoveHandler {
 

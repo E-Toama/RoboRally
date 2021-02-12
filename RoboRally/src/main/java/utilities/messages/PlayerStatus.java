@@ -3,7 +3,6 @@ package utilities.messages;
 /**
  * The class PlayerStatus is for saving the player id and his status.
  * 
- * @author
  */
 public class PlayerStatus extends MessageBody {
 

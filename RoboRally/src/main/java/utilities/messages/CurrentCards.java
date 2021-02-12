@@ -6,10 +6,8 @@ import game.cards.ActiveCard;
  * This class is responsible for saving for each player the card that he chose
  * on a specific register.
  * 
- * @author
  */
 public class CurrentCards extends MessageBody {
-  // TODO add list activeCards
   private final ActiveCard[] activeCards;
 
   /**

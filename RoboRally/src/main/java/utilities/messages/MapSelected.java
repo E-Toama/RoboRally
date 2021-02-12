@@ -3,7 +3,6 @@ package utilities.messages;
 /**
  * The class MapSelected represents the selection of the player of the map.
  * 
- * @author
  */
 public class MapSelected extends MessageBody {
 

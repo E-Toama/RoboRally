@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * This class represents the player Mat within the activation phase and
  * contains the current programming Cards in the registers and game relevant values
- * @author
+ * 
  */
 public class PlayerMat {
 

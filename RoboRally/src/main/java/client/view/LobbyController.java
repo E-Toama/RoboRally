@@ -8,8 +8,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
 /**
- *Controller class for the Lobby with username list and chat
- * @author
+ * Controller class for the Lobby with username list and chat
+ * 
  */
 public class LobbyController {
 

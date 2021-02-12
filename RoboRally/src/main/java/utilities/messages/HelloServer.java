@@ -4,7 +4,6 @@ package utilities.messages;
  * The HelloServer class represents the protocol, group and if its an AI as an
  * answer from the client after the connection with the server.
  * 
- * @author
  */
 public class HelloServer extends MessageBody {
 

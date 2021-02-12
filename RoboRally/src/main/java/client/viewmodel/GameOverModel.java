@@ -10,7 +10,7 @@ import javafx.scene.image.ImageView;
 
 /**
  * ViewModel class for the GameOver window
- * @author
+ * 
  */
 public class GameOverModel {
 

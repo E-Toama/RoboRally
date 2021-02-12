@@ -3,7 +3,6 @@ package utilities.messages;
 /**
  * This class is responsible for saving the player id that has to reboot.
  * 
- * @author
  */
 public class Reboot extends MessageBody {
   private final int playerID;

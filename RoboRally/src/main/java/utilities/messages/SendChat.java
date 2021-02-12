@@ -4,7 +4,6 @@ package utilities.messages;
  * The class SendChat is responsible for sending private chats from one user to
  * other or not private to all.
  * 
- * @author
  */
 public class SendChat extends MessageBody {
 

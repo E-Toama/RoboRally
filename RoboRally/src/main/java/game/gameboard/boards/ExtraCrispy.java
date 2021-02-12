@@ -6,8 +6,7 @@ import game.gameboard.gameboardfieldobjects.*;
 
 /**
  * This class represents the Extra Crispy course map without its starting board.
- * @author Elias
- *
+ * 
  */
 public class ExtraCrispy {
 

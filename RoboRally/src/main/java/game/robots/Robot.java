@@ -7,7 +7,6 @@ import game.utilities.PositionLookUp;
  * This class represents the robot, its orientation, to which player it belongs 
  * and its position on the game board.
  * 
- * @author 
  */
 public class Robot {
 

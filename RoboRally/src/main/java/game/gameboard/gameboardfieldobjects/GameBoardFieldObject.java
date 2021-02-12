@@ -8,7 +8,6 @@ import utilities.MessageHandler;
  * The abstract class GameBoardFieldObject is a parent class for the classes that represents the different 
  * types of board elements.
  * 
- * @author 
  */
 public abstract class GameBoardFieldObject {
 

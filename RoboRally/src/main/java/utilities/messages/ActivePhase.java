@@ -3,7 +3,6 @@ package utilities.messages;
 /**
  * This class represents the currently active phase of the game.
  * 
- * @author
  */
 public class ActivePhase extends MessageBody {
   private final int phase;

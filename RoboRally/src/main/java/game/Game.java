@@ -15,7 +15,6 @@ import java.util.*;
 /**
  * This class represents the roborally game itself and its process.
  * 
- * @author Dennis Hermann
  */
 public class Game {
 

@@ -3,7 +3,6 @@ package utilities.messages;
 /**
  * This class is responsible for saving the damage cards that the player chose.
  * 
- * @author
  */
 public class SelectDamage extends MessageBody {
 

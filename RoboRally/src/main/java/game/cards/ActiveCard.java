@@ -4,7 +4,6 @@ package game.cards;
  * This class is responsible for saving a player id with the card that he chose
  * on a specific register.
  * 
- * @author
  */
 public class ActiveCard {
 

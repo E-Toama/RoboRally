@@ -3,7 +3,6 @@ package utilities.messages;
 /**
  * This class is responsible for the direction of the robot rotation.
  * 
- * @author
  */
 public class PlayerTurning extends MessageBody {
   private final int playerID;

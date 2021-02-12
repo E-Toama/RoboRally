@@ -5,7 +5,6 @@ import com.google.gson.annotations.SerializedName;
 /**
  * The class recievedChat is responsible for accepting chats from other users.
  * 
- * @author
  */
 public class ReceivedChat extends MessageBody {
 

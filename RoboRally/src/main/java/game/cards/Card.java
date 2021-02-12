@@ -12,7 +12,6 @@ import utilities.MessageHandler;
 /**
  * The abstract class Card is a parent class for all the different kinds of cards classes.
  * 
- * @author 
  */
 public abstract class Card {
 

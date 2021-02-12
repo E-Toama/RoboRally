@@ -4,7 +4,6 @@ package utilities.messages;
  * The HelloClient class represents the protocol version that the server sends
  * to the client after the tcp connection.
  * 
- * @author
  */
 public class HelloClient extends MessageBody {
 

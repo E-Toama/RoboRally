@@ -5,7 +5,6 @@ import java.util.HashMap;
 /**
  * This class represents a lookup table from an x, y coordinates to a number.
  * 
- * @author 
  */
 public class PositionLookUp {
 

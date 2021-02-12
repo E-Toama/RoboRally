@@ -8,8 +8,7 @@ import utilities.messages.Energy;
 
 /**
  * This class represents the Powerup programming card and its effect.
- * 
- * @author 
+ *  
  */
 public class PowerUp extends Card {
   

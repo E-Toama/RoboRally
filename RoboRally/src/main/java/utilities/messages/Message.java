@@ -3,7 +3,6 @@ package utilities.messages;
 /**
  * This class is responsible for saving the message type and message body.
  * 
- * @author
  */
 public class Message {
 

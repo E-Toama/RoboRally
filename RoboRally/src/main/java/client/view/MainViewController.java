@@ -11,8 +11,8 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 
 /**
- *Controller class of the complete mainView / game window
- * @author
+ * Controller class of the complete mainView / game window
+ * 
  */
 public class MainViewController {
 

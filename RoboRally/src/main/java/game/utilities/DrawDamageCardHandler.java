@@ -11,7 +11,6 @@ import java.util.List;
 /**
  * This class is represents the draw damage cards process.
  * 
- * @author 
  */
 public class DrawDamageCardHandler {
 

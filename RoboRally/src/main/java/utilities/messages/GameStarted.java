@@ -5,7 +5,6 @@ import game.gameboard.GameBoardMapObject;
 /**
  * The class GameStarted represents the map of the game board.
  * 
- * @author
  */
 public class GameStarted extends MessageBody {
 

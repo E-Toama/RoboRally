@@ -9,8 +9,7 @@ import game.utilities.PositionLookUp;
 
 /**
  * This class represents a BoardElement with all its possible properties.
- * @author Yashar
- *
+ * 
  */
 
 public class BoardElement {

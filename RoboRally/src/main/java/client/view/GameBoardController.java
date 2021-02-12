@@ -26,7 +26,6 @@ import java.util.logging.Logger;
 /**
  * Controller class for the GameBoard
  *
- * @author
  */
 public class GameBoardController {
 

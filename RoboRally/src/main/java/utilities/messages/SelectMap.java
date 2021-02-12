@@ -3,7 +3,6 @@ package utilities.messages;
 /**
  * The class SelectMap represents the maps that can be played.
  * 
- * @author
  */
 public class SelectMap extends MessageBody {
 

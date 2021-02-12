@@ -9,7 +9,7 @@ import javafx.scene.text.Text;
 
 /**
  *  Controller class of the GameOverScreen
- * @author
+ * 
  */
 public class GameOverController {
 

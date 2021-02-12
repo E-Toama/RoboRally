@@ -8,7 +8,6 @@ import game.utilities.Position;
 /**
  * This class represents the push panels board element and its effect once stood in its way.
  * 
- * @author 
  */
 public class PushPanelFieldObject extends GameBoardFieldObject{
 

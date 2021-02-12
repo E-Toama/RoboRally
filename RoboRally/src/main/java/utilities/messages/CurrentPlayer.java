@@ -3,7 +3,6 @@ package utilities.messages;
 /**
  * This class represents the current player that should play.
  * 
- * @author
  */
 public class CurrentPlayer extends MessageBody {
   private final int playerID;

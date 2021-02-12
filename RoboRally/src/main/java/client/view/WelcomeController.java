@@ -7,7 +7,7 @@ import javafx.scene.control.TextField;
 
 /**
  * Controller class for the WelcomeView
- * @author
+ * 
  */
 public class WelcomeController {
 

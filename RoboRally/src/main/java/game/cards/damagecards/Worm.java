@@ -8,7 +8,6 @@ import utilities.MyLogger;
 /**
  * This class represents the Worm damage card and its effect.
  * 
- * @author 
  */
 public class Worm extends Card {
 

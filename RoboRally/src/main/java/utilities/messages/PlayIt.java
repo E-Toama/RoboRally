@@ -5,7 +5,6 @@ package utilities.messages;
  * the player that he wants to play the card in the actual register without
  * buying any upgrade cards.
  * 
- * @author
  */
 public class PlayIt extends MessageBody {
 

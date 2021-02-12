@@ -6,7 +6,7 @@ import javafx.stage.Stage;
 
 /**
  * Controller class for the primary stage
- * @author
+ * 
  */
 public class ViewController {
 

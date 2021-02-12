@@ -4,7 +4,6 @@ package utilities.messages;
  * The class CardPlayed represents the card that the player played which will be
  * sent to all users by the server.
  * 
- * @author
  */
 public class CardPlayed extends MessageBody {
 
@@ -12,7 +11,7 @@ public class CardPlayed extends MessageBody {
   private final String card;
 
   /**
-   * Constuctor for initializing the player id and his played card.
+   * Constructor for initializing the player id and his played card.
    * 
    * @param playerID
    *          the player id

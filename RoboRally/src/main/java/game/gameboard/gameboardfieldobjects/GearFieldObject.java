@@ -7,7 +7,6 @@ import utilities.messages.PlayerTurning;
 /**
  * This class represents the Gear board element and its effect once stepped on.
  * 
- * @author 
  */
 public class GearFieldObject extends GameBoardFieldObject {
 

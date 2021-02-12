@@ -8,7 +8,6 @@ import utilities.MyLogger;
 /**
  * This class extends the Card class and it represents the Trojan Horse damage card.
  * 
- * @author 
  */
 public class TrojanHorse extends Card {
     private final MyLogger logger = new MyLogger();

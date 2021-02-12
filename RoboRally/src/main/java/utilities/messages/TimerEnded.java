@@ -4,7 +4,6 @@ package utilities.messages;
  * The class TimerEnded is responsible for saving the players id who were not
  * done after the timer has ended.
  * 
- * @author
  */
 public class TimerEnded extends MessageBody {
   private final int[] playerIDs;

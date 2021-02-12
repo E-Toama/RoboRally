@@ -3,8 +3,6 @@ package utilities.messages;
 /**
  * The class ConnectionUpdate is responsible for the Connection loss, it saves
  * the player id that lost the connection.
- * 
- * @author
  *
  */
 public class ConnectionUpdate extends MessageBody {

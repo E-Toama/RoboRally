@@ -5,7 +5,6 @@ import game.player.Player;
 /**
  * The Class PlayerAdded is for the confirmation that a new player was added.
  * 
- * @author
  */
 public class PlayerAdded extends MessageBody {
 

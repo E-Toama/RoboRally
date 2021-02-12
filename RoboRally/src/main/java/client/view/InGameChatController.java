@@ -8,7 +8,7 @@ import javafx.scene.layout.HBox;
 
 /**
  * Controller class of the ingame chat
- * @author
+ * 
  */
 public class InGameChatController  {
 

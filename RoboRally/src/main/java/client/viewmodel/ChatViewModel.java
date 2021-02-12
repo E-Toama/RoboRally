@@ -12,7 +12,7 @@ import javafx.scene.control.MenuItem;
 /**
  * ViewModel Class for the Lobby and Ingame Chat
  * contains methods responsible for sending chat messages
- * @author
+ *
  */
 public class ChatViewModel {
 
