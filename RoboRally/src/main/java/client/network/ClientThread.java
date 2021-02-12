@@ -57,7 +57,7 @@ public class ClientThread implements Runnable {
     private final MyLogger logger = new MyLogger();
     private static ClientGameState clientGameState = new ClientGameState();
 
-
+    //Immediate instantiation and execution of the ClientThread
     static {
         try {
             clientThread = new ClientThread();
@@ -87,7 +87,6 @@ public class ClientThread implements Runnable {
     public HashMap<String, Integer> messageMatchMap = new HashMap<>();
     public ObservableList<String> observablePlayerList = FXCollections.observableArrayList();
     public ObservableList<String> observablePlayerListWithDefault = FXCollections.observableArrayList();
-
 
     //Player attributes
     private Player player;
@@ -164,7 +163,6 @@ public class ClientThread implements Runnable {
     public void setEnemyMatModel(EnemyMatModel enemyMatModel) {
         this.enemyMatModel = enemyMatModel;
     }
-
 
     /**
      * The run-method performs the handshake with the server, initializes the main window and
@@ -781,14 +779,11 @@ public class ClientThread implements Runnable {
             int playerID = cardSelected.getPlayerID();
             int register = cardSelected.getRegister();
             if (playerID == ID) {
-
                 Platform.runLater(() -> {
                     programmingViewModel.confirmRegister(register);
                 });
-
                 logger.getLogger().info("Player with id " + playerID + " put a card in register " + register + ".");
             }
-
         } else {
             logger.getLogger().severe("Message body error in handleCardSelected method.");
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of CardSelected)");
@@ -976,11 +971,9 @@ public class ClientThread implements Runnable {
     private void handlePlayerShooting(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof PlayerShooting) {
             PlayerShooting playerShooting = (PlayerShooting) incomingMessage.getMessageBody();
-            //ToDo: Update GUI PlayerShooting
             Platform.runLater(() -> {
                 chatMessages.add("Robots are shooting!");
             });
-            //      Append Chat with "Robots are shooting now"
             logger.getLogger().info("Player is shooting!");
         } else {
             logger.getLogger().severe("Message body error in handlePlayerShooting method.");
