@@ -3,7 +3,7 @@ package game.cards.programmingcards;
 import game.Game;
 import game.cards.Card;
 import game.utilities.GameState;
-import game.utilities.MoveHandler;
+import game.utilities.MoveHandlerV2;
 import game.utilities.Position;
 
 /**
@@ -12,7 +12,8 @@ import game.utilities.Position;
  */
 public abstract class Move extends Card {
     
-    private MoveHandler moveHandler = new MoveHandler();
+    //private MoveHandler moveHandler = new MoveHandler();
+    private MoveHandlerV2 moveHandlerV2 = new MoveHandlerV2();
 
     /**
      * This method moves the robot one time to the next field in the direction that he is facing.
@@ -32,10 +33,10 @@ public abstract class Move extends Card {
         String orientation = gameState.playerMatHashMap.get(playerID).getRobot().getOrientation();
 
         switch (orientation) {
-            case "up" -> moveHandler.move(game, gameState, playerID, position, moveHandler.getTargetPosition(position, "up"), "up", true, isLastMovePart);
-            case "left" -> moveHandler.move(game, gameState, playerID, position, moveHandler.getTargetPosition(position,"left"), "left", true, isLastMovePart);
-            case "down" -> moveHandler.move(game, gameState, playerID, position, moveHandler.getTargetPosition(position, "down"), "down", true, isLastMovePart);
-            case "right" -> moveHandler.move(game, gameState, playerID, position, moveHandler.getTargetPosition(position, "right"), "right", true, isLastMovePart);
+            case "up" -> moveHandlerV2.move(game, gameState, playerID, position, moveHandlerV2.getTargetPosition(position, "up"), "up", true, isLastMovePart);
+            case "left" -> moveHandlerV2.move(game, gameState, playerID, position, moveHandlerV2.getTargetPosition(position,"left"), "left", true, isLastMovePart);
+            case "down" -> moveHandlerV2.move(game, gameState, playerID, position, moveHandlerV2.getTargetPosition(position, "down"), "down", true, isLastMovePart);
+            case "right" -> moveHandlerV2.move(game, gameState, playerID, position, moveHandlerV2.getTargetPosition(position, "right"), "right", true, isLastMovePart);
         }
 
     }

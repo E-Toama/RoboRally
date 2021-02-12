@@ -124,7 +124,16 @@ public class DrawDamageCardHandler {
 
         if (notPossibleCount > 0) {
 
-            pickDamage(playerID);
+            int spamSize = getDamageCardDeck("Spam").size();
+            int trojanHorseSize = getDamageCardDeck("TrojanHorse").size();
+            int wormSize = getDamageCardDeck("Worm").size();
+            int virusSize = getDamageCardDeck("Virus").size();
+
+            if (spamSize + trojanHorseSize + wormSize + virusSize > notPossibleCount) {
+
+                pickDamage(playerID);
+
+            }
 
         } else {
 

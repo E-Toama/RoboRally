@@ -5,10 +5,11 @@ import game.robots.Robot;
 import game.cards.Card;
 import game.cards.programmingcards.*;
 import game.utilities.GameState;
-import game.utilities.MoveHandler;
+import game.utilities.MoveHandlerV2;
 import game.utilities.Position;
 import server.network.Server;
 import utilities.MessageHandler;
+import utilities.MyLogger;
 import utilities.messages.PlayerTurning;
 import utilities.messages.Reboot;
 import utilities.messages.ShuffleCoding;
@@ -369,6 +370,9 @@ public class PlayerMat {
      */
     public void reboot(Game game, GameState gameState, boolean isPlayerAction) {
 
+        MyLogger myLogger = new MyLogger();
+        myLogger.getLogger().info("Player " + player.getPlayerID() + " is rebooting");
+
         wasRebootedThisRound = true;
 
         String reboot = messageHandler.buildMessage("Reboot", new Reboot(player.getPlayerID()));
@@ -402,18 +406,16 @@ public class PlayerMat {
 
         robot.setOrientation("up");
 
-        MoveHandler moveHandler = new MoveHandler();
-
-        if (gameState.gameBoard.getBoardName().equals("ExtraCrispy"))
+        //MoveHandler moveHandler = new MoveHandler();
+        MoveHandlerV2 moveHandlerV2 = new MoveHandlerV2();
 
         if (robot.getRobotXY().getX() < 3) {
 
-            moveHandler.move(game, gameState, player.getPlayerID(), robot.getRobotXY(), robot.getStartingPosition(), "up", isPlayerAction, true);
+            moveHandlerV2.move(game, gameState, player.getPlayerID(), robot.getRobotXY(), robot.getStartingPosition(), "up", isPlayerAction, true);
 
         } else {
 
-            moveHandler.move(game, gameState, player.getPlayerID(), robot.getRobotXY(), gameState.gameBoard.getRestartPoint().getXY(), gameState.gameBoard.getRestartPoint().getRestartOrientation(), isPlayerAction, true);
-
+            moveHandlerV2.move(game, gameState, player.getPlayerID(), robot.getRobotXY(), gameState.gameBoard.getRestartPoint().getXY(), gameState.gameBoard.getRestartPoint().getRestartOrientation(), isPlayerAction, true);
 
         }
 

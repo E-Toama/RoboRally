@@ -9,6 +9,7 @@ import game.player.PlayerMat;
 import game.utilities.*;
 import server.network.Server;
 import utilities.MessageHandler;
+import utilities.MyLogger;
 import utilities.messages.*;
 
 import java.util.*;
@@ -556,7 +557,7 @@ public class Game {
             if (target.getTargetIsBelt()) {
 
                 BoardElement currentBoardElement = gameState.gameBoard.getGameBoard()[oldPosition.getY()][oldPosition.getX()];
-                BoardElement targetBoardElement = target.getTargetBoardElement();
+                BoardElement targetBoardElement = gameState.gameBoard.getGameBoard()[target.getTargetBoardElement().getXY().getY()][target.getTargetBoardElement().getXY().getX()];
 
                 currentBoardElement.setRobot(null);
                 targetBoardElement.setRobot(gameState.playerMatHashMap.get(target.getPlayerID()).getRobot());
@@ -568,9 +569,9 @@ public class Game {
 
             } else {
 
-                MoveHandler moveHandler = new MoveHandler();
+                MoveHandlerV2 moveHandlerV2 = new MoveHandlerV2();
 
-                moveHandler.move(this, gameState, target.getPlayerID(), oldPosition, newPosition, target.getMovingDirection(), false, true);
+                moveHandlerV2.move(this, gameState, target.getPlayerID(), oldPosition, newPosition, target.getMovingDirection(), false, true);
 
             }
 

@@ -372,8 +372,11 @@ public class UserThread implements Runnable {
                 }
 
             }
+
             logger.getLogger().info("player " + playerID + " played a card.");
+
         } else {
+
             logger.getLogger().severe("Message body error in handlePlayIt method.");
             throw new IOException("Something went wrong! Invalid Message Body! (not instance of PlayIt)");
 
