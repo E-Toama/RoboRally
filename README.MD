@@ -1,8 +1,17 @@
-# RoboRally starten
+# RoboRally
 
+Nachstehend finden Sie die Hinweise zum Ausführen des Spiels. 
+Unserem [Wiki](https://gitlab2.cip.ifi.lmu.de/dbs_sep/dbs_sep2020-21/vp-neidische-narwale/-/wikis/home) können Sie zahlreiche Informationen entnehmen, darunter:
+- **Anwenderdokumentation** zum Spielverlauf und den verfügbaren Cheats
+- **Entwicklerdokumentation** mit aktuellen Klassendiagrammen, einer Visualisierung der implementierten Abläufe des Netzwerkprotokolls sowie Vorstufen, Skizzen und Hintergrundmaterial
+- sämtliche **Protokolle** der Tutorentreffen
+
+
+## RoboRally starten
 Die ausführbare JAR-Datei **RoboRally.jar** findet sich im Projekt unter `otherStuff/RoboRally.jar`.
 Laden Sie sich diese Datei herunter und navigieren Sie im Terminal zum Verzeichnis, in dem Sie die Datei abgelegt haben.
-## 1. Server starten
+
+### 1. Server starten
 Mit dem Befehl
 
 `java -cp RoboRally.jar server.network.Server`
@@ -10,7 +19,7 @@ Mit dem Befehl
 starten Sie den Server. War der Start erfolgreich, wird folgende Nachricht angezeigt:
 "Server is running on port: 9090"
 
-## 2. Client-Anwendung starten
+### 2. Client-Anwendung starten
 Öffnen Sie ein **neues Terminal** im selben Verzeichnis wie zuvor. Um den Client zu starten, benötigen Sie den Pfad zum Verzeichnis der javafx-Bibliotheken auf Ihrem Rechner. Fügen Sie diesen an der markierten Stelle (ohne eckige Klammern) in den folgenden Befehl ein:
 
 `java --module-path [JAVAFX-PFAD] --add-modules javafx.controls,javafx.fxml -cp RoboRally.jar client.RoboRallyClient`
@@ -23,37 +32,29 @@ Anschließend öffnet sich eine Eingabemaske, bei der Sie Ihren Nutzernamen und 
 Weiterführende Informationen zum Ablauf finden Sie in der Dokumentation unter [Spielverlauf](https://gitlab2.cip.ifi.lmu.de/dbs_sep/dbs_sep2020-21/vp-neidische-narwale/-/wikis/Home/Hauptprojekt/Anwender/Spielverlauf). 
 
 
-## Weitere Clients starten
+### Weitere Clients starten
 Öffnen Sie für jeden neuen Client ein neues Terminalfenster und gehen analog zu Schritt 2 vor.
 
-## AI starten
+### AI starten
 Mit dem Befehl
 `java -cp RoboRally.jar AI.AIClient`
 starten Sie einen Bot. 
 
-**ACHTUNG**: Die KI funktioniert derzeit nur mit DizzyHighway, nicht mit ExtraCrispy! Das Starten einer KI, wenn ExtraCrispy als Map gewählt wurde, führt zu unerwünschten Fehlern.
-
-**UPDATE**: Liebe Tester, aufgrund kurzfristiger Schwierigkeiten beim Import der Tablebases für die KI wählt die KI in der euch zur Verfügung gestellten Version leider nicht immer die errechnete, beste Kombination von Programmierkarten, sondern meist die erstbesten fünf Karten. Ihr habt also de facto eine Random-KI auf DizzyHighway. Wir bedauern das sehr und hätten euch gerne einen würdigeren Gegner zur Verfügung gestellt. 
-In kurz: Bitte hängt euch beim Verfassen der Testberichte nicht am Verhalten der KI auf, sie macht wirklich nur zufällige Züge und ist keine genauere Analyse wert.
-
-## Anwendungen schließen
+### Anwendungen schließen
 Um den Server zu beenden, schließen sie das Terminalfenster, in dem Sie den Server gestartet haben.
 
 Um die Applikation zu beenden, bieten sich mehrere Möglichkeiten:
 - Schließen des entsprechenden Terminalfensters
 - Schließen-Button des Fensters betätigen
 
+---
 
+## Vorprojekt: Loveletter 
 
-
-
-
-
-# Vorprojekt: Loveletter - Anwendung starten
-
+###Anwendung starten
 Die ausführbare JAR-Datei **vpNeidischeNarwale.jar** findet sich im Projekt unter `otherStuff/vpNeidischeNarwale.jar`.
 Laden Sie sich diese Datei herunter und navigieren Sie im Terminal zum Verzeichnis, in dem Sie die Datei abgelegt haben.
-## 1. Server starten
+### 1. Server starten
 Mit dem Befehl
 
 `java -cp vpNeidischeNarwale.jar model.network.ChatServer`
@@ -61,7 +62,7 @@ Mit dem Befehl
 starten Sie den ChatServer. War der Start erfolgreich, wird folgende Nachricht angezeigt:
 "Server is running on port: 9090"
 
-## 2. Client-Anwendung starten
+### 2. Client-Anwendung starten
 Öffnen Sie ein **neues Terminal** im selben Verzeichnis wie zuvor. Um den Client zu starten, benötigen Sie den Pfad zum Verzeichnis der javafx-Bibliotheken auf Ihrem Rechner. Fügen Sie diesen an der markierten Stelle (ohne eckige Klammern) in den folgenden Befehl ein:
 
 `java --module-path [JAVAFX-PFAD] --add-modules javafx.controls,javafx.fxml -cp vpNeidischeNarwale.jar viewModel.ChatApp`
@@ -74,10 +75,10 @@ Anschließend öffnet sich eine Eingabemaske, bei der Sie Ihren Nutzernamen fest
 Weiterführende Informationen zum Ablauf finden Sie in der Dokumentation unter [Spielverlauf](https://gitlab2.cip.ifi.lmu.de/dbs_sep/dbs_sep2020-21/vp-neidische-narwale/-/wikis/Home/Anwender/Spielverlauf). 
 Ebenfalls in der Dokumentation befindet sich ein Überblick über alle verfügbaren [Chat- und Spielbefehle](https://gitlab2.cip.ifi.lmu.de/dbs_sep/dbs_sep2020-21/vp-neidische-narwale/-/wikis/Home/Anwender/Spielbefehle).
 
-## Weitere Clients starten
+### Weitere Clients starten
 Öffnen Sie für jeden neuen Client ein neues Terminalfenster und gehen analog zu Schritt 2 vor.
 
-## Anwendungen schließen
+### Anwendungen schließen
 Um den Server zu beenden, schließen sie das Terminalfenster, in dem Sie den Server gestartet haben.
 
 Um die Chat-Applikation zu beenden, bieten sich mehrere Möglichkeiten:
@@ -86,7 +87,7 @@ Um die Chat-Applikation zu beenden, bieten sich mehrere Möglichkeiten:
 - Eingabe von !BYE in das Textfeld des Chat-Fensters
 
 
-
+---
 
 # Informationen
 Hallo Neidische Narwale,
