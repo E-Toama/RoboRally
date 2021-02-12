@@ -209,39 +209,39 @@ public class AIGameState {
 
                     case 1 -> {
 
-                        this.orientationUpRating = null;
-                        this.orientationLeftRating = null;
-                        this.orientationDownRating = null;
-                        this.orientationRightRating = null;
+                        this.orientationDownRating = MapArrays.ExtraCrispyDownCP1;
+                        this.orientationUpRating = MapArrays.ExtraCrispyUpCP1;
+                        this.orientationLeftRating = MapArrays.ExtraCrispyLeftCP1;
+                        this.orientationRightRating = MapArrays.ExtraCrispyRightCP1;
 
                     }
 
                     case 2 -> {
 
-                        this.orientationUpRating = null;
-                        this.orientationLeftRating = null;
-                        this.orientationDownRating = null;
-                        this.orientationRightRating = null;
+                        this.orientationDownRating = MapArrays.ExtraCrispyDownCP2;
+                        this.orientationUpRating = MapArrays.ExtraCrispyUpCP2;
+                        this.orientationLeftRating = MapArrays.ExtraCrispyLeftCP2;
+                        this.orientationRightRating = MapArrays.ExtraCrispyRightCP2;
 
                     }
-
                     case 3 -> {
 
-                        this.orientationUpRating = null;
-                        this.orientationLeftRating = null;
-                        this.orientationDownRating = null;
-                        this.orientationRightRating = null;
+                        this.orientationDownRating = MapArrays.ExtraCrispyDownCP3;
+                        this.orientationUpRating = MapArrays.ExtraCrispyUpCP3;
+                        this.orientationLeftRating = MapArrays.ExtraCrispyLeftCP3;
+                        this.orientationRightRating = MapArrays.ExtraCrispyRightCP3;
 
                     }
 
                     case 4 -> {
 
-                        this.orientationUpRating = null;
-                        this.orientationLeftRating = null;
-                        this.orientationDownRating = null;
-                        this.orientationRightRating = null;
+                        this.orientationDownRating = MapArrays.ExtraCrispyDownCP4;
+                        this.orientationUpRating = MapArrays.ExtraCrispyUpCP4;
+                        this.orientationLeftRating = MapArrays.ExtraCrispyLeftCP4;
+                        this.orientationRightRating = MapArrays.ExtraCrispyRightCP4;
 
                     }
+
 
                 }
 
