@@ -43,6 +43,13 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+/**
+ * This class acts as a distributor for all incoming messages and serves as a connection
+ * between the Model and the ViewModels.
+ * The ClientThread performs the initial Handshake with the server,
+ * builds, instantiates and FXML-injects the initially empty MainWindow and
+ * passes all relevant information to the respective ViewModels.
+ */
 public class ClientThread implements Runnable {
 
     private static ClientThread clientThread;
@@ -50,40 +57,47 @@ public class ClientThread implements Runnable {
     private final MyLogger logger = new MyLogger();
     private static ClientGameState clientGameState = new ClientGameState();
 
+
     static {
-
         try {
-
             clientThread = new ClientThread();
             client = new Thread(clientThread);
             client.start();
-
         } catch (IOException e) {
-
             e.printStackTrace();
-
         }
     }
 
+    //Connection fields
     private final Socket socket;
     private final BufferedReader incoming;
     private final PrintWriter outgoing;
     private final MessageHandler messageHandler = new MessageHandler();
     private final double protocolVersion = 1.0;
     private final String group = "NeidischeNarwale";
+
+    //GameState fields
     private final HashMap<Integer, Player> playerList = new HashMap<>();
     private final ArrayList<Integer> enemyIDList = new ArrayList<>();
     private final HashMap<Integer, EnemyMatModel> enemyList = new HashMap<>();
+
+    //Communication fields
     public ObservableList<String> chatMessages = FXCollections.observableArrayList();
     public ObservableList<Integer> takenRobotList = FXCollections.observableArrayList();
     public HashMap<String, Integer> messageMatchMap = new HashMap<>();
     public ObservableList<String> observablePlayerList = FXCollections.observableArrayList();
     public ObservableList<String> observablePlayerListWithDefault = FXCollections.observableArrayList();
+
+
+    //Player attributes
     private Player player;
     private int ID;
     private Boolean isAI;
+
+    //ViewModels for StartUp
     private WelcomeViewModel welcomeViewModel;
     private ChatViewModel chatViewModel;
+
     //ViewModels for MainView
     private MainViewModel mainViewModel;
     private GameBoardViewModel gameBoardViewModel;
@@ -91,6 +105,10 @@ public class ClientThread implements Runnable {
     private PlayerMatModel playerMatModel;
     private EnemyMatModel enemyMatModel;
 
+    /**
+     * Constructor establishes TCP-connection with the server and initializes basic chat functionality.
+     * @throws IOException
+     */
     public ClientThread() throws IOException {
 
         this.socket = new Socket("localhost", 9090);
@@ -101,62 +119,57 @@ public class ClientThread implements Runnable {
 
     }
 
+    // Basic Getters
     public static ClientThread getInstance() {
         return clientThread;
     }
-
-    public void setWelcomeViewModel(WelcomeViewModel welcomeViewModel) {
-        this.welcomeViewModel = welcomeViewModel;
-    }
-
-    public void setChatViewModel(ChatViewModel chatViewModel) {
-        this.chatViewModel = chatViewModel;
-    }
-
     public MainViewModel getMainViewModel() {
         return mainViewModel;
     }
-
     public GameBoardViewModel getGameBoardViewModel() {
         return gameBoardViewModel;
     }
-
     public PlayerMatModel getPlayerMatModel() {
         return playerMatModel;
     }
-
     public int getActivePhase() {
         return clientGameState.getActivePhase();
     }
-
     public HashMap<Integer, EnemyMatModel> getEnemyList() {
         return enemyList;
     }
-
-    public void setMainViewModel(MainViewModel mainViewModel) {
-        this.mainViewModel = mainViewModel;
-    }
-
-    public void setGameBoardViewModel(GameBoardViewModel gameBoardViewModel) {
-        this.gameBoardViewModel = gameBoardViewModel;
-    }
-
-    public void setProgrammingViewModel(ProgrammingViewModel programmingViewModel) {
-        this.programmingViewModel = programmingViewModel;
-    }
-
-    public void setPlayerMatModel(PlayerMatModel playerMatModel) {
-        this.playerMatModel = playerMatModel;
-    }
-
-    public void setEnemyMatModel(EnemyMatModel enemyMatModel) {
-        this.enemyMatModel = enemyMatModel;
-    }
-
     public Player getPlayer() {
         return player;
     }
 
+    // Basic Setters
+    public void setWelcomeViewModel(WelcomeViewModel welcomeViewModel) {
+        this.welcomeViewModel = welcomeViewModel;
+    }
+    public void setChatViewModel(ChatViewModel chatViewModel) {
+        this.chatViewModel = chatViewModel;
+    }
+    public void setMainViewModel(MainViewModel mainViewModel) {
+        this.mainViewModel = mainViewModel;
+    }
+    public void setGameBoardViewModel(GameBoardViewModel gameBoardViewModel) {
+        this.gameBoardViewModel = gameBoardViewModel;
+    }
+    public void setProgrammingViewModel(ProgrammingViewModel programmingViewModel) {
+        this.programmingViewModel = programmingViewModel;
+    }
+    public void setPlayerMatModel(PlayerMatModel playerMatModel) {
+        this.playerMatModel = playerMatModel;
+    }
+    public void setEnemyMatModel(EnemyMatModel enemyMatModel) {
+        this.enemyMatModel = enemyMatModel;
+    }
+
+
+    /**
+     * The run-method performs the handshake with the server, initializes the main window and
+     * handles all incoming messages in a loop (until MainView is closed/exited/aborted)
+     */
     @Override
     public void run() {
 
@@ -188,6 +201,12 @@ public class ClientThread implements Runnable {
 
     }
 
+    /**
+     * Receives all incoming messages from the server and distributes them according to message type
+     * to the relevant submethods. Breaks only if the input from the server is null.
+     *
+     * @throws IOException if the message is unreadable.
+     */
     private void handleIncomingMessages() throws IOException {
 
         while (true) {
@@ -972,7 +991,6 @@ public class ClientThread implements Runnable {
     private void handleReboot(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof Reboot) {
             Reboot reboot = (Reboot) incomingMessage.getMessageBody();
-            //ToDo: Update GUI Reboot
             logger.getLogger().info("Player with id " + reboot.getPlayerID() + " has rebooted.");
         } else {
             logger.getLogger().severe("Message body error in handleReboot method.");
@@ -1018,12 +1036,7 @@ public class ClientThread implements Runnable {
                 enemyList.get(playerID).setEnergyPoints(energyCount);
                 });
             }
-
             logger.getLogger().info("Player with id " + energy.getPlayerID() + " has " + energy.getCount() + " energy cubes.");
-
-            //ToDo: Update GUI Energy - maybe switch fields from full to empty?
-
-
         } else {
             logger.getLogger().severe("Message body error in handleEnergy method.");
             throw new IOException("Something went wrong! Invalid Message Body! (Not instance of Energy)");
@@ -1046,8 +1059,6 @@ public class ClientThread implements Runnable {
                 });
             }
 
-            //ToDo: Visualize reached Checkpoint? Currently only written to PlayerModel
-
             logger.getLogger().info("Player with id " + checkpointReached.getPlayerID() + " has reached his " + checkpointReached.getNumber() + " checkpoint.");
         } else {
             logger.getLogger().severe("Message body error in handleCheckPointReached method.");
@@ -1065,7 +1076,6 @@ public class ClientThread implements Runnable {
             GameWon gameWon = (GameWon) incomingMessage.getMessageBody();
             String winnerName = "The winner is: " + playerList.get(gameWon.getPlayerID()).getName();
             int winnerRobot  = playerList.get(gameWon.getPlayerID()).getFigure();
-            //ToDo: Test and improve GameWon-Screen
             FXMLLoader gameOverLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/GameOverScreen.fxml"));
             GridPane gameOverPane = gameOverLoader.load();
             GameOverModel gameOverModel = gameOverLoader.<GameOverController>getController().getGameOverModel();
@@ -1128,19 +1138,32 @@ public class ClientThread implements Runnable {
             throw new IOException("Something went wrong! Couldn't establish Connection!");
 
         }
-
     }
 
+    /**
+     * Transmits ChatMessages to the server
+     * @param message provided by the ChatWindow
+     * @param to Integer: either PlayerID for private or -1 for all recipients
+     */
     public void sendMessage(String message, int to) {
         String outgoingMessage = messageHandler.buildMessage("SendChat", new SendChat(message, to));
         outgoing.println(outgoingMessage);
     }
 
+    /**
+     * Sends the player's choice of name and robot to the server
+     * @param name String provided by the user (WelcomeView)
+     * @param figure chosen by the user via button (WelcomeView)
+     */
     public void submitPlayer(String name, int figure) {
         String outgoingMessage = messageHandler.buildMessage("PlayerValues", new PlayerValues(name, figure));
         outgoing.println(outgoingMessage);
     }
 
+    /**
+     * Sends player status to the server (accessed via button in lobby)
+     * @param ready true or false
+     */
     public void sendPlayerStatus(boolean ready) {
         String outgoingMessage = messageHandler.buildMessage(("SetStatus"), new SetStatus(ready));
         outgoing.println(outgoingMessage);

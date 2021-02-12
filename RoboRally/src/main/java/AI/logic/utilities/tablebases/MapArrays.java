@@ -1,5 +1,10 @@
 package AI.logic.utilities.tablebases;
 
+/**
+ * Storage class for lookup tables
+ * DizzyHighway: 1 Checkpoint, 4 Orientations
+ * ExtraCrispy: 4 Checkpoints, 4 Orientations
+ */
 public class MapArrays {
 
     public static int[][] dizzyRight = {

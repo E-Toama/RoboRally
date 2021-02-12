@@ -5,8 +5,17 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * Simple Class for handling tablebase input from .csv-Files
+ */
 public class CSVHandler {
 
+    /**
+     * Reads a .csv-table and converts it into 2d-array
+     * @param fileName filepath to .csv-file as String
+     * @return two-dimensional int-array (gameboard-sized) for AI-lookup
+     * @author Josef
+     */
     public static int[][] convertCSVtoArray(String fileName) {
 
         int[][] result;
