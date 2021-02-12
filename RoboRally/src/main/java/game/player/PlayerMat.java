@@ -146,7 +146,7 @@ public class PlayerMat {
 
     public Card drawRandomCard() {
 
-        if (deck.size() <= 0) {
+        if (deck.size() == 0) {
 
             shuffleDeck();
 
@@ -158,27 +158,11 @@ public class PlayerMat {
 
     public Card drawRandomCardForDamageCardAction(int currentRegisterNumber) {
 
-        Card drawnCard;
-
-        if (deck.size() <= 0) {
-
-            shuffleDeck();
-
-        }
-
-        drawnCard = deck.remove( (int) (Math.random() * (deck.size() - 1)));
+        Card drawnCard = drawRandomCard();
 
         if (drawnCard.getName().equals("Again") && currentRegisterNumber == 1) {
 
-            Card tmpCard;
-
-            if (deck.size() <= 0) {
-
-                shuffleDeck();
-
-            }
-
-            tmpCard = deck.remove( (int) (Math.random() * (deck.size() - 1)));
+            Card tmpCard = drawRandomCard();
 
             deck.add(drawnCard);
 
@@ -192,7 +176,7 @@ public class PlayerMat {
 
     public void shuffleDeck() {
 
-        deck = discardedCards;
+        deck.addAll(discardedCards);
         discardedCards = new ArrayList<>();
 
         String shuffleCoding = messageHandler.buildMessage("ShuffleCoding", new ShuffleCoding(player.getPlayerID()));
@@ -204,37 +188,12 @@ public class PlayerMat {
 
         Card[] returnValue = new Card[9];
 
-        if (deck.size() >= 9) {
-
-            for (int i = 0; i < 9; i++) {
-                returnValue[i] = drawRandomCard();
-            }
-
-            currentHand.addAll(Arrays.asList(returnValue));
-            return returnValue;
-
-        } else {
-
-            int remainingCards = deck.size();
-
-            for (int i = 0; i < remainingCards; i++) {
-
-                returnValue[i] = deck.remove(0);
-
-            }
-
-            shuffleDeck();
-
-            for (int j = remainingCards; j < 9; j++) {
-
-                returnValue[j] = drawRandomCard();
-
-            }
-
-            currentHand.addAll(Arrays.asList(returnValue));
-            return returnValue;
-
+        for (int i = 0; i < 9; i++) {
+            returnValue[i] = drawRandomCard();
         }
+
+        currentHand.addAll(Arrays.asList(returnValue));
+        return returnValue;
 
     }
 
@@ -242,30 +201,8 @@ public class PlayerMat {
 
         Card[] returnValue = new Card[5];
 
-        if (deck.size() >= 5) {
-
-            for (int i = 0; i < 5; i++) {
-                returnValue[i] = drawRandomCard();
-            }
-
-        } else {
-
-            int remainingCards = deck.size();
-
-            for (int i = 0; i < remainingCards; i++) {
-
-                returnValue[i] = deck.remove(0);
-
-            }
-
-            shuffleDeck();
-
-            for (int i = remainingCards; i < 5; i++) {
-
-                returnValue[i] = drawRandomCard();
-
-            }
-
+        for (int i = 0; i < 5; i++) {
+            returnValue[i] = drawRandomCard();
         }
 
         if (returnValue[0].getName().equals("Again")) {
@@ -282,9 +219,16 @@ public class PlayerMat {
 
     public void addRemainingCardsToDiscardedPile() {
 
-        for (Card card : register) {
+        for (Card registerCard : register) {
 
-            currentHand.remove(card);
+            for (Card card : currentHand) {
+
+                if(registerCard.getName().equals(card.getName())) {
+                    currentHand.remove(card);
+                    break;
+                }
+
+            }
 
         }
 

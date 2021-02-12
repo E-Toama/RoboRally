@@ -38,15 +38,15 @@ public class AICardHandler {
 
             if (registerRating < currentBestRating) {
 
-                System.out.println(registerRating);
-                System.out.println(Arrays.toString(possibleRegister));
-
                 currentBestRating = registerRating;
                 currentBestPossibleRegister = possibleRegister;
 
             }
 
         }
+
+        System.out.println(currentBestRating);
+        System.out.println(Arrays.toString(currentBestPossibleRegister));
 
         int registerNumber = 1;
 
@@ -129,7 +129,7 @@ public class AICardHandler {
 
         aiGameState.setIntermediateRegister(register);
 
-        int currentRegisterNumber = 1;
+        int currentRegisterNumber = 0;
 
         for (CardS card : register) {
 
