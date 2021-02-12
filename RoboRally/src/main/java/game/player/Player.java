@@ -1,5 +1,9 @@
 package game.player;
 
+/**
+ * Class Player contains relevant player information of each client
+ *
+ */
 public class Player {
 
     private final int playerID;
@@ -8,14 +12,13 @@ public class Player {
 
     private Boolean status = false;
 
+
     /**
-     * Class Player contains relevant player information of each client
-     *
+     * Constructor of Player
      * @param id is the playerID of a player
      * @param name is the username of the player
      * @param figure is the number of the chosen robot figure
      *
-     * @author
      */
     public Player(int id, String name, int figure) {
 

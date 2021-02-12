@@ -20,7 +20,10 @@ import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 /**
- * Doc: Ehbal
+ * Holds relevant game and player information as well as available maps and protocol version,
+ * provides methods for sending messages to all or single users and
+ * methods for game interaction
+ *
  */
 public class Server {
   
@@ -55,6 +58,11 @@ public class Server {
         this.selectedGameBoard = selectedGameBoard;
     }
 
+    /**
+     * runs the server (usually on port 9090)
+     *
+     * @param portNumber of the server
+     */
     private void start(int portNumber) {
         
         logger.getLogger().info("Server is running on port: " + portNumber);
@@ -91,6 +99,12 @@ public class Server {
         return game;
     }
 
+    /**
+     * adds a new player
+     *
+     * @param playerID is the distinct ID of a player
+     * @param player is the added player
+     */
     public synchronized void addPlayer(int playerID, Player player) {
         playerMap.put(playerID, player);
         statusMap.put(playerID, false);
@@ -101,6 +115,12 @@ public class Server {
         printWriterMap.put(playerID, playerOutgoing);
     }
 
+    /**
+     * sets the status to true if the player is ready for the game
+     *
+     * @param playerID is the ID of the player
+     * @param status is the flag for whether the player is ready or not
+     */
     public synchronized void setStatus(int playerID, boolean status) {
 
         statusMap.replace(playerID, status);
@@ -125,11 +145,21 @@ public class Server {
 
     }
 
+    /**
+     * creates a new ID (starting of with 972123)
+     * @return a new ID
+     */
     private synchronized int getNewID() {
         currentID++;
         return currentID;
     }
 
+    /**
+     * checks whether the robot figure is available or not
+     *
+     * @param figure the index number of the robot figure
+     * @return is true when the robot figure is available
+     */
     public synchronized Boolean checkIfRobotIsFree(int figure) {
         for (Player player : playerMap.values()) {
             if (player.getFigure() == figure) {
@@ -139,12 +169,21 @@ public class Server {
         return true;
     }
 
+    /**
+     * is responsible for sending messages to all users
+     * @param message is the sent message
+     */
     public synchronized void sendMessageToAllUsers(String message) {
         for (PrintWriter outgoing : printWriterMap.values()) {
             outgoing.println(message);
         }
     }
 
+    /**
+     *
+     * @param message is the type of message
+     * @param ID is the player ID of a player
+     */
     public synchronized void sendMessageToSingleUser(String message, int ID) {
         PrintWriter outgoing = printWriterMap.get(ID);
         outgoing.println(message);
@@ -162,6 +201,11 @@ public class Server {
 
     }
 
+    /**
+     * sends already joined players info and their status to new players
+     * sends also the game map if already selected
+     * @param ID is the player ID of a new player
+     */
     public synchronized void sendStatusToNewPlayer(int ID) {
 
         PrintWriter outgoing = printWriterMap.get(ID);
@@ -191,6 +235,11 @@ public class Server {
 
     }
 
+    /**
+     *
+     * checks whether there are 2 or more ready players and a selected game board
+     * to start the game
+     */
     public synchronized void checkIfGameCanStart() {
 
         if (playerMap.size() >= 2) {
@@ -213,6 +262,9 @@ public class Server {
 
     }
 
+    /**
+     * starts the game with the players and the elected game map
+     */
     public synchronized void startGame() {
 
         this.game = new Game(this, playerList, new GameBoard(selectedGameBoard));
@@ -224,6 +276,13 @@ public class Server {
 
     }
 
+    /**
+     * hands out cards to the players
+     *
+     * @param playerID ID of the player who gets cards
+     * @param cards are the cards that get handed out
+     * @param cardsInPile is the amount of cards in the pile
+     */
     public synchronized void handOutCards(int playerID, Card[] cards, int cardsInPile) {
 
         String yourCards = messageHandler.buildMessage("YourCards", new YourCards(Card.toStringArray(cards), cardsInPile));
@@ -243,10 +302,17 @@ public class Server {
 
     }
 
+    /**
+     * ends the game
+     */
     public void endGame() {
         this.game = null;
     }
 
+    /**
+     * removes a player from a game
+     * @param playerID is the ID of the player who gets removed
+     */
     public void removePlayer(int playerID) {
 
         game.getGameState().removePlayerFromGame(playerID);
