@@ -634,7 +634,6 @@ public class ClientThread implements Runnable {
 
             if (activePhase.getPhase() == 2) {
                 Platform.runLater(() -> {
-                    playerMatModel.updateDiscardedCount();
                     chatMessages.add("[Game] \n" +
                             "The programming phase has started. \n"+
                             "select the cards on your register to program \n" +
@@ -652,6 +651,7 @@ public class ClientThread implements Runnable {
                 String slowPlayers = programmingViewModel.getSlowPlayers();
                 String[] cardsInRegister = programmingViewModel.getCardsYouGotNow();
                 Platform.runLater(() -> {
+                    playerMatModel.updateDiscardedCount();
                     PopupController popupController = new PopupController();
                     popupController.showEndOfProgrammingPhase(slowPlayers, cardsInRegister);
                     mainViewModel.switchScenes();
@@ -865,7 +865,7 @@ public class ClientThread implements Runnable {
                     Platform.runLater(() -> {
                         playerMatModel.getPlayerMatController().setTakenRegister(cards.getCard());
                         if (cards.getCard().equals("Spam") || cards.getCard().equals("Virus") || cards.getCard().equals("Worm") || cards.getCard().equals("TrojanHorse")) {
-                            playerMatModel.decreaseDiscardedCount();
+                            playerMatModel.decreaseDamageCardCount();
                         }
                     });
                 } else {

@@ -120,13 +120,18 @@ public class PlayerMatModel {
     }
 
     public void updateDiscardedCount() {
-        int discarded = Integer.parseInt(this.discardedCount.getValue()) + 9;
+        int discarded = Integer.parseInt(this.discardedCount.getValue()) + 4;
         this.discardedCount.set(String.valueOf(discarded));
     }
 
-    public void decreaseDiscardedCount() {
-        int discarded = Integer.parseInt(this.discardedCount.getValue()) - 1;
+    private void increaseDiscardedCardCount() {
+        int discarded = Integer.parseInt(this.discardedCount.getValue()) + 1;
         this.discardedCount.set(String.valueOf(discarded));
+    }
+
+    public void decreaseDamageCardCount() {
+        int discarded = Integer.parseInt(this.pickedUpDamageCards.getValue()) - 1;
+        this.pickedUpDamageCards.set(String.valueOf(discarded));
     }
 
 
@@ -240,6 +245,7 @@ public class PlayerMatModel {
      * sends playIt in clientThread
      */
     public void sendPlayIt() {
+        increaseDiscardedCardCount();
         clientThread.sendPlayIt();
     }
 }
