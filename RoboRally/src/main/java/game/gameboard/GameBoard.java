@@ -46,14 +46,22 @@ public class GameBoard {
 
     }
 
+    /**
+     * This method returns the gameboardElements:
+     */
     public String getBoardName() {
         return boardName;
     }
-
+    /**
+     * This methods returns the AntennaPosition:
+     */
     public Position getAntennaPosition() {
         return antennaPosition;
     }
 
+    /**
+     * These Getters return boardElements:
+     */
     public BoardElement getRestartPoint() {
         return restartPoint;
     }
@@ -154,10 +162,18 @@ public class GameBoard {
         }
     }
 
+    /**
+     * this method returns the gameboard
+     * @return gameBoard
+     */
     public BoardElement[][] getGameBoard() {
         return gameBoard;
     }
 
+    /**
+     * this method returns the DizzyHighway gameBoard
+     * @return BoardElement[][] dizzyHighway;
+     */
     private BoardElement[][] createDizzyHighway() {
         BoardElement[][] dizzyHighway = new BoardElement[10][13];
         StartBoard startBoard = new StartBoard();
@@ -173,7 +189,10 @@ public class GameBoard {
         }
         return dizzyHighway;
     }
-
+    /**
+     * this method returns the ExtraCrispy gameBoard
+     * @return BoardElement[][] ExtraCrispy;
+     */
     private BoardElement[][] createExtraCrispy() {
         BoardElement[][] extraCrispy = new BoardElement[10][13];
         BoardElement restartTile = new BoardElement(0, new GameBoardFieldObject[]{new RestartPointFieldObject("right")});
@@ -190,7 +209,9 @@ public class GameBoard {
         }
         return extraCrispy;
     }
-
+    /**
+     * this method sets the position of all boardElements and adds them to the respective Hashmap<position, boardElements>.
+     */
     private void initializeMaps() {
 
         for (int i = 0; i < 10; i++) {

@@ -2,6 +2,10 @@ package game.gameboard;
 
 import game.gameboard.gameboardfieldobjects.GameBoardFieldObject;
 
+/**
+ *
+ *
+ */
 public class GameBoardMapObject {
 
     private final int position;

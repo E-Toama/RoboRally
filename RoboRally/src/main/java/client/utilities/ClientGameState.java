@@ -13,6 +13,8 @@ public class ClientGameState {
     private String selectedMap = "";
     private GameBoard gameBoard;
 
+
+
     public String getSelectedMap() {
         return selectedMap;
     }

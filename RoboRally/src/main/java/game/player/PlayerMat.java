@@ -17,6 +17,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * This class represents the player Mat within the activation phase and
+ * contains the current programming Cards in the registers and game relevant values
+ * @author
+ */
 public class PlayerMat {
 
     private final Player player;
@@ -38,6 +43,13 @@ public class PlayerMat {
 
     private List<Card> currentHand = new ArrayList<>();
 
+    /**
+     * Constructor of PlayerMat
+     *
+     * @param player is the player who belongs to the player mat
+     * @param robot is the robot of the player
+     * @param server is the running server
+     */
     public PlayerMat(Player player, Robot robot, Server server) {
 
         this.player = player;
@@ -46,6 +58,10 @@ public class PlayerMat {
 
     }
 
+    /**
+     *
+     * @param wasRebootedThisRound flag for whether a robot was rebooted or not
+     */
     public void setWasRebootedThisRound(boolean wasRebootedThisRound) {
         this.wasRebootedThisRound = wasRebootedThisRound;
     }
@@ -74,6 +90,10 @@ public class PlayerMat {
         this.energyCubes = energyCubes;
     }
 
+    /**
+     * calculates distance between the position of each robot from the priority antenna
+     * @param antennaPosition
+     */
     public void calculateDistanceToAntenna(Position antennaPosition) {
 
         Position robotPosition = robot.getRobotXY();
@@ -105,10 +125,20 @@ public class PlayerMat {
         return deck.size();
     }
 
+    /**
+     *
+     * @param register is one of five registers
+     * @param card is the chosen programming card
+     */
     public void addCardToRegister(int register, Card card) {
         this.register[register] = card;
     }
 
+    /**
+     * adds played programming card to the discarded Cards pile
+     *
+     * @param discardedCard is the played card
+     */
     public void addDiscardedCard(Card discardedCard) {
 
         if (discardedCard != null) {
@@ -119,6 +149,11 @@ public class PlayerMat {
 
     }
 
+    /**
+     * initializes the card deck with a total
+     * of 20 programming cards
+     +
+     */
     public void initializeDeck() {
 
         deck.add(new MoveOne());
@@ -144,6 +179,10 @@ public class PlayerMat {
 
     }
 
+    /**
+     * draws a random programming card
+     * @return a random card
+     */
     public Card drawRandomCard() {
 
         if (deck.size() == 0) {
@@ -156,6 +195,12 @@ public class PlayerMat {
 
     }
 
+    /**
+     * is responsible for drawing a random programming card when
+     *
+     * @param currentRegisterNumber
+     * @return a random programming card
+     */
     public Card drawRandomCardForDamageCardAction(int currentRegisterNumber) {
 
         Card drawnCard = drawRandomCard();
@@ -184,6 +229,9 @@ public class PlayerMat {
 
     }
 
+    /**
+     * shuffles the discarded cards into the deck
+     */
     public void shuffleDeck() {
 
         deck.addAll(discardedCards);
@@ -194,6 +242,10 @@ public class PlayerMat {
 
     }
 
+    /**
+     * draws nine random programming cards in each programming phase
+     * @return a deck of nine programming cards
+     */
     public Card[] drawNineCards() {
 
         Card[] returnValue = new Card[9];
@@ -207,6 +259,11 @@ public class PlayerMat {
 
     }
 
+    /**
+     * draws five programming cards
+     * used for players who were to slow to choose five cards before the timer ends
+     * @return five random programming cards
+     */
     public Card[] drawFiveCards() {
 
         Card[] returnValue = new Card[5];
@@ -227,6 +284,11 @@ public class PlayerMat {
 
     }
 
+    /**
+     * adds the remaining programming cards which were not chosen
+     * in the programming phase to the discarded cards pile and
+     * resets the current hand to empty
+     */
     public void addRemainingCardsToDiscardedPile() {
 
         for (Card registerCard : register) {
@@ -256,6 +318,10 @@ public class PlayerMat {
 
     }
 
+    /**
+     * adds the complete current hand of a player to the discarded cards pile
+     * and resets the current hand to empty
+     */
     public void addCompleteHandToDiscardedPile() {
 
         for (Card card : currentHand) {
@@ -272,6 +338,10 @@ public class PlayerMat {
 
     }
 
+    /**
+     * adds the card in the registers to the discarded card pile
+     * and resets the five registers
+     */
     public void discardRegister() {
 
         for (Card card : register) {
@@ -288,6 +358,15 @@ public class PlayerMat {
 
     }
 
+    /**
+     * is responsible  for rebooting a player to the starting point or
+     * restarting point with the correct orientation
+     * and also drawing a damage card
+     *
+     * @param game is the current game
+     * @param gameState
+     * @param isPlayerAction is a player
+     */
     public void reboot(Game game, GameState gameState, boolean isPlayerAction) {
 
         wasRebootedThisRound = true;

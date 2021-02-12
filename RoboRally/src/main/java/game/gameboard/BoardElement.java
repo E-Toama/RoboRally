@@ -7,6 +7,12 @@ import game.utilities.GameState;
 import game.utilities.Position;
 import game.utilities.PositionLookUp;
 
+/**
+ * This class represents a BoardElement with all its possible properties.
+ * @author Yashar
+ *
+ */
+
 public class BoardElement {
 
     private final int position;
@@ -28,13 +34,15 @@ public class BoardElement {
         this.xy = xy;
 
     }
-
-    public Position getXY() {
-        return xy;
-    }
+    /**
+     * Some Getters :
+     */
 
     public GameBoardMapObject returnGameBoardMapObject() {
         return new GameBoardMapObject(position, field);
+    }
+    public Position getXY() {
+        return xy;
     }
 
     public GameBoardFieldObject[] getField() {
@@ -45,14 +53,20 @@ public class BoardElement {
         return robot;
     }
 
-    public void setRobot(Robot robot) {
-        this.robot = robot;
-    }
 
     public int getPosition() {
         return position;
     }
 
+    public void setRobot(Robot robot) {
+        this.robot = robot;
+    }
+
+    /**
+     * This method checks if there is a wall in front of the Robot
+     * @param movingDirection
+     * @return boolean
+     */
     public boolean checkIfElementCanLeftInThisDirection(String movingDirection) {
 
         for (GameBoardFieldObject fieldObject : field) {
@@ -79,6 +93,11 @@ public class BoardElement {
 
     }
 
+    /**
+     * This method checks if there is a wall in front of the Robot
+     * @param movingDirection
+     * @return boolean
+     */
     public boolean checkIfElementCanEnteredInThisDirection(String movingDirection) {
 
         String oppositeDirection = getOppositeDirection(movingDirection);
@@ -87,6 +106,11 @@ public class BoardElement {
 
     }
 
+    /**
+     * This method returns the opposite direction of your parameter.
+     * @param movingDirection
+     * @return opposite of moving Direction
+     */
     public String getOppositeDirection(String movingDirection) {
 
         return switch (movingDirection) {
@@ -99,6 +123,10 @@ public class BoardElement {
 
     }
 
+    /**
+     * This method checkss if fieldObject is a Pit.
+     * @return boolean
+     */
     public boolean isPit() {
 
         for (GameBoardFieldObject fieldObject : field) {
@@ -114,7 +142,10 @@ public class BoardElement {
         return false;
 
     }
-
+    /**
+     * This method checkss if fieldObject is an EnergySpace.
+     * @return boolean
+     */
     public boolean isEnergySpace() {
 
         for (GameBoardFieldObject fieldObject : field) {
@@ -130,7 +161,10 @@ public class BoardElement {
         return false;
 
     }
-
+    /**
+     * This method checkss if fieldObject is a ControlPoint.
+     * @return boolean
+     */
     public int isControlPoint() {
 
         for (GameBoardFieldObject fieldObject : field) {
@@ -148,7 +182,10 @@ public class BoardElement {
         return 0;
 
     }
-
+    /**
+     * This method checkss if fieldObject is an Antenna.
+     * @return boolean
+     */
     public boolean isAntenna() {
 
         for (GameBoardFieldObject fieldObject : field) {
@@ -164,7 +201,10 @@ public class BoardElement {
         return false;
 
     }
-
+    /**
+     * This method checkss if fieldObject is an RestartPoint.
+     * @return boolean
+     */
     public boolean isRestartPoint() {
 
         for (GameBoardFieldObject fieldObject : field) {
@@ -180,7 +220,9 @@ public class BoardElement {
         return false;
 
     }
-
+    /**
+     * This method returns the Orientation of the RestartPoint
+     */
     public String getRestartOrientation() {
 
         for (GameBoardFieldObject fieldObject : field) {
@@ -198,7 +240,10 @@ public class BoardElement {
         return "";
 
     }
-
+    /**
+     * This method checkss if fieldObject is an ConveyorBelt.
+     * @return boolean
+     */
     public boolean isBlueConveyorBelt() {
 
         for (GameBoardFieldObject fieldObject : field) {
@@ -220,7 +265,10 @@ public class BoardElement {
         return false;
 
     }
-
+    /**
+     * This method checkss if fieldObject is a blue rotating ConveyorBelt.
+     * @return boolean
+     */
     public boolean isBlueRotatingConveyorBelt() {
 
         for (GameBoardFieldObject fieldObject : field) {
@@ -242,7 +290,10 @@ public class BoardElement {
         return false;
 
     }
-
+    /**
+     * This method checkss if fieldObject is a green ConveyorBelt.
+     * @return boolean
+     */
     public boolean isGreenConveyorBelt() {
 
         for (GameBoardFieldObject fieldObject : field) {
@@ -264,7 +315,10 @@ public class BoardElement {
         return false;
 
     }
-
+    /**
+     * This method checkss if fieldObject is a green rotating ConveyorBelt.
+     * @return boolean
+     */
     public boolean isGreenRotatingConveyorBelt() {
 
         for (GameBoardFieldObject fieldObject : field) {
@@ -286,7 +340,10 @@ public class BoardElement {
         return false;
 
     }
-
+    /**
+     * This method checkss if fieldObject is a PushPanel.
+     * @return boolean
+     */
     public boolean isPushPanel() {
 
         for (GameBoardFieldObject fieldObject : field) {
@@ -303,6 +360,10 @@ public class BoardElement {
 
     }
 
+    /**
+     * This method checkss if fieldObject is a Gear.
+     * @return boolean
+     */
     public boolean isGear() {
 
         for (GameBoardFieldObject fieldObject : field) {
@@ -318,7 +379,10 @@ public class BoardElement {
         return false;
 
     }
-
+    /**
+     * This method checkss if fieldObject is a Laser.
+     * @return boolean
+     */
     public boolean isLaser() {
 
         for (GameBoardFieldObject fieldObject : field) {
@@ -334,7 +398,10 @@ public class BoardElement {
         return false;
 
     }
-
+    /**
+     * This method checkss if fieldObject is a StartingPoint.
+     * @return boolean
+     */
     public boolean isStartingPoint() {
 
         for (GameBoardFieldObject fieldObject : field) {
@@ -351,6 +418,9 @@ public class BoardElement {
 
     }
 
+    /**
+     * This method returns the lasers orientation.
+     */
     public String getLaserOrientation() {
 
         for (GameBoardFieldObject fieldObject : field) {
@@ -368,7 +438,9 @@ public class BoardElement {
         return "";
 
     }
-
+    /**
+     * This method returns the register of push panel fieldObjects
+     */
     public int[] getPushPanelRegister() {
 
         for (GameBoardFieldObject fieldObject : field) {
@@ -386,7 +458,10 @@ public class BoardElement {
         return null;
 
     }
-
+    /**
+     * This method checkss if fieldObject is a wall.
+     * @return boolean
+     */
     public boolean isWall() {
 
         for (GameBoardFieldObject fieldObject : field) {
@@ -404,6 +479,11 @@ public class BoardElement {
     }
 
     @Override
+
+    /**
+     * This method returns all types of gameboard fieldObjects converted to Strings.
+     * @return returnValue.toString()
+     */
     public String toString() {
 
         StringBuilder returnValue = new StringBuilder();
@@ -418,6 +498,10 @@ public class BoardElement {
 
     }
 
+    /**
+     * This method returns all fieldObjects with ConveyorBelts.
+     * @return conveyorBeltFieldObject
+     */
     public BeltFieldObject getConveyorBelt() {
 
         for (GameBoardFieldObject fieldObject : field) {
@@ -433,7 +517,10 @@ public class BoardElement {
         return null;
 
     }
-
+    /**
+     * This method returns all fieldObjects with rotating ConveyorBelts.
+     * @return  rotating conveyorBeltFieldObject
+     */
     public RotatingBeltFieldObject getRotatingConveyorBelt() {
 
         for (GameBoardFieldObject gameBoardFieldObject : field) {
@@ -451,6 +538,10 @@ public class BoardElement {
 
     }
 
+    /**
+     * This method returns all fieldObjects with lasers.
+     * @return laserFieldObjects
+     */
     public LaserFieldObject getLaser() {
 
         for (GameBoardFieldObject fieldObject : field) {
@@ -466,7 +557,10 @@ public class BoardElement {
         return null;
 
     }
-
+    /**
+     * This method returns all fieldObjects with walls.
+     * @return WallFieldObject
+     */
     public WallFieldObject getWalls() {
 
         for (GameBoardFieldObject fieldObject : field) {
@@ -483,6 +577,10 @@ public class BoardElement {
 
     }
 
+    /**
+     * This method returns all fieldObjects with gears.
+     * @return GearFieldObject
+     */
     public GearFieldObject getGear() {
 
         for (GameBoardFieldObject fieldObject : field) {
@@ -517,6 +615,9 @@ public class BoardElement {
 
     }
 
+    /**
+     * This method activates all boardElements on gameboard.
+     */
     public void activate(Game game, GameState gameState, int playerID) {
 
         for (GameBoardFieldObject gameBoardFieldObject : field) {
