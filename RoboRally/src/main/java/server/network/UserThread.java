@@ -272,7 +272,7 @@ public class UserThread implements Runnable {
             if (receivedMessage.getTo() == -1) {
 
                 String outgoingMessage = messageHandler.buildMessage(
-                        "ReceivedChat", new ReceivedChat(receivedMessage.getMessage(), player.getName(), false));
+                        "ReceivedChat", new ReceivedChat(receivedMessage.getMessage(), player.getPlayerID(), false));
 
                 server.sendMessageToAllUsers(outgoingMessage);
 
@@ -281,8 +281,9 @@ public class UserThread implements Runnable {
             } else {
 
                 String outgoingMessage = messageHandler.buildMessage(
-                        "ReceivedChat", new ReceivedChat(receivedMessage.getMessage(), player.getName(), true));
+                        "ReceivedChat", new ReceivedChat(receivedMessage.getMessage(), player.getPlayerID(), true));
 
+                server.sendMessageToSingleUser(outgoingMessage, playerID);
                 server.sendMessageToSingleUser(outgoingMessage, receivedMessage.getTo());
 
                 logger.getLogger().info(player.getName() + " sent a message to a single user.");

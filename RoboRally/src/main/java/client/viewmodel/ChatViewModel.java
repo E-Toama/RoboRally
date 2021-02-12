@@ -59,10 +59,10 @@ public class ChatViewModel {
     public void sendChat() {
         String text = getChatText();
 
-        if (clientThread.getActivePhase() == 2) {
+/*        if (clientThread.getActivePhase() == 2) {
             CheatModule cheatModule = new CheatModule();
             cheatModule.parseCheats(text);
-        }
+        }*/
 
         clientThread.sendMessage(text, destination);
         chatText.set("");

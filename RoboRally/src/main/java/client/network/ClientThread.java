@@ -1,5 +1,6 @@
 package client.network;
 
+import client.utilities.CheatModule;
 import client.utilities.ClientGameState;
 import client.view.EnemyMatController;
 import client.view.GameOverController;
@@ -126,6 +127,10 @@ public class ClientThread implements Runnable {
 
     public int getActivePhase() {
         return clientGameState.getActivePhase();
+    }
+
+    public HashMap<Integer, EnemyMatModel> getEnemyList() {
+        return enemyList;
     }
 
     public void setMainViewModel(MainViewModel mainViewModel) {
@@ -483,15 +488,25 @@ public class ClientThread implements Runnable {
 
             ReceivedChat receivedMessage = (ReceivedChat) incomingMessage.getMessageBody();
 
+            if (clientThread.getActivePhase() == 2) {
+                CheatModule cheatModule = new CheatModule();
+                cheatModule.parseCheats(receivedMessage);
+            }
+
+            int idOfSender = receivedMessage.getFrom();
+            String senderName = playerList.get(idOfSender).getName();
             String message;
 
             if (receivedMessage.getPrivate()) {
-
-                message = "[" + receivedMessage.getFrom() + "] private to you: " + receivedMessage.getMessage();
-                logger.getLogger().info(this.player.getName() + " got a private message from " + receivedMessage.getFrom() + ".");
+                if (idOfSender == ID) {
+                    message = "[" + senderName + "] private from you: " + receivedMessage.getMessage();
+                } else {
+                    message = "[" + senderName + "] private to you: " + receivedMessage.getMessage();
+                }
+                logger.getLogger().info(this.player.getPlayerID() + " handled a private message from " + receivedMessage.getFrom() + ".");
             } else {
 
-                message = "[" + receivedMessage.getFrom() + "]: " + receivedMessage.getMessage();
+                message = "[" + senderName + "]: " + receivedMessage.getMessage();
                 logger.getLogger().info(this.player.getName() + " got a normal message from " + receivedMessage.getFrom() + ".");
             }
 

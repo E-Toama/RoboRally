@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
 public class ReceivedChat extends MessageBody {
 
   private final String message;
-  private final String from;
+  private final int from;
   @SerializedName("private")
   private Boolean isPrivate;
 
@@ -25,7 +25,7 @@ public class ReceivedChat extends MessageBody {
    * @param isPrivate
    *          defines if the message private or not
    */
-  public ReceivedChat(String message, String from, Boolean isPrivate) {
+  public ReceivedChat(String message, int from, Boolean isPrivate) {
 
     this.message = message;
     this.from = from;
@@ -47,7 +47,7 @@ public class ReceivedChat extends MessageBody {
    * 
    * @return
    */
-  public String getFrom() {
+  public int getFrom() {
     return from;
   }
 
