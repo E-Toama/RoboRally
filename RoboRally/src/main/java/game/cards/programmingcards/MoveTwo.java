@@ -34,6 +34,7 @@ public class MoveTwo extends Move {
     @Override
     public void action(Game game, GameState gameState, int playerID) {
         logger.getLogger().info("The programming card Move II was played.");
+
         moveForward(game, gameState, playerID, false);
 
         if (!gameState.playerMatHashMap.get(playerID).getWasRebootedThisRound()) {

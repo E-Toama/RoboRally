@@ -115,6 +115,7 @@ public class MoveHandler {
     }
 
     private boolean completeMove(Game game, GameState gameState, int playerID, Position newPosition, BoardElement currentBoardElement, BoardElement destinationBoardElement, boolean isPlayerAction, boolean isLastMovePart) {
+
         if (destinationBoardElement.isPit()) {
 
             gameState.playerMatHashMap.get(playerID).reboot(game, gameState, isPlayerAction);

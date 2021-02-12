@@ -3,6 +3,7 @@ package game.gameboard.gameboardfieldobjects;
 import game.Game;
 import game.utilities.GameState;
 import game.utilities.MoveHandler;
+import game.utilities.MoveHandlerV2;
 import game.utilities.Position;
 
 /**
@@ -60,12 +61,13 @@ public class PushPanelFieldObject extends GameBoardFieldObject{
     @Override
     public void activate(Game game, GameState gameState, int playerID) {
 
-        MoveHandler moveHandler = new MoveHandler();
+        //MoveHandler moveHandler = new MoveHandler();
+        MoveHandlerV2 moveHandlerV2 = new MoveHandlerV2();
 
         Position position = gameState.playerMatHashMap.get(playerID).getRobot().getRobotXY();
-        Position newPosition = moveHandler.getTargetPosition(position, orientation);
+        Position newPosition = moveHandlerV2.getTargetPosition(position, orientation);
 
-        moveHandler.move(game, gameState, playerID, position, newPosition, orientation, false, true);
+        moveHandlerV2.move(game, gameState, playerID, position, newPosition, orientation, false, true);
 
     }
 }

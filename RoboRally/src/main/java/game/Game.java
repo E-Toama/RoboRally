@@ -9,6 +9,7 @@ import game.player.PlayerMat;
 import game.utilities.*;
 import server.network.Server;
 import utilities.MessageHandler;
+import utilities.MyLogger;
 import utilities.messages.*;
 
 import java.util.*;
@@ -568,9 +569,13 @@ public class Game {
 
             } else {
 
-                MoveHandler moveHandler = new MoveHandler();
+                /*MoveHandler moveHandler = new MoveHandler();
 
-                moveHandler.move(this, gameState, target.getPlayerID(), oldPosition, newPosition, target.getMovingDirection(), false, true);
+                moveHandler.move(this, gameState, target.getPlayerID(), oldPosition, newPosition, target.getMovingDirection(), false, true);*/
+
+                MoveHandlerV2 moveHandlerV2 = new MoveHandlerV2();
+
+                moveHandlerV2.move(this, gameState, target.getPlayerID(), oldPosition, newPosition, target.getMovingDirection(), false, true);
 
             }
 
@@ -664,6 +669,8 @@ public class Game {
 
     }
 
+    MyLogger myLogger = new MyLogger();
+
     /**
      * This method activates the lasers of each robot.
      */
@@ -675,6 +682,8 @@ public class Game {
         LaserHandler laserHandler = new LaserHandler();
 
         for (PlayerMat playerMat : gameState.playerMatList) {
+
+            myLogger.getLogger().info("Player " + playerMat.getPlayer().getPlayerID() + " is shooting");
 
             laserHandler.handleRobotFire(gameState, gameState.gameBoard.getGameBoard()[playerMat.getRobot().getRobotXY().getY()][playerMat.getRobot().getRobotXY().getX()]);
 

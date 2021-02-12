@@ -3,6 +3,7 @@ package game.cards.programmingcards;
 import game.Game;
 import game.utilities.GameState;
 import game.utilities.MoveHandler;
+import game.utilities.MoveHandlerV2;
 import game.utilities.Position;
 import utilities.MyLogger;
 
@@ -38,16 +39,17 @@ public class BackUp extends Move {
 
         logger.getLogger().info("The programming card Backup was played.");
         
-        MoveHandler moveHandler = new MoveHandler();
+        //MoveHandler moveHandler = new MoveHandler();
+        MoveHandlerV2 moveHandlerV2 = new MoveHandlerV2();
 
         Position position = gameState.playerMatHashMap.get(playerID).getRobot().getRobotXY();
         String orientation = gameState.playerMatHashMap.get(playerID).getRobot().getOrientation();
 
         switch (orientation) {
-            case "up" -> moveHandler.move(game, gameState, playerID, position, new Position(position.getX(), position.getY() + 1), "down", true, true);
-            case "left" -> moveHandler.move(game, gameState, playerID, position, new Position(position.getX() + 1, position.getY()), "right", true, true);
-            case "down" -> moveHandler.move(game, gameState, playerID, position, new Position(position.getX(), position.getY() - 1), "up", true, true);
-            case "right" -> moveHandler.move(game, gameState, playerID, position, new Position(position.getX() - 1, position.getY()), "left", true, true);
+            case "up" -> moveHandlerV2.move(game, gameState, playerID, position, new Position(position.getX(), position.getY() + 1), "down", true, true);
+            case "left" -> moveHandlerV2.move(game, gameState, playerID, position, new Position(position.getX() + 1, position.getY()), "right", true, true);
+            case "down" -> moveHandlerV2.move(game, gameState, playerID, position, new Position(position.getX(), position.getY() - 1), "up", true, true);
+            case "right" -> moveHandlerV2.move(game, gameState, playerID, position, new Position(position.getX() - 1, position.getY()), "left", true, true);
         }
 
     }
