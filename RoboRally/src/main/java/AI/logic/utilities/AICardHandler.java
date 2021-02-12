@@ -47,6 +47,7 @@ public class AICardHandler {
 
         System.out.println(currentBestRating);
         System.out.println(Arrays.toString(currentBestPossibleRegister));
+        System.out.println(aiGameState.getIntermediateBoardElement().getPosition());
 
         int registerNumber = 1;
 
@@ -113,7 +114,7 @@ public class AICardHandler {
 
         }
 
-        SimpleBeltHandler simpleBeltHandler = new SimpleBeltHandler(aiGameState);
+        SimpleBeltHandlerV2 simpleBeltHandlerV2 = new SimpleBeltHandlerV2(aiGameState);
         SimpleGearsHandler simpleGearsHandler = new SimpleGearsHandler(aiGameState);
         SimpleCheckPointHandler simpleCheckPointHandler = new SimpleCheckPointHandler(aiGameState);
 
@@ -138,11 +139,11 @@ public class AICardHandler {
                 card.action(aiGameState, currentRegisterNumber);
 
                 if (aiGameState.getIntermediateBoardElement().isBlueConveyorBelt() || aiGameState.getIntermediateBoardElement().isBlueRotatingConveyorBelt()) {
-                    simpleBeltHandler.simulateBlueConveyorBelts();
+                    simpleBeltHandlerV2.simulateBlueBelts();
                 }
 
                 if (aiGameState.getIntermediateBoardElement().isGreenConveyorBelt() || aiGameState.getIntermediateBoardElement().isGreenRotatingConveyorBelt()) {
-                    simpleBeltHandler.simulateGreenConveyorBelts();
+                    simpleBeltHandlerV2.simulateGreenBelts();
                 }
 
                 if (aiGameState.getIntermediateBoardElement().isGear()) {
