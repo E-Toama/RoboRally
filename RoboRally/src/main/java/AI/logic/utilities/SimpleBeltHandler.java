@@ -109,12 +109,11 @@ public class SimpleBeltHandler {
 
         } else if (targetBoardElement.isBlueRotatingConveyorBelt()) {
 
+            RotatingBeltFieldObject rotatingBeltFieldObject = targetBoardElement.getRotatingConveyorBelt();
+            rotatingOrientations.add(getRotatingDirection(rotatingBeltFieldObject.getOrientations()[0], rotatingBeltFieldObject.getOrientations()[1]));
+
             targetPosition = getTargetPosition(targetPosition, movingOrientation);
             targetBoardElement = getNextBoardElement(aiGameState, targetPosition, movingOrientation);
-
-            RotatingBeltFieldObject rotatingBeltFieldObject = targetBoardElement.getRotatingConveyorBelt();
-
-            rotatingOrientations.add(getRotatingDirection(rotatingBeltFieldObject.getOrientations()[0], rotatingBeltFieldObject.getOrientations()[1]));
 
         } else {
 
@@ -204,9 +203,9 @@ public class SimpleBeltHandler {
         return switch (orientation) {
 
             case "up" -> aiGameState.getGameBoard().getGameBoard()[position.getY() - 1][position.getX()];
-            case "left" -> aiGameState.getGameBoard().getGameBoard()[position.getY()][position.getX() + 1];
+            case "left" -> aiGameState.getGameBoard().getGameBoard()[position.getY()][position.getX() - 1];
             case "down" -> aiGameState.getGameBoard().getGameBoard()[position.getY() + 1][position.getX()];
-            case "right" -> aiGameState.getGameBoard().getGameBoard()[position.getY()][position.getX() - 1];
+            case "right" -> aiGameState.getGameBoard().getGameBoard()[position.getY()][position.getX() + 1];
             default -> null;
 
         };

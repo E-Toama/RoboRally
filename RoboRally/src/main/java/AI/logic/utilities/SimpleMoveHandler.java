@@ -35,6 +35,7 @@ public class SimpleMoveHandler {
                     } else {
 
                         aiGameState.setIntermediatePosition(targetBoardElement.getXY());
+                        aiGameState.setIntermediateBoardElement(targetBoardElement);
 
                     }
 
