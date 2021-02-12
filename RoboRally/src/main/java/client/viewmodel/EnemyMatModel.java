@@ -141,6 +141,11 @@ public class EnemyMatModel {
         this.pickedUpDamageCards.set(String.valueOf(damageCardSum));
     }
 
+    public void decreaseDamageCardCount() {
+        int discarded = Integer.parseInt(this.pickedUpDamageCards.getValue()) - 1;
+        this.pickedUpDamageCards.set(String.valueOf(discarded));
+    }
+
 
 
     public EnemyMatController getEnemyMatController() {

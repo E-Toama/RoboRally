@@ -871,6 +871,9 @@ public class ClientThread implements Runnable {
                 } else {
                     Platform.runLater(() -> {
                         enemyList.get(cards.getPlayerID()).getEnemyMatController().setTakenRegister(cards.getCard());
+                        if (cards.getCard().equals("Spam") || cards.getCard().equals("Virus") || cards.getCard().equals("Worm") || cards.getCard().equals("TrojanHorse")) {
+                            enemyList.get(cards.getPlayerID()).decreaseDamageCardCount();
+                        }
                     });
                 }
             }
