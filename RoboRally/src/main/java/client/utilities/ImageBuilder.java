@@ -237,14 +237,12 @@ public class ImageBuilder {
                     GearFieldObject gearFieldObject = (GearFieldObject) gameBoardFieldObject;
                     String gearOrientation = gearFieldObject.getOrientation();
 
-                    if (gearOrientation.equals("clockwise")) {
+                    if (gearOrientation.equals("right")) {
                         Image gearImageClockwise = new Image("Tiles/Gear_clockwise.png");
                         return adjustToBoard(gearImageClockwise);
-                    } else if (gearOrientation.equals("counterclockwise")) {
+                    } else  {
                         Image gearImageCounterClockwise = new Image("Tiles/Gear_counterclockwise.png");
                         return adjustToBoard(gearImageCounterClockwise);
-                    } else { //evtl Fehlerbehebung?
-
                     }
             }
 
