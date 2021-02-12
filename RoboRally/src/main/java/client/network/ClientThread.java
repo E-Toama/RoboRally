@@ -989,7 +989,9 @@ public class ClientThread implements Runnable {
         if (incomingMessage.getMessageBody() instanceof Reboot) {
             Reboot reboot = (Reboot) incomingMessage.getMessageBody();
             if (reboot.getPlayerID() == ID) {
-                playerMatModel.updateDiscardedCountInCaseOfReboot();
+                Platform.runLater(() -> {
+                    playerMatModel.updateDiscardedCountInCaseOfReboot();
+                });
             }
             logger.getLogger().info("Player with id " + reboot.getPlayerID() + " has rebooted.");
         } else {
