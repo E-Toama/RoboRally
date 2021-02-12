@@ -23,6 +23,7 @@ public class PlayerMatModel {
     private boolean isCurrentPlayer;
     private boolean finishedSelection;
     private String direction;
+    private int discardedCardsPerRound;
 
 
     private StringProperty userName = new SimpleStringProperty();
@@ -53,6 +54,7 @@ public class PlayerMatModel {
         this.isCurrentPlayer = false;
         this.finishedSelection = false;
         this.direction = "";
+        this.discardedCardsPerRound = 0;
 
         this.checkpointsreached.set("0");
         this.userName.set("");
@@ -120,17 +122,30 @@ public class PlayerMatModel {
     }
 
     /**
-     * Adds the unused programming cards of the round to the discarded pile
+     * Adds the four unused programming cards of the round to the discarded pile.
+     * Sets the counter for used cards per round back to zero
      */
     public void updateDiscardedCount() {
         int discarded = Integer.parseInt(this.discardedCount.getValue()) + 4;
         this.discardedCount.set(String.valueOf(discarded));
+        this.discardedCardsPerRound = 0;
+    }
+
+    /**
+     * If bot is rebooted, the cards not played will be added to the discardedCount
+     */
+    public void updateDiscardedCountInCaseOfReboot() {
+        int unusedCards = 5 - discardedCardsPerRound;
+        int currentDiscardedCount = Integer.parseInt(this.discardedCount.getValue());
+        int totalAmount = currentDiscardedCount + unusedCards;
+        this.discardedCount.set(String.valueOf(totalAmount));
     }
 
     /**
      * Increments the discarded pile whenever a card is removed from the register after PlayIt
      */
     private void increaseDiscardedCardCount() {
+        this.discardedCardsPerRound++;
         int discarded = Integer.parseInt(this.discardedCount.getValue()) + 1;
         this.discardedCount.set(String.valueOf(discarded));
     }

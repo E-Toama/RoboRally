@@ -2,16 +2,13 @@ package client.view;
 
 
 import client.utilities.ImageBuilder;
-import client.utilities.RobotImageBuilder;
 import client.viewmodel.PlayerMatModel;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 
 
 /**
@@ -124,6 +121,7 @@ public class PlayerMatController {
     public void setTakenRegister(String card) {
         ImageView cardToDisplay = ImageBuilder.adjustToPlayerMatView(card);
         Button button = (Button) registers[registerForAnimation].getChildren().get(1);
+        button.setId(card);
         button.setGraphic(cardToDisplay);
         registerForAnimation++;
     }
@@ -135,6 +133,10 @@ public class PlayerMatController {
     private void sendPlayIt(Button button) {
         button.setDisable(true);
         button.setOpacity(0.85);
+        String playedCard = button.getId();
+        if (playedCard.equals("Spam") || playedCard.equals("Virus") || playedCard.equals("Worm") || playedCard.equals("TrojanHorse")) {
+            playerMatModel.decreaseDamageCardCount();
+        }
         playerMatModel.sendPlayIt();
     }
 

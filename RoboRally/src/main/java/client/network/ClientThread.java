@@ -879,9 +879,6 @@ public class ClientThread implements Runnable {
                 if (cards.getPlayerID() == ID) {
                     Platform.runLater(() -> {
                         playerMatModel.getPlayerMatController().setTakenRegister(cards.getCard());
-                        if (cards.getCard().equals("Spam") || cards.getCard().equals("Virus") || cards.getCard().equals("Worm") || cards.getCard().equals("TrojanHorse")) {
-                            playerMatModel.decreaseDamageCardCount();
-                        }
                     });
                 } else {
                     Platform.runLater(() -> {
@@ -985,6 +982,9 @@ public class ClientThread implements Runnable {
     private void handleReboot(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof Reboot) {
             Reboot reboot = (Reboot) incomingMessage.getMessageBody();
+            if (reboot.getPlayerID() == ID) {
+                playerMatModel.updateDiscardedCountInCaseOfReboot();
+            }
             logger.getLogger().info("Player with id " + reboot.getPlayerID() + " has rebooted.");
         } else {
             logger.getLogger().severe("Message body error in handleReboot method.");
@@ -1041,7 +1041,6 @@ public class ClientThread implements Runnable {
         if (incomingMessage.getMessageBody() instanceof CheckpointReached) {
             CheckpointReached checkpointReached = (CheckpointReached) incomingMessage.getMessageBody();
             int playerID = checkpointReached.getPlayerID();
-            //todo Is this a number or a counter?
             int checkPoint = checkpointReached.getNumber();
             if (playerID == ID) {
                 Platform.runLater(() -> {

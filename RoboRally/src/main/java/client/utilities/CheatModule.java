@@ -154,6 +154,7 @@ public class CheatModule {
             if (playerID == playerMatModel.getPlayerID()) {
                 Platform.runLater(() -> {
                     gameOverModel.setWinnerName("Winner by old-fashioned cheating: " + playerMatModel.getUserName().getValue());
+                    gameOverModel.setWinnerRobot(playerMatModel.getFigure());
                     ViewController.getViewController().setScene(new Scene(gameOverPane));
                 });
             }
