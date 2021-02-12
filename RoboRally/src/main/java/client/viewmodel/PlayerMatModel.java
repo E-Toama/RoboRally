@@ -119,16 +119,25 @@ public class PlayerMatModel {
         this.discardedCount.set(discardedCount);
     }
 
+    /**
+     * Adds the unused programming cards of the round to the discarded pile
+     */
     public void updateDiscardedCount() {
         int discarded = Integer.parseInt(this.discardedCount.getValue()) + 4;
         this.discardedCount.set(String.valueOf(discarded));
     }
 
+    /**
+     * Increments the discarded pile whenever a card is removed from the register after PlayIt
+     */
     private void increaseDiscardedCardCount() {
         int discarded = Integer.parseInt(this.discardedCount.getValue()) + 1;
         this.discardedCount.set(String.valueOf(discarded));
     }
 
+    /**
+     * Decreases the damage card count when a player puts it in an active register
+     */
     public void decreaseDamageCardCount() {
         int discarded = Integer.parseInt(this.pickedUpDamageCards.getValue()) - 1;
         this.pickedUpDamageCards.set(String.valueOf(discarded));

@@ -7,9 +7,12 @@ import client.viewmodel.PlayerMatModel;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+
 
 /**
  * Controller class for the player mats
@@ -131,8 +134,7 @@ public class PlayerMatController {
      */
     private void sendPlayIt(Button button) {
         button.setDisable(true);
-        button.setOpacity(1);
-        //button.setVisible(false);
+        button.setOpacity(0.85);
         playerMatModel.sendPlayIt();
     }
 
