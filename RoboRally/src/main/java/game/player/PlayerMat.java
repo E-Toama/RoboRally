@@ -404,6 +404,8 @@ public class PlayerMat {
 
         MoveHandler moveHandler = new MoveHandler();
 
+        if (gameState.gameBoard.getBoardName().equals("ExtraCrispy"))
+
         if (robot.getRobotXY().getX() < 3) {
 
             moveHandler.move(game, gameState, player.getPlayerID(), robot.getRobotXY(), robot.getStartingPosition(), "up", isPlayerAction, true);

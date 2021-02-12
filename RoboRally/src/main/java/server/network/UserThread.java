@@ -1,5 +1,6 @@
 package server.network;
 
+import game.cards.Card;
 import game.player.Player;
 import utilities.MessageHandler;
 import utilities.MyLogger;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Arrays;
 
 /**
  * This class represents the thread of the server for each client connected.
@@ -381,7 +383,7 @@ public class UserThread implements Runnable {
             SelectDamage selectDamage = (SelectDamage) incomingMessage.getMessageBody();
 
             server.getGame().getGameState().drawDamageCardHandler.selectDamage(playerID, selectDamage.getCards());
-            logger.getLogger().info(player.getName() + " selected " + selectDamage.getCards() + ".");
+            logger.getLogger().info(player.getName() + " selected " + Arrays.toString(selectDamage.getCards()) + ".");
         } else {
             logger.getLogger().severe("Message body error in handleSelectDamage method.");
             throw new IOException("Something went wrong! Invalid Message Body! (not instance of SelectDamage)");

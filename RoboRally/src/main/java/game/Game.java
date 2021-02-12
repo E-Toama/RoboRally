@@ -508,18 +508,26 @@ public class Game {
      */
     private void completeConveyorBeltActivationV2(List<ConveyorBeltTarget> conveyorBeltTargets) {
 
+        List<ConveyorBeltTarget> sameTargets = new ArrayList<>();
+
         for (ConveyorBeltTarget targetOne : conveyorBeltTargets) {
 
             for (ConveyorBeltTarget targetTwo : conveyorBeltTargets) {
 
                 if (targetOne.getPlayerID() != targetTwo.getPlayerID() && targetOne.getTargetBoardElement() == targetTwo.getTargetBoardElement()) {
 
-                    conveyorBeltTargets.remove(targetOne);
-                    conveyorBeltTargets.remove(targetTwo);
+                    sameTargets.add(targetOne);
+                    sameTargets.add(targetTwo);
 
                 }
 
             }
+
+        }
+
+        for (ConveyorBeltTarget conveyorBeltTarget : sameTargets) {
+
+            conveyorBeltTargets.remove(conveyorBeltTarget);
 
         }
 
@@ -665,11 +673,10 @@ public class Game {
         server.sendMessageToAllUsers(playerShooting);
 
         LaserHandler laserHandler = new LaserHandler();
-        BoardElement[][] gameBoard = getGameBoard().getGameBoard();
 
         for (PlayerMat playerMat : gameState.playerMatList) {
 
-            laserHandler.handleRobotFire(gameState, gameBoard[playerMat.getRobot().getRobotXY().getY()][playerMat.getRobot().getRobotXY().getX()]);
+            laserHandler.handleRobotFire(gameState, gameState.gameBoard.getGameBoard()[playerMat.getRobot().getRobotXY().getY()][playerMat.getRobot().getRobotXY().getX()]);
 
         }
 
