@@ -44,12 +44,11 @@ import java.util.LinkedList;
 import java.util.Map;
 
 /**
- * This class acts as a distributor for all incoming messages and serves as a connection
- * between the Model and the ViewModels.
+ * This class acts as a distributor for all incoming messages and
+ * serves as a connection between the Model and the ViewModels.
  * The ClientThread performs the initial Handshake with the server,
- * builds, instantiates and FXML-injects the initially empty MainWindow and
- * passes all relevant information to the respective ViewModels.
- * Doc: Josef
+ * builds, instantiates and injects the FXML-Files for the MainWindow
+ * and passes all relevant information to the respective ViewModels.
  */
 public class ClientThread implements Runnable {
 
@@ -364,6 +363,11 @@ public class ClientThread implements Runnable {
     }
 
 
+    /**
+     *
+     * @param incomingMessage
+     * @throws IOException
+     */
     private void handlePlayerAdded(Message incomingMessage) throws IOException {
 
         if (incomingMessage.getMessageBody() instanceof PlayerAdded) {
@@ -994,6 +998,11 @@ public class ClientThread implements Runnable {
         }
     }
 
+    /**
+     * Passes a turn-command for the player's robot to the game board
+     * @param incomingMessage contains the playerID and the turning-direction (clockwise/counterclockwise)
+     * @throws IOException if the incoming message cannot be type-casted correctly
+     */
     private void handlePlayerTurning(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof PlayerTurning) {
             PlayerTurning playerTurning = (PlayerTurning) incomingMessage.getMessageBody();
@@ -1018,6 +1027,11 @@ public class ClientThread implements Runnable {
         }
     }
 
+    /**
+     * Updates the received energy-cubes in playermat or enemymat
+     * @param incomingMessage contains playerID and energy-count
+     * @throws IOException if the incoming message cannot be type-casted correctly
+     */
     private void handleEnergy(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof Energy) {
             Energy energy = (Energy) incomingMessage.getMessageBody();
@@ -1039,6 +1053,11 @@ public class ClientThread implements Runnable {
         }
     }
 
+    /**
+     * Updates the counter for reached checkpoints/flags in playermat or enemymat
+     * @param incomingMessage contains playerID and number of checkpoint reached
+     * @throws IOException if the incoming message cannot be type-casted correctly
+     */
     private void handleCheckpointReached(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof CheckpointReached) {
             CheckpointReached checkpointReached = (CheckpointReached) incomingMessage.getMessageBody();
@@ -1064,7 +1083,7 @@ public class ClientThread implements Runnable {
     /**
      * If a player has won the game, a final GameOverScreen with the winner's username is shown and the Game terminates
      * @param incomingMessage contains winner's player ID
-     * @throws IOException if messageType is incorrect
+     * @throws IOException if the incoming message cannot be type-casted correctly
      */
     private void handleGameWon(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof GameWon) {
@@ -1088,6 +1107,10 @@ public class ClientThread implements Runnable {
         }
     }
 
+    /**
+     * Performs the Server-Client-Handshake according to protocol at the beginning of the connection
+     * @throws IOException if any of the required messages is not transmitted in the planned order or has the wrong message-type
+     */
     private void establishConnection() throws IOException {
 
         String firstIncomingJSON = incoming.readLine();
