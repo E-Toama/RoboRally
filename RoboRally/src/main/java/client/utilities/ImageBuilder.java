@@ -5,7 +5,9 @@ import game.gameboard.gameboardfieldobjects.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-
+/**
+ * This class used for creating and adjusting the ImageViews of the game.
+ */
 public class ImageBuilder {
 
     private static final int TILE_WIDTH = 50;
@@ -13,21 +15,31 @@ public class ImageBuilder {
     private static final int PLAYERMAT_CARD_HEIGHT = 180;
     private static final int ENEMYPLAYERMAT_CARD_HEIGHT = 78;
 
-
+    /**
+     * This method converts and adjusts gameBoardImages to ImageViews.
+     * @param image
+     * @return ImageView
+     */
     private static ImageView adjustToBoard(Image image) {
         ImageView imageView = new ImageView(image);
         imageView.setFitHeight(TILE_WIDTH);
         imageView.setPreserveRatio(true);
         return imageView;
     }
-
+    /**
+     * This method converts and adjusts ProgrammingCardImages to ImageViews.
+     * @return ImageView
+     */
     public static ImageView adjustToProgrammingView(String cardString) {
         ImageView imageView = createCardImageView(cardString);
         imageView.setFitWidth(PROGRAMMING_CARD_WIDTH);
         imageView.setPreserveRatio(true);
         return imageView;
     }
-
+    /**
+     * This method converts and adjusts PlayerMatCardImages to ImageViews.
+     * @return ImageView
+     */
     public static ImageView adjustToPlayerMatView(String cardString) {
         ImageView imageView = createCardImageView(cardString);
         imageView.setFitHeight(PLAYERMAT_CARD_HEIGHT);
@@ -35,6 +47,10 @@ public class ImageBuilder {
         return imageView;
     }
 
+    /**
+     * This method converts and adjusts EnemyMatCardImages to ImageViews.
+     * @return ImageView
+     */
     public static ImageView adjustToEnemyMatView(String cardString) {
         ImageView imageView = createCardImageView(cardString);
         imageView.setFitHeight(ENEMYPLAYERMAT_CARD_HEIGHT);
@@ -42,7 +58,10 @@ public class ImageBuilder {
         return imageView;
     }
 
-
+    /**
+     * This method converts and adjusts PlayerMatCardImages to ImageViews.
+     * @return ImageView
+     */
     public static ImageView createCardImageView(String cardType) {
         Image cardImage;
         switch (cardType) {

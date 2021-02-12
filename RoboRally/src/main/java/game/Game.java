@@ -294,7 +294,7 @@ public class Game {
     }
 
     /**
-     * 
+     * This methods determins the players priority and switches to the next registers.
      */
     public void nextRegister() {
 
