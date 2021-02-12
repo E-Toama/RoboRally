@@ -327,7 +327,7 @@ public class AINetworkThread implements Runnable {
             SelectMap receivedMessage = (SelectMap) incomingMessage.getMessageBody();
             String[] availableMaps = receivedMessage.getAvailableMaps();
 
-            String[] selectedMap = {availableMaps[1]};
+            String[] selectedMap = {availableMaps[0]};
 
             String mapSelected = messageHandler.buildMessage("MapSelected", new MapSelected(selectedMap));
             sendJson(mapSelected);

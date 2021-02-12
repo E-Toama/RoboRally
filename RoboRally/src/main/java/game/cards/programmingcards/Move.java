@@ -3,7 +3,6 @@ package game.cards.programmingcards;
 import game.Game;
 import game.cards.Card;
 import game.utilities.GameState;
-import game.utilities.MoveHandler;
 import game.utilities.MoveHandlerV2;
 import game.utilities.Position;
 

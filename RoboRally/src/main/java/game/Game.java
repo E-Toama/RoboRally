@@ -557,7 +557,7 @@ public class Game {
             if (target.getTargetIsBelt()) {
 
                 BoardElement currentBoardElement = gameState.gameBoard.getGameBoard()[oldPosition.getY()][oldPosition.getX()];
-                BoardElement targetBoardElement = target.getTargetBoardElement();
+                BoardElement targetBoardElement = gameState.gameBoard.getGameBoard()[target.getTargetBoardElement().getXY().getY()][target.getTargetBoardElement().getXY().getX()];
 
                 currentBoardElement.setRobot(null);
                 targetBoardElement.setRobot(gameState.playerMatHashMap.get(target.getPlayerID()).getRobot());
@@ -568,10 +568,6 @@ public class Game {
                 server.sendMessageToAllUsers(movement);
 
             } else {
-
-                /*MoveHandler moveHandler = new MoveHandler();
-
-                moveHandler.move(this, gameState, target.getPlayerID(), oldPosition, newPosition, target.getMovingDirection(), false, true);*/
 
                 MoveHandlerV2 moveHandlerV2 = new MoveHandlerV2();
 
@@ -669,8 +665,6 @@ public class Game {
 
     }
 
-    MyLogger myLogger = new MyLogger();
-
     /**
      * This method activates the lasers of each robot.
      */
@@ -682,8 +676,6 @@ public class Game {
         LaserHandler laserHandler = new LaserHandler();
 
         for (PlayerMat playerMat : gameState.playerMatList) {
-
-            myLogger.getLogger().info("Player " + playerMat.getPlayer().getPlayerID() + " is shooting");
 
             laserHandler.handleRobotFire(gameState, gameState.gameBoard.getGameBoard()[playerMat.getRobot().getRobotXY().getY()][playerMat.getRobot().getRobotXY().getX()]);
 

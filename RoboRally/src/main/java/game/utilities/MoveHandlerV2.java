@@ -4,6 +4,7 @@ import game.Game;
 import game.gameboard.BoardElement;
 import game.player.PlayerMat;
 import utilities.MessageHandler;
+import utilities.MyLogger;
 import utilities.messages.Movement;
 
 public class MoveHandlerV2 {

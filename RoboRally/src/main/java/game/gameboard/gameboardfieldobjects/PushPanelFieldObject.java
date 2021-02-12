@@ -2,7 +2,6 @@ package game.gameboard.gameboardfieldobjects;
 
 import game.Game;
 import game.utilities.GameState;
-import game.utilities.MoveHandler;
 import game.utilities.MoveHandlerV2;
 import game.utilities.Position;
 
