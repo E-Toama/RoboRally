@@ -13,8 +13,7 @@ import java.io.IOException;
 
 /**
  * This class is the launcher class for the client.
- * 
- * @author 
+ *
  */
 public class RoboRallyClient extends Application {
 

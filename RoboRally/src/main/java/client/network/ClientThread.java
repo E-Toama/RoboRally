@@ -49,6 +49,7 @@ import java.util.Map;
  * The ClientThread performs the initial Handshake with the server,
  * builds, instantiates and FXML-injects the initially empty MainWindow and
  * passes all relevant information to the respective ViewModels.
+ * Doc: Josef
  */
 public class ClientThread implements Runnable {
 

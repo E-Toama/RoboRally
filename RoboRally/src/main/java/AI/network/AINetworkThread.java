@@ -20,6 +20,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+/**
+ * Similar functionality to ClientThread, only with reduced methods (without GUI)
+ * Doc: Josef
+ */
 public class AINetworkThread implements Runnable {
 
     private final Socket socket;

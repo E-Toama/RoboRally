@@ -11,6 +11,9 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Doc: Dennis
+ */
 public class AIGameState {
 
     private Position startPosition;

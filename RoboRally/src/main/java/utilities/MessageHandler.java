@@ -9,6 +9,9 @@ import utilities.messages.MessageBody;
 
 import java.lang.reflect.Type;
 
+/**
+ * Doc: Dennis
+ */
 public class MessageHandler {
 
     public String buildMessage(String messageType, MessageBody messageBody) {

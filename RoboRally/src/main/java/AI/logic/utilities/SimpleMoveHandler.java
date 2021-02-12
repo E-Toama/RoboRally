@@ -4,10 +4,18 @@ import AI.logic.AIGameState;
 import game.gameboard.BoardElement;
 import game.utilities.Position;
 
+/**
+ * Simulate movement.
+ */
 public class SimpleMoveHandler {
 
     public SimpleMoveHandler() {}
 
+    /**
+     * Checks for board borders, walls and pits and moves the AI-Robot accordingly.
+     * @param aiGameState Game State of the AI
+     * @param movingDirection direction of movement
+     */
     public void move(AIGameState aiGameState, String movingDirection) {
 
         Position position = aiGameState.getIntermediatePosition();

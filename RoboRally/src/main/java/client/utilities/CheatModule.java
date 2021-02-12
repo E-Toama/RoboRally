@@ -22,6 +22,7 @@ import java.util.HashMap;
  * This class provides some simple, string-based cheats for GUI-Manipulation.
  * It is used directly in the ChatController and only active during the ProgrammingPhase (Phase 2)
  * Whenever a user sends a message, the CheatModule parses the message for cheat commands and handles the cheat request.
+ * @author Josef
  */
 public class CheatModule {
 
@@ -146,8 +147,6 @@ public class CheatModule {
     }
 
     private void pieceOfCake(int playerID) {
-
-
         try {
             FXMLLoader gameOverLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/GameOverScreen.fxml"));
             GridPane gameOverPane = gameOverLoader.load();
@@ -158,7 +157,6 @@ public class CheatModule {
                     ViewController.getViewController().setScene(new Scene(gameOverPane));
                 });
             }
-
         } catch (IOException e) {
             MyLogger logger = new MyLogger();
             logger.getLogger().severe(e.getMessage());

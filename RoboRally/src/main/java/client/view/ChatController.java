@@ -7,7 +7,6 @@ import javafx.scene.control.*;
 /**
  *  Controller Class for the Lobby Chat
  *  is binded to ChatViewModel
- * @author
  *
  */
 public class ChatController {

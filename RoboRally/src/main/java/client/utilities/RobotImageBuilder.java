@@ -4,6 +4,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
+/**
+ * Doc: Yashar
+ */
 public class RobotImageBuilder {
 
     private static int tileWidth = 45;

@@ -3,6 +3,9 @@ package AI.logic.utilities;
 import AI.logic.AIGameState;
 import game.gameboard.gameboardfieldobjects.GearFieldObject;
 
+/**
+ * Simulate gears.
+ */
 public class SimpleGearsHandler {
 
     private final AIGameState aiGameState;

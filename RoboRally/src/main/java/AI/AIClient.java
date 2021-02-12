@@ -11,6 +11,9 @@ import java.util.TimerTask;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+/**
+ * Starter Class for the AI.
+ */
 public class AIClient {
 
     private int port;

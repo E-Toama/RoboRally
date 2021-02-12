@@ -15,7 +15,7 @@ import java.net.Socket;
 /**
  * This class represents the thread of the server for each client connected.
  * 
- * @author 
+ * Doc: Josef
  */
 public class UserThread implements Runnable {
 

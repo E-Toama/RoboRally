@@ -26,7 +26,6 @@ import java.io.IOException;
 
 /**
  * Controller class for the other playermats
- * @author
  */
 public class EnemyMatController {
 

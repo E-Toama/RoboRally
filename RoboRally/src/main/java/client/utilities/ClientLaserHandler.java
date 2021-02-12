@@ -9,6 +9,9 @@ import game.utilities.GameState;
 import game.utilities.Position;
 import game.utilities.PositionLookUp;
 
+/**
+ * Doc: Yashar
+ */
 public class ClientLaserHandler {
 
     private BoardElement[][] inputGameBoard;

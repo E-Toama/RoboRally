@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Doc: Elias
+ */
 public class AICardHandler {
 
     private final AINetworkThread aiNetworkThread;

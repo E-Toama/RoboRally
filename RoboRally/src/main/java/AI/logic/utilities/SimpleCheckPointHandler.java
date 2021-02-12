@@ -2,6 +2,9 @@ package AI.logic.utilities;
 
 import AI.logic.AIGameState;
 
+/**
+ * Doc: Dennis
+ */
 public class SimpleCheckPointHandler {
 
     private AIGameState aiGameState;

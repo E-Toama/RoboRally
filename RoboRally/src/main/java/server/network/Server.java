@@ -19,6 +19,9 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
+/**
+ * Doc: Ehbal
+ */
 public class Server {
   
   private final MyLogger logger = new MyLogger();

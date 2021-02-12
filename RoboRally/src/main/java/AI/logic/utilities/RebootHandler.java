@@ -4,6 +4,9 @@ import AI.logic.AIGameState;
 import game.gameboard.BoardElement;
 import game.utilities.Position;
 
+/**
+ * Doc: Yashar
+ */
 public class RebootHandler {
 
     public void handleReboot(AIGameState aiGameState) {

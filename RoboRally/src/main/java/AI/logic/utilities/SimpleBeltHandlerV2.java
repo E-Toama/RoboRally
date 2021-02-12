@@ -9,6 +9,9 @@ import game.utilities.Position;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Doc: Dennis
+ */
 public class SimpleBeltHandlerV2 {
 
     private final AIGameState aiGameState;
