@@ -1,7 +1,7 @@
 # RoboRally
 
 Nachstehend finden Sie die Hinweise zum Ausführen des Spiels. 
-Unserem [Wiki](https://gitlab2.cip.ifi.lmu.de/dbs_sep/dbs_sep2020-21/vp-neidische-narwale/-/wikis/home) können Sie zahlreiche Informationen entnehmen, darunter:
+Unserem [Wiki](https://gitlab2.cip.ifi.lmu.de/dbs_sep/dbs_sep2020-21/vp-neidische-narwale/-/wikis/home) können Sie zahlreiche weitere Informationen entnehmen, darunter:
 - **Anwenderdokumentation** zum Spielverlauf und den verfügbaren Cheats
 - **Entwicklerdokumentation** mit aktuellen Klassendiagrammen, einer Visualisierung der implementierten Abläufe des Netzwerkprotokolls sowie Vorstufen, Skizzen und Hintergrundmaterial
 - sämtliche **Protokolle** der Tutorentreffen
@@ -46,8 +46,11 @@ Um den Server zu beenden, schließen sie das Terminalfenster, in dem Sie den Ser
 Um die Applikation zu beenden, bieten sich mehrere Möglichkeiten:
 - Schließen des entsprechenden Terminalfensters
 - Schließen-Button des Fensters betätigen
-
+ 
 ---
+ 
+---
+ 
 
 ## Vorprojekt: Loveletter 
 
@@ -86,6 +89,8 @@ Um die Chat-Applikation zu beenden, bieten sich mehrere Möglichkeiten:
 - Schließen-Button des Chat-Fensters betätigen
 - Eingabe von !BYE in das Textfeld des Chat-Fensters
 
+
+---
 
 ---
 
