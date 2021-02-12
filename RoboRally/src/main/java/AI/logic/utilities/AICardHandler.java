@@ -47,7 +47,6 @@ public class AICardHandler {
 
         System.out.println(currentBestRating);
         System.out.println(Arrays.toString(currentBestPossibleRegister));
-        System.out.println(aiGameState.getIntermediateBoardElement().getPosition());
 
         int registerNumber = 1;
 

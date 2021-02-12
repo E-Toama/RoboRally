@@ -164,6 +164,16 @@ public class PlayerMat {
 
             Card tmpCard = drawRandomCard();
 
+            if (tmpCard.getName().equals("Again")) {
+
+                Card tmpCardTwo = drawRandomCard();
+
+                deck.add(tmpCard);
+
+                tmpCard = tmpCardTwo;
+
+            }
+
             deck.add(drawnCard);
 
             drawnCard = tmpCard;
