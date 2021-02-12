@@ -54,7 +54,6 @@ public class ClientThread implements Runnable {
 
     private static ClientThread clientThread;
     private static Thread client;
-    private final MyLogger logger = new MyLogger();
     private static ClientGameState clientGameState = new ClientGameState();
 
     //Immediate instantiation and execution of the ClientThread
@@ -68,6 +67,7 @@ public class ClientThread implements Runnable {
         }
     }
 
+    private final MyLogger logger = new MyLogger();
     //Connection fields
     private final Socket socket;
     private final BufferedReader incoming;
@@ -106,6 +106,7 @@ public class ClientThread implements Runnable {
 
     /**
      * Constructor establishes TCP-connection with the server and initializes basic chat functionality.
+     *
      * @throws IOException
      */
     public ClientThread() throws IOException {
@@ -122,21 +123,39 @@ public class ClientThread implements Runnable {
     public static ClientThread getInstance() {
         return clientThread;
     }
+
     public MainViewModel getMainViewModel() {
         return mainViewModel;
     }
+
+    public void setMainViewModel(MainViewModel mainViewModel) {
+        this.mainViewModel = mainViewModel;
+    }
+
     public GameBoardViewModel getGameBoardViewModel() {
         return gameBoardViewModel;
     }
+
+    public void setGameBoardViewModel(GameBoardViewModel gameBoardViewModel) {
+        this.gameBoardViewModel = gameBoardViewModel;
+    }
+
     public PlayerMatModel getPlayerMatModel() {
         return playerMatModel;
     }
+
+    public void setPlayerMatModel(PlayerMatModel playerMatModel) {
+        this.playerMatModel = playerMatModel;
+    }
+
     public int getActivePhase() {
         return clientGameState.getActivePhase();
     }
+
     public HashMap<Integer, EnemyMatModel> getEnemyList() {
         return enemyList;
     }
+
     public Player getPlayer() {
         return player;
     }
@@ -145,21 +164,15 @@ public class ClientThread implements Runnable {
     public void setWelcomeViewModel(WelcomeViewModel welcomeViewModel) {
         this.welcomeViewModel = welcomeViewModel;
     }
+
     public void setChatViewModel(ChatViewModel chatViewModel) {
         this.chatViewModel = chatViewModel;
     }
-    public void setMainViewModel(MainViewModel mainViewModel) {
-        this.mainViewModel = mainViewModel;
-    }
-    public void setGameBoardViewModel(GameBoardViewModel gameBoardViewModel) {
-        this.gameBoardViewModel = gameBoardViewModel;
-    }
+
     public void setProgrammingViewModel(ProgrammingViewModel programmingViewModel) {
         this.programmingViewModel = programmingViewModel;
     }
-    public void setPlayerMatModel(PlayerMatModel playerMatModel) {
-        this.playerMatModel = playerMatModel;
-    }
+
     public void setEnemyMatModel(EnemyMatModel enemyMatModel) {
         this.enemyMatModel = enemyMatModel;
     }
@@ -364,9 +377,10 @@ public class ClientThread implements Runnable {
 
 
     /**
+     * Adds a new player to all lists and chat-menus
      *
-     * @param incomingMessage
-     * @throws IOException
+     * @param incomingMessage contains the player-object to be added
+     * @throws IOException if the incoming message cannot be type-casted correctly
      */
     private void handlePlayerAdded(Message incomingMessage) throws IOException {
 
@@ -593,6 +607,7 @@ public class ClientThread implements Runnable {
 
     /**
      * Unused method stub for future implementation of Upgradephase
+     *
      * @param incomingMessage contains playerID and played card
      * @throws IOException
      */
@@ -620,7 +635,7 @@ public class ClientThread implements Runnable {
 
                 if (clientGameState.getActivePhase() == 0) {
                     String robotName = playerMatModel.getRobotName().getValue();
-                    String gameMessage = "[GAME] \n" +"It´s " + robotName + "´s turn to choose a starting point!";
+                    String gameMessage = "[GAME] \n" + "It´s " + robotName + "´s turn to choose a starting point!";
 
                     Platform.runLater(() -> {
                         chatMessages.add(gameMessage);
@@ -659,7 +674,7 @@ public class ClientThread implements Runnable {
             if (activePhase.getPhase() == 2) {
                 Platform.runLater(() -> {
                     chatMessages.add("[Game] \n" +
-                            "The programming phase has started. \n"+
+                            "The programming phase has started. \n" +
                             "select the cards on your register to program \n" +
                             "your robot."
                     );
@@ -680,9 +695,9 @@ public class ClientThread implements Runnable {
                     popupController.showEndOfProgrammingPhase(slowPlayers, cardsInRegister);
                     mainViewModel.switchScenes();
                     chatMessages.add("[GAME \n"
-                        + "The activation phase has started. \n"
+                            + "The activation phase has started. \n"
                             + "click on the cards on your register to move \n " +
-                              "your robot.");
+                            "your robot.");
 
                 });
             }
@@ -734,7 +749,7 @@ public class ClientThread implements Runnable {
             //Initialize ProgrammingView with new cards
             programmingViewModel = new ProgrammingViewModel();
             programmingViewModel.setCards(cards);
-            programmingViewModel.getProgrammingController().setPlayerValues(playerMatModel.getUserName().getValue(),player.getFigure());
+            programmingViewModel.getProgrammingController().setPlayerValues(playerMatModel.getUserName().getValue(), player.getFigure());
 
             //Update MainView and switch scenes (PlayerMat -> ProgrammingView)
             mainViewModel.getMainViewController().setProgrammingPane(programmingViewModel.getProgrammingController().getGridPane());
@@ -811,6 +826,7 @@ public class ClientThread implements Runnable {
         }
     }
 
+
     private void handleTimerStarted(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof TimerStarted) {
 
@@ -823,6 +839,12 @@ public class ClientThread implements Runnable {
         }
     }
 
+    /**
+     * Ends the timer
+     *
+     * @param incomingMessage contains the playerIDs of all players that were to slow last round
+     * @throws IOException if the incoming message cannot be type-casted correctly
+     */
     private void handleTimerEnded(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof TimerEnded) {
             TimerEnded timerEnded = (TimerEnded) incomingMessage.getMessageBody();
@@ -849,6 +871,12 @@ public class ClientThread implements Runnable {
         }
     }
 
+    /**
+     * Received if timer ran out before player could fill all registers
+     *
+     * @param incomingMessage is just a flag for slow player to discard hand
+     * @throws IOException if the incoming message cannot be type-casted correctly
+     */
     private void handleDiscardHand(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof DiscardHand) {
             DiscardHand discardHand = (DiscardHand) incomingMessage.getMessageBody();
@@ -863,6 +891,12 @@ public class ClientThread implements Runnable {
         }
     }
 
+    /**
+     * Received if timer ran out before player could fill all registers
+     *
+     * @param incomingMessage contains an array of cards you had to draw due to timeout
+     * @throws IOException if the incoming message cannot be type-casted correctly
+     */
     private void handleCardsYouGotNow(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof CardsYouGotNow) {
             CardsYouGotNow cardsYouGotNow = (CardsYouGotNow) incomingMessage.getMessageBody();
@@ -876,6 +910,13 @@ public class ClientThread implements Runnable {
         }
     }
 
+    /**
+     * Loops through the array containing all cards in the current registers.
+     * Passes card information on to the ViewModel for display
+     *
+     * @param incomingMessage contains an array of all cards played in the current register
+     * @throws IOException if the incoming message cannot be type-casted correctly
+     */
     private void handleCurrentCards(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof CurrentCards) {
             CurrentCards currentCards = (CurrentCards) incomingMessage.getMessageBody();
@@ -902,6 +943,12 @@ public class ClientThread implements Runnable {
         }
     }
 
+    /**
+     * Sets the new current position and moves the robot to the field position contained in the message
+     *
+     * @param incomingMessage contains the playerID and destination position for the movement
+     * @throws IOException if the incoming message cannot be type-casted correctly
+     */
     private void handleMovement(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof Movement) {
             Movement movement = (Movement) incomingMessage.getMessageBody();
@@ -927,6 +974,12 @@ public class ClientThread implements Runnable {
         }
     }
 
+    /**
+     * Informs the player about the number and kind of damage cards the player needs to add to the pile
+     *
+     * @param incomingMessage contains the playerID and a String[]-array with assigned damage cards
+     * @throws IOException
+     */
     private void handleDrawDamage(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof DrawDamage) {
             DrawDamage drawDamage = (DrawDamage) incomingMessage.getMessageBody();
@@ -942,7 +995,7 @@ public class ClientThread implements Runnable {
 
             } else {
                 Platform.runLater(() -> {
-                enemyList.get(playerID).setPickedUpDamageCards(damageCards.length);
+                    enemyList.get(playerID).setPickedUpDamageCards(damageCards.length);
                 });
             }
 
@@ -953,7 +1006,12 @@ public class ClientThread implements Runnable {
         }
     }
 
-
+    /**
+     * Sent from Server if the Spam-Pile is empty and player needs to select different damage cards
+     *
+     * @param incomingMessage contains number of cards that need to be drawn from pile
+     * @throws IOException if the incoming message cannot be type-casted correctly
+     */
     private void handlePickDamage(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof PickDamage) {
             PickDamage pickDamage = (PickDamage) incomingMessage.getMessageBody();
@@ -972,6 +1030,12 @@ public class ClientThread implements Runnable {
         }
     }
 
+    /**
+     * Adds info about shooting robots to the chat messages
+     *
+     * @param incomingMessage is just a flag for shooting robot phase
+     * @throws IOException if the incoming message cannot be type-casted correctly
+     */
     private void handlePlayerShooting(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof PlayerShooting) {
             PlayerShooting playerShooting = (PlayerShooting) incomingMessage.getMessageBody();
@@ -985,6 +1049,13 @@ public class ClientThread implements Runnable {
         }
     }
 
+    /**
+     * Updates the discarded cards of the rebooted robot
+     * Turning and placement for reboot are handled on the server-side
+     *
+     * @param incomingMessage contains playerID of the rebooted robot
+     * @throws IOException if the incoming message cannot be type-casted correctly
+     */
     private void handleReboot(Message incomingMessage) throws IOException {
         if (incomingMessage.getMessageBody() instanceof Reboot) {
             Reboot reboot = (Reboot) incomingMessage.getMessageBody();
@@ -1002,6 +1073,7 @@ public class ClientThread implements Runnable {
 
     /**
      * Passes a turn-command for the player's robot to the game board
+     *
      * @param incomingMessage contains the playerID and the turning-direction (clockwise/counterclockwise)
      * @throws IOException if the incoming message cannot be type-casted correctly
      */
@@ -1031,6 +1103,7 @@ public class ClientThread implements Runnable {
 
     /**
      * Updates the received energy-cubes in playermat or enemymat
+     *
      * @param incomingMessage contains playerID and energy-count
      * @throws IOException if the incoming message cannot be type-casted correctly
      */
@@ -1045,7 +1118,7 @@ public class ClientThread implements Runnable {
                 });
             } else {
                 Platform.runLater(() -> {
-                enemyList.get(playerID).setEnergyPoints(energyCount);
+                    enemyList.get(playerID).setEnergyPoints(energyCount);
                 });
             }
             logger.getLogger().info("Player with id " + energy.getPlayerID() + " has " + energy.getCount() + " energy cubes.");
@@ -1057,6 +1130,7 @@ public class ClientThread implements Runnable {
 
     /**
      * Updates the counter for reached checkpoints/flags in playermat or enemymat
+     *
      * @param incomingMessage contains playerID and number of checkpoint reached
      * @throws IOException if the incoming message cannot be type-casted correctly
      */
@@ -1084,6 +1158,7 @@ public class ClientThread implements Runnable {
 
     /**
      * If a player has won the game, a final GameOverScreen with the winner's username is shown and the Game terminates
+     *
      * @param incomingMessage contains winner's player ID
      * @throws IOException if the incoming message cannot be type-casted correctly
      */
@@ -1091,7 +1166,7 @@ public class ClientThread implements Runnable {
         if (incomingMessage.getMessageBody() instanceof GameWon) {
             GameWon gameWon = (GameWon) incomingMessage.getMessageBody();
             String winnerName = "The winner is: " + playerList.get(gameWon.getPlayerID()).getName();
-            int winnerRobot  = playerList.get(gameWon.getPlayerID()).getFigure();
+            int winnerRobot = playerList.get(gameWon.getPlayerID()).getFigure();
             FXMLLoader gameOverLoader = new FXMLLoader(getClass().getResource("/FXMLFiles/GameOverScreen.fxml"));
             GridPane gameOverPane = gameOverLoader.load();
             GameOverModel gameOverModel = gameOverLoader.<GameOverController>getController().getGameOverModel();
@@ -1111,6 +1186,7 @@ public class ClientThread implements Runnable {
 
     /**
      * Performs the Server-Client-Handshake according to protocol at the beginning of the connection
+     *
      * @throws IOException if any of the required messages is not transmitted in the planned order or has the wrong message-type
      */
     private void establishConnection() throws IOException {
@@ -1162,8 +1238,9 @@ public class ClientThread implements Runnable {
 
     /**
      * Transmits ChatMessages to the server
+     *
      * @param message provided by the ChatWindow
-     * @param to Integer: either PlayerID for private or -1 for all recipients
+     * @param to      Integer: either PlayerID for private or -1 for all recipients
      */
     public void sendMessage(String message, int to) {
         String outgoingMessage = messageHandler.buildMessage("SendChat", new SendChat(message, to));
@@ -1172,7 +1249,8 @@ public class ClientThread implements Runnable {
 
     /**
      * Sends the player's choice of name and robot to the server
-     * @param name String provided by the user (WelcomeView)
+     *
+     * @param name   String provided by the user (WelcomeView)
      * @param figure chosen by the user via button (WelcomeView)
      */
     public void submitPlayer(String name, int figure) {
@@ -1182,6 +1260,7 @@ public class ClientThread implements Runnable {
 
     /**
      * Sends player status to the server (accessed via button in lobby)
+     *
      * @param ready true or false
      */
     public void sendPlayerStatus(boolean ready) {
@@ -1191,6 +1270,7 @@ public class ClientThread implements Runnable {
 
     /**
      * Sends the chosen startingposition
+     *
      * @param position integer value (linear count of protocol positions) of chosen starting position
      */
     public void sendStartingPosition(int position) {
@@ -1200,8 +1280,9 @@ public class ClientThread implements Runnable {
 
     /**
      * Sends each card that is put into a register during programming phase.
+     *
      * @param selectedCard the card put in the register (is "null" if register is undone)
-     * @param register the respective register of the cardchoice
+     * @param register     the respective register of the cardchoice
      */
     public void sendSelectedCard(String selectedCard, int register) {
         String outgoingMessage = messageHandler.buildMessage("SelectCard", new SelectCard(selectedCard, register));
@@ -1210,6 +1291,7 @@ public class ClientThread implements Runnable {
 
     /**
      * Sends the user's chosen map to the server
+     *
      * @param userChoice String-Array (accoring to protocol) with length 1 containing the chosen map
      */
     public void sendSelectedMap(String[] userChoice) {
@@ -1219,6 +1301,7 @@ public class ClientThread implements Runnable {
 
     /**
      * Sends the user's choice of available damage cards (Worm, Virus or Trojan) to the server.
+     *
      * @param selectedDamageCards String-Array including the user's card choice(s)
      */
     public void sendSelectedDamage(String[] selectedDamageCards) {
@@ -1238,6 +1321,7 @@ public class ClientThread implements Runnable {
     /**
      * Builds a GridPane for stats and cards of all other players and adds it to the MainView
      * Is called in handleGameStarted()-method since only then the final number of players is known.
+     *
      * @throws IOException if the FXML-File for the EnemyMat-View is not found
      */
     public void buildEnemyViews() throws IOException {
@@ -1267,7 +1351,8 @@ public class ClientThread implements Runnable {
      * Prepares and initializes the Main View of the Game
      * Loads the outer container as well as the ViewModels for the subviews
      * Does not initialize EnemyMats, since final number of players is not known yet
-     *      -> Initialization of EnemyMats is performed in handleGameStarted()-method
+     * -> Initialization of EnemyMats is performed in handleGameStarted()-method
+     *
      * @throws IOException if one of the used FXML-Files is not found
      */
     public void initializeEmptyMainView() throws IOException {

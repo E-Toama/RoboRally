@@ -17,7 +17,6 @@ import java.util.Arrays;
 /**
  * This class represents the thread of the server for each client connected.
  * 
- * Doc: Josef
  */
 public class UserThread implements Runnable {
 
@@ -118,6 +117,10 @@ public class UserThread implements Runnable {
 
     }
 
+    /**
+     * Handles all incoming messages from the client
+     * @throws IOException if the message is unreadable.
+     */
     private void handleIncomingMessages() throws IOException {
 
         while (true) {
@@ -300,9 +303,12 @@ public class UserThread implements Runnable {
 
     }
 
+    /**
+     * Method stub in case client were to send an error message to the server
+     * @param incomingMessage contains the error message
+     * @throws IOException if message cannot be type-casted
+     */
     private void handleError(Message incomingMessage) throws IOException {
-
-        //ToDo: handleError (UserThread)
 
     }
 
@@ -310,7 +316,6 @@ public class UserThread implements Runnable {
         if (incomingMessage.getMessageBody() instanceof PlayCard) {
             PlayCard playCard = (PlayCard) incomingMessage.getMessageBody();
             String cardPlayed = playCard.getCard();
-            //ToDo: handle PlayCard (UserThread)
 
             logger.getLogger().info(player.getName() + " played " + cardPlayed + ".");
 
